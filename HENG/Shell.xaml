@@ -2,33 +2,52 @@
     x:Class="HENG.Shell"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:HENG.Helpers"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:ignore="http://www.galasoft.ch/ignore"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:HENG"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     DataContext="{Binding Shll, Source={StaticResource Locator}}"
     mc:Ignorable="d ignore">
 
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
     <Grid Background="{StaticResource PrimaryPageBackground}">
-        <muxc:NavigationView x:Name="NavView">
+        <muxc:NavigationView
+            x:Name="NavView"
+            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="ItemInvoked">
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem x:Uid="Shell_Home" Icon="Home" />
+                <muxc:NavigationViewItem
+                    x:Uid="Shell_Home"
+                    helpers:NavHelper.NavigateTo="HENG.ViewModel.HomeViewModel"
+                    Icon="Home" />
                 <muxc:NavigationViewItemSeparator />
                 <muxc:NavigationViewItemHeader x:Name="MainPagesHeader" x:Uid="Shell_MainPagesHeader" />
-                <muxc:NavigationViewItem x:Uid="Shell_Shi">
+                <muxc:NavigationViewItem x:Uid="Shell_Shi" helpers:NavHelper.NavigateTo="HENG.ViewModel.ShiViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF146;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Uid="Shell_Ci">
+                <muxc:NavigationViewItem x:Uid="Shell_Ci" helpers:NavHelper.NavigateTo="HENG.ViewModel.CiViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF147;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Uid="Shell_Qu">
+                <muxc:NavigationViewItem x:Uid="Shell_Qu" helpers:NavHelper.NavigateTo="HENG.ViewModel.QuViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF148;" />
                     </muxc:NavigationViewItem.Icon>

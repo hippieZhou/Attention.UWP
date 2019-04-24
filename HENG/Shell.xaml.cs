@@ -6,32 +6,17 @@ namespace HENG
 {
     public sealed partial class Shell
     {
-        public ShellViewModel Vm => (ShellViewModel)DataContext;
+        public ShellViewModel ViewModel => (ShellViewModel)DataContext;
 
         public Shell()
         {
             InitializeComponent();
-
-            SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManagerBackRequested;
-
-            Loaded += async (s, e) =>
-            {
-                await Vm.Initialize();
-            };
-        }
-
-        private void SystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                e.Handled = true;
-                Frame.GoBack();
-            }
+            ViewModel.Initialize(ContentFrame, NavView);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            Vm.Cleanup();
+            ViewModel.Cleanup();
             base.OnNavigatingFrom(e);
         }
     }
