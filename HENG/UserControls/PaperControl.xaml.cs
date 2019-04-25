@@ -7,6 +7,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Composition;
 using Windows.UI.Xaml.Hosting;
 using System.Numerics;
+using Windows.UI.Xaml.Media;
+using Windows.Foundation;
 
 namespace HENG.UserControls
 {
@@ -92,6 +94,15 @@ namespace HENG.UserControls
             scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
             scaleAnimation.StopBehavior = AnimationStopBehavior.LeaveCurrentValue;
             return scaleAnimation;
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            rootGrid.Clip = new RectangleGeometry()
+            {
+                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
+            };
         }
     }
 }

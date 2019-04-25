@@ -23,25 +23,28 @@
             <Grid
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
                 PointerEntered="Grid_PointerEntered"
-                PointerExited="Grid_PointerExited">
+                PointerExited="Grid_PointerExited"
+                SizeChanged="Grid_SizeChanged">
                 <controls:ImageEx
                     x:Name="imageEx"
                     IsCacheEnabled="True"
                     Source="{x:Bind Urls.Thumb}"
                     Stretch="UniformToFill" />
-                <Button
-                    Margin="4"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Opacity="0"
-                    Style="{ThemeResource ButtonRevealStyle}">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        Foreground="White"
-                        Glyph="&#xE118;" />
+                <Grid
+                    x:Name="SmokeGrid"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Opacity="0">
+                    <Grid.Background>
+                        <AcrylicBrush
+                            BackgroundSource="Backdrop"
+                            FallbackColor="{ThemeResource SystemChromeAltHighColor}"
+                            Opacity="0.6"
+                            TintColor="{ThemeResource SystemChromeAltHighColor}" />
+                    </Grid.Background>
                     <i:Interaction.Behaviors>
                         <behaviors:Fade
-                            x:Name="DownloadUp"
+                            x:Name="SmokeGridUp"
                             AutomaticallyStart="True"
                             Delay="0"
                             EasingMode="EaseOut"
@@ -49,7 +52,7 @@
                             Value="1"
                             Duration="400" />
                         <behaviors:Fade
-                            x:Name="DownloadDowm"
+                            x:Name="SmokeGridDowm"
                             AutomaticallyStart="True"
                             Delay="0"
                             EasingMode="EaseIn"
@@ -57,13 +60,50 @@
                             Value="0"
                             Duration="400" />
                     </i:Interaction.Behaviors>
-                </Button>
+                </Grid>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                    <TextBlock
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Black"
+                        RequestedTheme="Dark"
+                        Text="{x:Bind Created_at, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}" />
+                    <Button
+                        HorizontalAlignment="Right"
+                        Opacity="0"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            Foreground="White"
+                            Glyph="&#xE118;" />
+                        <i:Interaction.Behaviors>
+                            <behaviors:Fade
+                                x:Name="DownloadUp"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                Value="1"
+                                Duration="400" />
+                            <behaviors:Fade
+                                x:Name="DownloadDowm"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseIn"
+                                EasingType="Linear"
+                                Value="0"
+                                Duration="400" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
 
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="PointerEntered">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadUp}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadDowm}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
@@ -100,6 +140,12 @@
                     </StackPanel>
                 </Grid>
             </controls:AdaptiveGridView.Footer>
+            <controls:AdaptiveGridView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <AddDeleteThemeTransition />
+                    <EntranceThemeTransition />
+                </TransitionCollection>
+            </controls:AdaptiveGridView.ItemContainerTransitions>
         </controls:AdaptiveGridView>
         <Button
             Margin="48"
@@ -107,5 +153,6 @@
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
             Style="{StaticResource RefreshButtonRevealStyle}" />
+
     </Grid>
 </UserControl>
