@@ -42,6 +42,22 @@ namespace HENG.ViewModels
                 return _loadedCommand;
             }
         }
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new RelayCommand(async () =>
+                    {
+                        await Photos.RefreshAsync();
+                    });
+                }
+                return _refreshCommand;
+            }
+        }
     }
 
     public class HottestItemSource : IIncrementalSource<PaperItem>

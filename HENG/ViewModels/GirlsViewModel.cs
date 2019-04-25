@@ -5,10 +5,7 @@ using HENG.Models;
 using HENG.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -40,6 +37,22 @@ namespace HENG.ViewModels
                     });
                 }
                 return _loadedCommand;
+            }
+        }
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new RelayCommand(async () =>
+                    {
+                        await Photos.RefreshAsync();
+                    });
+                }
+                return _refreshCommand;
             }
         }
     }
