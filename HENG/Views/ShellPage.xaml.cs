@@ -1,14 +1,14 @@
 ﻿using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
-using HENG.ViewModel;
+using HENG.ViewModels;
 
-namespace HENG
+namespace HENG.Views
 {
-    public sealed partial class Shell
+    public sealed partial class ShellPage
     {
-        public ShellViewModel ViewModel => (ShellViewModel)DataContext;
+        public ShellViewModel ViewModel => ViewModelLocator.Current.Shell;
 
-        public Shell()
+        public ShellPage()
         {
             InitializeComponent();
             ViewModel.Initialize(ContentFrame, NavView);

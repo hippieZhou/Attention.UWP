@@ -1,28 +1,25 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
-using HENG.Model;
+using HENG.Services;
 using HENG.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
 
-namespace HENG.ViewModel
+namespace HENG.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        private readonly IDataService _dataService;
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
 
-        public ShellViewModel(IDataService dataService, INavigationService navigationService)
+        public ShellViewModel(INavigationService navigationService)
         {
-            _dataService = dataService;
             _navService = (NavigationService)navigationService;
         }
 
@@ -56,16 +53,8 @@ namespace HENG.ViewModel
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
-                        try
-                        {
-                            var item = await _dataService.GetData();
-                        }
-                        catch (Exception ex)
-                        {
-                            // Report error here
-                        }
                         var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
                         if (first != null)
                         {
@@ -119,7 +108,7 @@ namespace HENG.ViewModel
         {
             IsBackEnabled = _navService.CanGoBack;
 
-            if (e.SourcePageType == typeof(PageSettings))
+            if (e.SourcePageType == typeof(SettingsView))
             {
                 Selected = _navView.SettingsItem;
             }

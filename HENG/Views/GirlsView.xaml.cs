@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HENG.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,9 +21,10 @@ namespace HENG.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PageQu : Page
+    public sealed partial class GirlsView : Page
     {
-        public PageQu()
+        public GirlsViewModel ViewModel => ViewModelLocator.Current.Girls;
+        public GirlsView()
         {
             this.InitializeComponent();
         }

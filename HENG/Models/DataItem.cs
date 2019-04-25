@@ -1,12 +1,8 @@
-﻿namespace HENG.Model
+﻿namespace HENG.Models
 {
     public class DataItem
     {
-        public string Title
-        {
-            get;
-            private set;
-        }
+        public string Title { get; private set; }
 
         public DataItem(string title)
         {

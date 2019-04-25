@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
+using HENG.Views;
 
 namespace HENG
 {
@@ -52,7 +53,7 @@ namespace HENG
             {
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(Shell), e.Arguments);
+                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
                 }
                 Window.Current.Activate();
             }

@@ -118,24 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>传承中华文化</value>
+    <value>恒</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>恒</value>
   </data>
-  <data name="Shell_Ci.Content" xml:space="preserve">
-    <value>词</value>
+  <data name="Shell_Grils.Content" xml:space="preserve">
+    <value>女孩</value>
   </data>
   <data name="Shell_Home.Content" xml:space="preserve">
     <value>首页</value>
   </data>
+  <data name="Shell_Hottest.Content" xml:space="preserve">
+    <value>最热</value>
+  </data>
   <data name="Shell_MainPagesHeader.Content" xml:space="preserve">
     <value>类别</value>
   </data>
-  <data name="Shell_Qu.Content" xml:space="preserve">
-    <value>曲</value>
+  <data name="Shell_Newest.Content" xml:space="preserve">
+    <value>最新</value>
   </data>
-  <data name="Shell_Shi.Content" xml:space="preserve">
-    <value>诗</value>
+  <data name="Shell_Sky.Content" xml:space="preserve">
+    <value>星空</value>
   </data>
 </root>
