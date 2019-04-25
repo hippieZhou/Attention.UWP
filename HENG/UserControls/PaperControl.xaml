@@ -153,6 +153,5 @@
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
             Style="{StaticResource RefreshButtonRevealStyle}" />
-
     </Grid>
 </UserControl>
