@@ -112,7 +112,7 @@
     <Compile Include="ViewModels\HottestViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\SkyViewModel.cs" />
+    <Compile Include="ViewModels\SkylandViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\NewestView.xaml.cs">
       <DependentUpon>NewestView.xaml</DependentUpon>
@@ -129,8 +129,8 @@
     <Compile Include="Views\GirlsView.xaml.cs">
       <DependentUpon>GirlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SkyView.xaml.cs">
-      <DependentUpon>SkyView.xaml</DependentUpon>
+    <Compile Include="Views\SkylandView.xaml.cs">
+      <DependentUpon>SkylandView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +138,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <PRIResource Include="Stirngs\zh-cn\Resources.resw" />
+    <PRIResource Include="Stirngs\en-US\Resources.resw" />
     <None Include="Win10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +200,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SkyView.xaml">
+    <Page Include="Views\SkylandView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,6 +22,8 @@
     <Grid Background="{StaticResource PrimaryPageBackground}">
         <muxc:NavigationView
             x:Name="NavView"
+            CompactModeThresholdWidth="{StaticResource CompactModeThresholdWidth}"
+            ExpandedModeThresholdWidth="{StaticResource ExpandedModeThresholdWidth}"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
             <i:Interaction.Behaviors>
@@ -52,7 +54,7 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF148;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem x:Uid="Shell_Sky" helpers:NavHelper.NavigateTo="HENG.ViewModels.SkyViewModel">
+                <muxc:NavigationViewItem x:Uid="Shell_Skyland" helpers:NavHelper.NavigateTo="HENG.ViewModels.SkylandViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF149;" />
                     </muxc:NavigationViewItem.Icon>
@@ -64,21 +66,11 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="NavView.PaneDisplayMode" Value="Top" />
-                        <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <!--<VisualState>
-                    <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.ExpandedModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavView.PaneDisplayMode" Value="Top" />
                         <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
-                        <Setter Target="ContentFrame.Padding" Value="24,12,24,24" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -89,7 +81,6 @@
                         <Setter Target="NavView.PaneDisplayMode" Value="Left" />
                         <Setter Target="NavView.IsPaneOpen" Value="False" />
                         <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
-                        <Setter Target="ContentFrame.Padding" Value="24,0,24,24" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -98,9 +89,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavView.PaneDisplayMode" Value="LeftCompact" />
-                        <Setter Target="ContentFrame.Padding" Value="24,0,24,24" />
                     </VisualState.Setters>
-                </VisualState>-->
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>

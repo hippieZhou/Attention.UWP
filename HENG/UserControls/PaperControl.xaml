@@ -18,48 +18,53 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
-
     <UserControl.Resources>
         <DataTemplate x:Key="PhotosTemplate" x:DataType="models:PaperItem">
-            <Grid Background="{ThemeResource NavigationViewExpandedPaneBackground}">
+            <Grid
+                Background="{ThemeResource NavigationViewExpandedPaneBackground}"
+                PointerEntered="Grid_PointerEntered"
+                PointerExited="Grid_PointerExited">
                 <controls:ImageEx
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+                    x:Name="imageEx"
                     IsCacheEnabled="True"
                     Source="{x:Bind Urls.Thumb}"
-                    Stretch="UniformToFill">
+                    Stretch="UniformToFill" />
+                <Button
+                    Margin="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Opacity="0"
+                    Style="{ThemeResource ButtonRevealStyle}">
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Foreground="White"
+                        Glyph="&#xE118;" />
                     <i:Interaction.Behaviors>
-                        <behaviors:Scale
-                            x:Name="ImageExcaleUp"
+                        <behaviors:Fade
+                            x:Name="DownloadUp"
                             AutomaticallyStart="True"
-                            CenterX="50"
-                            CenterY="50"
                             Delay="0"
                             EasingMode="EaseOut"
-                            EasingType="Cubic"
-                            ScaleX="1.02"
-                            ScaleY="1.02"
+                            EasingType="Linear"
+                            Value="1"
                             Duration="400" />
-                        <behaviors:Scale
-                            x:Name="ImageExScaleDowm"
+                        <behaviors:Fade
+                            x:Name="DownloadDowm"
                             AutomaticallyStart="True"
-                            CenterX="50"
-                            CenterY="50"
                             Delay="0"
-                            EasingMode="EaseOut"
-                            EasingType="Cubic"
-                            ScaleX="1"
-                            ScaleY="1"
+                            EasingMode="EaseIn"
+                            EasingType="Linear"
+                            Value="0"
                             Duration="400" />
                     </i:Interaction.Behaviors>
-                </controls:ImageEx>
+                </Button>
 
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="PointerEntered">
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ImageExcaleUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadUp}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ImageExScaleDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadDowm}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
@@ -68,7 +73,7 @@
 
     <Grid>
         <controls:AdaptiveGridView
-            Name="AdaptiveGridViewControl"
+            x:Name="AdaptiveGridViewControl"
             Padding="12"
             animations:ReorderGridAnimation.Duration="300"
             DataFetchSize="1"
@@ -97,7 +102,7 @@
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
         <Button
-            Margin="50"
+            Margin="48"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"

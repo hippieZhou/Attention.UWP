@@ -13,7 +13,7 @@ using Windows.UI.Xaml;
 
 namespace HENG.ViewModels
 {
-    public class SkyViewModel : ViewModelBase
+    public class SkylandViewModel : ViewModelBase
     {
         private IncrementalLoadingCollection<SkyItemSource, PaperItem> _photos;
         public IncrementalLoadingCollection<SkyItemSource, PaperItem> Photos

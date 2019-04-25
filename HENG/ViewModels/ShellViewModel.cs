@@ -5,7 +5,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
-using HENG.Services;
 using HENG.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

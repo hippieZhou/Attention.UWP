@@ -23,7 +23,7 @@ namespace HENG.ViewModels
             nav.Configure(typeof(NewestViewModel).FullName, typeof(NewestView));
             nav.Configure(typeof(HottestViewModel).FullName, typeof(HottestView));
             nav.Configure(typeof(GirlsViewModel).FullName, typeof(GirlsView));
-            nav.Configure(typeof(SkyViewModel).FullName, typeof(SkyView));
+            nav.Configure(typeof(SkylandViewModel).FullName, typeof(SkylandView));
             nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsView));
 
             SimpleIoc.Default.Register<INavigationService>(() => nav);
@@ -34,7 +34,7 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<NewestViewModel>();
             SimpleIoc.Default.Register<HottestViewModel>();
             SimpleIoc.Default.Register<GirlsViewModel>();
-            SimpleIoc.Default.Register<SkyViewModel>();
+            SimpleIoc.Default.Register<SkylandViewModel>();
         }
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
@@ -43,7 +43,7 @@ namespace HENG.ViewModels
         public NewestViewModel Newest => ServiceLocator.Current.GetInstance<NewestViewModel>();
         public HottestViewModel Hottest => ServiceLocator.Current.GetInstance<HottestViewModel>();
         public GirlsViewModel Girls => ServiceLocator.Current.GetInstance<GirlsViewModel>();
-        public SkyViewModel Sky => ServiceLocator.Current.GetInstance<SkyViewModel>();
+        public SkylandViewModel Skyland => ServiceLocator.Current.GetInstance<SkylandViewModel>();
         public SettingsViewModel Setting => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }

@@ -16,10 +16,10 @@ using Windows.UI.Xaml.Navigation;
 
 namespace HENG.Views
 {
-    public sealed partial class SkyView : Page
+    public sealed partial class SkylandView : Page
     {
-        public SkyViewModel ViewModel => ViewModelLocator.Current.Sky;
-        public SkyView()
+        public SkylandViewModel ViewModel => ViewModelLocator.Current.Skyland;
+        public SkylandView()
         {
             this.InitializeComponent();
         }

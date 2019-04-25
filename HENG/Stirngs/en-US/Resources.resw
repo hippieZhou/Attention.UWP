@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>恒</value>
+    <value>HENG</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>恒</value>
+    <value>HENG</value>
   </data>
   <data name="Shell_Grils.Content" xml:space="preserve">
-    <value>女孩</value>
+    <value>Girls</value>
   </data>
   <data name="Shell_Home.Content" xml:space="preserve">
-    <value>首页</value>
+    <value>Home</value>
   </data>
   <data name="Shell_Hottest.Content" xml:space="preserve">
-    <value>最热</value>
+    <value>Hottest</value>
   </data>
   <data name="Shell_MainPagesHeader.Content" xml:space="preserve">
-    <value>类别</value>
+    <value>Categories</value>
   </data>
   <data name="Shell_Newest.Content" xml:space="preserve">
-    <value>最新</value>
+    <value>Newest</value>
   </data>
   <data name="Shell_Skyland.Content" xml:space="preserve">
-    <value>星空</value>
+    <value>Skyland</value>
   </data>
 </root>
