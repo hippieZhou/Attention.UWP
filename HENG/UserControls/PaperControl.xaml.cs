@@ -20,6 +20,19 @@ namespace HENG.UserControls
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register("Photos", typeof(object), typeof(PaperControl), new PropertyMetadata(null));
 
+
+        public Visibility FooterVisibility
+        {
+            get { return (Visibility)GetValue(FooterVisibilityProperty); }
+            set { SetValue(FooterVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FooterVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FooterVisibilityProperty =
+            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PaperControl), new PropertyMetadata(null));
+
+
+
         public ICommand RefreshCommand
         {
             get { return (ICommand)GetValue(RefreshCommandProperty); }

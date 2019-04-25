@@ -12,16 +12,24 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 
 namespace HENG.ViewModels
 {
     public class HottestViewModel : ViewModelBase
     {
-        private IncrementalLoadingCollection<NewestItemSource, PaperItem> _photos;
-        public IncrementalLoadingCollection<NewestItemSource, PaperItem> Photos
+        private IncrementalLoadingCollection<HottestItemSource, PaperItem> _photos;
+        public IncrementalLoadingCollection<HottestItemSource, PaperItem> Photos
         {
             get { return _photos; }
             set { Set(ref _photos, value); }
+        }
+
+        private Visibility _footerVisibility = Visibility.Collapsed;
+        public Visibility FooterVisibility
+        {
+            get { return _footerVisibility; }
+            set { Set(ref _footerVisibility, value); }
         }
 
         private ICommand _loadedCommand;
@@ -35,7 +43,15 @@ namespace HENG.ViewModels
                     {
                         if (Photos == null)
                         {
-                            Photos = new IncrementalLoadingCollection<NewestItemSource, PaperItem>(20);
+                            Photos = new IncrementalLoadingCollection<HottestItemSource, PaperItem>(20,
+                                () =>
+                                {
+                                    FooterVisibility = Visibility.Visible;
+                                },
+                                () =>
+                                {
+                                    FooterVisibility = Visibility.Collapsed;
+                                }, ex => { });
                         }
                     });
                 }

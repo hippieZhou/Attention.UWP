@@ -17,6 +17,9 @@
     </i:Interaction.Behaviors>
 
     <Grid>
-        <ucs:PaperControl Photos="{x:Bind ViewModel.Photos, Mode=OneWay}" RefreshCommand="{x:Bind ViewModel.RefreshCommand}" />
+        <ucs:PaperControl
+            FooterVisibility="{x:Bind ViewModel.FooterVisibility, Mode=OneWay}"
+            Photos="{x:Bind ViewModel.Photos, Mode=OneWay}"
+            RefreshCommand="{x:Bind ViewModel.RefreshCommand}" />
     </Grid>
 </Page>
