@@ -23,7 +23,6 @@ namespace HENG.Services
             Listener.ThemeChanged += (sender) =>
             {
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                //titleBar.BackgroundColor = sender.CurrentTheme == ApplicationTheme.Light ? Colors.White : Color.FromArgb(255, 50, 55, 63);
                 titleBar.ButtonForegroundColor = sender.CurrentTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
             };
         }
