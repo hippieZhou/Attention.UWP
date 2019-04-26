@@ -14,6 +14,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:models="using:HENG.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
     HorizontalContentAlignment="Stretch"
@@ -267,23 +268,30 @@
             OneRowModeEnabled="False"
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
-            <!--<controls:AdaptiveGridView.Header>
-                <lottie:AnimatedVisualPlayer x:Name="LottiePlayer">
-                    <lottie:LottieVisualSource x:Name="LottieJsonSource" UriSource="ms-appx:///AnimatedVisuals/LottieLogo1.json" />
-                </lottie:AnimatedVisualPlayer>
-            </controls:AdaptiveGridView.Header>-->
+            <controls:AdaptiveGridView.Header>
+                <muxc:AnimatedVisualPlayer
+                    x:Name="LottiePlayer"
+                    Height="200"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    AutoPlay="True"
+                    Visibility="{x:Bind HeaderVisibility, Mode=OneWay}">
+                    <lottie:LottieVisualSource UriSource="ms-appx:///Assets/305-loader-4.json" />
+                </muxc:AnimatedVisualPlayer>
+            </controls:AdaptiveGridView.Header>
             <controls:AdaptiveGridView.Footer>
-                <Grid Visibility="{x:Bind FooterVisibility, Mode=OneWay}">
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                        <ProgressRing Foreground="{ThemeResource SystemBaseHighColor}" IsActive="True" />
-                        <TextBlock
-                            Margin="12,0,0,0"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Foreground="{ThemeResource SystemBaseHighColor}"
-                            Text="LOADING..." />
-                    </StackPanel>
-                </Grid>
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Visibility="{x:Bind FooterVisibility, Mode=OneWay}">
+                    <ProgressRing Foreground="{ThemeResource SystemBaseHighColor}" IsActive="True" />
+                    <TextBlock
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="{ThemeResource SystemBaseHighColor}"
+                        Text="LOADING..." />
+                </StackPanel>
             </controls:AdaptiveGridView.Footer>
             <controls:AdaptiveGridView.ItemContainerTransitions>
                 <TransitionCollection>

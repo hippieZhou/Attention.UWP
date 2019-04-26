@@ -24,6 +24,13 @@ namespace HENG.ViewModels
             set { Set(ref _photos, value); }
         }
 
+        private Visibility _headerVisibility = Visibility.Visible;
+        public Visibility HeaderVisibility
+        {
+            get { return _headerVisibility; }
+            set { Set(ref _headerVisibility, value); }
+        }
+
         private Visibility _footerVisibility = Visibility.Collapsed;
         public Visibility FooterVisibility
         {
@@ -52,8 +59,12 @@ namespace HENG.ViewModels
                                     () =>
                                     {
                                         FooterVisibility = Visibility.Collapsed;
+                                        HeaderVisibility = Visibility.Collapsed;
                                     },
-                                    ex => { });
+                                    ex => 
+                                    {
+                                        HeaderVisibility = Visibility.Visible;
+                                    });
                             });
                         }
                     });
@@ -72,6 +83,7 @@ namespace HENG.ViewModels
                     _refreshCommand = new RelayCommand(async () =>
                     {
                         await Photos.RefreshAsync();
+                        HeaderVisibility = Visibility.Visible;
                     });
                 }
                 return _refreshCommand;

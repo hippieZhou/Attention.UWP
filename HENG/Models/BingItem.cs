@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HENG.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ namespace HENG.Models
     {
         [JsonProperty(PropertyName = "caption")]
         public string Caption { get; set; }
-        [JsonProperty(PropertyName = "datetime")]
-        public string Datetime { get; set; }
+        [JsonProperty(PropertyName = "datetime"), JsonConverter(typeof(BingDateTimeConverter))]
+        public DateTime Datetime { get; set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
         [JsonProperty(PropertyName = "hsh")]

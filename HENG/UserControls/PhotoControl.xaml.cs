@@ -27,6 +27,15 @@ namespace HENG.UserControls
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register("Photos", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
 
+        public Visibility HeaderVisibility
+        {
+            get { return (Visibility)GetValue(HeaderVisibilityProperty); }
+            set { SetValue(HeaderVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HeaderVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderVisibilityProperty =
+            DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Collapsed));
 
         public Visibility FooterVisibility
         {
@@ -36,9 +45,7 @@ namespace HENG.UserControls
 
         // Using a DependencyProperty as the backing store for FooterVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FooterVisibilityProperty =
-            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(null));
-
-
+            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Visible));
 
         public ICommand RefreshCommand
         {
