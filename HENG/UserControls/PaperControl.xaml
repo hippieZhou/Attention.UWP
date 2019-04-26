@@ -10,6 +10,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:models="using:HENG.Models"
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch"
@@ -36,11 +37,13 @@
                     VerticalAlignment="Stretch"
                     Opacity="0">
                     <Grid.Background>
-                        <AcrylicBrush
+                        <media:BackdropBlurBrush Amount="2" />
+                        <!--<AcrylicBrush
                             BackgroundSource="Backdrop"
                             FallbackColor="{ThemeResource SystemChromeAltHighColor}"
                             Opacity="0.6"
-                            TintColor="{ThemeResource SystemChromeAltHighColor}" />
+                            TintColor="{ThemeResource SystemChromeAltHighColor}" />-->
+
                     </Grid.Background>
                     <i:Interaction.Behaviors>
                         <behaviors:Fade

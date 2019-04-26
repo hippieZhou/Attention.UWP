@@ -10,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using System;
+using GalaSoft.MvvmLight.Threading;
 
 namespace HENG.ViewModels
 {
@@ -36,19 +38,22 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
                         if (Photos == null)
                         {
-                            Photos = new IncrementalLoadingCollection<SkyItemSource, PaperItem>(20,
-                           () =>
-                           {
-                               FooterVisibility = Visibility.Visible;
-                           },
-                           () =>
-                           {
-                               FooterVisibility = Visibility.Collapsed;
-                           }, ex => { });
+                           await DispatcherHelper.RunAsync(() => 
+                            {
+                                Photos = new IncrementalLoadingCollection<SkyItemSource, PaperItem>(20,
+                                    () =>
+                                     {
+                                        FooterVisibility = Visibility.Visible;
+                                     },
+                                     () =>
+                                     {
+                                        FooterVisibility = Visibility.Collapsed;
+                                     }, ex => { });
+                            });
                         }
                     });
                 }
