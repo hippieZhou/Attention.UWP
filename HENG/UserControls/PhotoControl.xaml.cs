@@ -11,9 +11,9 @@ using Windows.Foundation;
 
 namespace HENG.UserControls
 {
-    public sealed partial class PaperControl : UserControl
+    public sealed partial class PhotoControl : UserControl
     {
-        public PaperControl()
+        public PhotoControl()
         {
             this.InitializeComponent();
         }
@@ -25,7 +25,7 @@ namespace HENG.UserControls
         }
         // Using a DependencyProperty as the backing store for Photos.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PhotosProperty =
-            DependencyProperty.Register("Photos", typeof(object), typeof(PaperControl), new PropertyMetadata(null));
+            DependencyProperty.Register("Photos", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
 
 
         public Visibility FooterVisibility
@@ -36,7 +36,7 @@ namespace HENG.UserControls
 
         // Using a DependencyProperty as the backing store for FooterVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FooterVisibilityProperty =
-            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PaperControl), new PropertyMetadata(null));
+            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(null));
 
 
 
@@ -48,7 +48,7 @@ namespace HENG.UserControls
 
         // Using a DependencyProperty as the backing store for RefreshCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RefreshCommandProperty =
-            DependencyProperty.Register("RefreshCommand", typeof(ICommand), typeof(PaperControl), new PropertyMetadata(null));
+            DependencyProperty.Register("RefreshCommand", typeof(ICommand), typeof(PhotoControl), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {

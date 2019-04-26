@@ -10,6 +10,7 @@ namespace HENG.Services
     /// </summary>
     public interface IDataService
     {
+        Task<IEnumerable<BingItem>> GetBingsAsync(int page = 1, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken));
         Task<IEnumerable<PaperItem>> GetNewestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken));
         Task<IEnumerable<PaperItem>> GetHottestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken));
         Task<IEnumerable<PaperItem>> GetGirlsAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken));

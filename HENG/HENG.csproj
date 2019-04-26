@@ -94,17 +94,19 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Helpers\ExDataTemplateSelector.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\Singleton.cs" />
+    <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\PaperItem.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
-    <Compile Include="UserControls\PaperControl.xaml.cs">
-      <DependentUpon>PaperControl.xaml</DependentUpon>
+    <Compile Include="UserControls\PhotoControl.xaml.cs">
+      <DependentUpon>PhotoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewestViewModel.cs" />
     <Compile Include="Views\ShellPage.xaml.cs">
@@ -165,7 +167,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PaperControl.xaml">
+    <Page Include="UserControls\PhotoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +220,9 @@
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Lottie">
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">

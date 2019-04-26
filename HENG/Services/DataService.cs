@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HENG.Models;
-using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
 
 namespace HENG.Services
@@ -22,7 +21,15 @@ namespace HENG.Services
         //    ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
         //}
 
-        public async Task<IEnumerable<PaperItem>> GetNewestAsync( int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var url = $"https://hippiezhou.fun/api/bings?page={page}&per_page={per_page}";
+            string json = await GetJsonAsync(url, cancellationToken, true);
+            var data = JsonConvert.DeserializeObject<BingSource>(json);
+            return data?.Bings;
+        }
+
+        public async Task<IEnumerable<PaperItem>> GetNewestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c68ffb9463b7fbfe72b0db0?page={page}&per_page={per_page}";
             string json = await GetJsonAsync(url, cancellationToken);
@@ -54,25 +61,33 @@ namespace HENG.Services
             return items;
         }
 
-        private async Task<string> GetJsonAsync(string url, CancellationToken token)
+        private async Task<string> GetJsonAsync(string url, CancellationToken token, bool bing = false)
         {
-            HttpClientHandler header = new HttpClientHandler
-            {
-                AllowAutoRedirect = false
-            };
-            using (var client = new HttpClient(header))
+            using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
                 try
                 {
                     string json = string.Empty;
 
                     if (!token.IsCancellationRequested)
                     {
-                        var response = await client.GetAsync(new Uri(url), token).ConfigureAwait(false);
+                        HttpResponseMessage response = null;
+                        if (bing)
+                        {
+                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("dev", "hippiezhou.fun");
+                            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url)
+                            {
+                                Content = new StringContent("hippiezhou.fun", Encoding.UTF8, "application/json")
+                            };
+                            response = await client.SendAsync(request, token).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            response = await client.GetAsync(new Uri(url), token).ConfigureAwait(false);
+                        }
                         response.EnsureSuccessStatusCode();
                         json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     }
