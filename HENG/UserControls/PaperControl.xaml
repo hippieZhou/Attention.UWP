@@ -68,6 +68,7 @@
                         Margin="8,0"
                         VerticalAlignment="Center"
                         FontWeight="Black"
+                        Foreground="{ThemeResource ButtonForegroundPressed}"
                         RequestedTheme="Dark"
                         Text="{x:Bind Created_at, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}">
                         <i:Interaction.Behaviors>
@@ -78,7 +79,7 @@
                                 EasingMode="EaseOut"
                                 EasingType="Linear"
                                 Value="0"
-                                Duration="400" />
+                                Duration="300" />
                             <behaviors:Fade
                                 x:Name="DateTimeDowm"
                                 AutomaticallyStart="True"
@@ -86,7 +87,7 @@
                                 EasingMode="EaseIn"
                                 EasingType="Linear"
                                 Value="1"
-                                Duration="400" />
+                                Duration="300" />
                         </i:Interaction.Behaviors>
                     </TextBlock>
                     <Button
@@ -139,6 +140,7 @@
             x:Name="AdaptiveGridViewControl"
             Padding="12"
             animations:ReorderGridAnimation.Duration="300"
+            Background="Transparent"
             DataFetchSize="1"
             DesiredWidth="300"
             IncrementalLoadingTrigger="Edge"
@@ -175,6 +177,6 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
-            Style="{StaticResource RefreshButtonRevealStyle}" />
+            Style="{StaticResource BackToTopButtonRevealStyle}" />
     </Grid>
 </UserControl>

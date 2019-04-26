@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
-using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;

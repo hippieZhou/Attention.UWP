@@ -92,10 +92,10 @@
         </Setter>
     </Style>
 
-    <Style x:Key="RefreshButtonRevealStyle" TargetType="Button">
+    <Style x:Key="BackToTopButtonRevealStyle" TargetType="Button">
         <Setter Property="Height" Value="44" />
         <Setter Property="Width" Value="44" />
-        <Setter Property="Content" Value="&#xE117;" />
+        <Setter Property="Content" Value="&#xE752;" />
         <Setter Property="Background" Value="{ThemeResource NavigationViewExpandedPaneBackground}" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
         <Setter Property="BorderBrush" Value="Transparent" />

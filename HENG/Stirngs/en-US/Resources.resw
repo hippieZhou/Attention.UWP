@@ -138,6 +138,9 @@
   <data name="Shell_Newest.Content" xml:space="preserve">
     <value>Newest</value>
   </data>
+  <data name="Shell_Refresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="Shell_Skyland.Content" xml:space="preserve">
     <value>Skyland</value>
   </data>

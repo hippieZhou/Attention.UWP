@@ -60,7 +60,19 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
-            <Frame x:Name="ContentFrame" IsTabStop="True" />
+
+            <muxc:NavigationView.PaneFooter>
+                <muxc:NavigationViewList>
+                    <muxc:NavigationViewItem
+                        x:Uid="Shell_Refresh"
+                        Icon="Refresh"
+                        IsEnabled="{x:Bind ViewModel.RefreshIsEnabled, Mode=OneWay}" />
+                </muxc:NavigationViewList>
+            </muxc:NavigationView.PaneFooter>
+            <Frame
+                x:Name="ContentFrame"
+                Background="{StaticResource PrimaryPageBackground}"
+                IsTabStop="True" />
         </muxc:NavigationView>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -70,16 +82,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavView.PaneDisplayMode" Value="Top" />
-                        <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="NavView.PaneDisplayMode" Value="Left" />
-                        <Setter Target="NavView.IsPaneOpen" Value="False" />
                         <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>

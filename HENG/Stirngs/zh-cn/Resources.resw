@@ -138,6 +138,9 @@
   <data name="Shell_Newest.Content" xml:space="preserve">
     <value>最新</value>
   </data>
+  <data name="Shell_Refresh.Content" xml:space="preserve">
+    <value>刷新</value>
+  </data>
   <data name="Shell_Skyland.Content" xml:space="preserve">
     <value>星空</value>
   </data>

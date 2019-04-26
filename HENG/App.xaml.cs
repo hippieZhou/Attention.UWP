@@ -10,6 +10,8 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using HENG.Views;
+using HENG.Services;
+using System.Threading.Tasks;
 
 namespace HENG
 {
@@ -21,7 +23,7 @@ namespace HENG
             Suspending += OnSuspending;
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             void CustomTitleBar()
             {
@@ -30,9 +32,10 @@ namespace HENG
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
                 titleBar.ButtonBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                titleBar.ButtonForegroundColor = Colors.Black;
             }
             CustomTitleBar();
+
+            await InitializeAsync();
 
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -56,10 +59,22 @@ namespace HENG
                     rootFrame.Navigate(typeof(ShellPage), e.Arguments);
                 }
                 Window.Current.Activate();
+
+                await StartupAsync();
             }
             DispatcherHelper.Initialize();
 
             Messenger.Default.Register<NotificationMessageAction<string>>(this, HandleNotificationMessage);
+        }
+
+        private async Task InitializeAsync()
+        {
+            await ThemeSelectorService.InitializeAsync();
+        }
+
+        private async Task StartupAsync()
+        {
+            await ThemeSelectorService.SetRequestedThemeAsync();
         }
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)

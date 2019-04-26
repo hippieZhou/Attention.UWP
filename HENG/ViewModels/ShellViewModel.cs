@@ -45,6 +45,13 @@ namespace HENG.ViewModels
             set { Set(ref _selected, value); }
         }
 
+        private bool _refreshIsEnabled;
+        public bool RefreshIsEnabled
+        {
+            get { return _refreshIsEnabled; }
+            set { Set(ref _refreshIsEnabled, value); }
+        }
+
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -65,7 +72,6 @@ namespace HENG.ViewModels
                 return _loadedCommand;
             }
         }
-
 
         private ICommand _itemInvokedCommand;
         public ICommand ItemInvokedCommand
@@ -110,12 +116,13 @@ namespace HENG.ViewModels
             if (e.SourcePageType == typeof(SettingsView))
             {
                 Selected = _navView.SettingsItem;
+                RefreshIsEnabled = false;
             }
             else
             {
                 Selected = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
+                RefreshIsEnabled = true;
             }
-
 
             bool IsMenuItemForPageType(muxc.NavigationViewItem menuItem, Type sourcePageType)
             {
@@ -125,6 +132,7 @@ namespace HENG.ViewModels
                 return pageKey == navigaedPageKey;
             }
         }
+
         private void OnBackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
         {
             _navService.GoBack();
