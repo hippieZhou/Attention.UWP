@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using HENG.Models;
+using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
 
 namespace HENG.Services
@@ -14,6 +16,12 @@ namespace HENG.Services
     /// </summary>
     public class DataService : IDataService
     {
+        //static DataService()
+        //{
+        //    ImageCache.Instance.MaxMemoryCacheCount = 200;
+        //    ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
+        //}
+
         public async Task<IEnumerable<PaperItem>> GetNewestAsync( int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c68ffb9463b7fbfe72b0db0?page={page}&per_page={per_page}";
