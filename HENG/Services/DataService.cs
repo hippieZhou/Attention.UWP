@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -59,6 +60,26 @@ namespace HENG.Services
             string json = await GetJsonAsync(url, cancellationToken);
             var items = JsonConvert.DeserializeObject<IEnumerable<PaperItem>>(json);
             return items;
+        }
+
+        public async Task<bool> DownloadImageAsync(string coverUrl)
+        {
+            bool saved = false;
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    byte[] buffer = await client.GetByteArrayAsync(coverUrl); 
+                    //using (Stream stream = await coverpic_file.OpenStreamForWriteAsync())
+                    //    stream.Write(buffer, 0, buffer.Length); // Save
+                }
+            }
+            catch
+            {
+                saved = false;
+            }
+
+            return saved;
         }
 
         private async Task<string> GetJsonAsync(string url, CancellationToken token, bool bing = false)

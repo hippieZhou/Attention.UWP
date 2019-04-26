@@ -15,68 +15,8 @@ using System;
 
 namespace HENG.ViewModels
 {
-    public class GirlsViewModel : ViewModelBase
+    public class GirlsViewModel : PhotoViewModel<GirlItemSource, PaperItem>
     {
-        private IncrementalLoadingCollection<GirlItemSource, PaperItem> _photos;
-        public IncrementalLoadingCollection<GirlItemSource, PaperItem> Photos
-        {
-            get { return _photos; }
-            set { Set(ref _photos, value); }
-        }
-
-        private Visibility _footerVisibility = Visibility.Collapsed;
-        public Visibility FooterVisibility
-        {
-            get { return _footerVisibility; }
-            set { Set(ref _footerVisibility, value); }
-        }
-
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand(async () =>
-                    {
-                        if (Photos == null)
-                        {
-                            await DispatcherHelper.RunAsync(() =>
-                            {
-                                Photos = new IncrementalLoadingCollection<GirlItemSource, PaperItem>(20,
-                                    () =>
-                                    {
-                                        FooterVisibility = Visibility.Visible;
-                                    },
-                                    () =>
-                                    {
-                                        FooterVisibility = Visibility.Collapsed;
-                                    },
-                                    ex => { });
-                            });
-                        }
-                    });
-                }
-                return _loadedCommand;
-            }
-        }
-
-        private ICommand _refreshCommand;
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                if (_refreshCommand == null)
-                {
-                    _refreshCommand = new RelayCommand(async () =>
-                    {
-                        await Photos.RefreshAsync();
-                    });
-                }
-                return _refreshCommand;
-            }
-        }
     }
 
     public class GirlItemSource : IIncrementalSource<PaperItem>

@@ -104,11 +104,13 @@
     <Compile Include="Models\PaperItem.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="UserControls\PhotoControl.xaml.cs">
       <DependentUpon>PhotoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewestViewModel.cs" />
+    <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="Views\ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
@@ -221,6 +223,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>5.1.1</Version>

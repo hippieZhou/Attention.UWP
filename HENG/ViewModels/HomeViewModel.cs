@@ -15,80 +15,9 @@ using System;
 
 namespace HENG.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : PhotoViewModel<BingItemSource, BingItem>
     {
-        private IncrementalLoadingCollection<BingItemSource, BingItem> _photos;
-        public IncrementalLoadingCollection<BingItemSource, BingItem> Photos
-        {
-            get { return _photos; }
-            set { Set(ref _photos, value); }
-        }
 
-        private Visibility _headerVisibility = Visibility.Visible;
-        public Visibility HeaderVisibility
-        {
-            get { return _headerVisibility; }
-            set { Set(ref _headerVisibility, value); }
-        }
-
-        private Visibility _footerVisibility = Visibility.Collapsed;
-        public Visibility FooterVisibility
-        {
-            get { return _footerVisibility; }
-            set { Set(ref _footerVisibility, value); }
-        }
-
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand(async () =>
-                    {
-                        if (Photos == null)
-                        {
-                            await DispatcherHelper.RunAsync(() =>
-                            {
-                                Photos = new IncrementalLoadingCollection<BingItemSource, BingItem>(20,
-                                    () =>
-                                    {
-                                        FooterVisibility = Visibility.Visible;
-                                    },
-                                    () =>
-                                    {
-                                        FooterVisibility = Visibility.Collapsed;
-                                        HeaderVisibility = Visibility.Collapsed;
-                                    },
-                                    ex => 
-                                    {
-                                        HeaderVisibility = Visibility.Visible;
-                                    });
-                            });
-                        }
-                    });
-                }
-                return _loadedCommand;
-            }
-        }
-
-        private ICommand _refreshCommand;
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                if (_refreshCommand == null)
-                {
-                    _refreshCommand = new RelayCommand(async () =>
-                    {
-                        await Photos.RefreshAsync();
-                        HeaderVisibility = Visibility.Visible;
-                    });
-                }
-                return _refreshCommand;
-            }
-        }
     }
 
     public class BingItemSource : IIncrementalSource<BingItem>
