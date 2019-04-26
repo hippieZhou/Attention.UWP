@@ -123,6 +123,24 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>HENG</value>
   </data>
+  <data name="Settings_Header.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>Personalization</value>
+  </data>
+  <data name="Settings_Theme.Text" xml:space="preserve">
+    <value>Choose Theme</value>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>Windows Default</value>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="Shell_Grils.Content" xml:space="preserve">
     <value>Girls</value>
   </data>

@@ -69,10 +69,13 @@
                         IsEnabled="{x:Bind ViewModel.RefreshIsEnabled, Mode=OneWay}" />
                 </muxc:NavigationViewList>
             </muxc:NavigationView.PaneFooter>
-            <Frame
-                x:Name="ContentFrame"
-                Background="{StaticResource PrimaryPageBackground}"
-                IsTabStop="True" />
+
+            <muxc:NavigationView.Content>
+                <Frame
+                    x:Name="ContentFrame"
+                    Background="{ThemeResource PrimaryPageBackground}"
+                    IsTabStop="True" />
+            </muxc:NavigationView.Content>
         </muxc:NavigationView>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

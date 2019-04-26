@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Views;
 using CommonServiceLocator;
 using HENG.Views;
-using HENG.Services;
 
 namespace HENG.ViewModels
 {
@@ -35,6 +34,7 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<HottestViewModel>();
             SimpleIoc.Default.Register<GirlsViewModel>();
             SimpleIoc.Default.Register<SkylandViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
@@ -44,6 +44,6 @@ namespace HENG.ViewModels
         public HottestViewModel Hottest => ServiceLocator.Current.GetInstance<HottestViewModel>();
         public GirlsViewModel Girls => ServiceLocator.Current.GetInstance<GirlsViewModel>();
         public SkylandViewModel Skyland => ServiceLocator.Current.GetInstance<SkylandViewModel>();
-        public SettingsViewModel Setting => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+        public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }
