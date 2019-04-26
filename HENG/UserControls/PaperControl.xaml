@@ -43,7 +43,6 @@
                             FallbackColor="{ThemeResource SystemChromeAltHighColor}"
                             Opacity="0.6"
                             TintColor="{ThemeResource SystemChromeAltHighColor}" />-->
-
                     </Grid.Background>
                     <i:Interaction.Behaviors>
                         <behaviors:Fade
@@ -70,7 +69,26 @@
                         VerticalAlignment="Center"
                         FontWeight="Black"
                         RequestedTheme="Dark"
-                        Text="{x:Bind Created_at, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}" />
+                        Text="{x:Bind Created_at, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:Fade
+                                x:Name="DateTimeUp"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                Value="0"
+                                Duration="400" />
+                            <behaviors:Fade
+                                x:Name="DateTimeDowm"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseIn"
+                                EasingType="Linear"
+                                Value="1"
+                                Duration="400" />
+                        </i:Interaction.Behaviors>
+                    </TextBlock>
                     <Button
                         HorizontalAlignment="Right"
                         Opacity="0"
@@ -104,10 +122,12 @@
                     <ic:EventTriggerBehavior EventName="PointerEntered">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeUp}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeDowm}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
