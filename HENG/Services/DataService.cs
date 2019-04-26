@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using HENG.Models;
 using Newtonsoft.Json;
+using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
 
 namespace HENG.Services
 {
@@ -62,23 +64,38 @@ namespace HENG.Services
             return items;
         }
 
-        public async Task<bool> DownloadImageAsync(string coverUrl)
+        public async Task<bool> DownloadImageAsync<T>(T model)
         {
-            bool saved = false;
-            try
+            string coverUrl = string.Empty;
+            if (model is BingItem bing)
             {
-                using (var client = new HttpClient())
-                {
-                    byte[] buffer = await client.GetByteArrayAsync(coverUrl); 
-                    //using (Stream stream = await coverpic_file.OpenStreamForWriteAsync())
-                    //    stream.Write(buffer, 0, buffer.Length); // Save
-                }
+                coverUrl = bing.Url;
             }
-            catch
+            else if (model is PaperItem paper)
             {
-                saved = false;
+                coverUrl = paper.Urls.Raw;
             }
 
+            bool saved = false;
+            if (!string.IsNullOrWhiteSpace(coverUrl))
+            {
+                try
+                {
+                    Uri source = new Uri(coverUrl);
+                    StorageFile destinationFile = await KnownFolders.PicturesLibrary.CreateFileAsync($"aaa.jpg", CreationCollisionOption.GenerateUniqueName);
+                    BackgroundDownloader downloader = new BackgroundDownloader();
+                    DownloadOperation download = downloader.CreateDownload(source, destinationFile);
+                    download.RangesDownloaded += (sender, e) =>
+                     {
+
+                     };
+                    await download.StartAsync();
+                }
+                catch
+                {
+                    saved = false;
+                }
+            }
             return saved;
         }
 

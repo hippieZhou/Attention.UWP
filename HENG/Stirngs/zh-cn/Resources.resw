@@ -141,6 +141,9 @@
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>亮</value>
   </data>
+  <data name="Shell_Download.Content" xml:space="preserve">
+    <value>下载</value>
+  </data>
   <data name="Shell_Grils.Content" xml:space="preserve">
     <value>女孩</value>
   </data>

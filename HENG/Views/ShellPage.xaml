@@ -61,6 +61,24 @@
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
 
+            <muxc:NavigationView.PaneFooter>
+                <muxc:NavigationViewList>
+                    <muxc:NavigationViewItem
+                        x:Name="Shell_Download"
+                        x:Uid="Shell_Download"
+                        helpers:NavHelper.NavigateTo="HENG.ViewModels.DownloadViewModel">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="SelectsOnInvoked">
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <muxc:NavigationViewItem.Icon>
+                            <SymbolIcon Symbol="Download" />
+                        </muxc:NavigationViewItem.Icon>
+                    </muxc:NavigationViewItem>
+                </muxc:NavigationViewList>
+            </muxc:NavigationView.PaneFooter>
+
             <muxc:NavigationView.Content>
                 <Frame
                     x:Name="ContentFrame"
@@ -78,6 +96,7 @@
                         <Setter Target="NavView.PaneDisplayMode" Value="Top" />
                         <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
                         <Setter Target="ContentFrame.Margin" Value="0" />
+                        <Setter Target="Shell_Download.Content" Value="" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>

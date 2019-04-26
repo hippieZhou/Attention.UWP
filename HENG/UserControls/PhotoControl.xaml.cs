@@ -27,16 +27,6 @@ namespace HENG.UserControls
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register("Photos", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
 
-        public Visibility HeaderVisibility
-        {
-            get { return (Visibility)GetValue(HeaderVisibilityProperty); }
-            set { SetValue(HeaderVisibilityProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for HeaderVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HeaderVisibilityProperty =
-            DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Collapsed));
-
         public Visibility FooterVisibility
         {
             get { return (Visibility)GetValue(FooterVisibilityProperty); }
@@ -56,6 +46,16 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for RefreshCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RefreshCommandProperty =
             DependencyProperty.Register("RefreshCommand", typeof(ICommand), typeof(PhotoControl), new PropertyMetadata(null));
+
+        public ICommand DownloadCommand
+        {
+            get { return (ICommand)GetValue(DownloadCommandProperty); }
+            set { SetValue(DownloadCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DownloadCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DownloadCommandProperty =
+            DependencyProperty.Register("DownloadCommand", typeof(ICommand), typeof(PhotoControl), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
@@ -109,6 +109,14 @@ namespace HENG.UserControls
             {
                 Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
             };
+        }
+
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                DownloadCommand?.Execute(btn.DataContext);
+            }
         }
     }
 }

@@ -6,6 +6,9 @@ using Microsoft.Toolkit.Uwp;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
+using HENG.Helpers;
+using HENG.Services;
+using HENG.Models;
 
 namespace HENG.ViewModels
 {
@@ -16,13 +19,6 @@ namespace HENG.ViewModels
         {
             get { return _photos; }
             set { Set(ref _photos, value); }
-        }
-
-        private Visibility _headerVisibility = Visibility.Visible;
-        public Visibility HeaderVisibility
-        {
-            get { return _headerVisibility; }
-            set { Set(ref _headerVisibility, value); }
         }
 
         private Visibility _footerVisibility = Visibility.Collapsed;
@@ -48,13 +44,11 @@ namespace HENG.ViewModels
                                 Photos = new IncrementalLoadingCollection<TSource, IType>(20,
                                     () =>
                                     {
-                                        HeaderVisibility = Visibility.Visible;
                                         FooterVisibility = Visibility.Visible;
                                     },
                                     () =>
                                     {
                                         FooterVisibility = Visibility.Collapsed;
-                                        HeaderVisibility = Visibility.Collapsed;
 
                                         if (Photos.Count > 0)
                                         {
@@ -83,10 +77,28 @@ namespace HENG.ViewModels
                     _refreshCommand = new RelayCommand(async () =>
                     {
                         await Photos.RefreshAsync();
-                        HeaderVisibility = Visibility.Visible;
                     });
                 }
                 return _refreshCommand;
+            }
+        }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<IType>(async model =>
+                    {
+                        if (typeof(IType) == model.GetType())
+                        {
+                            await Singleton<DataService>.Instance.DownloadImageAsync(model);
+                        }
+                    });
+                }
+                return _downloadCommand;
             }
         }
     }
