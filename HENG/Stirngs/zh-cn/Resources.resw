@@ -123,6 +123,9 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>恒</value>
   </data>
+  <data name="downloading" xml:space="preserve">
+    <value>后台下载中</value>
+  </data>
   <data name="Settings_Download.Text" xml:space="preserve">
     <value>下载</value>
   </data>

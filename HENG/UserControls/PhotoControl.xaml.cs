@@ -87,8 +87,8 @@ namespace HENG.UserControls
             {
                 imgVisual.CenterPoint = new Vector3((float)parent.ActualWidth / 2, (float)parent.ActualHeight / 2, 0f);
             }
-            imgVisual.StartAnimation("Scale.x", scaleAnimation);
-            imgVisual.StartAnimation("Scale.y", scaleAnimation);
+            imgVisual.StartAnimation("Scale.X", scaleAnimation);
+            imgVisual.StartAnimation("Scale.Y", scaleAnimation);
         }
 
         private void Grid_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)

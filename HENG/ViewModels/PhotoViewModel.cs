@@ -9,6 +9,9 @@ using System;
 using HENG.Helpers;
 using HENG.Services;
 using HENG.Models;
+using System.Threading;
+using GalaSoft.MvvmLight.Messaging;
+using System.Diagnostics;
 
 namespace HENG.ViewModels
 {
@@ -103,7 +106,9 @@ namespace HENG.ViewModels
                     {
                         if (typeof(IType) == model.GetType())
                         {
-                            await Singleton<DataService>.Instance.DownloadImageAsync(model);
+                            var cts = new CancellationTokenSource();
+                            await Singleton<DataService>.Instance.DownloadImageAsync(model, cts);
+                            Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
                         }
                     });
                 }

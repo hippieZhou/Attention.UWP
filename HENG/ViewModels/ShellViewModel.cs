@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
 using HENG.Views;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
@@ -16,19 +20,36 @@ namespace HENG.ViewModels
     {
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
+        private Grid _notifGrid;
 
         public ShellViewModel(INavigationService navigationService)
         {
             _navService = (NavigationService)navigationService;
+
+            Messenger.Default.Register<NotificationMessageAction<string>>(this, HandleNotificationMessage);
         }
 
-        public void Initialize(Frame shellFrame, muxc.NavigationView navView)
+        private void HandleNotificationMessage(NotificationMessageAction<string> message)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
+            {
+                NotificationMessage = message.Notification;
+                _notifGrid.Visibility = Visibility.Visible;
+                message.Execute("操作成功");
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                _notifGrid.Visibility = Visibility.Collapsed;
+            });
+        }
+
+        public void Initialize(Frame shellFrame, muxc.NavigationView navView, Grid notifGrid)
         {
             _navService.CurrentFrame = shellFrame;
             _navService.CurrentFrame.Navigated += Frame_Navigated;
 
             _navView = navView;
             _navView.BackRequested += OnBackRequested;
+
+            _notifGrid = notifGrid;
         }
 
         private bool _isBackEnabled;
@@ -43,6 +64,13 @@ namespace HENG.ViewModels
         {
             get { return _selected; }
             set { Set(ref _selected, value); }
+        }
+
+        private string _notificationMessage;
+        public string NotificationMessage
+        {
+            get { return _notificationMessage; }
+            set { Set(ref _notificationMessage, value); }
         }
 
         private bool _refreshIsEnabled;

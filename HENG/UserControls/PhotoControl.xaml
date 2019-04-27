@@ -29,9 +29,11 @@
                 SizeChanged="Grid_SizeChanged">
                 <controls:ImageEx
                     x:Name="imageEx"
+                    CacheMode="BitmapCache"
                     IsCacheEnabled="True"
                     Source="{x:Bind Url}"
-                    Stretch="UniformToFill" />
+                    Stretch="UniformToFill"
+                    UseLayoutRounding="True" />
                 <Grid
                     x:Name="SmokeGrid"
                     HorizontalAlignment="Stretch"
@@ -138,9 +140,11 @@
                 SizeChanged="Grid_SizeChanged">
                 <controls:ImageEx
                     x:Name="imageEx"
+                    CacheMode="BitmapCache"
                     IsCacheEnabled="True"
                     Source="{x:Bind Urls.Thumb}"
-                    Stretch="UniformToFill" />
+                    Stretch="UniformToFill"
+                    UseLayoutRounding="True" />
                 <Grid
                     x:Name="SmokeGrid"
                     HorizontalAlignment="Stretch"
@@ -261,8 +265,16 @@
             ItemTemplateSelector="{StaticResource ExDataTemplateSelector}"
             ItemsSource="{x:Bind Photos, Mode=OneWay}"
             OneRowModeEnabled="False"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
+            <controls:AdaptiveGridView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <AddDeleteThemeTransition />
+                    <EntranceThemeTransition />
+                </TransitionCollection>
+            </controls:AdaptiveGridView.ItemContainerTransitions>
             <controls:AdaptiveGridView.Footer>
                 <Grid>
                     <StackPanel
@@ -289,12 +301,7 @@
                     </StackPanel>
                 </Grid>
             </controls:AdaptiveGridView.Footer>
-            <controls:AdaptiveGridView.ItemContainerTransitions>
-                <TransitionCollection>
-                    <AddDeleteThemeTransition />
-                    <EntranceThemeTransition />
-                </TransitionCollection>
-            </controls:AdaptiveGridView.ItemContainerTransitions>
+
         </controls:AdaptiveGridView>
         <Button
             Margin="32"
@@ -311,7 +318,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Margin" Value="0" />
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,0,0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,-4,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -319,7 +326,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,0,0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,-4,0" />
                         <Setter Target="RootGrid.Margin" Value="0,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>

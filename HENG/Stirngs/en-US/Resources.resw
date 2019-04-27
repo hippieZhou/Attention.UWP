@@ -123,6 +123,9 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>HENG</value>
   </data>
+  <data name="downloading" xml:space="preserve">
+    <value>In the background download</value>
+  </data>
   <data name="Settings_Download.Text" xml:space="preserve">
     <value>Download</value>
   </data>

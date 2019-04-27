@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HENG.Helpers;
 using HENG.Models;
 using Newtonsoft.Json;
-using Windows.Networking.BackgroundTransfer;
-using Windows.Storage;
 
 namespace HENG.Services
 {
     /// <summary>
     /// https://github.com/shengqiangzhang/examples-of-web-crawlers
     /// </summary>
-    public class DataService : IDataService
+    public partial class DataService : IDataService
     {
         //static DataService()
         //{
@@ -64,41 +62,6 @@ namespace HENG.Services
             return items;
         }
 
-        public async Task<bool> DownloadImageAsync<T>(T model)
-        {
-            string coverUrl = string.Empty;
-            if (model is BingItem bing)
-            {
-                coverUrl = bing.Url;
-            }
-            else if (model is PaperItem paper)
-            {
-                coverUrl = paper.Urls.Raw;
-            }
-
-            bool saved = false;
-            if (!string.IsNullOrWhiteSpace(coverUrl))
-            {
-                try
-                {
-                    Uri source = new Uri(coverUrl);
-                    StorageFile destinationFile = await KnownFolders.PicturesLibrary.CreateFileAsync($"aaa.jpg", CreationCollisionOption.GenerateUniqueName);
-                    BackgroundDownloader downloader = new BackgroundDownloader();
-                    DownloadOperation download = downloader.CreateDownload(source, destinationFile);
-                    download.RangesDownloaded += (sender, e) =>
-                     {
-
-                     };
-                    await download.StartAsync();
-                }
-                catch
-                {
-                    saved = false;
-                }
-            }
-            return saved;
-        }
-
         private async Task<string> GetJsonAsync(string url, CancellationToken token, bool bing = false)
         {
             using (var client = new HttpClient())
@@ -129,6 +92,24 @@ namespace HENG.Services
                 }
                 return json;
             }
+        }
+    }
+
+    public partial class DataService : IDataService
+    {
+        public async Task<DownloadStartResult> DownloadImageAsync<T>(T model, CancellationTokenSource cts)
+        {
+            string strUri = string.Empty;
+            if (model is BingItem bing)
+            {
+                strUri = bing.Url;
+            }
+            else if (model is PaperItem paper)
+            {
+                strUri = paper.Urls.Full;
+            }
+            DownloadStartResult result = await Singleton<BackgroundDownloadHelper>.Instance.Download(new Uri(strUri), cts, ex => { });
+            return result;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HENG.Views
         public ShellPage()
         {
             InitializeComponent();
-            ViewModel.Initialize(ContentFrame, NavView);
+            ViewModel.Initialize(ContentFrame, NavView, NotifGrid);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

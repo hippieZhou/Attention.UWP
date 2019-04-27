@@ -63,8 +63,6 @@ namespace HENG
                 await StartupAsync();
             }
             DispatcherHelper.Initialize();
-
-            Messenger.Default.Register<NotificationMessageAction<string>>(this, HandleNotificationMessage);
         }
 
         private async Task InitializeAsync()
@@ -75,11 +73,6 @@ namespace HENG
         private async Task StartupAsync()
         {
             await ThemeSelectorService.SetRequestedThemeAsync();
-        }
-
-        private void HandleNotificationMessage(NotificationMessageAction<string> message)
-        {
-            message.Execute("Success (from App.xaml.cs)!");
         }
 
         /// <summary>
