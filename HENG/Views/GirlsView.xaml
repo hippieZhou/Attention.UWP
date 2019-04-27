@@ -19,7 +19,8 @@
     <Grid>
         <ucs:PhotoControl
             DownloadCommand="{x:Bind ViewModel.DownloadCommand}"
-            FooterVisibility="{x:Bind ViewModel.FooterVisibility, Mode=OneWay}"
+            ErrorVisibility="{x:Bind ViewModel.ErrorVisibility, Mode=OneWay}"
+            LoadingVisibility="{x:Bind ViewModel.LoadingVisibility, Mode=OneWay}"
             Photos="{x:Bind ViewModel.Photos, Mode=OneWay}"
             RefreshCommand="{x:Bind ViewModel.RefreshCommand}" />
     </Grid>

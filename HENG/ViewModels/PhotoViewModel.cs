@@ -21,12 +21,20 @@ namespace HENG.ViewModels
             set { Set(ref _photos, value); }
         }
 
-        private Visibility _footerVisibility = Visibility.Collapsed;
-        public Visibility FooterVisibility
+        private Visibility _loadingVisibility = Visibility.Collapsed;
+        public Visibility LoadingVisibility
         {
-            get { return _footerVisibility; }
-            set { Set(ref _footerVisibility, value); }
+            get { return _loadingVisibility; }
+            set { Set(ref _loadingVisibility, value); }
         }
+
+        private Visibility _errorVisibility = Visibility.Collapsed;
+        public Visibility ErrorVisibility
+        {
+            get { return _errorVisibility; }
+            set { Set(ref _errorVisibility, value); }
+        }
+
 
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
@@ -44,11 +52,12 @@ namespace HENG.ViewModels
                                 Photos = new IncrementalLoadingCollection<TSource, IType>(20,
                                     () =>
                                     {
-                                        FooterVisibility = Visibility.Visible;
+                                        LoadingVisibility = Visibility.Visible;
+                                        ErrorVisibility = Visibility.Collapsed;
                                     },
                                     () =>
                                     {
-                                        FooterVisibility = Visibility.Collapsed;
+                                        LoadingVisibility = Visibility.Collapsed;
 
                                         if (Photos.Count > 0)
                                         {
@@ -57,7 +66,7 @@ namespace HENG.ViewModels
                                     },
                                     ex =>
                                     {
-                                        FooterVisibility = Visibility.Visible;
+                                        ErrorVisibility = Visibility.Visible;
                                     });
                             });
                         }

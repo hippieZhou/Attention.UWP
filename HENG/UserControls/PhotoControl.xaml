@@ -246,7 +246,7 @@
             PaperTemplate="{StaticResource PhotosTemplate}" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
             Padding="12"
@@ -264,8 +264,11 @@
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
             <controls:AdaptiveGridView.Footer>
-                <Grid Visibility="{x:Bind FooterVisibility, Mode=OneWay}">
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Grid>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind LoadingVisibility, Mode=OneWay}">
                         <ProgressRing Foreground="{ThemeResource SystemBaseHighColor}" IsActive="True" />
                         <TextBlock
                             Margin="12,0,0,0"
@@ -273,6 +276,16 @@
                             FontWeight="Bold"
                             Foreground="{ThemeResource SystemBaseHighColor}"
                             Text="LOADING..." />
+                    </StackPanel>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind ErrorVisibility, Mode=OneWay}">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource SystemBaseHighColor}"
+                            Text="THERE HAVE SOMETHING WRONG !" />
                     </StackPanel>
                 </Grid>
             </controls:AdaptiveGridView.Footer>
@@ -284,7 +297,7 @@
             </controls:AdaptiveGridView.ItemContainerTransitions>
         </controls:AdaptiveGridView>
         <Button
-            Margin="48"
+            Margin="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
@@ -294,10 +307,11 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0" />
+                        <Setter Target="RootGrid.Margin" Value="0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,0,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -305,7 +319,8 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,0,0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,0,0" />
+                        <Setter Target="RootGrid.Margin" Value="0,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

@@ -5,16 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:HENG.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.Background>
+        <!--<Grid.Background>
             <AcrylicBrush
                 BackgroundSource="Backdrop"
                 FallbackColor="{ThemeResource SystemChromeAltHighColor}"
                 Opacity="0.6"
                 TintColor="{ThemeResource SystemChromeAltHighColor}" />
-        </Grid.Background>
+        </Grid.Background>-->
     </Grid>
 </Page>

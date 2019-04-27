@@ -27,15 +27,26 @@ namespace HENG.UserControls
         public static readonly DependencyProperty PhotosProperty =
             DependencyProperty.Register("Photos", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
 
-        public Visibility FooterVisibility
+        public Visibility LoadingVisibility
         {
-            get { return (Visibility)GetValue(FooterVisibilityProperty); }
-            set { SetValue(FooterVisibilityProperty, value); }
+            get { return (Visibility)GetValue(LoadingVisibilityProperty); }
+            set { SetValue(LoadingVisibilityProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for FooterVisibility.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FooterVisibilityProperty =
-            DependencyProperty.Register("FooterVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Visible));
+        // Using a DependencyProperty as the backing store for LoadingVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LoadingVisibilityProperty =
+            DependencyProperty.Register("LoadingVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility ErrorVisibility
+        {
+            get { return (Visibility)GetValue(ErrorVisibilityProperty); }
+            set { SetValue(ErrorVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ErrorVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ErrorVisibilityProperty =
+            DependencyProperty.Register("ErrorVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Collapsed));
+
 
         public ICommand RefreshCommand
         {

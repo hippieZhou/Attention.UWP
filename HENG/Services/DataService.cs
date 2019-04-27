@@ -106,39 +106,28 @@ namespace HENG.Services
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                try
-                {
-                    string json = string.Empty;
+                string json = string.Empty;
 
-                    if (!token.IsCancellationRequested)
+                if (!token.IsCancellationRequested)
+                {
+                    HttpResponseMessage response = null;
+                    if (bing)
                     {
-                        HttpResponseMessage response = null;
-                        if (bing)
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("dev", "hippiezhou.fun");
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url)
                         {
-                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("dev", "hippiezhou.fun");
-                            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url)
-                            {
-                                Content = new StringContent("hippiezhou.fun", Encoding.UTF8, "application/json")
-                            };
-                            response = await client.SendAsync(request, token).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            response = await client.GetAsync(new Uri(url), token).ConfigureAwait(false);
-                        }
-                        response.EnsureSuccessStatusCode();
-                        json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            Content = new StringContent("hippiezhou.fun", Encoding.UTF8, "application/json")
+                        };
+                        response = await client.SendAsync(request, token).ConfigureAwait(false);
                     }
-                    return json;
+                    else
+                    {
+                        response = await client.GetAsync(new Uri(url), token).ConfigureAwait(false);
+                    }
+                    response.EnsureSuccessStatusCode();
+                    json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }
-                catch (TaskCanceledException)
-                {
-                    return string.Empty;
-                }
-                catch (HttpRequestException)
-                {
-                    return string.Empty;
-                }
+                return json;
             }
         }
     }
