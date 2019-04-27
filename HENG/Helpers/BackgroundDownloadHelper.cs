@@ -24,7 +24,7 @@ namespace HENG.Helpers
 
     public class BackgroundDownloadHelper
     {
-        private BackgroundDownloader backgroundDownloader;
+        private readonly BackgroundDownloader backgroundDownloader;
 
         public BackgroundDownloadHelper()
         {
@@ -116,8 +116,9 @@ namespace HENG.Helpers
             downloadOperation.Priority = priority;
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
             {
-                double val = (double)obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
-                Trace.WriteLine(val);
+                int progress = (int)(100 * ((double)obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
+                var str = string.Format("{0} of {1} kb. downloaded - %{2} completed.", obj.Progress.BytesReceived / 1024, obj.Progress.TotalBytesToReceive / 1024, progress);
+                Trace.WriteLine(str);
             });
 
             var downloadTask = downloadOperation.StartAsync().AsTask(cts.Token, progressCallback);
