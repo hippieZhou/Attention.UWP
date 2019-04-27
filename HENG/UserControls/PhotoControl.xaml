@@ -253,7 +253,7 @@
     <Grid x:Name="RootGrid">
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
-            Padding="12"
+            Padding="16,12,12,12"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
             DataFetchSize="1"
@@ -265,8 +265,6 @@
             ItemTemplateSelector="{StaticResource ExDataTemplateSelector}"
             ItemsSource="{x:Bind Photos, Mode=OneWay}"
             OneRowModeEnabled="False"
-            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-            ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
             <controls:AdaptiveGridView.ItemContainerTransitions>
@@ -318,7 +316,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Margin" Value="0" />
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,-4,0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,0,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -326,7 +324,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,-4,0" />
+                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,0,0" />
                         <Setter Target="RootGrid.Margin" Value="0,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
