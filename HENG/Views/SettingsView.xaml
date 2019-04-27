@@ -12,6 +12,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
+
     </Page.Resources>
 
     <i:Interaction.Behaviors>
@@ -64,6 +65,22 @@
                 </StackPanel>
             </StackPanel>
 
+            <TextBlock x:Uid="Settings_Download" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <StackPanel Margin="0,12">
+                <TextBlock x:Uid="Settings_DownloadPath" />
+                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                    <TextBox
+                        Width="400"
+                        IsReadOnly="True"
+                        Style="{StaticResource DownloadPathTextBoxStyle}"
+                        Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}" />
+                    <Button
+                        x:Uid="Settings_DownloadOpen"
+                        Margin="8,0,0,0"
+                        Command="{x:Bind ViewModel.OpenFolderCommand}"
+                        Style="{ThemeResource ButtonRevealStyle}" />
+                </StackPanel>
+            </StackPanel>
 
             <StackPanel Margin="0,12">
                 <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />

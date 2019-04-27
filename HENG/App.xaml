@@ -51,6 +51,7 @@
                 <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
                 <ResourceDictionary Source="/Themes/NavigationViewItem.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
+                <ResourceDictionary Source="/Themes/TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

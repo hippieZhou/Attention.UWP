@@ -123,6 +123,15 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>恒</value>
   </data>
+  <data name="Settings_Download.Text" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Settings_DownloadOpen.Content" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Settings_DownloadPath.Text" xml:space="preserve">
+    <value>默认下载路径</value>
+  </data>
   <data name="Settings_Header.Text" xml:space="preserve">
     <value>设置</value>
   </data>

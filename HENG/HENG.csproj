@@ -103,6 +103,7 @@
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\PaperItem.cs" />
+    <Compile Include="Services\AppSettingService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\LiveTileService.cs" />
@@ -175,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\NavigationViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

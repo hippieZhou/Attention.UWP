@@ -4,7 +4,10 @@ using HENG.Helpers;
 using HENG.Services;
 using System.Windows.Input;
 using Windows.ApplicationModel;
+using Windows.Storage;
 using Windows.UI.Xaml;
+using System;
+using Windows.System;
 
 namespace HENG.ViewModels
 {
@@ -26,6 +29,13 @@ namespace HENG.ViewModels
             set { Set(ref _versionDescription, value); }
         }
 
+        private string _downloadPath;
+        public string DownloadPath
+        {
+            get { return _downloadPath; }
+            set { Set(ref _downloadPath, value); }
+        }
+
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -33,9 +43,10 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
                         VersionDescription = GetVersionDescription();
+                        DownloadPath = (await AppSettingService.GetDeaultDownPathAsync()).Path;
                     });
                 }
                 return _loadedCommand;
@@ -61,6 +72,22 @@ namespace HENG.ViewModels
             }
         }
 
+        private ICommand _openFolerCommand;
+        public ICommand OpenFolderCommand
+        {
+            get
+            {
+                if (_openFolerCommand == null)
+                {
+                    _openFolerCommand = new RelayCommand(async () =>
+                    {
+                        var sf = await AppSettingService.GetDeaultDownPathAsync();
+                        await Launcher.LaunchFolderAsync(sf);
+                    });
+                }
+                return _openFolerCommand;
+            }
+        }
 
         private string GetVersionDescription()
         {
