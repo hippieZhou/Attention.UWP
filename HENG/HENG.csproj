@@ -95,6 +95,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="ExtendSplash.xaml.cs">
+      <DependentUpon>ExtendSplash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\BackgroundDownloadHelper.cs" />
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
     <Compile Include="Helpers\Json.cs" />
@@ -155,6 +158,9 @@
     </AppxManifest>
     <PRIResource Include="Stirngs\zh-cn\Resources.resw" />
     <PRIResource Include="Stirngs\en-US\Resources.resw" />
+    <Content Include="Assets\305-loader-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Win10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ExtendSplash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\GridViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +254,9 @@
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Lottie">
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">

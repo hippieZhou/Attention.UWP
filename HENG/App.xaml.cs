@@ -43,9 +43,12 @@ namespace HENG
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+
+                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
                 {
-                    //TODO: Load state from previously suspended application
+                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                    ExtendSplash extendedSplash = new ExtendSplash(e.SplashScreen, loadState);
+                    rootFrame.Content = extendedSplash;
                 }
 
                 // Place the frame in the current Window
