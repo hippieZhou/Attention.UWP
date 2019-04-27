@@ -95,8 +95,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
-    <Compile Include="ExtendSplash.xaml.cs">
-      <DependentUpon>ExtendSplash.xaml</DependentUpon>
+    <Compile Include="ExtendedSplash.xaml.cs">
+      <DependentUpon>ExtendedSplash.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BackgroundDownloadHelper.cs" />
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
@@ -178,7 +178,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ExtendSplash.xaml">
+    <Page Include="ExtendedSplash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

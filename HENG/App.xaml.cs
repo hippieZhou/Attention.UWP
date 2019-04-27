@@ -34,37 +34,17 @@ namespace HENG
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             }
             CustomTitleBar();
-
             await InitializeAsync();
 
-            if (!(Window.Current.Content is Frame rootFrame))
+            if (e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-
-                if (e.PreviousExecutionState != ApplicationExecutionState.Running)
-                {
-                    bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    ExtendSplash extendedSplash = new ExtendSplash(e.SplashScreen, loadState);
-                    rootFrame.Content = extendedSplash;
-                }
-
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
+                bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
+                Window.Current.Content = extendedSplash;
             }
 
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
-                }
-                Window.Current.Activate();
-
-                await StartupAsync();
-            }
+            //await StartupAsync();
+            Window.Current.Activate();
             DispatcherHelper.Initialize();
         }
 
@@ -73,7 +53,7 @@ namespace HENG
             await ThemeSelectorService.InitializeAsync();
         }
 
-        private async Task StartupAsync()
+        public static async Task StartupAsync()
         {
             await ThemeSelectorService.SetRequestedThemeAsync();
         }

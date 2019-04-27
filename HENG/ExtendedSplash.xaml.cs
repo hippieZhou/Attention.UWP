@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Threading;
 using HENG.Views;
-using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
@@ -12,7 +11,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace HENG
 {
-    public sealed partial class ExtendSplash : Page
+    public sealed partial class ExtendedSplash : Page
     {
         internal Rect splashImageRect; 
         internal bool dismissed = false; 
@@ -21,7 +20,7 @@ namespace HENG
         private SplashScreen splash; 
         private double ScaleFactor; 
 
-        public ExtendSplash(SplashScreen splashscreen, bool loadState)
+        public ExtendedSplash(SplashScreen splashscreen, bool loadState)
         {
             this.InitializeComponent();
 
@@ -37,7 +36,6 @@ namespace HENG
             }
 
             rootFrame = new Frame();
-
             RestoreStateAsync(loadState);
         }
 
@@ -53,12 +51,13 @@ namespace HENG
         private async void DismissedEventHandler(SplashScreen sender, object args)
         {
             dismissed = true;
+            await Task.Delay(1000);
 
-            await Task.Delay(2000);
-            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
             {
                 rootFrame.Navigate(typeof(ShellPage));
                 Window.Current.Content = rootFrame;
+                await App.StartupAsync();
             });
         }
 

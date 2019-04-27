@@ -30,9 +30,6 @@ namespace HENG.Services
         public static async Task InitializeAsync()
         {
             Theme = await LoadThemeFromSettingsAsync();
-
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = Theme == ElementTheme.Default || Theme == ElementTheme.Light ? Colors.Black : Colors.White;
         }
 
         public static async Task SetThemeAsync(ElementTheme theme)
@@ -48,6 +45,9 @@ namespace HENG.Services
 
         public static async Task SetRequestedThemeAsync()
         {
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = Theme == ElementTheme.Default || Theme == ElementTheme.Light ? Colors.Black : Colors.White;
+
             foreach (var view in CoreApplication.Views)
             {
                 await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
