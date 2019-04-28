@@ -24,13 +24,13 @@ namespace HENG
         {
             this.InitializeComponent();
 
-            Window.Current.SizeChanged += new WindowSizeChangedEventHandler(ExtendedSplash_OnResize);
+            Window.Current.SizeChanged += ExtendedSplash_OnResize;
             ScaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             splash = splashscreen;
 
             if (splash != null)
             {
-                splash.Dismissed += new TypedEventHandler<SplashScreen, Object>(DismissedEventHandler);
+                splash.Dismissed += DismissedEventHandler;
                 splashImageRect = splash.ImageLocation;
                 PositionImage();
             }
@@ -79,8 +79,10 @@ namespace HENG
 
         private void RestoreStateAsync(bool loadState)
         {
-            //if (loadState)
-            //    await SuspensionManager.RestoreAsync();
+            if (loadState)
+            {
+                //await SuspensionManager.RestoreAsync();
+            }
         }
     }
 }
