@@ -8,7 +8,7 @@
     xmlns:helpers="using:HENG.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:HENG"
+    xmlns:local="using:HENG.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     extensions:StatusBarExtensions.IsVisible="False"
@@ -20,7 +20,7 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid Background="{StaticResource PrimaryPageBackground}">
+    <Grid>
         <muxc:NavigationView
             x:Name="NavView"
             CompactModeThresholdWidth="{StaticResource CompactModeThresholdWidth}"
@@ -84,6 +84,7 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
+
             <muxc:NavigationView.Content>
                 <Grid>
                     <Frame
@@ -138,6 +139,25 @@
                 </Grid>
             </muxc:NavigationView.Content>
         </muxc:NavigationView>
+
+        <local:DetailView
+            x:Name="DetailView"
+            BackCommand="{x:Bind ViewModel.BackCommand}"
+            Photo="{x:Bind ViewModel.Photo, Mode=OneWay}"
+            Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation
+                    From="1.0"
+                    To="0"
+                    Duration="0:0:1" />
+            </animations:Implicit.HideAnimations>
+        </local:DetailView>
 
 
         <!--<VisualStateManager.VisualStateGroups>

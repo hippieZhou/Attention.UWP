@@ -11,11 +11,13 @@ namespace HENG.Helpers
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            if (item.GetType() == typeof(BingItem))
+            var type = item?.GetType();
+
+            if (type == typeof(BingItem))
             {
                 return BingTemplate;
             }
-            else if (item.GetType() == typeof(PaperItem))
+            else if (type == typeof(PaperItem))
             {
                 return PaperTemplate;
             }

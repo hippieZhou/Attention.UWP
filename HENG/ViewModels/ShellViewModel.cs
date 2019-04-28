@@ -20,6 +20,7 @@ namespace HENG.ViewModels
     {
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
+        private Page _detailView;
         private Grid _notifGrid;
 
         public ShellViewModel(INavigationService navigationService)
@@ -27,6 +28,12 @@ namespace HENG.ViewModels
             _navService = (NavigationService)navigationService;
 
             Messenger.Default.Register<NotificationMessageAction<string>>(this, HandleNotificationMessage);
+
+            Messenger.Default.Register<GenericMessage<object>>(this, item =>
+            {
+                Photo = item.Content;
+                _detailView.Visibility = Visibility.Visible;
+            });
         }
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)
@@ -41,13 +48,16 @@ namespace HENG.ViewModels
             });
         }
 
-        public void Initialize(Frame shellFrame, muxc.NavigationView navView, Grid notifGrid)
+        public void Initialize(Frame shellFrame, muxc.NavigationView navView, DetailView detailView, Grid notifGrid)
         {
             _navService.CurrentFrame = shellFrame;
             _navService.CurrentFrame.Navigated += Frame_Navigated;
 
             _navView = navView;
             _navView.BackRequested += OnBackRequested;
+
+            _detailView = detailView;
+            _detailView.Visibility = Visibility.Collapsed;
 
             _notifGrid = notifGrid;
         }
@@ -64,6 +74,13 @@ namespace HENG.ViewModels
         {
             get { return _selected; }
             set { Set(ref _selected, value); }
+        }
+
+        private object _photo;
+        public object Photo
+        {
+            get { return _photo; }
+            set { Set(ref _photo, value); }
         }
 
         private string _notificationMessage;
@@ -136,6 +153,22 @@ namespace HENG.ViewModels
                 return _itemInvokedCommand;
             }
         }
+
+        private ICommand _backCommand;
+        public ICommand BackCommand
+        {
+            get
+            {
+                if (_backCommand == null)
+                {
+                    _backCommand = new RelayCommand(() => 
+                    {
+                        _detailView.Visibility = Visibility.Collapsed;
+                    });
+                }
+                return _backCommand; }
+        }
+
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {

@@ -30,6 +30,8 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<IDialogService, DialogService>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
+            SimpleIoc.Default.Register<DetailViewModel>();
+
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<NewestViewModel>();
             SimpleIoc.Default.Register<HottestViewModel>();
@@ -40,6 +42,7 @@ namespace HENG.ViewModels
         }
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
+        public DetailViewModel Detail => ServiceLocator.Current.GetInstance<DetailViewModel>();
 
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public NewestViewModel Newest => ServiceLocator.Current.GetInstance<NewestViewModel>();

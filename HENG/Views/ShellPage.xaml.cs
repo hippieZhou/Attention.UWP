@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
 using HENG.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.Views
 {
@@ -11,7 +12,7 @@ namespace HENG.Views
         public ShellPage()
         {
             InitializeComponent();
-            ViewModel.Initialize(ContentFrame, NavView, NotifGrid);
+            ViewModel.Initialize(ContentFrame, NavView, DetailView, NotifGrid);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

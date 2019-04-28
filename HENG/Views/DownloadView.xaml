@@ -7,13 +7,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <!--<Grid.Background>
-            <AcrylicBrush
-                BackgroundSource="Backdrop"
-                FallbackColor="{ThemeResource SystemChromeAltHighColor}"
-                Opacity="0.6"
-                TintColor="{ThemeResource SystemChromeAltHighColor}" />
-        </Grid.Background>-->
-    </Grid>
+    <Grid />
 </Page>

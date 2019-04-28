@@ -47,7 +47,6 @@ namespace HENG.UserControls
         public static readonly DependencyProperty ErrorVisibilityProperty =
             DependencyProperty.Register("ErrorVisibility", typeof(Visibility), typeof(PhotoControl), new PropertyMetadata(Visibility.Collapsed));
 
-
         public ICommand RefreshCommand
         {
             get { return (ICommand)GetValue(RefreshCommandProperty); }
@@ -67,6 +66,16 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for DownloadCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DownloadCommandProperty =
             DependencyProperty.Register("DownloadCommand", typeof(ICommand), typeof(PhotoControl), new PropertyMetadata(null));
+
+        public ICommand ItemClickCommand
+        {
+            get { return (ICommand)GetValue(ItemClickCommandProperty); }
+            set { SetValue(ItemClickCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemClickCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemClickCommandProperty =
+            DependencyProperty.Register("ItemClickCommand", typeof(ICommand), typeof(PhotoControl), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {

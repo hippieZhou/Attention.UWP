@@ -8,7 +8,6 @@ using Windows.UI.Xaml;
 using System;
 using HENG.Helpers;
 using HENG.Services;
-using HENG.Models;
 using System.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using System.Diagnostics;
@@ -37,7 +36,6 @@ namespace HENG.ViewModels
             get { return _errorVisibility; }
             set { Set(ref _errorVisibility, value); }
         }
-
 
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
@@ -113,6 +111,25 @@ namespace HENG.ViewModels
                     });
                 }
                 return _downloadCommand;
+            }
+        }
+
+        private ICommand _itemClickCommand;
+        public ICommand ItemClickCommand
+        {
+            get
+            {
+                if (_itemClickCommand == null)
+                {
+                    _itemClickCommand = new RelayCommand<IType>(model =>
+                    {
+                        if (typeof(IType) == model.GetType())
+                        {
+                            Messenger.Default.Send(new GenericMessage<object>(this, model));
+                        }
+                    });
+                }
+                return _itemClickCommand;
             }
         }
     }
