@@ -11,32 +11,25 @@ namespace HENG.Services
 {
     public class BackgroundTaskService
     {
-        public static async Task CacheImageAsync(object model, CancellationTokenSource cts, Action<IStorageFile, Exception> action)
+        public static async Task CacheImageAsync(string address, Action<IStorageFile> action)
         {
-            string str = string.Empty;
-            if (typeof(BingItem) == model.GetType())
+            var url = new Uri(address);
+            var task = BackgroundDownloadHelper.Download(url, async b =>
             {
-                str = (model as BingItem)?.Url;
-            }
-            else if (typeof(PaperItem) == model.GetType())
+                if (b)
+                {
+                    var sf = await BackgroundDownloadHelper.CheckLocalFileExistsFromUriHash(url);
+                    action(sf);
+                }
+            });
+            await task.ContinueWith(async (state) =>
             {
-                str = (model as PaperItem)?.Urls.Full;
-            }
-
-            if (!string.IsNullOrWhiteSpace(str))
-            {
-                var url = new Uri(str);
-                var task = BackgroundDownloadHelper.Download(url, action);
-                await task.ContinueWith(async (state) =>
-                 {
-                     if (state.Result == DownloadStartResult.AllreadyDownloaded)
-                     {
-                         var sf = await BackgroundDownloadHelper.CheckLocalFileExistsFromUriHash(url);
-                         action(sf, null);
-                     }
-                 });
-                System.Diagnostics.Debug.WriteLine("Downloading ...");
-            }
+                if (state.Result == DownloadStartResult.AllreadyDownloaded)
+                {
+                    var sf = await BackgroundDownloadHelper.CheckLocalFileExistsFromUriHash(url);
+                    action(sf);
+                }
+            });
         }
 
         public static async Task<BitmapImage> DrawImageAsync(IStorageFile file)
@@ -59,6 +52,5 @@ namespace HENG.Services
                 }
             }
         }
-
     }
 }

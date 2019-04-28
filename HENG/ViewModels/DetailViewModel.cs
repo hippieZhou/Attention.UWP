@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Input;
 using System;
 using Windows.UI.Xaml.Media.Imaging;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.ViewModels
 {
@@ -26,6 +27,21 @@ namespace HENG.ViewModels
             set { Set(ref _progress, value); }
         }
 
+        public DetailViewModel()
+        {
+            Messenger.Default.Register<NotificationMessage<double>>(this, async val => 
+            {
+                if (val.Notification == OriginalString)
+                {
+                    await DispatcherHelper.RunAsync(() =>
+                     {
+                         Progress = val.Content;
+                     });
+                }
+            });
+        }
+
+        private string OriginalString = string.Empty;
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -35,14 +51,29 @@ namespace HENG.ViewModels
                 {
                     _loadedCommand = new RelayCommand(async () =>
                     {
-                        var cts = new CancellationTokenSource();
-                        await BackgroundTaskService.CacheImageAsync(Model, cts, async (sf, ex) =>
+                        Progress = 0;
+                        if (typeof(BingItem) == Model.GetType())
                         {
-                            if (sf != null && ex == null)
+                            OriginalString = (Model as BingItem)?.Url;
+                        }
+                        else if (typeof(PaperItem) == Model.GetType())
+                        {
+                            OriginalString = (Model as PaperItem)?.Urls.Full;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(OriginalString))
+                        {
+                            return;
+                        }
+               
+                        await BackgroundTaskService.CacheImageAsync(OriginalString, async sf =>
+                        {
+                            if (sf != null)
                             {
                                 await DispatcherHelper.RunAsync(async () =>
                                 {
                                     BitmapImage bmp = await BackgroundTaskService.DrawImageAsync(sf);
+                                    Progress = 100;
                                 });
                             }
                         });
@@ -112,6 +143,7 @@ namespace HENG.ViewModels
                 return _refreshCommand;
             }
         }
+
 
     }
 }

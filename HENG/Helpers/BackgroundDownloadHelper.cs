@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace HENG.Helpers
             }
         }
 
-        public static async Task<DownloadStartResult> Download(Uri sourceUri, Action<IStorageFile,Exception> action)
+        public static async Task<DownloadStartResult> Download(Uri sourceUri, Action<bool> action)
         {
             var hash = SafeHashUri(sourceUri);
             var file = await CheckLocalFileExistsFromUriHash(sourceUri);
@@ -47,17 +48,17 @@ namespace HENG.Helpers
                 await Task.Run(() =>
                 {
                     var task = StartDownload(sourceUri, BackgroundTransferPriority.High, hash);
-                    task.ContinueWith(async (state) =>
+                    task.ContinueWith((state) =>
                     {
                         if (state.Exception != null)
                         {
-                            action(null, state.Exception);
+                            action(false);
+                            Trace.WriteLine($"An error occured with this download {state.Exception}");
                         }
                         else
                         {
-                            var cached = await CheckLocalFileExistsFromUriHash(sourceUri);
-                            action(cached, null);
-                            Debug.WriteLine("Download Completed");
+                            action(true);
+                            Trace.WriteLine("Download Completed");
                         }
                     });
                 });
@@ -183,9 +184,12 @@ namespace HENG.Helpers
 
         private static void DownloadProgress(DownloadOperation obj)
         {
-            Debug.WriteLine(obj.Progress.ToString());
+            int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
 
-            var progress = (double)obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
+            var msg = String.Format("{0} of {1} kb. downloaded - %{2} complete.", obj.Progress.BytesReceived / 1024, obj.Progress.TotalBytesToReceive / 1024, progress);
+            Trace.WriteLine(msg);
+
+            Messenger.Default.Send(new NotificationMessage<double>(progress, obj.RequestedUri.OriginalString));
         }
 
         private static async Task<StorageFile> GetLocalFileFromName(string filename)

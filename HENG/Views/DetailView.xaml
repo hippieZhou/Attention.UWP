@@ -60,7 +60,7 @@
         <ProgressBar
             Height="6"
             VerticalAlignment="Bottom"
-            Maximum="1"
+            Maximum="100"
             Minimum="0"
             Value="{x:Bind ViewModel.Progress, Mode=OneWay}" />
         <controls:DropShadowPanel
