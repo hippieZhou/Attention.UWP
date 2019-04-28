@@ -5,11 +5,10 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:HENG.Helpers"
-    xmlns:local="using:HENG.Views"
-    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:HENG.Models"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource PrimaryPageBackground}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -58,6 +57,12 @@
             VerticalContentAlignment="Stretch"
             Content="{x:Bind Photo, Mode=OneWay}"
             ContentTemplateSelector="{StaticResource ExDataTemplateSelector}" />
+        <ProgressBar
+            Height="6"
+            VerticalAlignment="Bottom"
+            Maximum="1"
+            Minimum="0"
+            Value="{x:Bind ViewModel.Progress, Mode=OneWay}" />
         <controls:DropShadowPanel
             Margin="0,0,0,24"
             HorizontalAlignment="Center"
@@ -81,17 +86,17 @@
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE845;" />
                     </Button.Content>
                 </Button>
-                <Button Style="{StaticResource DefaultButtonRevealStyle}">
+                <Button Command="{x:Bind ViewModel.DownloadCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" />
                     </Button.Content>
                 </Button>
-                <Button Style="{StaticResource DefaultButtonRevealStyle}">
+                <Button Command="{x:Bind ViewModel.ShareCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" />
                     </Button.Content>
                 </Button>
-                <Button Style="{StaticResource DefaultButtonRevealStyle}">
+                <Button Command="{x:Bind ViewModel.RefreshCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE895;" />
                     </Button.Content>

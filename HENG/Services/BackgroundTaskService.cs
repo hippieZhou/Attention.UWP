@@ -1,75 +1,64 @@
-﻿using HENG.BackgroundTasks;
+﻿using HENG.Helpers;
+using HENG.Models;
+using System.Threading;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Background;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
+using Windows.Storage;
 
 namespace HENG.Services
 {
-    internal class BackgroundTaskService
+    public class BackgroundTaskService
     {
-        public static IEnumerable<BackgroundTask> BackgroundTasks => BackgroundTaskInstances.Value;
-
-        private static readonly Lazy<IEnumerable<BackgroundTask>> BackgroundTaskInstances =
-            new Lazy<IEnumerable<BackgroundTask>>(() => CreateInstances());
-
-        public async Task RegisterBackgroundTasksAsync()
+        public static async Task CacheImageAsync(object model, CancellationTokenSource cts, Action<IStorageFile, Exception> action)
         {
-            BackgroundExecutionManager.RemoveAccess();
-            var result = await BackgroundExecutionManager.RequestAccessAsync();
-
-            if (result == BackgroundAccessStatus.DeniedBySystemPolicy || result == BackgroundAccessStatus.DeniedByUser)
+            string str = string.Empty;
+            if (typeof(BingItem) == model.GetType())
             {
-                return;
+                str = (model as BingItem)?.Url;
+            }
+            else if (typeof(PaperItem) == model.GetType())
+            {
+                str = (model as PaperItem)?.Urls.Full;
             }
 
-            foreach (var task in BackgroundTasks)
+            if (!string.IsNullOrWhiteSpace(str))
             {
-                task.Register();
+                var url = new Uri(str);
+                var task = BackgroundDownloadHelper.Download(url, action);
+                await task.ContinueWith(async (state) =>
+                 {
+                     if (state.Result == DownloadStartResult.AllreadyDownloaded)
+                     {
+                         var sf = await BackgroundDownloadHelper.CheckLocalFileExistsFromUriHash(url);
+                         action(sf, null);
+                     }
+                 });
+                System.Diagnostics.Debug.WriteLine("Downloading ...");
             }
         }
 
-        public static BackgroundTaskRegistration GetBackgroundTasksRegistration<T>() where T : BackgroundTask
+        public static async Task<BitmapImage> DrawImageAsync(IStorageFile file)
         {
-            if (!BackgroundTaskRegistration.AllTasks.Any(t => t.Value.Name == typeof(T).Name))
+            using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
             {
-                // This condition should not be met. If it is it means the background task was not registered correctly.
-                // Please check CreateInstances to see if the background task was properly added to the BackgroundTasks property.
-                return null;
+                try
+                {
+                    BitmapImage bitmapImage = new BitmapImage
+                    {
+                        DecodePixelHeight = 100,
+                        DecodePixelWidth = 100
+                    };
+                    await bitmapImage.SetSourceAsync(fileStream);
+                    return bitmapImage;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
-
-            return (BackgroundTaskRegistration)BackgroundTaskRegistration.AllTasks.FirstOrDefault(t => t.Value.Name == typeof(T).Name).Value;
         }
 
-        public void Start(IBackgroundTaskInstance taskInstance)
-        {
-            var task = BackgroundTasks.FirstOrDefault(b => b.Match(taskInstance?.Task?.Name));
-
-            if (task == null)
-            {
-                // This condition should not be met. It is it it means the background task to start was not found in the background tasks managed by this service.
-                // Please check CreateInstances to see if the background task was properly added to the BackgroundTasks property.
-                return;
-            }
-
-            task.RunAsync(taskInstance);
-        }
-
-        protected async Task HandleInternalAsync(BackgroundActivatedEventArgs args)
-        {
-            Start(args.TaskInstance);
-
-            await Task.CompletedTask;
-        }
-
-        private static IEnumerable<BackgroundTask> CreateInstances()
-        {
-            var backgroundTasks = new List<BackgroundTask>();
-
-            backgroundTasks.Add(new DaemonBackgroundTask());
-            return backgroundTasks;
-        }
     }
 }

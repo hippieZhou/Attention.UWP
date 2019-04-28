@@ -99,17 +99,19 @@ namespace HENG.Services
     {
         public async Task<DownloadStartResult> DownloadImageAsync<T>(T model, CancellationTokenSource cts)
         {
-            string strUri = string.Empty;
-            if (model is BingItem bing)
-            {
-                strUri = bing.Url;
-            }
-            else if (model is PaperItem paper)
-            {
-                strUri = paper.Urls.Full;
-            }
-            DownloadStartResult result = await Singleton<BackgroundDownloadHelper>.Instance.Download(new Uri(strUri), cts, ex => { });
-            return result;
+            //string strUri = string.Empty;
+            //if (model is BingItem bing)
+            //{
+            //    strUri = bing.Url;
+            //}
+            //else if (model is PaperItem paper)
+            //{
+            //    strUri = paper.Urls.Full;
+            //}
+            //DownloadStartResult result = await Singleton<BackgroundDownloadHelper>.Instance.Download(new Uri(strUri), cts, ex => { });
+            //return result;
+            await Task.CompletedTask;
+            return DownloadStartResult.None;
         }
     }
 }

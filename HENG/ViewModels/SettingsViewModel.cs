@@ -46,7 +46,7 @@ namespace HENG.ViewModels
                     _loadedCommand = new RelayCommand(async () =>
                     {
                         VersionDescription = GetVersionDescription();
-                        DownloadPath = (await AppSettingService.GetDeaultDownPathAsync()).Path;
+                        DownloadPath = (await AppSettingService.GetDeaultDownloadPathAsync()).Path;
                     });
                 }
                 return _loadedCommand;
@@ -81,7 +81,7 @@ namespace HENG.ViewModels
                 {
                     _openFolerCommand = new RelayCommand(async () =>
                     {
-                        var sf = await AppSettingService.GetDeaultDownPathAsync();
+                        var sf = await AppSettingService.GetDeaultDownloadPathAsync();
                         await Launcher.LaunchFolderAsync(sf);
                     });
                 }

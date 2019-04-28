@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HENG.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace HENG.Views
 {
     public sealed partial class DetailView : Page
     {
+        public DetailViewModel ViewModel => ViewModelLocator.Current.Detail;
         public DetailView()
         {
             this.InitializeComponent();
@@ -31,7 +33,14 @@ namespace HENG.Views
 
         // Using a DependencyProperty as the backing store for Photo.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PhotoProperty =
-            DependencyProperty.Register("Photo", typeof(object), typeof(DetailView), new PropertyMetadata(null));
+            DependencyProperty.Register("Photo", typeof(object), typeof(DetailView), new PropertyMetadata(null,(d,e)=> 
+            {
+                if (d is DetailView handler)
+                {
+                    handler.ViewModel.Model = e.NewValue;
+                    handler.ViewModel.LoadedCommand.Execute(null);
+                }
+            }));
 
         public ICommand BackCommand
         {
