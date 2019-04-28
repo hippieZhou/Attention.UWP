@@ -313,7 +313,23 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
-            Style="{StaticResource RefreshButtonRevealStyle}" />
+            Style="{StaticResource RefreshButtonRevealStyle}">
+            <i:Interaction.Behaviors>
+                <behaviors:Rotate
+                    x:Name="Rotate"
+                    AutomaticallyStart="False"
+                    CenterX="22"
+                    CenterY="22"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Linear"
+                    Value="360"
+                    Duration="2000" />
+                <ic:EventTriggerBehavior EventName="Click">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=Rotate}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </Button>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

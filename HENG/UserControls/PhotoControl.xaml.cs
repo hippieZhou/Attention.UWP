@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Hosting;
 using System.Numerics;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace HENG.UserControls
 {
@@ -138,5 +139,20 @@ namespace HENG.UserControls
                 DownloadCommand?.Execute(btn.DataContext);
             }
         }
+
+        //private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is Button btn)
+        //    {
+        //        for (float fv = 1; fv <= 360; fv = fv + 5)
+        //        {
+        //            await btn.Rotate(duration: 10, delay: 500, centerX: 22.0f, centerY: 22.0f, value: fv).StartAsync();
+        //            if (fv == 360)
+        //            {
+        //                fv = 1;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

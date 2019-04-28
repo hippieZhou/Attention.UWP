@@ -26,7 +26,15 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PhotosTemplate" x:DataType="models:PaperItem">
-            <TextBlock Text="B" />
+            <Grid>
+                <controls:ImageEx
+                    CacheMode="BitmapCache"
+                    IsCacheEnabled="True"
+                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                    Source="{x:Bind Urls.Full}"
+                    Stretch="UniformToFill"
+                    UseLayoutRounding="True" />
+            </Grid>
         </DataTemplate>
 
         <helpers:ExDataTemplateSelector
@@ -43,18 +51,6 @@
             VerticalContentAlignment="Stretch"
             Content="{x:Bind Photo, Mode=OneWay}"
             ContentTemplateSelector="{StaticResource ExDataTemplateSelector}" />
-        <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <ProgressRing Foreground="{ThemeResource SystemBaseHighColor}" IsActive="True" />
-            <TextBlock
-                Margin="12,0,0,0"
-                VerticalAlignment="Center"
-                FontWeight="Bold"
-                Foreground="{ThemeResource SystemBaseHighColor}"
-                Text="LOADING..." />
-        </StackPanel>
         <controls:DropShadowPanel
             Margin="0,0,0,24"
             HorizontalAlignment="Center"
