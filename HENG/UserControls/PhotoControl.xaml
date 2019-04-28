@@ -21,6 +21,9 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <!--
+            https://docs.microsoft.com/en-us/dotnet/api/microsoft.toolkit.uwp.ui.controls.staggeredpanel?view=win-comm-toolkit-dotnet-stable
+        -->
         <DataTemplate x:Key="BingsTemplate" x:DataType="models:BingItem">
             <Grid
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
@@ -309,24 +312,32 @@
 
         </controls:AdaptiveGridView>
         <Button
+            x:Name="refresh"
             Margin="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{x:Bind RefreshCommand}"
+            RenderTransformOrigin="0.5,0.5"
             Style="{StaticResource RefreshButtonRevealStyle}">
+            <Button.RenderTransform>
+                <CompositeTransform />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Storyboard x:Name="Refresh_Sb">
+                    <DoubleAnimation
+                        d:IsOptimized="True"
+                        EnableDependentAnimation="True"
+                        RepeatBehavior="2x"
+                        Storyboard.TargetName="refresh"
+                        Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                        From="0"
+                        To="360"
+                        Duration="0:0:2" />
+                </Storyboard>
+            </Button.Resources>
             <i:Interaction.Behaviors>
-                <behaviors:Rotate
-                    x:Name="Rotate"
-                    AutomaticallyStart="False"
-                    CenterX="22"
-                    CenterY="22"
-                    Delay="0"
-                    EasingMode="EaseOut"
-                    EasingType="Linear"
-                    Value="360"
-                    Duration="2000" />
                 <ic:EventTriggerBehavior EventName="Click">
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=Rotate}" />
+                    <ic:CallMethodAction MethodName="Begin" TargetObject="{Binding ElementName=Refresh_Sb}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </Button>
