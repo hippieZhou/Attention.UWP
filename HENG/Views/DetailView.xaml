@@ -27,6 +27,13 @@
         </DataTemplate>
         <DataTemplate x:Key="PhotosTemplate" x:DataType="models:PaperItem">
             <Grid>
+                <Grid.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{x:Bind Color}"
+                        Opacity="0.6"
+                        TintColor="{x:Bind Color}" />
+                </Grid.Background>
                 <controls:ImageEx
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"

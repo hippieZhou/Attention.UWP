@@ -94,6 +94,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="BackgroundTasks\DaemonBackgroundTask.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
@@ -108,6 +110,7 @@
     <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\PaperItem.cs" />
     <Compile Include="Services\AppSettingService.cs" />
+    <Compile Include="Services\BackgroundTaskService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\LiveTileService.cs" />

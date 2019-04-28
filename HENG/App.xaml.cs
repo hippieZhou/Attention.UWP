@@ -12,6 +12,9 @@ using Windows.UI;
 using HENG.Views;
 using HENG.Services;
 using System.Threading.Tasks;
+using HENG.Helpers;
+using Windows.ApplicationModel.Background;
+using System.Diagnostics;
 
 namespace HENG
 {
@@ -51,6 +54,7 @@ namespace HENG
         private async Task InitializeAsync()
         {
             await ThemeSelectorService.InitializeAsync();
+            //await Singleton<BackgroundTaskService>.Instance.RegisterBackgroundTasksAsync();
         }
 
         public static async Task StartupAsync()
@@ -81,5 +85,12 @@ namespace HENG
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        //protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        //{
+        //    base.OnBackgroundActivated(args);
+        //    IBackgroundTaskInstance taskInstance = args.TaskInstance;
+        //    DoBackgroundWork(taskInstance);
+        //}
     }
 }
