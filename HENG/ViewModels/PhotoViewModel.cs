@@ -7,6 +7,8 @@ using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
 using GalaSoft.MvvmLight.Messaging;
+using HENG.Helpers;
+using System.Diagnostics;
 
 namespace HENG.ViewModels
 {
@@ -97,7 +99,7 @@ namespace HENG.ViewModels
                         {
                             //var cts = new CancellationTokenSource();
                             //await Singleton<DataService>.Instance.DownloadImageAsync(model, cts);
-                            //Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
+                            Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
                         }
                     });
                 }
