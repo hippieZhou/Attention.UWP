@@ -55,11 +55,6 @@ namespace HENG.ViewModels
                                     () =>
                                     {
                                         LoadingVisibility = Visibility.Collapsed;
-
-                                        if (Photos.Count > 0)
-                                        {
-                                            //Singleton<LiveTileService>.Instance.CreateLiveTitle(Photos[0]);
-                                        }
                                     },
                                     ex =>
                                     {

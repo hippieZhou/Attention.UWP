@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Windows.ApplicationModel.DataTransfer;
 using HENG.Models.Shares;
 using HENG.Helpers;
+using Windows.UI.Xaml;
 
 namespace HENG.ViewModels
 {
@@ -22,34 +23,52 @@ namespace HENG.ViewModels
             set { Set(ref _model, value); }
         }
 
-        private BitmapImage _bitmap;
-        public BitmapImage Bitmap
+        private object _bitmap;
+        public object Bitmap
         {
             get { return _bitmap; }
             set { Set(ref _bitmap, value); }
         }
 
+
+        private Visibility _progressBarVisibility = Visibility.Visible;
+        public Visibility ProgressBarVisibility
+        {
+            get { return _progressBarVisibility; }
+            set { Set(ref _progressBarVisibility, value); }
+        }
+
+
         private string OriginalString = string.Empty;
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
         {
             get
             {
-                if (_loadedCommand == null)
+                if (_refreshCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _refreshCommand = new RelayCommand(async () =>
                     {
+                        ProgressBarVisibility = Visibility.Visible;
+
                         if (typeof(BingItem) == Model.GetType())
                         {
-                            OriginalString = (Model as BingItem)?.Url;
+                            var model = Model as BingItem;
+                            OriginalString = model?.Url;
+                            Bitmap = model?.Url;
                         }
                         else if (typeof(PicsumItem) == Model.GetType())
                         {
-                            OriginalString = (Model as PicsumItem)?.Download_url;
+                            var model = Model as PicsumItem;
+                            OriginalString = model?.Download_url;
+                            Bitmap = model.Thumb;
                         }
                         else if (typeof(PaperItem) == Model.GetType())
                         {
-                            OriginalString = (Model as PaperItem)?.Urls.Full;
+                            var model = Model as PaperItem;
+                            OriginalString = model?.Urls.Full;
+                            Bitmap = model.Urls.Thumb;
                         }
 
                         if (string.IsNullOrWhiteSpace(OriginalString))
@@ -57,13 +76,17 @@ namespace HENG.ViewModels
                             return;
                         }
 
-                        await Singleton<DataService>.Instance.GetFromCacheAsync(OriginalString, async bmp =>
-                        {
-                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                            {
-                                Bitmap = bmp;
-                            });
-                        });
+                        await Singleton<DataService>.Instance.GetFromCacheAsync(OriginalString, bmp =>
+                         {
+                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                             {
+                                 if (bmp != null)
+                                 {
+                                     Bitmap = bmp;
+                                 }
+                                 ProgressBarVisibility = Visibility.Collapsed;
+                             });
+                         });
                         //await BackgroundTaskService.CacheImageAsync(OriginalString, async sf =>
                         //{
                         //    if (sf != null)
@@ -77,7 +100,7 @@ namespace HENG.ViewModels
                         //});
                     });
                 }
-                return _loadedCommand;
+                return _refreshCommand;
             }
         }
 
@@ -130,23 +153,5 @@ namespace HENG.ViewModels
                 return _shareCommand;
             }
         }
-
-        private ICommand _refreshCommand;
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                if (_refreshCommand == null)
-                {
-                    _refreshCommand = new RelayCommand(() =>
-                    {
-
-                    });
-                }
-                return _refreshCommand;
-            }
-        }
-
-
     }
 }

@@ -444,7 +444,7 @@
                         Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
                         From="0"
                         To="360"
-                        Duration="0:0:2" />
+                        Duration="0:0:1" />
                 </Storyboard>
             </Button.Resources>
             <i:Interaction.Behaviors>

@@ -5,62 +5,10 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:HENG.Helpers"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:HENG.Models"
     Background="{ThemeResource PrimaryPageBackground}"
     mc:Ignorable="d">
-    <Page.Resources>
-        <DataTemplate x:Key="BingTemplate" x:DataType="models:BingItem">
-            <Grid>
-                <controls:ImageEx
-                    CacheMode="BitmapCache"
-                    IsCacheEnabled="True"
-                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                    PlaceholderStretch="None"
-                    Source="{x:Bind Url}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="PicsumTemplate" x:DataType="models:PicsumItem">
-            <Grid>
-                <controls:ImageEx
-                    CacheMode="BitmapCache"
-                    IsCacheEnabled="True"
-                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                    PlaceholderStretch="None"
-                    Source="{x:Bind Download_url}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="PaperTemplate" x:DataType="models:PaperItem">
-            <Grid>
-                <Grid.Background>
-                    <AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        FallbackColor="{x:Bind Color}"
-                        Opacity="0.6"
-                        TintColor="{x:Bind Color}" />
-                </Grid.Background>
-                <controls:ImageEx
-                    CacheMode="BitmapCache"
-                    IsCacheEnabled="True"
-                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                    Source="{x:Bind Urls.Full}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
-            </Grid>
-        </DataTemplate>
-
-        <helpers:ExDataTemplateSelector
-            x:Key="ExDataTemplateSelector"
-            BingTemplate="{StaticResource BingTemplate}"
-            PaperTemplate="{StaticResource PaperTemplate}"
-            PicsumTemplate="{StaticResource PicsumTemplate}" />
-    </Page.Resources>
 
     <Grid>
         <controls:ImageEx
@@ -68,7 +16,7 @@
             IsCacheEnabled="True"
             PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
             PlaceholderStretch="None"
-            Source="{Binding Bitmap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Source="{x:Bind ViewModel.Bitmap, Mode=OneWay}"
             Stretch="UniformToFill"
             UseLayoutRounding="True" />
         <controls:DropShadowPanel
@@ -111,5 +59,11 @@
                 </Button>
             </StackPanel>
         </controls:DropShadowPanel>
+        <ProgressBar
+            Height="6"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            IsIndeterminate="True"
+            Visibility="{x:Bind ViewModel.ProgressBarVisibility, Mode=OneWay}" />
     </Grid>
 </Page>

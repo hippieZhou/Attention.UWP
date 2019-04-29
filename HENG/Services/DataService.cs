@@ -17,19 +17,25 @@ namespace HENG.Services
         static DataService()
         {
             ImageCache.Instance.MaxMemoryCacheCount = 1000;
-            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(48);
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
         }
 
         public async Task GetFromCacheAsync(string url, Action<BitmapImage> action)
         {
+            var file = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(url));
+            if (file != null)
+            {
+                var props = await file.GetBasicPropertiesAsync();
+                if (props.Size == 0)
+                {
+                    await file.DeleteAsync();
+                }
+            }
             var task = ImageCache.Instance.PreCacheAsync(new Uri(url));
             await task.ContinueWith(async t =>
             {
-                if (t.IsCompletedSuccessfully)
-                {
-                    var bmp = await ImageCache.Instance.GetFromCacheAsync(new Uri(url));
-                    action(bmp);
-                }
+                var bmp = await ImageCache.Instance.GetFromCacheAsync(new Uri(url));
+                action(bmp);
             }).ConfigureAwait(false); ;
         }
     }
