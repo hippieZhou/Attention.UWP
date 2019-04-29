@@ -63,19 +63,14 @@
     </Page.Resources>
 
     <Grid>
-        <ContentControl
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            Content="{x:Bind Photo, Mode=OneWay}"
-            ContentTemplateSelector="{StaticResource ExDataTemplateSelector}" />
-        <ProgressBar
-            Height="6"
-            VerticalAlignment="Bottom"
-            Maximum="100"
-            Minimum="0"
-            Value="{x:Bind ViewModel.Progress, Mode=OneWay}" />
+        <controls:ImageEx
+            CacheMode="BitmapCache"
+            IsCacheEnabled="True"
+            PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+            PlaceholderStretch="None"
+            Source="{Binding Bitmap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Stretch="UniformToFill"
+            UseLayoutRounding="True" />
         <controls:DropShadowPanel
             Margin="0,0,0,24"
             HorizontalAlignment="Center"

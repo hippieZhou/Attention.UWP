@@ -23,6 +23,7 @@ namespace HENG.Views
         public DetailView()
         {
             this.InitializeComponent();
+            this.DataContext = ViewModel;
         }
 
         public object Photo

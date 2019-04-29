@@ -189,7 +189,7 @@ namespace HENG.Helpers
             var msg = String.Format("{0} of {1} kb. downloaded - %{2} complete.", obj.Progress.BytesReceived / 1024, obj.Progress.TotalBytesToReceive / 1024, progress);
             Trace.WriteLine(msg);
 
-            Messenger.Default.Send(new NotificationMessage<double>(progress, obj.RequestedUri.OriginalString));
+            //Messenger.Default.Send(new NotificationMessage<double>(progress, obj.RequestedUri.OriginalString));
         }
 
         private static async Task<StorageFile> GetLocalFileFromName(string filename)

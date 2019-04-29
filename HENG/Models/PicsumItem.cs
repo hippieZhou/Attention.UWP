@@ -2,7 +2,7 @@
 
 namespace HENG.Models
 {
-    public class PicsumItem
+    public class PicsumItem: DataItem
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

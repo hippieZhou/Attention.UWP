@@ -12,7 +12,7 @@ namespace HENG.Models
         public BingItem[] Bings { get; set; }
     }
 
-    public class BingItem
+    public class BingItem: DataItem
     {
         [JsonProperty(PropertyName = "caption")]
         public string Caption { get; set; }

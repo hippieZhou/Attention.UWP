@@ -22,25 +22,11 @@ namespace HENG.ViewModels
             set { Set(ref _model, value); }
         }
 
-        private double _progress = 0.0;
-        public double Progress
+        private BitmapImage _bitmap;
+        public BitmapImage Bitmap
         {
-            get { return _progress; }
-            set { Set(ref _progress, value); }
-        }
-
-        public DetailViewModel()
-        {
-            Messenger.Default.Register<NotificationMessage<double>>(this, async val => 
-            {
-                if (val.Notification == OriginalString)
-                {
-                    await DispatcherHelper.RunAsync(() =>
-                     {
-                         Progress = val.Content;
-                     });
-                }
-            });
+            get { return _bitmap; }
+            set { Set(ref _bitmap, value); }
         }
 
         private string OriginalString = string.Empty;
@@ -53,8 +39,6 @@ namespace HENG.ViewModels
                 {
                     _loadedCommand = new RelayCommand(async () =>
                     {
-                        Progress = 0;
-
                         if (typeof(BingItem) == Model.GetType())
                         {
                             OriginalString = (Model as BingItem)?.Url;
@@ -72,18 +56,25 @@ namespace HENG.ViewModels
                         {
                             return;
                         }
-               
-                        await BackgroundTaskService.CacheImageAsync(OriginalString, async sf =>
+
+                        await Singleton<DataService>.Instance.GetFromCacheAsync(OriginalString, async bmp =>
                         {
-                            if (sf != null)
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                await DispatcherHelper.RunAsync(async () =>
-                                {
-                                    BitmapImage bmp = await BackgroundTaskService.DrawImageAsync(sf);
-                                    Progress = 100;
-                                });
-                            }
+                                Bitmap = bmp;
+                            });
                         });
+                        //await BackgroundTaskService.CacheImageAsync(OriginalString, async sf =>
+                        //{
+                        //    if (sf != null)
+                        //    {
+                        //        await DispatcherHelper.RunAsync(async () =>
+                        //        {
+                        //            BitmapImage bmp = await BackgroundTaskService.DrawImageAsync(sf);
+                        //            Progress = 100;
+                        //        });
+                        //    }
+                        //});
                     });
                 }
                 return _loadedCommand;

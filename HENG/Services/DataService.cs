@@ -6,17 +6,32 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HENG.Models;
+using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace HENG.Services
 {
     public partial class DataService
     {
-        //static DataService()
-        //{
-        //    ImageCache.Instance.MaxMemoryCacheCount = 200;
-        //    ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
-        //}
+        static DataService()
+        {
+            ImageCache.Instance.MaxMemoryCacheCount = 1000;
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(48);
+        }
+
+        public async Task GetFromCacheAsync(string url, Action<BitmapImage> action)
+        {
+            var task = ImageCache.Instance.PreCacheAsync(new Uri(url));
+            await task.ContinueWith(async t =>
+            {
+                if (t.IsCompletedSuccessfully)
+                {
+                    var bmp = await ImageCache.Instance.GetFromCacheAsync(new Uri(url));
+                    action(bmp);
+                }
+            }).ConfigureAwait(false); ;
+        }
     }
     /// <summary>
     /// https://hippiezhou.fun
@@ -27,8 +42,8 @@ namespace HENG.Services
         {
             var url = $"https://hippiezhou.fun/api/bings?page={page}&per_page={per_page}";
             string json = await GetBingJsonAsync(url, cancellationToken);
-            var data = JsonConvert.DeserializeObject<BingSource>(json);
-            return data?.Bings;
+            var items = JsonConvert.DeserializeObject<BingSource>(json)?.Bings;
+            return items;
         }
 
         private async Task<string> GetBingJsonAsync(string url, CancellationToken token)

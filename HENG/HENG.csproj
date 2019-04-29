@@ -107,6 +107,7 @@
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Models\BingItem.cs" />
+    <Compile Include="Models\DataItem.cs" />
     <Compile Include="Models\PaperItem.cs" />
     <Compile Include="Models\PicsumItem.cs" />
     <Compile Include="Models\Shares\ShareSourceData.cs" />

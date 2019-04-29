@@ -3,7 +3,7 @@ using System;
 
 namespace HENG.Models
 {
-    public class PaperItem
+    public class PaperItem: DataItem
     {
         [JsonProperty(PropertyName = "_id")]
         public string _id { get; set; }
