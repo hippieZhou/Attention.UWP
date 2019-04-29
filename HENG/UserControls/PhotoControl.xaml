@@ -24,7 +24,7 @@
         <!--
             https://docs.microsoft.com/en-us/dotnet/api/microsoft.toolkit.uwp.ui.controls.staggeredpanel?view=win-comm-toolkit-dotnet-stable
         -->
-        <DataTemplate x:Key="BingsTemplate" x:DataType="models:BingItem">
+        <DataTemplate x:Key="BingTemplate" x:DataType="models:BingItem">
             <Grid
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
                 PointerEntered="Grid_PointerEntered"
@@ -135,7 +135,118 @@
                 </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="PhotosTemplate" x:DataType="models:PaperItem">
+        <DataTemplate x:Key="PicsumTemplate" x:DataType="models:PicsumItem">
+            <Grid
+                Background="{ThemeResource NavigationViewExpandedPaneBackground}"
+                PointerEntered="Grid_PointerEntered"
+                PointerExited="Grid_PointerExited"
+                SizeChanged="Grid_SizeChanged">
+                <controls:ImageEx
+                    x:Name="imageEx"
+                    CacheMode="BitmapCache"
+                    IsCacheEnabled="True"
+                    Source="{x:Bind Thumb}"
+                    Stretch="UniformToFill"
+                    UseLayoutRounding="True" />
+                <Grid
+                    x:Name="SmokeGrid"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Opacity="0">
+                    <Grid.Background>
+                        <media:BackdropBlurBrush Amount="2" />
+                    </Grid.Background>
+                    <i:Interaction.Behaviors>
+                        <behaviors:Fade
+                            x:Name="SmokeGridUp"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseOut"
+                            EasingType="Linear"
+                            Value="1"
+                            Duration="400" />
+                        <behaviors:Fade
+                            x:Name="SmokeGridDowm"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseIn"
+                            EasingType="Linear"
+                            Value="0"
+                            Duration="400" />
+                    </i:Interaction.Behaviors>
+                </Grid>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                    <TextBlock
+                        Margin="8,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Black"
+                        Foreground="{ThemeResource ButtonForegroundPressed}"
+                        RequestedTheme="Dark"
+                        Text="{x:Bind Author}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:Fade
+                                x:Name="DateTimeUp"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                Value="0"
+                                Duration="300" />
+                            <behaviors:Fade
+                                x:Name="DateTimeDowm"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseIn"
+                                EasingType="Linear"
+                                Value="1"
+                                Duration="300" />
+                        </i:Interaction.Behaviors>
+                    </TextBlock>
+                    <Button
+                        HorizontalAlignment="Right"
+                        Click="DownloadButton_Click"
+                        DataContext="{x:Bind}"
+                        Opacity="0"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            Foreground="White"
+                            Glyph="&#xE118;" />
+                        <i:Interaction.Behaviors>
+                            <behaviors:Fade
+                                x:Name="DownloadUp"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                Value="1"
+                                Duration="400" />
+                            <behaviors:Fade
+                                x:Name="DownloadDowm"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseIn"
+                                EasingType="Linear"
+                                Value="0"
+                                Duration="400" />
+                        </i:Interaction.Behaviors>
+                    </Button>
+                </Grid>
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="PointerEntered">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeUp}" />
+                    </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="PointerExited">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeDowm}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PaperTemplate" x:DataType="models:PaperItem">
             <Grid
                 PointerEntered="Grid_PointerEntered"
                 PointerExited="Grid_PointerExited"
@@ -255,8 +366,9 @@
 
         <helpers:ExDataTemplateSelector
             x:Key="ExDataTemplateSelector"
-            BingTemplate="{StaticResource BingsTemplate}"
-            PaperTemplate="{StaticResource PhotosTemplate}" />
+            BingTemplate="{StaticResource BingTemplate}"
+            PaperTemplate="{StaticResource PaperTemplate}"
+            PicsumTemplate="{StaticResource PicsumTemplate}" />
     </UserControl.Resources>
 
     <Grid x:Name="RootGrid">

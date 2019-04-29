@@ -19,6 +19,7 @@ namespace HENG.ViewModels
             var nav = new NavigationService();
 
             nav.Configure(typeof(HomeViewModel).FullName, typeof(HomeView));
+            nav.Configure(typeof(PicsumViewModel).FullName, typeof(PicsumView));
             nav.Configure(typeof(NewestViewModel).FullName, typeof(NewestView));
             nav.Configure(typeof(HottestViewModel).FullName, typeof(HottestView));
             nav.Configure(typeof(GirlsViewModel).FullName, typeof(GirlsView));
@@ -33,6 +34,7 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<DetailViewModel>();
 
             SimpleIoc.Default.Register<HomeViewModel>();
+            SimpleIoc.Default.Register<PicsumViewModel>();
             SimpleIoc.Default.Register<NewestViewModel>();
             SimpleIoc.Default.Register<HottestViewModel>();
             SimpleIoc.Default.Register<GirlsViewModel>();
@@ -45,6 +47,7 @@ namespace HENG.ViewModels
         public DetailViewModel Detail => ServiceLocator.Current.GetInstance<DetailViewModel>();
 
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
+        public PicsumViewModel Picsum => ServiceLocator.Current.GetInstance<PicsumViewModel>();
         public NewestViewModel Newest => ServiceLocator.Current.GetInstance<NewestViewModel>();
         public HottestViewModel Hottest => ServiceLocator.Current.GetInstance<HottestViewModel>();
         public GirlsViewModel Girls => ServiceLocator.Current.GetInstance<GirlsViewModel>();

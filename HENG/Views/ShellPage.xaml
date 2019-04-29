@@ -40,6 +40,14 @@
                     helpers:NavHelper.NavigateTo="HENG.ViewModels.HomeViewModel"
                     Icon="Home"
                     Style="{StaticResource NavigationViewAnimatedItemStyle}" />
+                <muxc:NavigationViewItem
+                    x:Uid="Shell_Picsum"
+                    helpers:NavHelper.NavigateTo="HENG.ViewModels.PicsumViewModel"
+                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE81E;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator />
                 <muxc:NavigationViewItemHeader x:Name="MainPagesHeader" x:Uid="Shell_MainPagesHeader" />
                 <muxc:NavigationViewItem

@@ -3,11 +3,13 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using HENG.Models;
 using HENG.Services;
-using System.Threading;
 using System.Windows.Input;
 using System;
 using Windows.UI.Xaml.Media.Imaging;
 using GalaSoft.MvvmLight.Messaging;
+using Windows.ApplicationModel.DataTransfer;
+using HENG.Models.Shares;
+using HENG.Helpers;
 
 namespace HENG.ViewModels
 {
@@ -52,9 +54,14 @@ namespace HENG.ViewModels
                     _loadedCommand = new RelayCommand(async () =>
                     {
                         Progress = 0;
+
                         if (typeof(BingItem) == Model.GetType())
                         {
                             OriginalString = (Model as BingItem)?.Url;
+                        }
+                        else if (typeof(PicsumItem) == Model.GetType())
+                        {
+                            OriginalString = (Model as PicsumItem)?.Download_url;
                         }
                         else if (typeof(PaperItem) == Model.GetType())
                         {
@@ -109,19 +116,24 @@ namespace HENG.ViewModels
                 {
                     _shareCommand = new RelayCommand(() =>
                     {
-                        //DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-                        //dataTransferManager.DataRequested += (sender, e) =>
-                        //{
-                        //    var data = new ShareSourceData("AppDisplayName".GetLocalized());
-                        //    data.SetWebLink(new Uri("http://www.baidu.com"));
-                        //    data.SetText("Hello World");
-                        //    e.Request.SetData(data);
-                        //    e.Request.Data.OperationCompleted += (s, _) =>
-                        //    {
-                        //        //Messenger.Default.Send(new NotificationMessageAction<string>(sender, "分享成功", reply => { Trace.WriteLine(reply); }));
-                        //    };
-                        //};
-                        //DataTransferManager.ShowShareUI();
+                        DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+                        dataTransferManager.DataRequested += (sender, e) =>
+                        {
+                            var deferral = e.Request.GetDeferral();
+                            sender.TargetApplicationChosen += (s1, s2) => 
+                            {
+                                deferral.Complete();
+                            };
+                            var data = new ShareSourceData("AppDisplayName".GetLocalized());
+                            data.SetWebLink(new Uri("http://www.baidu.com"));
+                            data.SetText("Hello World");
+                            e.Request.SetData(data);
+                            e.Request.Data.OperationCompleted += (s, _) =>
+                            {
+                                //Messenger.Default.Send(new NotificationMessageAction<string>(sender, "分享成功", reply => { Trace.WriteLine(reply); }));
+                            };
+                        };
+                        DataTransferManager.ShowShareUI();
                     });
                 }
                 return _shareCommand;

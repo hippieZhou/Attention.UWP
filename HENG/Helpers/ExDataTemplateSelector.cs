@@ -8,6 +8,7 @@ namespace HENG.Helpers
     {
         public DataTemplate BingTemplate { get; set; }
         public DataTemplate PaperTemplate { get; set; }
+        public DataTemplate PicsumTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
@@ -20,6 +21,10 @@ namespace HENG.Helpers
             else if (type == typeof(PaperItem))
             {
                 return PaperTemplate;
+            }
+            else if (type == typeof(PicsumItem))
+            {
+                return PicsumTemplate;
             }
             else
             {

@@ -12,7 +12,7 @@
     Background="{ThemeResource PrimaryPageBackground}"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="BingsTemplate" x:DataType="models:BingItem">
+        <DataTemplate x:Key="BingTemplate" x:DataType="models:BingItem">
             <Grid>
                 <controls:ImageEx
                     CacheMode="BitmapCache"
@@ -24,7 +24,19 @@
                     UseLayoutRounding="True" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="PhotosTemplate" x:DataType="models:PaperItem">
+        <DataTemplate x:Key="PicsumTemplate" x:DataType="models:PicsumItem">
+            <Grid>
+                <controls:ImageEx
+                    CacheMode="BitmapCache"
+                    IsCacheEnabled="True"
+                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                    PlaceholderStretch="None"
+                    Source="{x:Bind Download_url}"
+                    Stretch="UniformToFill"
+                    UseLayoutRounding="True" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PaperTemplate" x:DataType="models:PaperItem">
             <Grid>
                 <Grid.Background>
                     <AcrylicBrush
@@ -45,8 +57,9 @@
 
         <helpers:ExDataTemplateSelector
             x:Key="ExDataTemplateSelector"
-            BingTemplate="{StaticResource BingsTemplate}"
-            PaperTemplate="{StaticResource PhotosTemplate}" />
+            BingTemplate="{StaticResource BingTemplate}"
+            PaperTemplate="{StaticResource PaperTemplate}"
+            PicsumTemplate="{StaticResource PicsumTemplate}" />
     </Page.Resources>
 
     <Grid>

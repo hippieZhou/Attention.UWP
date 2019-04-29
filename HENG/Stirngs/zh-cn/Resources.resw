@@ -177,4 +177,7 @@
   <data name="Shell_Skyland.Content" xml:space="preserve">
     <value>星空</value>
   </data>
+  <data name="Shell_Picsum.Content" xml:space="preserve">
+    <value>推荐</value>
+  </data>
 </root>

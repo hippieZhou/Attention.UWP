@@ -1,6 +1,4 @@
 ﻿using HENG.Helpers;
-using HENG.Models;
-using System.Threading;
 using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;

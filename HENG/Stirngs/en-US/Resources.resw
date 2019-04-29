@@ -177,4 +177,7 @@
   <data name="Shell_Skyland.Content" xml:space="preserve">
     <value>Skyland</value>
   </data>
+  <data name="Shell_Picsum.Content" xml:space="preserve">
+    <value>Picsum</value>
+  </data>
 </root>

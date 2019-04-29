@@ -6,11 +6,7 @@ using Microsoft.Toolkit.Uwp;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
-using HENG.Helpers;
-using HENG.Services;
-using System.Threading;
 using GalaSoft.MvvmLight.Messaging;
-using System.Diagnostics;
 
 namespace HENG.ViewModels
 {
@@ -100,13 +96,13 @@ namespace HENG.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand<IType>(async model =>
+                    _downloadCommand = new RelayCommand<IType>(model =>
                     {
                         if (typeof(IType) == model.GetType())
                         {
-                            var cts = new CancellationTokenSource();
-                            await Singleton<DataService>.Instance.DownloadImageAsync(model, cts);
-                            Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
+                            //var cts = new CancellationTokenSource();
+                            //await Singleton<DataService>.Instance.DownloadImageAsync(model, cts);
+                            //Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
                         }
                     });
                 }
