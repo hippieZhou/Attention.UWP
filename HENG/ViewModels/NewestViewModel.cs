@@ -3,7 +3,6 @@ using HENG.Models;
 using HENG.Services;
 using Microsoft.Toolkit.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,12 +17,6 @@ namespace HENG.ViewModels
         public async Task<IEnumerable<PaperItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
             var items = await Singleton<DataService>.Instance.GetNewestAsync(++pageIndex, pageSize, cancellationToken);
-
-            if (items != null)
-            {
-                LiveTileService.UpdateLiveTile(items.Take(3).Select(p => p.Urls.Thumb));
-            }
-
             return items;
         }
     }

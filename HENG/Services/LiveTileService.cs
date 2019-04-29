@@ -9,23 +9,28 @@ namespace HENG.Services
     {
         public static void UpdateLiveTile(IEnumerable<string> urls)
         {
-            var title = new TileBinding();
             var photosContent = new TileBindingContentPhotos();
             foreach (var item in urls)
             {
                 photosContent.Images.Add(new TileBasicImage { Source = item, AddImageQuery = true });
             }
 
-            title.Content = photosContent;
+            var title = new TileBinding
+            {
+                Content = photosContent
+            };
+            var visual = new TileVisual
+            {
+                Branding = TileBranding.NameAndLogo,
+                TileMedium = title,
+                TileWide = title,
+                TileLarge = title
+            };
 
             var tileContent = new TileContent
             {
-                Visual = new TileVisual()
+                Visual = visual
             };
-            tileContent.Visual.Branding = TileBranding.NameAndLogo;
-            tileContent.Visual.TileMedium = title;
-            tileContent.Visual.TileWide = title;
-            tileContent.Visual.TileLarge = title;
 
             try
             {
