@@ -1,102 +1,39 @@
-﻿using HENG.Models;
-using Microsoft.Toolkit.Uwp.Notifications;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.Generic;
 using Windows.UI.Notifications;
 
 namespace HENG.Services
 {
     public class LiveTileService 
     {
-        public void CreateLiveTitle(BingItem bing)
+        public static void UpdateLiveTile(IEnumerable<string> urls)
         {
-            string from = bing.Datetime.ToString("yyyy-MM-dd");
-            string subject = bing.Title;
-            string body = bing.Description;
+            var title = new TileBinding();
+            var photosContent = new TileBindingContentPhotos();
+            foreach (var item in urls)
+            {
+                photosContent.Images.Add(new TileBasicImage { Source = item, AddImageQuery = true });
+            }
 
-            var content = new TileContent()
+            title.Content = photosContent;
+
+            var tileContent = new TileContent
             {
                 Visual = new TileVisual()
-                {
-                    Arguments = bing.Caption,
-
-                    TileMedium = new TileBinding()
-                    {
-                        Content = new TileBindingContentAdaptive()
-                        {
-                            PeekImage = new TilePeekImage()
-                            {
-                                Source = bing.Url
-                            },
-                            Children =
-                            {
-                                new AdaptiveText()
-                                {
-                                    Text = from,
-                                    HintWrap = true
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = subject,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                    HintWrap = true
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = body,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                    HintWrap = true
-                                }
-                            }
-                        }
-                    },
-
-                    TileWide = new TileBinding()
-                    {
-                        Content = new TileBindingContentAdaptive()
-                        {
-                            PeekImage = new TilePeekImage()
-                            {
-                                Source = bing.Url
-                            },
-                            Children =
-                            {
-                                new AdaptiveText()
-                                {
-                                    Text = from,
-                                    HintStyle = AdaptiveTextStyle.Subtitle,
-                                    HintWrap = true
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = subject,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                    HintWrap = true
-                                },
-                                new AdaptiveText()
-                                {
-                                    Text = body,
-                                    HintStyle = AdaptiveTextStyle.CaptionSubtle,
-                                    HintWrap = true
-                                }
-                            }
-                        }
-                    }
-                }
             };
+            tileContent.Visual.Branding = TileBranding.NameAndLogo;
+            tileContent.Visual.TileMedium = title;
+            tileContent.Visual.TileWide = title;
+            tileContent.Visual.TileLarge = title;
 
-            var notification = new TileNotification(content.GetXml());
-            UpdateLiveTile(notification);
-        }
-
-        private void UpdateLiveTile(TileNotification notification)
-        {
             try
             {
-                TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
+                TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+                TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(tileContent.GetXml()));
             }
             catch (Exception)
             {
-                // TODO WTS: Updating LiveTile can fail in rare conditions, please handle exceptions as appropriate to your scenario.
             }
         }
     }
