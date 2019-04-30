@@ -9,6 +9,6 @@ namespace HENG.Models
 {
     public class DataItem
     {
-        public BitmapImage ImageCache { get; set; }
+        public object ImageCache { get; set; }
     }
 }

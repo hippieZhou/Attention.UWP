@@ -1,16 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
 using HENG.Models;
 using HENG.Services;
 using System.Windows.Input;
 using System;
-using Windows.UI.Xaml.Media.Imaging;
-using GalaSoft.MvvmLight.Messaging;
 using Windows.ApplicationModel.DataTransfer;
 using HENG.Models.Shares;
 using HENG.Helpers;
 using Windows.UI.Xaml;
+using GalaSoft.MvvmLight.Threading;
 
 namespace HENG.ViewModels
 {
@@ -23,24 +21,6 @@ namespace HENG.ViewModels
             set { Set(ref _model, value); }
         }
 
-        private object _bitmap;
-        public object Bitmap
-        {
-            get { return _bitmap; }
-            set { Set(ref _bitmap, value); }
-        }
-
-
-        private Visibility _progressBarVisibility = Visibility.Visible;
-        public Visibility ProgressBarVisibility
-        {
-            get { return _progressBarVisibility; }
-            set { Set(ref _progressBarVisibility, value); }
-        }
-
-
-        private string OriginalString = string.Empty;
-
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
         {
@@ -50,54 +30,53 @@ namespace HENG.ViewModels
                 {
                     _refreshCommand = new RelayCommand(async () =>
                     {
-                        ProgressBarVisibility = Visibility.Visible;
-
                         if (typeof(BingItem) == Model.GetType())
                         {
                             var model = Model as BingItem;
-                            OriginalString = model?.Url;
-                            Bitmap = model?.Url;
+                            model.ImageCache = model.Url;
+
+                            await Singleton<DataService>.Instance.GetFromCacheAsync(model.Url, bmp =>
+                            {
+                                if (bmp != null)
+                                {
+                                    DispatcherHelper.CheckBeginInvokeOnUI(() => 
+                                    {
+                                        model.ImageCache = bmp;
+                                    });
+                                }
+                            });
                         }
                         else if (typeof(PicsumItem) == Model.GetType())
                         {
                             var model = Model as PicsumItem;
-                            OriginalString = model?.Download_url;
-                            Bitmap = model.Thumb;
+                            model.ImageCache = model.Thumb;
+
+                            await Singleton<DataService>.Instance.GetFromCacheAsync(model.Download_url, bmp =>
+                            {
+                                if (bmp != null)
+                                {
+                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                    {
+                                        model.ImageCache = bmp;
+                                    });
+                                }
+                            });
                         }
                         else if (typeof(PaperItem) == Model.GetType())
                         {
                             var model = Model as PaperItem;
-                            OriginalString = model?.Urls.Full;
-                            Bitmap = model.Urls.Thumb;
+                            model.ImageCache = model.Urls.Regular;
+                            await Singleton<DataService>.Instance.GetFromCacheAsync(model.Urls.Full, bmp =>
+                            {
+                                if (bmp != null)
+                                {
+                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                    {
+                                        model.ImageCache = bmp;
+                                    });
+                                }
+                            });
                         }
-
-                        if (string.IsNullOrWhiteSpace(OriginalString))
-                        {
-                            return;
-                        }
-
-                        await Singleton<DataService>.Instance.GetFromCacheAsync(OriginalString, bmp =>
-                         {
-                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                             {
-                                 if (bmp != null)
-                                 {
-                                     Bitmap = bmp;
-                                 }
-                                 ProgressBarVisibility = Visibility.Collapsed;
-                             });
-                         });
-                        //await BackgroundTaskService.CacheImageAsync(OriginalString, async sf =>
-                        //{
-                        //    if (sf != null)
-                        //    {
-                        //        await DispatcherHelper.RunAsync(async () =>
-                        //        {
-                        //            BitmapImage bmp = await BackgroundTaskService.DrawImageAsync(sf);
-                        //            Progress = 100;
-                        //        });
-                        //    }
-                        //});
                     });
                 }
                 return _refreshCommand;
@@ -138,6 +117,7 @@ namespace HENG.ViewModels
                             {
                                 deferral.Complete();
                             };
+
                             var data = new ShareSourceData("AppDisplayName".GetLocalized());
                             data.SetWebLink(new Uri("http://www.baidu.com"));
                             data.SetText("Hello World");
