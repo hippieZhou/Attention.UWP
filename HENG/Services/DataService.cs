@@ -51,7 +51,7 @@ namespace HENG.Services
     /// </summary>
     public partial class DataService
     {
-        public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://hippiezhou.fun/api/bings?page={page}&per_page={per_page}";
             string json = await GetBingJsonAsync(url, cancellationToken);
@@ -90,7 +90,7 @@ namespace HENG.Services
     /// </summary>
     public partial class DataService
     {
-        public async Task<IEnumerable<PaperItem>> GetNewestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PaperItem>> GetNewestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c68ffb9463b7fbfe72b0db0?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
@@ -98,7 +98,7 @@ namespace HENG.Services
             return items;
         }
 
-        public async Task<IEnumerable<PaperItem>> GetHottestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PaperItem>> GetHottestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c69251c9b1c011c41bb97be?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
@@ -106,7 +106,7 @@ namespace HENG.Services
             return items;
         }
 
-        public async Task<IEnumerable<PaperItem>> GetGirlsAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PaperItem>> GetGirlsAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c81087e6aee28c541eefc26?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
@@ -114,7 +114,7 @@ namespace HENG.Services
             return items;
         }
 
-        public async Task<IEnumerable<PaperItem>> GetSkyAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PaperItem>> GetSkyAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c81f64c96fad8fe211f5367?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
@@ -147,7 +147,7 @@ namespace HENG.Services
     /// </summary>
     public partial class DataService
     {
-        public async Task<IEnumerable<PicsumItem>> GetPicsumAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PicsumItem>> GetPicsumAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://picsum.photos/v2/list?page={page}&limit={per_page}";
             string json = await GetPicsumJsonAsync(url, cancellationToken);

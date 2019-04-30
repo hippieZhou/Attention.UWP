@@ -86,7 +86,8 @@
                 <muxc:NavigationViewItem
                     x:Uid="Shell_Download"
                     helpers:NavHelper.NavigateTo="HENG.ViewModels.DownloadViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                    Style="{StaticResource NavigationViewAnimatedItemStyle}"
+                    Visibility="Collapsed">
                     <muxc:NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Download" />
                     </muxc:NavigationViewItem.Icon>

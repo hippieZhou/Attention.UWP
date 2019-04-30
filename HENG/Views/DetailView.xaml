@@ -17,7 +17,7 @@
                     IsCacheEnabled="True"
                     PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
                     PlaceholderStretch="None"
-                    Source="{x:Bind ImageCache, Mode=OneWay}"
+                    Source="{x:Bind ImageCache}"
                     Stretch="UniformToFill"
                     UseLayoutRounding="True" />
             </Grid>
