@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using HENG.Models;
 using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
+using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace HENG.Services
@@ -37,6 +38,12 @@ namespace HENG.Services
                 var bmp = await ImageCache.Instance.GetFromCacheAsync(new Uri(url));
                 action(bmp);
             }).ConfigureAwait(false); ;
+        }
+
+        public async Task<StorageFile> GetFileFromCacheAsync(string url)
+        {
+            var sf = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(url));
+            return sf;
         }
     }
     /// <summary>

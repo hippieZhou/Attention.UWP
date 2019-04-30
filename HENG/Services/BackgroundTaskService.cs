@@ -44,7 +44,7 @@ namespace HENG.Services
                     await bitmapImage.SetSourceAsync(fileStream);
                     return bitmapImage;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
