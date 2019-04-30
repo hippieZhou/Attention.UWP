@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,8 +14,9 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Notifications;
 
-namespace HENG.Helpers
+namespace HENG.Services
 {
     public enum DownloadStartResult
     {
@@ -23,8 +26,10 @@ namespace HENG.Helpers
         AllreadyDownloaded,
     }
 
-    public static class BackgroundDownloadHelper
+    public static class BackgroundDownloadService
     {
+        private static ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+
         #region 共有方法
         public static async Task AttachToDownloadsAsync()
         {
@@ -36,7 +41,7 @@ namespace HENG.Helpers
             }
         }
 
-        public static async Task<DownloadStartResult> Download(Uri sourceUri, Action<bool> action)
+        public static async Task<DownloadStartResult> Download(Uri sourceUri)
         {
             var hash = SafeHashUri(sourceUri);
             var file = await CheckLocalFileExistsFromUriHash(sourceUri);
@@ -52,12 +57,10 @@ namespace HENG.Helpers
                     {
                         if (state.Exception != null)
                         {
-                            action(false);
                             Trace.WriteLine($"An error occured with this download {state.Exception}");
                         }
                         else
                         {
-                            action(true);
                             Trace.WriteLine("Download Completed");
                         }
                     });
@@ -79,7 +82,6 @@ namespace HENG.Helpers
             string hash = SafeHashUri(sourceUri);
             return await CheckLocalFileExists(hash);
         }
-
         #endregion
 
         private static async Task<bool> IsDownloading(Uri sourceUri)
@@ -128,7 +130,8 @@ namespace HENG.Helpers
             StorageFile file = null;
             try
             {
-                file = await ApplicationData.Current.LocalCacheFolder.GetFileAsync(fileName);
+                var folder = await AppSettingService.GetDeaultDownloadPathAsync();
+                file = await folder.GetFileAsync(fileName);
                 var props = await file.GetBasicPropertiesAsync();
                 if (props.Size == 0)
                 {
@@ -161,6 +164,7 @@ namespace HENG.Helpers
             BackgroundDownloader downloader = new BackgroundDownloader(completionGroup);
             downloader.TransferGroup = group;
             group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            CreateNotifications(downloader);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
@@ -168,6 +172,10 @@ namespace HENG.Helpers
 
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
             var downloadTask = download.StartAsync().AsTask(progressCallback);
+
+            string tag = GetFileNameFromUri(target);
+
+            CreateToast(tag, localFilename);
 
             try
             {
@@ -184,12 +192,13 @@ namespace HENG.Helpers
 
         private static void DownloadProgress(DownloadOperation obj)
         {
+            Trace.WriteLine(obj.Progress.ToString());
+
             int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
 
-            var msg = String.Format("{0} of {1} kb. downloaded - %{2} complete.", obj.Progress.BytesReceived / 1024, obj.Progress.TotalBytesToReceive / 1024, progress);
-            Trace.WriteLine(msg);
+            string tag = GetFileNameFromUri(obj.RequestedUri);
 
-            //Messenger.Default.Send(new NotificationMessage<double>(progress, obj.RequestedUri.OriginalString));
+            UpdateToast(obj.ResultFile.Name, progress);
         }
 
         private static async Task<StorageFile> GetLocalFileFromName(string filename)
@@ -197,13 +206,93 @@ namespace HENG.Helpers
             StorageFile file = null;
             try
             {
-                file = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+                var folder = await AppSettingService.GetDeaultDownloadPathAsync();
+                file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             }
             catch (FileNotFoundException)
             {
             }
 
             return file;
+        }
+
+        private static string GetFileNameFromUri(Uri sourceUri)
+        {
+            return Path.GetFileName(sourceUri.PathAndQuery);
+        }
+
+        private static void CreateNotifications(BackgroundDownloader downloader)
+        {
+            var successToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            successToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "Downloads completed successfully.";
+            ToastNotification successToast = new ToastNotification(successToastXml);
+            downloader.SuccessToastNotification = successToast;
+
+            var failureToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            failureToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "At least one download completed with failure.";
+            ToastNotification failureToast = new ToastNotification(failureToastXml);
+            downloader.FailureToastNotification = failureToast;
+        }
+
+        private static void CreateToast(string title, string tag)
+        {
+            ToastContent toastContent = new ToastContent()
+            {
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = "IMG downloading...",
+                            },
+
+                            new AdaptiveProgressBar()
+                            {
+                                Title = title,
+                                Value = new BindableProgressBarValue("progressValue"),
+                                Status = "Downloading...",
+                            },
+                        },
+                    },
+                },
+            };
+
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", "0" }
+            };
+
+            // And create the toast notification
+            ToastNotification notification = new ToastNotification(toastContent.GetXml())
+            {
+                Tag = tag,
+                Data = new NotificationData(data),
+            };
+
+            // And then send the toast
+            ToastNotificationManager.CreateToastNotifier().Show(notification);
+        }
+
+        private static void UpdateToast(string toastTag, double progressValue)
+        {
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", progressValue.ToString() }
+            };
+
+            try
+            {
+                _notifier.Update(new NotificationData(data), toastTag);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HENG.Models;
 using HENG.Services;
 using System.Windows.Input;
 using System;
@@ -10,6 +9,7 @@ using HENG.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using System.Collections.Generic;
 using Windows.Storage;
+using System.Diagnostics;
 
 namespace HENG.ViewModels
 {
@@ -31,55 +31,55 @@ namespace HENG.ViewModels
                 {
                     _refreshCommand = new RelayCommand(() =>
                     {
-                        CaseModel(Model, async b1 =>
-                        {
-                            b1.ImageCache = b1.Url;
-                            Model = b1;
+                        Model.ParseModel(async b1 =>
+                       {
+                           b1.ImageCache = b1.Url;
+                           Model = b1;
 
-                            await Singleton<DataService>.Instance.GetFromCacheAsync(b1.Url, bmp =>
-                            {
-                                if (bmp != null)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        b1.ImageCache = bmp;
-                                        Model = b1;
-                                    });
-                                }
-                            });
-                        }, async b2 =>
-                        {
-                            b2.ImageCache = b2.Thumb;
-                            Model = b2;
+                           await Singleton<DataService>.Instance.GetFromCacheAsync(b1.Url, bmp =>
+                           {
+                               if (bmp != null)
+                               {
+                                   DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                   {
+                                       b1.ImageCache = bmp;
+                                       Model = b1;
+                                   });
+                               }
+                           });
+                       }, async b2 =>
+                       {
+                           b2.ImageCache = b2.Thumb;
+                           Model = b2;
 
-                            await Singleton<DataService>.Instance.GetFromCacheAsync(b2.Download_url, bmp =>
-                            {
-                                if (bmp != null)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        b2.ImageCache = bmp;
-                                        Model = b2;
-                                    });
-                                }
-                            });
-                        }, async b3 =>
-                        {
-                            b3.ImageCache = b3.Urls.Regular;
-                            Model = b3;
+                           await Singleton<DataService>.Instance.GetFromCacheAsync(b2.Download_url, bmp =>
+                           {
+                               if (bmp != null)
+                               {
+                                   DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                   {
+                                       b2.ImageCache = bmp;
+                                       Model = b2;
+                                   });
+                               }
+                           });
+                       }, async b3 =>
+                       {
+                           b3.ImageCache = b3.Urls.Regular;
+                           Model = b3;
 
-                            await Singleton<DataService>.Instance.GetFromCacheAsync(b3.Urls.Full, bmp =>
-                            {
-                                if (bmp != null)
-                                {
-                                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                    {
-                                        b3.ImageCache = bmp;
-                                        Model = b3;
-                                    });
-                                }
-                            });
-                        });
+                           await Singleton<DataService>.Instance.GetFromCacheAsync(b3.Urls.Full, bmp =>
+                           {
+                               if (bmp != null)
+                               {
+                                   DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                   {
+                                       b3.ImageCache = bmp;
+                                       Model = b3;
+                                   });
+                               }
+                           });
+                       });
                     });
                 }
                 return _refreshCommand;
@@ -95,8 +95,29 @@ namespace HENG.ViewModels
                 {
                     _downloadCommand = new RelayCommand(() =>
                     {
-                        //var cts = new CancellationTokenSource();
-                        //var bmp = await BackgroundTaskService.CacheImageAsync(Model, cts);
+                        var url = string.Empty;
+                        Model.ParseModel(b1 =>
+                        {
+                            url = b1.Url;
+                        }, b2 =>
+                        {
+                            url = b2.Download_url;
+
+                        }, b3 =>
+                        {
+                            url = b3.Urls.Full;
+                        });
+                        if (!string.IsNullOrWhiteSpace(url))
+                        {
+                            var task = BackgroundDownloadService.Download(new Uri(url));
+                            task.ContinueWith((state) =>
+                            {
+                                if (state.Result == DownloadStartResult.AllreadyDownloaded)
+                                {
+                                }
+                            });
+                            Trace.WriteLine("Downloading...");
+                        }
                     });
                 }
                 return _downloadCommand;
@@ -123,7 +144,7 @@ namespace HENG.ViewModels
 
                             var data = new ShareSourceData("AppDisplayName".GetLocalized());
 
-                            CaseModel(Model, async b1 => 
+                            Model.ParseModel(async b1 =>
                             {
                                 data.SetWebLink(new Uri(b1.Url));
                                 var sf = await Singleton<DataService>.Instance.GetFileFromCacheAsync(b1.Url);
@@ -133,7 +154,7 @@ namespace HENG.ViewModels
                                     data.SetImage(sf);
                                 }
                                 data.SetText(b1.Description);
-                            }, async b2 => 
+                            }, async b2 =>
                             {
                                 data.SetWebLink(new Uri(b2.Download_url));
                                 var sf = await Singleton<DataService>.Instance.GetFileFromCacheAsync(b2.Download_url);
@@ -144,7 +165,7 @@ namespace HENG.ViewModels
                                 }
                                 data.SetText(b2.Author);
 
-                            }, async b3 => 
+                            }, async b3 =>
                             {
                                 data.SetWebLink(new Uri(b3.Urls.Full));
                                 var sf = await Singleton<DataService>.Instance.GetFileFromCacheAsync(b3.Urls.Full);
@@ -169,24 +190,6 @@ namespace HENG.ViewModels
                     });
                 }
                 return _shareCommand;
-            }
-        }
-
-        private void CaseModel(object model, Action<BingItem> bingAction, Action<PicsumItem> PicsumAction, Action<PaperItem> PaperActon)
-        {
-            var type = model.GetType();
-
-            if (typeof(BingItem) == type)
-            {
-                bingAction((BingItem)model);
-            }
-            else if (typeof(PicsumItem) == type)
-            {
-                PicsumAction((PicsumItem)model);
-            }
-            else if (typeof(PaperItem) == type)
-            {
-                PaperActon((PaperItem)model);
             }
         }
     }

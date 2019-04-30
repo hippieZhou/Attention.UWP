@@ -46,7 +46,7 @@ namespace HENG
 
             await DispatcherHelper.UIDispatcher.RunIdleAsync(async s =>
             {
-                await BackgroundDownloadHelper.AttachToDownloadsAsync();
+                await BackgroundDownloadService.AttachToDownloadsAsync();
             });
         }
 

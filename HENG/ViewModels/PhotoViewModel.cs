@@ -9,6 +9,8 @@ using System;
 using GalaSoft.MvvmLight.Messaging;
 using HENG.Helpers;
 using System.Diagnostics;
+using HENG.Models;
+using HENG.Services;
 
 namespace HENG.ViewModels
 {
@@ -97,9 +99,30 @@ namespace HENG.ViewModels
                     {
                         if (typeof(IType) == model.GetType())
                         {
-                            //var cts = new CancellationTokenSource();
-                            //await Singleton<DataService>.Instance.DownloadImageAsync(model, cts);
-                            Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
+                            var url = string.Empty;
+                            model.ParseModel(b1 => 
+                            {
+                                url = b1.Url;
+                            }, b2 => 
+                            {
+                                url = b2.Download_url;
+
+                            }, b3 => 
+                            {
+                                url = b3.Urls.Full;
+                            });
+                            if (!string.IsNullOrWhiteSpace(url))
+                            {
+                                var task = BackgroundDownloadService.Download(new Uri(url));
+                                task.ContinueWith((state) =>
+                                {
+                                    if (state.Result == DownloadStartResult.AllreadyDownloaded)
+                                    {
+                                    }
+                                });
+                                Trace.WriteLine("Downloading...");
+                                Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
+                            }
                         }
                     });
                 }
