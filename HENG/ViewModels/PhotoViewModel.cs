@@ -8,8 +8,6 @@ using Windows.UI.Xaml;
 using System;
 using GalaSoft.MvvmLight.Messaging;
 using HENG.Helpers;
-using System.Diagnostics;
-using HENG.Models;
 using HENG.Services;
 
 namespace HENG.ViewModels
@@ -120,8 +118,6 @@ namespace HENG.ViewModels
                                     {
                                     }
                                 });
-                                Trace.WriteLine("Downloading...");
-                                Messenger.Default.Send(new NotificationMessageAction<string>(this, "downloading".GetLocalized(), reply => { Trace.WriteLine(reply); }));
                             }
                         }
                     });

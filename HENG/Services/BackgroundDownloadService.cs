@@ -20,7 +20,6 @@ namespace HENG.Services
 {
     public enum DownloadStartResult
     {
-        None,
         Started,
         Error,
         AllreadyDownloaded,
@@ -82,6 +81,28 @@ namespace HENG.Services
             string hash = SafeHashUri(sourceUri);
             return await CheckLocalFileExists(hash);
         }
+
+        public static async Task CheckCompletionResult(IBackgroundTaskInstance instance)
+        {
+            var deferral = instance.GetDeferral();
+            if (instance.TriggerDetails is BackgroundTransferCompletionGroupTriggerDetails trigger)
+            {
+                foreach (var item in trigger.Downloads)
+                {
+                    // TODO: handle other bad statuses
+                    if (item.Progress.Status == BackgroundTransferStatus.Error)
+                    {
+                        await item.ResultFile.DeleteAsync();
+                    }
+                    else if (item.Progress.Status == BackgroundTransferStatus.Completed)
+                    {
+                        SetItemDownloaded(item);
+                    }
+                }
+            }
+
+            deferral?.Complete();
+        }
         #endregion
 
         private static async Task<bool> IsDownloading(Uri sourceUri)
@@ -116,6 +137,11 @@ namespace HENG.Services
             return $"{hash}.jpg";
         }
 
+        private static void SetItemDownloaded(DownloadOperation item)
+        {
+            DownloadProgress(item);
+        }
+
         private static void RegisterBackgroundTask(IBackgroundTrigger trigger)
         {
             var builder = new BackgroundTaskBuilder();
@@ -148,28 +174,11 @@ namespace HENG.Services
 
         private static async Task StartDownload(Uri target, BackgroundTransferPriority priority, string localFilename)
         {
-            var result = await BackgroundExecutionManager.RequestAccessAsync();
-            StorageFile destinationFile;
-            destinationFile = await GetLocalFileFromName(localFilename);
-
-            var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
-            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
-
-            BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
-
-            // this will cause the app to be activated when the download completes and
-            // CheckCompletionResult will be called for the final download state
-            RegisterBackgroundTask(completionGroup.Trigger);
-
-            BackgroundDownloader downloader = new BackgroundDownloader(completionGroup);
-            downloader.TransferGroup = group;
-            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            StorageFile destinationFile = await GetLocalFileFromName(localFilename);
+            BackgroundDownloader downloader = new BackgroundDownloader();
             CreateNotifications(downloader);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
-
-            completionGroup.Enable();
-
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
             var downloadTask = download.StartAsync().AsTask(progressCallback);
 

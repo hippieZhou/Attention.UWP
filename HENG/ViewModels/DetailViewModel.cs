@@ -116,7 +116,6 @@ namespace HENG.ViewModels
                                 {
                                 }
                             });
-                            Trace.WriteLine("Downloading...");
                         }
                     });
                 }
