@@ -106,8 +106,10 @@
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FlipPanel.cs" />
     <Compile Include="Helpers\DataRequestExtensions.cs" />
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Helpers\Singleton.cs" />
     <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\DataItem.cs" />
+    <Compile Include="Models\LocalItem.cs" />
     <Compile Include="Models\PaperItem.cs" />
     <Compile Include="Models\PicsumItem.cs" />
     <Compile Include="Models\Shares\ShareSourceData.cs" />
@@ -129,15 +132,15 @@
       <DependentUpon>PhotoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DetailViewModel.cs" />
-    <Compile Include="ViewModels\DownloadViewModel.cs" />
+    <Compile Include="ViewModels\LocalViewModel.cs" />
     <Compile Include="ViewModels\NewestViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\PicsumViewModel.cs" />
     <Compile Include="Views\DetailView.xaml.cs">
       <DependentUpon>DetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadView.xaml.cs">
-      <DependentUpon>DownloadView.xaml</DependentUpon>
+    <Compile Include="Views\LocalView.xaml.cs">
+      <DependentUpon>LocalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PicsumView.xaml.cs">
       <DependentUpon>PicsumView.xaml</DependentUpon>
@@ -265,7 +268,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadView.xaml">
+    <Page Include="Views\LocalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -334,7 +337,7 @@
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.2.190416008-prerelease</Version>
+      <Version>2.2.190430003-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>

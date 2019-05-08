@@ -84,12 +84,11 @@
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator />
                 <muxc:NavigationViewItem
-                    x:Uid="Shell_Download"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.DownloadViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}"
-                    Visibility="Collapsed">
+                    x:Uid="Shell_Local"
+                    helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel"
+                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
                     <muxc:NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Download" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE154;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>

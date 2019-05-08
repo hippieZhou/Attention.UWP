@@ -153,8 +153,8 @@
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="Shell_Download.Content" xml:space="preserve">
-    <value>Download</value>
+  <data name="Shell_Local.Content" xml:space="preserve">
+    <value>Local</value>
   </data>
   <data name="Shell_Grils.Content" xml:space="preserve">
     <value>Girls</value>

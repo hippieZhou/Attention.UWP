@@ -106,7 +106,8 @@ namespace HENG.ViewModels
                 {
                     _loadedCommand = new RelayCommand(() =>
                     {
-                        var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
+                        //var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
+                        var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p=>NavHelper.GetNavigateTo(p) == typeof(LocalViewModel).FullName);
                         if (first != null)
                         {
                             var pageKey = NavHelper.GetNavigateTo(first);
@@ -168,7 +169,6 @@ namespace HENG.ViewModels
                 }
                 return _backCommand; }
         }
-
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
