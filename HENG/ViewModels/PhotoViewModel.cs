@@ -111,7 +111,7 @@ namespace HENG.ViewModels
                             });
                             if (!string.IsNullOrWhiteSpace(url))
                             {
-                                var task = BackgroundDownloadService.Download(new Uri(url));
+                                var task = BackgroundTaskService.Download(new Uri(url));
                                 task.ContinueWith((state) =>
                                 {
                                     if (state.Result == DownloadStartResult.AllreadyDownloaded)

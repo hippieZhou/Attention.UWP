@@ -30,6 +30,7 @@ namespace HENG
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
                 titleBar.ButtonBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                titleBar.ButtonForegroundColor = Colors.Transparent;
             }
 
             CustomTitleBar();
@@ -45,13 +46,14 @@ namespace HENG
             DispatcherHelper.Initialize();
             await DispatcherHelper.UIDispatcher.RunIdleAsync(async s =>
             {
-                await BackgroundDownloadService.AttachToDownloadsAsync();
+                await BackgroundTaskService.AttachToDownloadsAsync();
             });
         }
 
         private async Task InitializeAsync()
         {
             await ThemeSelectorService.InitializeAsync();
+            await BackgroundTaskService.RegisterBackgroundTaskAsync();
         }
 
         public static async Task StartupAsync()
@@ -73,7 +75,7 @@ namespace HENG
         protected async override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             var instance = args?.TaskInstance;
-            await BackgroundDownloadService.CheckCompletionResult(instance);
+            await BackgroundTaskService.CheckCompletionResult(instance);
             base.OnBackgroundActivated(args);
         }
     }

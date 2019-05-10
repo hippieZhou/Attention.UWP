@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using HENG.BackgroundTasks;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
@@ -25,11 +26,16 @@ namespace HENG.Services
         AllreadyDownloaded,
     }
 
-    public static class BackgroundDownloadService
+    public static class BackgroundTaskService
     {
+        public static IEnumerable<BackgroundTask> BackgroundTasks => BackgroundTaskInstances.Value;
+
+        private static readonly Lazy<IEnumerable<BackgroundTask>> BackgroundTaskInstances = new Lazy<IEnumerable<BackgroundTask>>(() => CreateInstances());
+
         private static ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
 
         #region 共有方法
+
         public static async Task AttachToDownloadsAsync()
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
@@ -142,13 +148,26 @@ namespace HENG.Services
             DownloadProgress(item);
         }
 
-        private static void RegisterBackgroundTask(IBackgroundTrigger trigger)
+        public static async Task RegisterBackgroundTaskAsync()
         {
-            var builder = new BackgroundTaskBuilder();
-            builder.Name = "DownloadCompleteTrigger";
-            builder.SetTrigger(trigger);
+            BackgroundExecutionManager.RemoveAccess();
+            var result = await BackgroundExecutionManager.RequestAccessAsync();
 
-            BackgroundTaskRegistration task = builder.Register();
+            if (result == BackgroundAccessStatus.DeniedBySystemPolicy || result == BackgroundAccessStatus.DeniedByUser)
+            {
+                return;
+            }
+
+            foreach (var task in BackgroundTasks)
+            {
+                task.Register();
+            }
+
+            //var builder = new BackgroundTaskBuilder();
+            //builder.Name = "DownloadCompleteTrigger";
+            //builder.SetTrigger(trigger);
+
+            //BackgroundTaskRegistration task = builder.Register();
         }
 
         private static async Task<StorageFile> CheckLocalFileExists(string fileName)
@@ -302,6 +321,14 @@ namespace HENG.Services
             {
                 Debug.WriteLine(ex.ToString());
             }
+        }
+
+        private static IEnumerable<BackgroundTask> CreateInstances()
+        {
+            var backgroundTasks = new List<BackgroundTask>();
+
+            backgroundTasks.Add(new DefaultBackgroundTask());
+            return backgroundTasks;
         }
     }
 }

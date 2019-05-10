@@ -1,5 +1,4 @@
 ﻿using HENG.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Helpers;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -17,15 +16,6 @@ namespace HENG.Services
 
         public static ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-        static ThemeSelectorService()
-        {
-            var Listener = new ThemeListener();
-            Listener.ThemeChanged += (sender) =>
-            {
-                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.ButtonForegroundColor = sender.CurrentTheme == ApplicationTheme.Light ? Colors.Black : Colors.White;
-            };
-        }
 
         public static async Task InitializeAsync()
         {
@@ -35,10 +25,6 @@ namespace HENG.Services
         public static async Task SetThemeAsync(ElementTheme theme)
         {
             Theme = theme;
-
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = Theme == ElementTheme.Light || Theme == ElementTheme.Default ? Colors.Black : Colors.White;
-
             await SetRequestedThemeAsync();
             await SaveThemeInSettingsAsync(Theme);
         }

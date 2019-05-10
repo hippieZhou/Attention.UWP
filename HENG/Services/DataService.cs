@@ -54,6 +54,7 @@ namespace HENG.Services
         public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://hippiezhou.fun/api/bings?page={page}&per_page={per_page}";
+            //var url = $"https://hippiezhou.fun/v1/bing/all?page={page}&per_page={per_page}";
             string json = await GetBingJsonAsync(url, cancellationToken);
             var items = JsonConvert.DeserializeObject<BingSource>(json)?.Bings;
             return items;
