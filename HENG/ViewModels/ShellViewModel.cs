@@ -76,6 +76,8 @@ namespace HENG.ViewModels
             set { Set(ref _selected, value); }
         }
 
+        public object Header => (Selected is muxc.NavigationViewItem item) ? item.Content : string.Empty;
+
         private object _photo;
         public object Photo
         {

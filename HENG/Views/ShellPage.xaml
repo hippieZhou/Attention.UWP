@@ -34,6 +34,9 @@
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
+            <muxc:NavigationView.Header>
+                <TextBlock Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
+            </muxc:NavigationView.Header>
 
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem
@@ -170,7 +173,7 @@
             </animations:Implicit.HideAnimations>
         </local:DetailView>
 
-        <VisualStateManager.VisualStateGroups>
+        <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
@@ -189,6 +192,6 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </Page>
