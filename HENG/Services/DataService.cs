@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -53,8 +54,7 @@ namespace HENG.Services
     {
         public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var url = $"https://hippiezhou.fun/api/bings?page={page}&per_page={per_page}";
-            //var url = $"https://hippiezhou.fun/v1/bing/all?page={page}&per_page={per_page}";
+            var url = $"https://hippiezhou.fun/api/v1/bing/?page={page}&per_page={per_page}";
             string json = await GetBingJsonAsync(url, cancellationToken);
             var items = JsonConvert.DeserializeObject<BingSource>(json)?.Bings;
             return items;
@@ -65,18 +65,12 @@ namespace HENG.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "pbkdf2:sha256:150000$VS0sGDlJ$b02b143d9945c8bbb02f51d59d9c73f10a67e8bea87de1fb33e88b08f16d1614");
+              
                 string json = string.Empty;
-
                 if (!token.IsCancellationRequested)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("dev", "hippiezhou.fun");
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url)
-                    {
-                        Content = new StringContent("hippiezhou.fun", Encoding.UTF8, "application/json")
-                    };
-                    HttpResponseMessage response = await client.SendAsync(request, token).ConfigureAwait(false);
+                    HttpResponseMessage response = await client.GetAsync(url, token).ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
                     json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 }

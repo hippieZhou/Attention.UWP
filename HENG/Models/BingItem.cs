@@ -6,13 +6,19 @@ namespace HENG.Models
 {
     public class BingSource
     {
-        [JsonProperty(PropertyName = "code")]
-        public int Code { get; set; }
-        [JsonProperty(PropertyName = "data")]
+        [JsonProperty(PropertyName = "items")]
         public BingItem[] Bings { get; set; }
+        [JsonProperty(PropertyName = "page")]
+        public int Page { get; set; }
+        [JsonProperty(PropertyName = "pages")]
+        public int Pages { get; set; }
+        [JsonProperty(PropertyName = "per_page")]
+        public int Per_page { get; set; }
+        [JsonProperty(PropertyName = "total")]
+        public int Total { get; set; }
     }
 
-    public class BingItem: DataItem
+    public class BingItem : DataItem
     {
         [JsonProperty(PropertyName = "caption")]
         public string Caption { get; set; }

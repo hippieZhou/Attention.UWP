@@ -24,16 +24,6 @@ namespace HENG
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            void CustomTitleBar()
-            {
-                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.ButtonBackgroundColor = Colors.Transparent;
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                titleBar.ButtonForegroundColor = Colors.Transparent;
-            }
-
-            CustomTitleBar();
             await InitializeAsync();
             if (e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
@@ -48,6 +38,17 @@ namespace HENG
             {
                 await BackgroundTaskService.AttachToDownloadsAsync();
             });
+
+
+            ExtendAcrylicIntoTitleBar();
+
+            void ExtendAcrylicIntoTitleBar()
+            {
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                titleBar.ButtonBackgroundColor = Colors.Transparent;
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            }
         }
 
         private async Task InitializeAsync()

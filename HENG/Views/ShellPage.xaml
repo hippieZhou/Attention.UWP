@@ -99,7 +99,13 @@
                         x:Name="ContentFrame"
                         Margin="0,-32,0,0"
                         Background="{ThemeResource PrimaryPageBackground}"
-                        IsTabStop="True" />
+                        IsTabStop="True">
+                        <Frame.ContentTransitions>
+                            <TransitionCollection>
+                                <NavigationThemeTransition />
+                            </TransitionCollection>
+                        </Frame.ContentTransitions>
+                    </Frame>
                     <Grid
                         x:Name="NotifGrid"
                         Height="44"
