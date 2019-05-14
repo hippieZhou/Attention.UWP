@@ -12,7 +12,6 @@
     mc:Ignorable="d">
     <Page.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
-
     </Page.Resources>
 
     <i:Interaction.Behaviors>

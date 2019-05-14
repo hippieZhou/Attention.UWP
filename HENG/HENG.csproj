@@ -108,7 +108,6 @@
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FlipPanel.cs" />
     <Compile Include="Helpers\DataRequestExtensions.cs" />
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
@@ -285,10 +284,6 @@
     <Page Include="Themes\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\ScrollViewer.xaml">
       <SubType>Designer</SubType>

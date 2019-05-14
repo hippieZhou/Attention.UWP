@@ -22,7 +22,7 @@ namespace HENG.Models
     {
         [JsonProperty(PropertyName = "caption")]
         public string Caption { get; set; }
-        [JsonProperty(PropertyName = "datetime"), JsonConverter(typeof(BingDateTimeConverter))]
+        [JsonProperty(PropertyName = "pub_date"), JsonConverter(typeof(BingDateTimeConverter))]
         public DateTime Datetime { get; set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }

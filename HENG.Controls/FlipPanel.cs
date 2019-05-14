@@ -1,12 +1,20 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.UI.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Hosting;
-using System.Numerics;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
-namespace HENG
+// The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
+
+namespace HENG.Controls
 {
     [TemplatePart(Name = PART_FrontPanel, Type = typeof(Grid))]
     [TemplatePart(Name = PART_BackPanel, Type = typeof(Grid))]
@@ -74,7 +82,7 @@ namespace HENG
             _backPanel.Opacity = 0;
 
 
-            SizeChanged += (sender, e) => 
+            SizeChanged += (sender, e) =>
             {
                 var visual = VisualExtensions.GetVisual(this);
                 UpdatePerspective(visual);
