@@ -117,6 +117,7 @@
     <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\Singleton.cs" />
+    <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\DataItem.cs" />
     <Compile Include="Models\LocalItem.cs" />
@@ -184,6 +185,9 @@
     <PRIResource Include="Stirngs\en-US\Resources.resw" />
     <Content Include="Assets\305-loader-4.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Connected Services\HockeyApp\ConnectedService.json" />
     <None Include="HENG_StoreKey.pfx" />
@@ -320,6 +324,15 @@
     </PackageReference>
     <PackageReference Include="HockeySDK.UWP">
       <Version>4.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration">
+      <Version>3.0.0-preview5.19227.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder">
+      <Version>3.0.0-preview5.19227.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>3.0.0-preview5.19227.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>

@@ -10,11 +10,15 @@ using Windows.UI.ViewManagement;
 using Windows.UI;
 using HENG.Services;
 using System.Threading.Tasks;
+using HENG.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace HENG
 {
     sealed partial class App
     {
+        public AppSettings Settings { get; private set; }
+
         public App()
         {
             HockeyClient.Current.Configure("f9f04c24aefd4b3fa38f825676a79aa6");
@@ -53,6 +57,10 @@ namespace HENG
 
         private async Task InitializeAsync()
         {
+            var builder = new ConfigurationBuilder().AddJsonFile("AppSettings.json", false, true);
+            var conf = builder.Build();
+            Settings = conf.Get<AppSettings>();
+
             await ThemeSelectorService.InitializeAsync();
             await BackgroundTaskService.RegisterBackgroundTaskAsync();
         }
