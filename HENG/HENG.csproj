@@ -104,6 +104,10 @@
     </Compile>
     <Compile Include="BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="BackgroundTasks\DefaultBackgroundTask.cs" />
+    <Compile Include="Clients\BingClient.cs" />
+    <Compile Include="Clients\IBaseClient.cs" />
+    <Compile Include="Clients\PaperClient.cs" />
+    <Compile Include="Clients\PicsumClient.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>

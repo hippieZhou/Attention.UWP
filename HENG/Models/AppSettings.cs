@@ -8,7 +8,12 @@ namespace HENG.Models
 {
     public class AppSettings
     {
-        public string ApiKey { get; set; }
+        public Bingconf BingConf { get; set; }
         public string DownloadPath { get; set; }
+    }
+
+    public class Bingconf
+    {
+        public string ApiKey { get; set; }
     }
 }

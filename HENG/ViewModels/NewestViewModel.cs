@@ -16,7 +16,7 @@ namespace HENG.ViewModels
     {
         public async Task<IEnumerable<PaperItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var items = await Singleton<DataService>.Instance.GetNewestAsync(++pageIndex, pageSize, cancellationToken);
+            var items = await Singleton<DataService>.Instance.GetItemsForNewestAsync(++pageIndex, pageSize, cancellationToken);
             return items;
         }
     }

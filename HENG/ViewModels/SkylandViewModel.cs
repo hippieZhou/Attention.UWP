@@ -1,17 +1,10 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using HENG.Helpers;
-using HENG.Models;
-using HENG.Services;
+﻿using HENG.Models;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Uwp;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.UI.Xaml;
-using System;
-using GalaSoft.MvvmLight.Threading;
+using HENG.Helpers;
+using HENG.Services;
 
 namespace HENG.ViewModels
 {
@@ -23,7 +16,7 @@ namespace HENG.ViewModels
     {
         public async Task<IEnumerable<PaperItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var items = await Singleton<DataService>.Instance.GetSkyAsync(++pageIndex, pageSize, cancellationToken);
+            var items = await Singleton<DataService>.Instance.GetItemsForSkylandAsync(++pageIndex, pageSize, cancellationToken);
             return items;
         }
     }

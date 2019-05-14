@@ -2,6 +2,10 @@
 using GalaSoft.MvvmLight.Views;
 using CommonServiceLocator;
 using HENG.Views;
+using System.Net.Http;
+using HENG.Clients;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HENG.ViewModels
 {
@@ -41,6 +45,18 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<SkylandViewModel>();
             SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+
+            SimpleIoc.Default.Register<IServiceProvider>(() =>
+            {
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddHttpClient();
+                serviceCollection.AddSingleton<BingClient>();
+                serviceCollection.AddSingleton<PicsumClient>();
+                serviceCollection.AddSingleton<PaperClient>();
+
+                var ServiceProvider = serviceCollection.BuildServiceProvider();
+                return ServiceProvider;
+            }); 
         }
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
@@ -54,5 +70,7 @@ namespace HENG.ViewModels
         public SkylandViewModel Skyland => ServiceLocator.Current.GetInstance<SkylandViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+
+        public IServiceProvider ServiceProvider => ServiceLocator.Current.GetInstance<IServiceProvider>();
     }
 }
