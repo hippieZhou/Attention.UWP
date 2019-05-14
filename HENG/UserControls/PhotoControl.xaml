@@ -461,7 +461,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootGrid.Margin" Value="0,4,0,0" />
+                        <Setter Target="RootGrid.Margin" Value="0,4,0,12" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -469,7 +469,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootGrid.Margin" Value="0" />
+                        <Setter Target="RootGrid.Margin" Value="0,0,0,12" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
