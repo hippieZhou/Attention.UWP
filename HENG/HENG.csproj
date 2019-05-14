@@ -334,6 +334,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json">
       <Version>3.0.0-preview5.19227.9</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http">
+      <Version>3.0.0-preview5.19227.9</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>

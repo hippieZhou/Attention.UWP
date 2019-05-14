@@ -1,7 +1,10 @@
 ﻿using HENG.ViewModels;
+using System;
+using System.Numerics;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 
 namespace HENG.Views
 {
@@ -39,5 +42,31 @@ namespace HENG.Views
         // Using a DependencyProperty as the backing store for BackCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackCommandProperty =
             DependencyProperty.Register("BackCommand", typeof(ICommand), typeof(DetailView), new PropertyMetadata(null));
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var root = (UIElement)sender;
+            InitializeAnimation(root);
+        }
+
+        private void InitializeAnimation(UIElement root)
+        {
+            var rootVisual = ElementCompositionPreview.GetElementVisual(root);
+            var compositor = rootVisual.Compositor;
+
+            var pointerEnteredAnimation = compositor.CreateVector3KeyFrameAnimation();
+            pointerEnteredAnimation.InsertKeyFrame(1.0f, new Vector3(1.1f));
+
+            var pointerExitedAnimation = compositor.CreateVector3KeyFrameAnimation();
+            pointerExitedAnimation.InsertKeyFrame(1.0f, new Vector3(1.0f));
+
+
+            root.PointerEntered += (sender, args) =>
+            {
+                rootVisual.CenterPoint = new Vector3(rootVisual.Size / 2, 0);
+                rootVisual.StartAnimation("Scale", pointerEnteredAnimation);
+            };
+            root.PointerExited += (sender, args) => rootVisual.StartAnimation("Scale", pointerExitedAnimation);
+        }
     }
 }

@@ -22,7 +22,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
         <ContentControl
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
@@ -38,6 +38,7 @@
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             BlurRadius="20"
+            Loaded="Grid_Loaded"
             OffsetY="1"
             Opacity="1"
             ShadowOpacity="1"

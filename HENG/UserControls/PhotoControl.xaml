@@ -68,7 +68,7 @@
                     <TextBlock
                         Margin="8,0"
                         VerticalAlignment="Center"
-                        FontWeight="Black"
+                        FontWeight="Medium"
                         Foreground="{ThemeResource ButtonForegroundPressed}"
                         RequestedTheme="Dark"
                         Text="{x:Bind Datetime, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}">
@@ -179,7 +179,7 @@
                     <TextBlock
                         Margin="8,0"
                         VerticalAlignment="Center"
-                        FontWeight="Black"
+                        FontWeight="Medium"
                         Foreground="{ThemeResource ButtonForegroundPressed}"
                         RequestedTheme="Dark"
                         Text="{x:Bind Author}">
@@ -296,7 +296,7 @@
                     <TextBlock
                         Margin="8,0"
                         VerticalAlignment="Center"
-                        FontWeight="Black"
+                        FontWeight="Medium"
                         Foreground="{ThemeResource ButtonForegroundPressed}"
                         RequestedTheme="Dark"
                         Text="{x:Bind Created_at, Converter={StaticResource FormatStringConverter}, ConverterParameter=yyyy-MM-dd}">
@@ -374,7 +374,7 @@
     <Grid x:Name="RootGrid">
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
-            Padding="16,12,12,12"
+            Padding="16,0,12,0"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
             DataFetchSize="1"
@@ -454,15 +454,14 @@
             </i:Interaction.Behaviors>
         </Button>
 
-        <!--<VisualStateManager.VisualStateGroups>
+        <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootGrid.Margin" Value="0" />
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,32,0,0" />
+                        <Setter Target="RootGrid.Margin" Value="0,4,0,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -470,12 +469,11 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="AdaptiveGridViewControl.Margin" Value="0,64,0,0" />
-                        <Setter Target="RootGrid.Margin" Value="0,8,0,0" />
+                        <Setter Target="RootGrid.Margin" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 
 </UserControl>

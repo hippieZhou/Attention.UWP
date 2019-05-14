@@ -52,6 +52,14 @@ namespace HENG.Services
     /// </summary>
     public partial class DataService
     {
+        //public Task<string> GetBingToken()
+        //{
+        //    var url = "https://hippiezhou.fun/api/v1/auth/";
+        //    using (var client = new HttpClient())
+        //    {
+
+        //    }
+        //}
         public async Task<IEnumerable<BingItem>> GetBingsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
         {
             var url = $"https://hippiezhou.fun/api/v1/bing/?page={page}&per_page={per_page}";
