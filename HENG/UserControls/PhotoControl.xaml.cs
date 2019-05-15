@@ -8,6 +8,9 @@ using Windows.UI.Xaml.Hosting;
 using System.Numerics;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
+using System.Diagnostics;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace HENG.UserControls
 {
@@ -135,8 +138,37 @@ namespace HENG.UserControls
         {
             if (sender is Button btn)
             {
-                DownloadCommand?.Execute(btn.DataContext);
+                DownloadCommand?.Execute(btn.CommandParameter);
             }
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            Implicit.GetAnimations(refresh)?.StartAnimation(refresh);
+        }
+
+        private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer viewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
+            if (viewer != null)
+            {
+                viewer.ViewChanging += Viewer_ViewChanging;
+                viewer.ViewChanged += Viewer_ViewChanged;
+            }
+        }
+
+        private void Viewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        {
+            if (refresh.Visibility == Visibility.Visible)
+            {
+                refresh.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Viewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            refresh.Visibility = Visibility.Visible;
+            Implicit.GetShowAnimations(refresh)?.StartAnimation(refresh);
         }
     }
 }

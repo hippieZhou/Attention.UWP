@@ -28,6 +28,7 @@
             ExpandedModeThresholdWidth="{StaticResource ExpandedModeThresholdWidth}"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             IsTabStop="False"
+            PaneDisplayMode="Auto"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
@@ -70,7 +71,7 @@
                 <muxc:NavigationViewItemSeparator />
                 <muxc:NavigationViewItem x:Uid="Shell_Local" helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE154;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9F;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>

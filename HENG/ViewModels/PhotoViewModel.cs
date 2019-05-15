@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
 using GalaSoft.MvvmLight.Messaging;
-using HENG.Helpers;
 using HENG.Services;
 
 namespace HENG.ViewModels
@@ -93,32 +92,17 @@ namespace HENG.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand<IType>(model =>
+                    _downloadCommand = new RelayCommand<string>(url =>
                     {
-                        if (typeof(IType) == model.GetType())
+                        if (!string.IsNullOrWhiteSpace(url))
                         {
-                            var url = string.Empty;
-                            model.ParseModel(b1 => 
+                            var task = BackgroundTaskService.Download(new Uri(url));
+                            task.ContinueWith((state) =>
                             {
-                                url = b1.Url;
-                            }, b2 => 
-                            {
-                                url = b2.Download_url;
-
-                            }, b3 => 
-                            {
-                                url = b3.Urls.Full;
-                            });
-                            if (!string.IsNullOrWhiteSpace(url))
-                            {
-                                var task = BackgroundTaskService.Download(new Uri(url));
-                                task.ContinueWith((state) =>
+                                if (state.Result == DownloadStartResult.AllreadyDownloaded)
                                 {
-                                    if (state.Result == DownloadStartResult.AllreadyDownloaded)
-                                    {
-                                    }
-                                });
-                            }
+                                }
+                            });
                         }
                     });
                 }

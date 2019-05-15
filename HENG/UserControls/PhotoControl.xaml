@@ -94,6 +94,7 @@
                     <Button
                         HorizontalAlignment="Right"
                         Click="DownloadButton_Click"
+                        CommandParameter="{x:Bind Url}"
                         DataContext="{x:Bind}"
                         Opacity="0"
                         Style="{ThemeResource ButtonRevealStyle}">
@@ -205,6 +206,7 @@
                     <Button
                         HorizontalAlignment="Right"
                         Click="DownloadButton_Click"
+                        CommandParameter="{x:Bind Download_url}"
                         DataContext="{x:Bind}"
                         Opacity="0"
                         Style="{ThemeResource ButtonRevealStyle}">
@@ -322,6 +324,7 @@
                     <Button
                         HorizontalAlignment="Right"
                         Click="DownloadButton_Click"
+                        CommandParameter="{x:Bind Urls.Full}"
                         DataContext="{x:Bind}"
                         Opacity="0"
                         Style="{ThemeResource ButtonRevealStyle}">
@@ -384,6 +387,7 @@
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplateSelector="{StaticResource ExDataTemplateSelector}"
             ItemsSource="{x:Bind Photos, Mode=OneWay}"
+            Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
@@ -425,30 +429,34 @@
             Margin="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
+            Click="Refresh_Click"
             Command="{x:Bind RefreshCommand}"
             RenderTransformOrigin="0.5,0.5"
             Style="{StaticResource RefreshButtonRevealStyle}">
-            <Button.RenderTransform>
-                <CompositeTransform />
-            </Button.RenderTransform>
-            <Button.Resources>
-                <Storyboard x:Name="Refresh_Sb">
-                    <DoubleAnimation
-                        d:IsOptimized="True"
-                        EnableDependentAnimation="True"
-                        RepeatBehavior="2x"
-                        Storyboard.TargetName="refresh"
-                        Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
-                        From="0"
-                        To="360"
-                        Duration="0:0:1" />
-                </Storyboard>
-            </Button.Resources>
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="Click">
-                    <ic:CallMethodAction MethodName="Begin" TargetObject="{Binding ElementName=Refresh_Sb}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
+
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    SetInitialValueBeforeDelay="True"
+                    From="0,200,0"
+                    To="0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    SetInitialValueBeforeDelay="True"
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+
+            <animations:Implicit.Animations>
+                <animations:ScalarAnimation
+                    ImplicitTarget="Angle"
+                    Target="RotationAngleInDegrees"
+                    From="0"
+                    To="720"
+                    Duration="0:0:2">
+                    <animations:ScalarKeyFrame Key="0.5" Value="360" />
+                </animations:ScalarAnimation>
+            </animations:Implicit.Animations>
         </Button>
 
         <VisualStateManager.VisualStateGroups>
