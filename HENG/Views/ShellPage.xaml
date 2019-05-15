@@ -27,70 +27,48 @@
             CompactModeThresholdWidth="{StaticResource CompactModeThresholdWidth}"
             ExpandedModeThresholdWidth="{StaticResource ExpandedModeThresholdWidth}"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-            PaneDisplayMode="Auto"
+            IsTabStop="False"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <muxc:NavigationView.Header>
-                <TextBlock Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
-            </muxc:NavigationView.Header>
 
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem
                     x:Uid="Shell_Home"
                     helpers:NavHelper.NavigateTo="HENG.ViewModels.HomeViewModel"
-                    Icon="Home"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}" />
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Picsum"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.PicsumViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                    Icon="Home" />
+                <muxc:NavigationViewItem x:Uid="Shell_Picsum" helpers:NavHelper.NavigateTo="HENG.ViewModels.PicsumViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE81E;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator />
                 <muxc:NavigationViewItemHeader x:Name="MainPagesHeader" x:Uid="Shell_MainPagesHeader" />
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Newest"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.NewestViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                <muxc:NavigationViewItem x:Uid="Shell_Newest" helpers:NavHelper.NavigateTo="HENG.ViewModels.NewestViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF146;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Hottest"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.HottestViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                <muxc:NavigationViewItem x:Uid="Shell_Hottest" helpers:NavHelper.NavigateTo="HENG.ViewModels.HottestViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF147;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Grils"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.GirlsViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                <muxc:NavigationViewItem x:Uid="Shell_Grils" helpers:NavHelper.NavigateTo="HENG.ViewModels.GirlsViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF148;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Skyland"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.SkylandViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                <muxc:NavigationViewItem x:Uid="Shell_Skyland" helpers:NavHelper.NavigateTo="HENG.ViewModels.SkylandViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF149;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator />
-                <muxc:NavigationViewItem
-                    x:Uid="Shell_Local"
-                    helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel"
-                    Style="{StaticResource NavigationViewAnimatedItemStyle}">
+                <muxc:NavigationViewItem x:Uid="Shell_Local" helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel">
                     <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE154;" />
                     </muxc:NavigationViewItem.Icon>
@@ -173,14 +151,16 @@
             </animations:Implicit.HideAnimations>
         </local:DetailView>
 
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootContent.Margin" Value="0" />
+                        <Setter Target="NavView.PaneDisplayMode" Value="Top" />
+                        <Setter Target="NavView.Header" Value="{x:Null}" />
+                        <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -188,10 +168,16 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="RootContent.Margin" Value="0,22,0,0" />
+                        <Setter Target="NavView.PaneDisplayMode" Value="Auto" />
+                        <Setter Target="NavView.Header">
+                            <Setter.Value>
+                                <TextBlock Text="{x:Bind ViewModel.Header, Mode=OneWay}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Target="MainPagesHeader.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

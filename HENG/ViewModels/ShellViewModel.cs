@@ -76,7 +76,12 @@ namespace HENG.ViewModels
             set { Set(ref _selected, value); }
         }
 
-        public object Header => (Selected is muxc.NavigationViewItem item) ? item.Content : string.Empty;
+        private object _header;
+        public object Header
+        {
+            get { return _header; }
+            set { Set(ref _header, value); }
+        }
 
         private object _photo;
         public object Photo
@@ -178,12 +183,15 @@ namespace HENG.ViewModels
 
             if (e.SourcePageType == typeof(SettingsView))
             {
+                Header = null;
                 Selected = _navView.SettingsItem;
                 RefreshIsEnabled = false;
             }
             else
             {
-                Selected = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
+                var item = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
+                Selected = item;
+                Header = item.Content;
                 RefreshIsEnabled = true;
             }
 

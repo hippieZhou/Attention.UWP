@@ -374,16 +374,14 @@
     <Grid x:Name="RootGrid">
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
-            Padding="16,0,12,0"
+            Padding="12,0,6,0"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
             DataFetchSize="1"
-            DesiredWidth="300"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ItemClickCommand}"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
-            ItemHeight="200"
             ItemTemplateSelector="{StaticResource ExDataTemplateSelector}"
             ItemsSource="{x:Bind Photos, Mode=OneWay}"
             OneRowModeEnabled="False"
@@ -421,7 +419,6 @@
                     </StackPanel>
                 </Grid>
             </controls:AdaptiveGridView.Footer>
-
         </controls:AdaptiveGridView>
         <Button
             x:Name="refresh"
@@ -462,6 +459,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Margin" Value="0,4,0,12" />
+                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="300" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="200" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -470,6 +469,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="RootGrid.Margin" Value="0,0,0,12" />
+                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="380" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="280" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

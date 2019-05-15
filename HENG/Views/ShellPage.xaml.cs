@@ -1,7 +1,6 @@
-﻿using Windows.UI.Core;
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Navigation;
 using HENG.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
+using Windows.UI.Xaml;
 
 namespace HENG.Views
 {
