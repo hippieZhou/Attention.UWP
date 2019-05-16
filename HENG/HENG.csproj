@@ -102,8 +102,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="BackgroundTasks\DefaultBackgroundTask.cs" />
     <Compile Include="Clients\BingClient.cs" />
     <Compile Include="Clients\IBaseClient.cs" />
     <Compile Include="Clients\PaperClient.cs" />
@@ -129,7 +127,6 @@
     <Compile Include="Models\PicsumItem.cs" />
     <Compile Include="Models\Shares\ShareSourceData.cs" />
     <Compile Include="Models\Shares\ShareSourceItem.cs" />
-    <Compile Include="Services\BackgroundTaskService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />

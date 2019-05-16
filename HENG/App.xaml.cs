@@ -40,13 +40,6 @@ namespace HENG
 
             Window.Current.Activate();
 
-            DispatcherHelper.Initialize();
-            await DispatcherHelper.UIDispatcher.RunIdleAsync(async s =>
-            {
-                await BackgroundTaskService.AttachToDownloadsAsync();
-            });
-
-
             ExtendAcrylicIntoTitleBar();
 
             void ExtendAcrylicIntoTitleBar()
@@ -56,6 +49,8 @@ namespace HENG
                 titleBar.ButtonBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             }
+
+            DispatcherHelper.Initialize();
         }
 
         private async Task InitializeAsync()
@@ -74,7 +69,6 @@ namespace HENG
             await LoadConfigurationAsync();
 
             await ThemeSelectorService.InitializeAsync();
-            await BackgroundTaskService.RegisterBackgroundTaskAsync();
         }
 
         public static async Task StartupAsync()
@@ -91,13 +85,6 @@ namespace HENG
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             deferral.Complete();
-        }
-
-        protected async override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
-        {
-            var instance = args?.TaskInstance;
-            await BackgroundTaskService.CheckCompletionResult(instance);
-            base.OnBackgroundActivated(args);
         }
     }
 }

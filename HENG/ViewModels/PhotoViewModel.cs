@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using System;
 using GalaSoft.MvvmLight.Messaging;
 using HENG.Services;
+using HENG.Helpers;
 
 namespace HENG.ViewModels
 {
@@ -92,17 +93,11 @@ namespace HENG.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand<string>(url =>
+                    _downloadCommand = new RelayCommand<string>(async url =>
                     {
                         if (!string.IsNullOrWhiteSpace(url))
                         {
-                            var task = BackgroundTaskService.Download(new Uri(url));
-                            task.ContinueWith((state) =>
-                            {
-                                if (state.Result == DownloadStartResult.AllreadyDownloaded)
-                                {
-                                }
-                            });
+                            await Singleton<DataService>.Instance.DownLoad(new Uri(url));
                         }
                     });
                 }

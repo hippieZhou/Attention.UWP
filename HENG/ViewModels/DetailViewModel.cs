@@ -93,7 +93,7 @@ namespace HENG.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand(() =>
+                    _downloadCommand = new RelayCommand(async () =>
                     {
                         var url = string.Empty;
                         Model.ParseModel(b1 =>
@@ -109,13 +109,7 @@ namespace HENG.ViewModels
                         });
                         if (!string.IsNullOrWhiteSpace(url))
                         {
-                            var task = BackgroundTaskService.Download(new Uri(url));
-                            task.ContinueWith((state) =>
-                            {
-                                if (state.Result == DownloadStartResult.AllreadyDownloaded)
-                                {
-                                }
-                            });
+                            await Singleton<DataService>.Instance.DownLoad(new Uri(url));
                         }
                     });
                 }
