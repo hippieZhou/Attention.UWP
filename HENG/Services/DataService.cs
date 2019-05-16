@@ -55,13 +55,13 @@ namespace HENG.Services
         private IBaseClient<PicsumItem> Picsum_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(PicsumClient)) as IBaseClient<PicsumItem>;
         private PaperClient Paper_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(PaperClient)) as PaperClient;
 
-        public async Task<IEnumerable<BingItem>> GetItemsForBingAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<BingItem>> GetItemsForBingAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
         {
             var items = await Home_Client?.GetItemsAsync(++pageIndex, pageSize, cancellationToken);
             return items;
         }
 
-        public async Task<IEnumerable<PicsumItem>> GetItemsForPicsumAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<PicsumItem>> GetItemsForPicsumAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
         {
             var items = await Picsum_Client?.GetItemsAsync(++pageIndex, pageSize, cancellationToken);
             return items;

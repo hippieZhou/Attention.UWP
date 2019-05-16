@@ -12,13 +12,13 @@ using HENG.Services;
 using System.Threading.Tasks;
 using HENG.Models;
 using Microsoft.Extensions.Configuration;
-using HENG.ViewModels;
+using Windows.Storage;
 
 namespace HENG
 {
     sealed partial class App
     {
-        public AppSettings Settings { get; private set; }
+        public static AppSettings Settings { get; private set; }
 
         public App()
         {
@@ -30,6 +30,7 @@ namespace HENG
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             await InitializeAsync();
+
             if (e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
                 bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
@@ -38,6 +39,7 @@ namespace HENG
             }
 
             Window.Current.Activate();
+
             DispatcherHelper.Initialize();
             await DispatcherHelper.UIDispatcher.RunIdleAsync(async s =>
             {
@@ -58,9 +60,18 @@ namespace HENG
 
         private async Task InitializeAsync()
         {
-            var builder = new ConfigurationBuilder().AddJsonFile("AppSettings.json", false, true);
-            var conf = builder.Build();
-            Settings = conf.Get<AppSettings>();
+            async Task LoadConfigurationAsync()
+            {
+                var builder = new ConfigurationBuilder().AddJsonFile("AppSettings.json", true, true);
+                var conf = builder.Build();
+                Settings = conf.Get<AppSettings>();
+                if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
+                {
+                    StorageFolder sf = await KnownFolders.PicturesLibrary.CreateFolderAsync("HENG", CreationCollisionOption.OpenIfExists);
+                    Settings.DownloadPath = sf.Path;
+                }
+            }
+            await LoadConfigurationAsync();
 
             await ThemeSelectorService.InitializeAsync();
             await BackgroundTaskService.RegisterBackgroundTaskAsync();

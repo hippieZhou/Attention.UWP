@@ -175,7 +175,7 @@ namespace HENG.Services
             StorageFile file = null;
             try
             {
-                var folder = await AppSettingService.GetDeaultDownloadPathAsync();
+                var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
                 file = await folder.GetFileAsync(fileName);
                 var props = await file.GetBasicPropertiesAsync();
                 if (props.Size == 0)
@@ -234,7 +234,7 @@ namespace HENG.Services
             StorageFile file = null;
             try
             {
-                var folder = await AppSettingService.GetDeaultDownloadPathAsync();
+                var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
                 file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             }
             catch (FileNotFoundException)

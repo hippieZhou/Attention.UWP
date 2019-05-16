@@ -8,6 +8,5 @@ namespace HENG.Models
 {
     public class LocalItem : DataItem
     {
-        public string Key { get; set; }
     }
 }
