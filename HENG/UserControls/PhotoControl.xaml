@@ -397,7 +397,7 @@
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
             <controls:AdaptiveGridView.Footer>
-                <Grid>
+                <Grid Margin="0,12">
                     <StackPanel
                         HorizontalAlignment="Center"
                         Orientation="Horizontal"

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -129,12 +128,13 @@ namespace HENG.Helpers
             var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
             group.TransferBehavior = BackgroundTransferBehavior.Serialized;
             BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
-            RegisterBackgroundTask(completionGroup.Trigger);
+            BackgroundTaskRegistration taskRegistration = RegisterBackgroundTask(completionGroup.Trigger);
 
-            BackgroundDownloader downloader = new BackgroundDownloader();
-            downloader.TransferGroup = group;
-            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
-
+            BackgroundDownloader downloader = new BackgroundDownloader
+            {
+                TransferGroup = group
+            };
+           
             DownloadOperation download = downloader.CreateDownload(sourceUri, destinationFile);
             download.Priority = priority;
 
@@ -158,7 +158,7 @@ namespace HENG.Helpers
             }
         }
 
-        private static void RegisterBackgroundTask(IBackgroundTrigger trigger)
+        private static BackgroundTaskRegistration RegisterBackgroundTask(IBackgroundTrigger trigger)
         {
             var builder = new BackgroundTaskBuilder
             {
@@ -167,6 +167,7 @@ namespace HENG.Helpers
             builder.SetTrigger(trigger);
 
             BackgroundTaskRegistration task = builder.Register();
+            return task;
         }
 
         private static void DownloadProgress(DownloadOperation obj)
