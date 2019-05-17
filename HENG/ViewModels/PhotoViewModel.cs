@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Messaging;
 using HENG.Services;
 using HENG.Helpers;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace HENG.ViewModels
 {
@@ -47,7 +48,7 @@ namespace HENG.ViewModels
                     {
                         if (Photos == null)
                         {
-                            Photos = new IncrementalLoadingCollection<TSource, IType>(10,
+                            Photos = new IncrementalLoadingCollection<TSource, IType>(20,
                                 () =>
                                 {
                                     LoadingVisibility = Visibility.Visible;
@@ -56,7 +57,6 @@ namespace HENG.ViewModels
                                 () =>
                                 {
                                     LoadingVisibility = Visibility.Collapsed;
-
                                 },
                                 ex =>
                                 {
@@ -96,7 +96,8 @@ namespace HENG.ViewModels
                     {
                         if (!string.IsNullOrWhiteSpace(url))
                         {
-                            await Singleton<DataService>.Instance.DownLoad(new Uri(url));
+                            var cts = new CancellationTokenSource();
+                            await Singleton<DataService>.Instance.DownLoad(new Uri(url), cts);
                         }
                     });
                 }

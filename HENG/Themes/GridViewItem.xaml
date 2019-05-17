@@ -8,7 +8,7 @@
                 <ControlTemplate TargetType="GridViewItem">
                     <ListViewItemPresenter
                         x:Name="Root"
-                        Margin="6"
+                        Margin="4"
                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                         AllowFocusOnInteraction="False"

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.BackgroundTransfer;
@@ -33,7 +34,7 @@ namespace HENG.Helpers
             }
         }
 
-        public static async Task<DownloadStartResult> DownLoad(Uri sourceUri)
+        public static async Task<DownloadStartResult> DownLoad(Uri sourceUri, CancellationTokenSource cancellationToken)
         {
             var hash = SafeHashUri(sourceUri);
             StorageFile file = await CheckLocalFileExists(hash);
@@ -43,7 +44,7 @@ namespace HENG.Helpers
             {
                 await Task.Run(() =>
                 {
-                    var task = StartDownloadAsync(sourceUri, BackgroundTransferPriority.High, hash);
+                    var task = StartDownloadAsync(sourceUri, BackgroundTransferPriority.High, hash, cancellationToken);
                     task.ContinueWith(state =>
                     {
                         if (state.Exception != null)
@@ -120,7 +121,7 @@ namespace HENG.Helpers
             return false;
         }
 
-        private static async Task StartDownloadAsync(Uri sourceUri, BackgroundTransferPriority priority, string localFilename)
+        private static async Task StartDownloadAsync(Uri sourceUri, BackgroundTransferPriority priority, string localFilename, CancellationTokenSource cancellationToken)
         {
             var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             StorageFile destinationFile = await folder.CreateFileAsync(localFilename, CreationCollisionOption.ReplaceExisting);
@@ -140,13 +141,16 @@ namespace HENG.Helpers
             completionGroup.Enable();
 
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
-
-            var downloadTask = download.StartAsync().AsTask(progressCallback);
+            var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
 
             try
             {
                 await downloadTask;
                 ResponseInformation response = download.GetResponseInformation();
+            }
+            catch (TaskCanceledException)
+            {
+                await download.ResultFile.DeleteAsync();
             }
             catch (Exception ex)
             {
@@ -167,8 +171,8 @@ namespace HENG.Helpers
 
         private static void DownloadProgress(DownloadOperation obj)
         {
-            Trace.WriteLine(obj.Progress.ToString());
-            double progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
+            int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
+            Trace.WriteLine(progress);
         }
     }
 }

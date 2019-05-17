@@ -12,6 +12,7 @@ using HENG.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Linq;
+using Windows.System.UserProfile;
 
 namespace HENG.Services
 {
@@ -98,9 +99,9 @@ namespace HENG.Services
 
     public partial class DataService
     {
-        public async Task DownLoad(Uri sourceUri)
+        public async Task DownLoad(Uri sourceUri, CancellationTokenSource cancellationToken)
         {
-            var result = await BackgroundDownloadHelper.DownLoad(sourceUri);
+            var result = await BackgroundDownloadHelper.DownLoad(sourceUri, cancellationToken);
 
             //var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             //var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
@@ -141,6 +142,23 @@ namespace HENG.Services
             }
             catch (Exception)
             {
+            }
+        }
+
+        public async Task SetBackgroundAsync(string fileName)
+        {
+            if (UserProfilePersonalizationSettings.IsSupported())
+            {
+                var folder =await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
+                var file =await folder.GetFileAsync(fileName);
+                if (file != null)
+                {
+                    UserProfilePersonalizationSettings settings = UserProfilePersonalizationSettings.Current;
+                    if (await settings.TrySetWallpaperImageAsync(file))
+                    {
+
+                    }
+                }
             }
         }
     }
