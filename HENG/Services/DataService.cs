@@ -101,6 +101,8 @@ namespace HENG.Services
 
     public partial class DataService
     {
+        public List<DownloadOperation> ActiveDownloads { get; private set; } = new List<DownloadOperation>();
+
         public async Task DownLoad(Uri sourceUri)
         {
             var hash = SafeHashUri(sourceUri);
@@ -191,6 +193,7 @@ namespace HENG.Services
                 int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
             });
 
+            ActiveDownloads.Add(download);
             var downloadTask = download.StartAsync().AsTask(progressCallback);
 
             try
@@ -201,6 +204,10 @@ namespace HENG.Services
             catch (Exception ex)
             {
                 Debug.WriteLine($"Download exception:{ex}");
+            }
+            finally
+            {
+                ActiveDownloads.Remove(download);
             }
         }
     }

@@ -43,7 +43,7 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
                         VersionDescription = GetVersionDescription();
                         DownloadPath = App.Settings.DownloadPath;
