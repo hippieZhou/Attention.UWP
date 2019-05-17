@@ -3,7 +3,6 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
@@ -13,6 +12,8 @@ using System.Threading.Tasks;
 using HENG.Models;
 using Microsoft.Extensions.Configuration;
 using Windows.Storage;
+using HENG.Helpers;
+using Windows.Foundation;
 
 namespace HENG
 {
@@ -33,10 +34,13 @@ namespace HENG
 
             if (e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
+                bool loadState = e.PreviousExecutionState == ApplicationExecutionState.Terminated;
                 ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
                 Window.Current.Content = extendedSplash;
             }
+
+            ApplicationView.PreferredLaunchViewSize = new Size(1280, 800);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             Window.Current.Activate();
 
@@ -68,17 +72,14 @@ namespace HENG
             }
             await LoadConfigurationAsync();
 
+            await Singleton<BackgroundTaskService>.Instance.RegisterBackgroundTasksAsync();
+
             await ThemeSelectorService.InitializeAsync();
         }
 
         public static async Task StartupAsync()
         {
             await ThemeSelectorService.SetRequestedThemeAsync();
-        }
-
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)

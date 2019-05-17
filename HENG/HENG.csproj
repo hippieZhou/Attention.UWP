@@ -102,6 +102,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="BackgroundTasks\MainBackgroundTask.cs" />
     <Compile Include="Clients\BingClient.cs" />
     <Compile Include="Clients\IBaseClient.cs" />
     <Compile Include="Clients\PaperClient.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\Singleton.cs" />
+    <Compile Include="Helpers\TaskExtensions.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\BingItem.cs" />
     <Compile Include="Models\DataItem.cs" />
@@ -127,6 +130,7 @@
     <Compile Include="Models\PicsumItem.cs" />
     <Compile Include="Models\Shares\ShareSourceData.cs" />
     <Compile Include="Models\Shares\ShareSourceItem.cs" />
+    <Compile Include="Services\BackgroundTaskService.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
@@ -364,12 +368,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HENG.Tasks\HENG.Tasks.csproj">
-      <Project>{05648629-1817-4b57-ba15-7466deeb2dfa}</Project>
-      <Name>HENG.Tasks</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>15.0</VisualStudioVersion>

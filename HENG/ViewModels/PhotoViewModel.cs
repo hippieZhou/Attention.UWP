@@ -9,6 +9,7 @@ using System;
 using GalaSoft.MvvmLight.Messaging;
 using HENG.Services;
 using HENG.Helpers;
+using System.Threading.Tasks;
 
 namespace HENG.ViewModels
 {
@@ -42,28 +43,26 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
                         if (Photos == null)
                         {
-                            await DispatcherHelper.RunAsync(() =>
-                            {
-                                Photos = new IncrementalLoadingCollection<TSource, IType>(20,
-                                    () =>
-                                    {
-                                        LoadingVisibility = Visibility.Visible;
-                                        ErrorVisibility = Visibility.Collapsed;
-                                    },
-                                    () =>
-                                    {
-                                        LoadingVisibility = Visibility.Collapsed;
-                                    },
-                                    ex =>
-                                    {
-                                        ErrorVisibility = Visibility.Visible;
-                                    });
-                            });
-                        }
+                            Photos = new IncrementalLoadingCollection<TSource, IType>(10,
+                                () =>
+                                {
+                                    LoadingVisibility = Visibility.Visible;
+                                    ErrorVisibility = Visibility.Collapsed;
+                                },
+                                () =>
+                                {
+                                    LoadingVisibility = Visibility.Collapsed;
+
+                                },
+                                ex =>
+                                {
+                                    ErrorVisibility = Visibility.Visible;
+                                });
+                        };
                     });
                 }
                 return _loadedCommand;

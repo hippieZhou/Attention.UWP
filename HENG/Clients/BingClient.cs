@@ -1,10 +1,12 @@
 ﻿using HENG.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace HENG.Clients
 {
@@ -43,10 +45,19 @@ namespace HENG.Clients
                 Token = await GetTokenAsync();
             }
 
-            var url = $"https://hippiezhou.fun/api/v1/bing/?page={page}&per_page={per_page}";
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query.Clear();
+            query.Add("page", page.ToString());
+            query.Add("per_page", per_page.ToString());
+
+            var builder = new UriBuilder(query_str)
+            {
+                Query = query.ToString()
+            };
+
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", Token);
-            HttpResponseMessage response = await _client.GetAsync(url, cancellationToken).ConfigureAwait(false);
+            HttpResponseMessage response = await _client.GetAsync(builder.ToString(), cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
