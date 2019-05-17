@@ -17,9 +17,9 @@ namespace HENG.Clients
     {
         private readonly HttpClient _client;
 
-        public PaperClient(IHttpClientFactory httpClientFactory)
+        public PaperClient(HttpClient client)
         {
-            _client = httpClientFactory.CreateClient(typeof(PaperClient).FullName);
+            _client = client;
         }
 
         public async Task<IEnumerable<PaperItem>> GetNewestAsync(int page = 1, int per_page = 20, CancellationToken cancellationToken = default(CancellationToken))

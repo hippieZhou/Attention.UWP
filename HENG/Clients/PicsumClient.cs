@@ -16,9 +16,9 @@ namespace HENG.Clients
     {
         private readonly HttpClient _client;
 
-        public PicsumClient(IHttpClientFactory httpClientFactory)
+        public PicsumClient(HttpClient client)
         {
-            _client = httpClientFactory.CreateClient(typeof(PicsumClient).FullName);
+            _client = client;
         }
         public async Task<IEnumerable<PicsumItem>> GetItemsAsync(int page, int per_page = 10, CancellationToken cancellationToken = default(CancellationToken))
         {

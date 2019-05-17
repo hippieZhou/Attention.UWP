@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HENG.Clients;
 using HENG.Models;
 using HENG.ViewModels;
 using Microsoft.Toolkit.Uwp.UI;
-using System.Linq;
-using Newtonsoft.Json;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.Networking.BackgroundTransfer;
-using System.Diagnostics;
+using HENG.Helpers;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.Storage.Search;
+using Windows.UI.Notifications;
+using System.Linq;
 
 namespace HENG.Services
 {
@@ -56,6 +49,7 @@ namespace HENG.Services
             return sf;
         }
     }
+
     public partial class DataService
     {
         private IBaseClient<BingItem> Home_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(BingClient)) as IBaseClient<BingItem>;
@@ -98,116 +92,52 @@ namespace HENG.Services
             return items;
         }
     }
-     
+
     public partial class DataService
     {
-        public List<DownloadOperation> ActiveDownloads { get; private set; } = new List<DownloadOperation>();
-
         public async Task DownLoad(Uri sourceUri)
         {
-            var hash = SafeHashUri(sourceUri);
-            StorageFile file = await CheckLocalFileExists(hash);
+            var result = await BackgroundDownloadHelper.DownLoad(sourceUri);
 
-            var downloadingAlready = await IsDownloading(sourceUri);
-            if (file == null && !downloadingAlready)
-            {
-                await Task.Run(() => 
-                {
-                    var task = StartDownloadAsync(sourceUri, BackgroundTransferPriority.High, hash);
-                    task.ContinueWith(state => 
-                    {
-                        if (state.Exception != null)
-                        {
-                            Trace.WriteLine($"An error occured with this download {state.Exception}");
-                        }
-                        else
-                        {
-                            Trace.WriteLine("Download Completed");
-                        }
-                    });
-                });
-            }
-        }
-
-        private string SafeHashUri(Uri sourceUri)
-        {
-            string Hash(string input)
-            {
-                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
-                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
-                var sb = new StringBuilder(hashByte.Length * 2);
-                foreach (byte b in hashByte)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
-
-            string safeUri = sourceUri.ToString().ToLower();
-            var hash = Hash(safeUri);
-            return $"{hash}.jpg";
-        }
-
-        private async Task<StorageFile> CheckLocalFileExists(string fileName)
-        {
             var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
-            if (folder == null)
-                throw new Exception($"{App.Settings.DownloadPath} Path Not Found.");
-            StorageFile file = await folder.TryGetItemAsync(fileName) as StorageFile;
-            if (file != null)
-            {
-                var props = await file.GetBasicPropertiesAsync();
-                if (props.Size == 0)
-                {
-                    await file.DeleteAsync();
-                    return null;
-                }
-            }
-            return file;
+            var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
+            var images = await folder.CreateFileQueryWithOptions(queryOptions)?.GetFilesAsync();
+            var urls = from p in images select p.Path;
+            UpdateLiveTile(urls);
         }
 
-        private async Task<bool> IsDownloading(Uri sourceUri)
+        private void UpdateLiveTile(IEnumerable<string> urls)
         {
-            var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-            if (downloads.Where(dl => dl.RequestedUri == sourceUri).FirstOrDefault() != null)
+            var photosContent = new TileBindingContentPhotos();
+            foreach (var item in urls)
             {
-                return true;
+                photosContent.Images.Add(new TileBasicImage { Source = item, AddImageQuery = true });
             }
 
-            return false;
-        }
-
-        private async Task StartDownloadAsync(Uri sourceUri, BackgroundTransferPriority priority, string localFilename)
-        {
-            var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
-            StorageFile destinationFile = await folder.CreateFileAsync(localFilename, CreationCollisionOption.ReplaceExisting);
-
-            BackgroundDownloader downloader = new BackgroundDownloader();
-            DownloadOperation download = downloader.CreateDownload(sourceUri, destinationFile);
-            download.Priority = priority;
-            Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
+            var title = new TileBinding
             {
-                Trace.WriteLine(obj.Progress.ToString());
-                int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
-            });
+                Content = photosContent
+            };
+            var visual = new TileVisual
+            {
+                Branding = TileBranding.NameAndLogo,
+                TileMedium = title,
+                TileWide = title,
+                TileLarge = title
+            };
 
-            ActiveDownloads.Add(download);
-            var downloadTask = download.StartAsync().AsTask(progressCallback);
+            var tileContent = new TileContent
+            {
+                Visual = visual
+            };
 
             try
             {
-                await downloadTask;
-                ResponseInformation response = download.GetResponseInformation();
+                TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+                TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(tileContent.GetXml()));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine($"Download exception:{ex}");
-            }
-            finally
-            {
-                ActiveDownloads.Remove(download);
             }
         }
     }

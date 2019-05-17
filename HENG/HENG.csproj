@@ -102,8 +102,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="BackgroundTasks\MainBackgroundTask.cs" />
     <Compile Include="Clients\BingClient.cs" />
     <Compile Include="Clients\IBaseClient.cs" />
     <Compile Include="Clients\PaperClient.cs" />
@@ -112,6 +110,7 @@
     <Compile Include="ExtendedSplash.xaml.cs">
       <DependentUpon>ExtendedSplash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BackgroundDownloadHelper.cs" />
     <Compile Include="Helpers\DataRequestExtensions.cs" />
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
@@ -130,9 +129,7 @@
     <Compile Include="Models\PicsumItem.cs" />
     <Compile Include="Models\Shares\ShareSourceData.cs" />
     <Compile Include="Models\Shares\ShareSourceItem.cs" />
-    <Compile Include="Services\BackgroundTaskService.cs" />
     <Compile Include="Services\DataService.cs" />
-    <Compile Include="Services\LiveTileService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="UserControls\PhotoControl.xaml.cs">
       <DependentUpon>PhotoControl.xaml</DependentUpon>

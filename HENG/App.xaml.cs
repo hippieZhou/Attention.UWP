@@ -14,12 +14,15 @@ using Microsoft.Extensions.Configuration;
 using Windows.Storage;
 using HENG.Helpers;
 using Windows.Foundation;
+using Windows.System.Profile;
+using Windows.ApplicationModel.Background;
 
 namespace HENG
 {
     sealed partial class App
     {
         public static AppSettings Settings { get; private set; }
+        volatile bool _cancelRequested = false;
 
         public App()
         {
@@ -30,6 +33,12 @@ namespace HENG
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox")
+            {
+                ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                bool result = ApplicationViewScaling.TrySetDisableLayoutScaling(true);
+            }
+
             await InitializeAsync();
 
             if (e.PreviousExecutionState != ApplicationExecutionState.Running)
@@ -55,6 +64,8 @@ namespace HENG
             }
 
             DispatcherHelper.Initialize();
+
+            await Window.Current.Dispatcher.RunIdleAsync(async (s) => await BackgroundDownloadHelper.AttachToDownloadsAsync());
         }
 
         private async Task InitializeAsync()
@@ -72,8 +83,6 @@ namespace HENG
             }
             await LoadConfigurationAsync();
 
-            await Singleton<BackgroundTaskService>.Instance.RegisterBackgroundTasksAsync();
-
             await ThemeSelectorService.InitializeAsync();
         }
 
@@ -86,6 +95,17 @@ namespace HENG
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             deferral.Complete();
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            IBackgroundTaskInstance taskInstance = args.TaskInstance;
+            taskInstance.Canceled += (sender, reason) => 
+            {
+                _cancelRequested = true;
+            };
         }
     }
 }

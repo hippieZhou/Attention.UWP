@@ -49,10 +49,9 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<IServiceProvider>(() =>
             {
                 var serviceCollection = new ServiceCollection();
-                serviceCollection.AddHttpClient();
-                serviceCollection.AddSingleton<BingClient>();
-                serviceCollection.AddSingleton<PicsumClient>();
-                serviceCollection.AddSingleton<PaperClient>();
+                serviceCollection.AddHttpClient<BingClient>();
+                serviceCollection.AddHttpClient<PicsumClient>();
+                serviceCollection.AddHttpClient<PaperClient>();
 
                 var ServiceProvider = serviceCollection.BuildServiceProvider();
                 return ServiceProvider;

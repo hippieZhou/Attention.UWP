@@ -21,9 +21,9 @@ namespace HENG.Clients
         private readonly HttpClient _client;
         public string Token { get; private set; }
 
-        public BingClient(IHttpClientFactory httpClientFactory)
+        public BingClient(HttpClient client)
         {
-            _client = httpClientFactory.CreateClient(typeof(BingClient).FullName);
+            _client = client;
         }
 
         public async Task<string> GetTokenAsync()

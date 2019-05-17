@@ -17,10 +17,6 @@ namespace HENG.ViewModels
         public async Task<IEnumerable<PicsumItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
         {
             var items = await Singleton<DataService>.Instance.GetItemsForPicsumAsync(++pageIndex, pageSize, cancellationToken);
-            //if (items != null)
-            //{
-            //    LiveTileService.UpdateLiveTile(items.Take(3).Select(p => p.Thumb));
-            //}
             return items;
         }
     }
