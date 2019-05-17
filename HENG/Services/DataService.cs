@@ -10,7 +10,6 @@ using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using HENG.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.Storage.Search;
 using Windows.UI.Notifications;
 using System.Linq;
 
@@ -59,6 +58,10 @@ namespace HENG.Services
         public async Task<IEnumerable<BingItem>> GetItemsForBingAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
         {
             var items = await Home_Client?.GetItemsAsync(++pageIndex, pageSize, cancellationToken);
+            IEnumerable<string> urls = from p in items.Take(5) select p.Url;
+
+            UpdateLiveTile(urls);
+
             return items;
         }
 
@@ -99,11 +102,11 @@ namespace HENG.Services
         {
             var result = await BackgroundDownloadHelper.DownLoad(sourceUri);
 
-            var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
-            var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
-            var images = await folder.CreateFileQueryWithOptions(queryOptions)?.GetFilesAsync();
-            var urls = from p in images select p.Path;
-            UpdateLiveTile(urls);
+            //var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
+            //var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
+            //var images = await folder.CreateFileQueryWithOptions(queryOptions)?.GetFilesAsync();
+            //var urls = from p in images select p.Path;
+            //UpdateLiveTile(urls);
         }
 
         private void UpdateLiveTile(IEnumerable<string> urls)
