@@ -16,12 +16,15 @@ using HENG.Helpers;
 using Windows.Foundation;
 using Windows.System.Profile;
 using Windows.ApplicationModel.Background;
+using System.Threading;
 
 namespace HENG
 {
     sealed partial class App
     {
         public static AppSettings Settings { get; private set; }
+
+        private CancellationTokenSource _cancellationTokenSource;
 
         public App()
         {
@@ -39,18 +42,18 @@ namespace HENG
             }
 
             await InitializeAsync();
+            bool loadState = e.PreviousExecutionState == ApplicationExecutionState.Terminated;
+            await InitWindowAsync(e.SplashScreen, loadState);
 
-            if (e.PreviousExecutionState != ApplicationExecutionState.Running)
-            {
-                bool loadState = e.PreviousExecutionState == ApplicationExecutionState.Terminated;
-                ExtendedSplash extendedSplash = new ExtendedSplash(e.SplashScreen, loadState);
-                Window.Current.Content = extendedSplash;
-            }
+        }
+
+        private async Task InitWindowAsync(SplashScreen splashScreen,bool loadState)
+        {
+            ExtendedSplash extendedSplash = new ExtendedSplash(splashScreen, loadState);
+            Window.Current.Content = extendedSplash;
 
             ApplicationView.PreferredLaunchViewSize = new Size(1280, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-
-            Window.Current.Activate();
 
             ExtendAcrylicIntoTitleBar();
 
@@ -64,7 +67,20 @@ namespace HENG
 
             DispatcherHelper.Initialize();
 
-            await Window.Current.Dispatcher.RunIdleAsync(async (s) => await BackgroundDownloadHelper.AttachToDownloadsAsync());
+            _cancellationTokenSource = new CancellationTokenSource();
+            await Window.Current.Dispatcher.RunIdleAsync(async (s) => await BackgroundDownloadHelper.AttachToDownloadsAsync(_cancellationTokenSource));
+            Window.Current.Activate();
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+            if (args.Kind == ActivationKind.ToastNotification)
+            {
+                await InitializeAsync();
+
+                await InitWindowAsync(args.SplashScreen, false);
+            }
         }
 
         private async Task InitializeAsync()
@@ -83,6 +99,8 @@ namespace HENG
             await LoadConfigurationAsync();
 
             await ThemeSelectorService.InitializeAsync();
+
+            await Task.CompletedTask;
         }
 
         public static async Task StartupAsync()
@@ -105,6 +123,7 @@ namespace HENG
 
             taskInstance.Canceled += (sender, reason) => 
             {
+                _cancellationTokenSource?.Cancel();
                 taskDef.Complete();
             };
         }

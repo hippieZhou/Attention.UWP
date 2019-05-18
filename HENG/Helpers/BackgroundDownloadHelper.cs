@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -11,6 +13,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Notifications;
 
 namespace HENG.Helpers
 {
@@ -23,13 +26,15 @@ namespace HENG.Helpers
 
     public class BackgroundDownloadHelper
     {
-        public static async Task AttachToDownloadsAsync()
+        private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+
+        public static async Task AttachToDownloadsAsync(CancellationTokenSource cancellationToken)
         {
-            var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-            foreach (var download in downloads)
+            IReadOnlyList<DownloadOperation> downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            foreach (DownloadOperation download in downloads)
             {
                 Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
-                await download.AttachAsync().AsTask(progressCallback);
+                await download.AttachAsync().AsTask(cancellationToken.Token, progressCallback);
             }
         }
 
@@ -129,12 +134,12 @@ namespace HENG.Helpers
             group.TransferBehavior = BackgroundTransferBehavior.Serialized;
             BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
             BackgroundTaskRegistration taskRegistration = RegisterBackgroundTask(completionGroup.Trigger);
-
             BackgroundDownloader downloader = new BackgroundDownloader
             {
                 TransferGroup = group
             };
-           
+            CreateNotifications(downloader);
+
             DownloadOperation download = downloader.CreateDownload(sourceUri, destinationFile);
             download.Priority = priority;
 
@@ -142,6 +147,8 @@ namespace HENG.Helpers
 
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
             var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
+
+            CreateToast(localFilename, localFilename, sourceUri.AbsoluteUri);
 
             try
             {
@@ -174,6 +181,89 @@ namespace HENG.Helpers
         {
             int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
             Trace.WriteLine(progress);
+
+            UpdateToast(obj.ResultFile.Name, progress);
+        }
+
+        private static void CreateNotifications(BackgroundDownloader downloader)
+        {
+            var successToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            successToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "Downloads completed successfully.";
+            ToastNotification successToast = new ToastNotification(successToastXml);
+            downloader.SuccessToastNotification = successToast;
+
+            var failureToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            failureToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "At least one download completed with failure.";
+            ToastNotification failureToast = new ToastNotification(failureToastXml);
+            downloader.FailureToastNotification = failureToast;
+        }
+
+        private static void CreateToast(string title, string tag,string sourceUri)
+        {
+            ToastContent toastContent = new ToastContent()
+            {
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        HeroImage = new ToastGenericHeroImage
+                        {
+                            Source = sourceUri
+                        },
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = "File downloading...",
+                            },
+
+                            new AdaptiveProgressBar()
+                            {
+                                Title = title,
+                                Value = new BindableProgressBarValue("progressValue"),
+                                ValueStringOverride = new BindableString("p"),
+                                Status = "Downloading...",
+                            },
+                        },
+                    },
+                },
+            };
+            string now = DateTime.Now.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", "0" },
+                { "p", now },
+            };
+
+            ToastNotification notification = new ToastNotification(toastContent.GetXml())
+            {
+                Tag = tag,
+                Data = new NotificationData(data),
+            };
+
+            ToastNotificationManager.CreateToastNotifier().Show(notification);
+        }
+
+        private static void UpdateToast(string toastTag, double progressValue)
+        {
+            string now = DateTime.Now.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", progressValue.ToString() },
+                { "p", now }
+            };
+
+            try
+            {
+                _notifier.Update(new NotificationData(data), toastTag);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
     }
 }

@@ -101,7 +101,7 @@ namespace HENG.Services
     {
         public async Task DownLoad(Uri sourceUri, CancellationTokenSource cancellationToken)
         {
-            var result = await BackgroundDownloadHelper.DownLoad(sourceUri, cancellationToken);
+            await BackgroundDownloadHelper.DownLoad(sourceUri, cancellationToken);
 
             //var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             //var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
