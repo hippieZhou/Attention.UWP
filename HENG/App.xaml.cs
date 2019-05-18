@@ -22,7 +22,6 @@ namespace HENG
     sealed partial class App
     {
         public static AppSettings Settings { get; private set; }
-        volatile bool _cancelRequested = false;
 
         public App()
         {
@@ -102,9 +101,11 @@ namespace HENG
             base.OnBackgroundActivated(args);
 
             IBackgroundTaskInstance taskInstance = args.TaskInstance;
+            var taskDef = taskInstance.GetDeferral();
+
             taskInstance.Canceled += (sender, reason) => 
             {
-                _cancelRequested = true;
+                taskDef.Complete();
             };
         }
     }
