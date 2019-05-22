@@ -5,6 +5,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:models="using:HENG.Models"
     mc:Ignorable="d">
     <Page.Resources>
@@ -22,6 +23,7 @@
         </DataTemplate>
     </Page.Resources>
 
+
     <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
         <ContentControl
             HorizontalAlignment="Stretch"
@@ -30,47 +32,25 @@
             VerticalContentAlignment="Stretch"
             Content="{x:Bind ViewModel.Model, Mode=OneWay}"
             ContentTemplate="{StaticResource BaseItemTemplate}" />
-
-        <controls:DropShadowPanel
-            Margin="0,0,0,24"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            BlurRadius="20"
-            Loaded="Grid_Loaded"
-            OffsetY="1"
-            Opacity="1"
-            ShadowOpacity="1"
-            Color="Black">
-            <StackPanel
-                Padding="24,10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="{ThemeResource NavigationViewExpandedPaneBackground}"
-                CornerRadius="6"
-                Orientation="Horizontal">
-                <Button Command="{x:Bind BackCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
-                    <Button.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE845;" />
-                    </Button.Content>
-                </Button>
-                <Button Command="{x:Bind ViewModel.DownloadCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
-                    <Button.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" />
-                    </Button.Content>
-                </Button>
-                <Button Command="{x:Bind ViewModel.ShareCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
-                    <Button.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" />
-                    </Button.Content>
-                </Button>
-                <Button Command="{x:Bind ViewModel.RefreshCommand}" Style="{StaticResource DefaultButtonRevealStyle}">
-                    <Button.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE895;" />
-                    </Button.Content>
-                </Button>
-            </StackPanel>
-        </controls:DropShadowPanel>
+        <CommandBar VerticalAlignment="Bottom">
+            <CommandBar.Background>
+                <media:BackdropBlurBrush Amount="8" />
+            </CommandBar.Background>
+            <CommandBar.Content>
+                <Grid />
+            </CommandBar.Content>
+            <AppBarButton
+                Command="{x:Bind BackCommand}"
+                Icon="Back"
+                Label="Back" />
+            <AppBarButton
+                Command="{x:Bind ViewModel.DownloadCommand}"
+                Icon="Download"
+                Label="Download" />
+            <AppBarButton
+                Command="{x:Bind ViewModel.RefreshCommand}"
+                Icon="Refresh"
+                Label="Refresh" />
+        </CommandBar>
     </Grid>
 </Page>

@@ -90,6 +90,7 @@ namespace HENG
                 var builder = new ConfigurationBuilder().AddJsonFile("AppSettings.json", true, true);
                 var conf = builder.Build();
                 Settings = conf.Get<AppSettings>();
+
                 if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
                 {
                     StorageFolder sf = await KnownFolders.PicturesLibrary.CreateFolderAsync("HENG", CreationCollisionOption.OpenIfExists);
