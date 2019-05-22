@@ -23,7 +23,6 @@
         </DataTemplate>
     </Page.Resources>
 
-
     <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
         <ContentControl
             HorizontalAlignment="Stretch"
@@ -39,18 +38,20 @@
             <CommandBar.Content>
                 <Grid />
             </CommandBar.Content>
-            <AppBarButton
-                Command="{x:Bind BackCommand}"
-                Icon="Back"
-                Label="Back" />
-            <AppBarButton
-                Command="{x:Bind ViewModel.DownloadCommand}"
-                Icon="Download"
-                Label="Download" />
-            <AppBarButton
-                Command="{x:Bind ViewModel.RefreshCommand}"
-                Icon="Refresh"
-                Label="Refresh" />
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    Command="{x:Bind BackCommand}"
+                    Icon="Back"
+                    Label="Back" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.DownloadCommand}"
+                    Icon="Download"
+                    Label="Download" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.RefreshCommand}"
+                    Icon="Refresh"
+                    Label="Refresh" />
+            </CommandBar.PrimaryCommands>
         </CommandBar>
     </Grid>
 </Page>

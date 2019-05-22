@@ -152,23 +152,19 @@ namespace HENG.UserControls
             ScrollViewer viewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
             if (viewer != null)
             {
-                viewer.ViewChanging += Viewer_ViewChanging;
-                viewer.ViewChanged += Viewer_ViewChanged;
+                viewer.ViewChanging += (s1, e1) => 
+                {
+                    if (refresh.Visibility == Visibility.Visible)
+                    {
+                        refresh.Visibility = Visibility.Collapsed;
+                    }
+                };
+                viewer.ViewChanged += (s2, e2) => 
+                {
+                    refresh.Visibility = Visibility.Visible;
+                    Implicit.GetShowAnimations(refresh)?.StartAnimation(refresh);
+                };
             }
-        }
-
-        private void Viewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-            if (refresh.Visibility == Visibility.Visible)
-            {
-                refresh.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void Viewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            refresh.Visibility = Visibility.Visible;
-            Implicit.GetShowAnimations(refresh)?.StartAnimation(refresh);
         }
     }
 }
