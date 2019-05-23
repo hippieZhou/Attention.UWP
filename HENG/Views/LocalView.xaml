@@ -38,14 +38,22 @@
                             Source="{x:Bind Photo}"
                             Stretch="UniformToFill"
                             UseLayoutRounding="True" />
-                        <Grid
-                            x:Name="MaskGrid"
-                            Height="60"
+
+                        <CommandBar
+                            x:Name="CommandBar"
                             VerticalAlignment="Bottom"
                             Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                            <CommandBar.Content>
+                                <Grid />
+                            </CommandBar.Content>
+                            <CommandBar.PrimaryCommands>
+                                <AppBarButton Icon="Share" Label="Share" />
+                                <AppBarButton Icon="Edit" Label="Edit" />
+                                <AppBarButton Icon="Delete" Label="Delete" />
+                            </CommandBar.PrimaryCommands>
                             <i:Interaction.Behaviors>
                                 <behaviors:Offset
-                                    x:Name="MaskGridUp"
+                                    x:Name="CommandBarUp"
                                     AutomaticallyStart="True"
                                     Delay="0"
                                     EasingMode="EaseOut"
@@ -54,23 +62,27 @@
                                     OffsetY="0"
                                     Duration="400" />
                                 <behaviors:Offset
-                                    x:Name="MaskGridDowm"
+                                    x:Name="CommandBarDowm"
                                     AutomaticallyStart="True"
                                     Delay="0"
                                     EasingMode="EaseOut"
                                     EasingType="Linear"
                                     OffsetX="0"
-                                    OffsetY="60"
+                                    OffsetY="40"
                                     Duration="400" />
                             </i:Interaction.Behaviors>
-                        </Grid>
+                        </CommandBar>
 
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="PointerEntered">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=MaskGridUp}" />
+                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="PointerExited">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=MaskGridDowm}" />
+                                <ic:ChangePropertyAction
+                                    PropertyName="IsOpen"
+                                    TargetObject="{Binding ElementName=CommandBar}"
+                                    Value="False" />
+                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </Grid>

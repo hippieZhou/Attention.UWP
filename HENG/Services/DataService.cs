@@ -61,7 +61,10 @@ namespace HENG.Services
             var items = await Home_Client?.GetItemsAsync(++pageIndex, pageSize, cancellationToken);
             IEnumerable<string> urls = from p in items.Take(5) select p.Url;
 
-            await Task.Run(() => { UpdateLiveTile(urls); });
+            if (pageIndex == 1)
+            {
+                await Task.Run(() => { UpdateLiveTile(urls); });
+            }
 
             return items;
         }
