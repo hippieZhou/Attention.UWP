@@ -8,13 +8,13 @@ namespace HENG.Helpers
 {
     public static class ImageHelper
     {
-        public static async Task<BitmapImage> StorageFileToBitmapImage(StorageFile sf)
+        public static async Task<BitmapImage> StorageFileToBitmapImage(IStorageFile sf)
         {
-            using (IRandomAccessStream fileStream = await sf.OpenAsync(FileAccessMode.Read))
+            using (IRandomAccessStream stream = await sf.OpenAsync(FileAccessMode.Read))
             {
-                BitmapImage bitmapImage = new BitmapImage();
-                await bitmapImage.SetSourceAsync(fileStream);
-                return bitmapImage;
+                var bitmap = new BitmapImage();
+                bitmap.SetSource(stream);
+                return bitmap;
             }
         }
     }

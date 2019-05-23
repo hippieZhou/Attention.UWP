@@ -15,8 +15,8 @@ namespace HENG.Clients
     /// </summary>
     public class BingClient: IBaseClient<BingItem>
     {
-        private const string auth_str = "https://hippiezhou.fun/api/v1/auth/";
-        private const string query_str = "https://hippiezhou.fun/api/v1/bing/";
+        private const string auth_str = "https://hippiezhou.fun/api/v1/Auth/";
+        private const string query_str = "https://hippiezhou.fun/api/v1/Bing/";
 
         private readonly HttpClient _client;
         public string Token { get; private set; }
@@ -32,7 +32,7 @@ namespace HENG.Clients
             response.EnsureSuccessStatusCode();
             string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             JObject model = JsonConvert.DeserializeObject<JObject>(json);
-            var token = model != null ? model["token"] : string.Empty;
+            var token = model != null ? model["X-API-KEY"] : string.Empty;
             return token.ToString();
         }
 
@@ -56,7 +56,7 @@ namespace HENG.Clients
             };
 
             _client.DefaultRequestHeaders.Clear();
-            _client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", Token);
+            _client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", Token);
             HttpResponseMessage response = await _client.GetAsync(builder.ToString(), cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

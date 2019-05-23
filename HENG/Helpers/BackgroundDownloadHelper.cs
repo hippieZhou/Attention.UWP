@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,8 @@ namespace HENG.Helpers
 
     public class BackgroundDownloadHelper
     {
+        public const string NAME = "DownloadCompleteTrigger";
+
         private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
 
         public static async Task AttachToDownloadsAsync(CancellationTokenSource cancellationToken)
@@ -169,7 +172,7 @@ namespace HENG.Helpers
         {
             var builder = new BackgroundTaskBuilder
             {
-                Name = "DownloadCompleteTrigger"
+                Name = NAME
             };
             builder.SetTrigger(trigger);
 
@@ -182,6 +185,7 @@ namespace HENG.Helpers
             int progress = (int)(100 * (obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive));
             Trace.WriteLine(progress);
 
+            Messenger.Default.Send(new GenericMessage<Tuple<IStorageFile, int>>(new Tuple<IStorageFile, int>(obj.ResultFile, progress)), obj.RequestedUri);
             UpdateToast(obj.ResultFile.Name, progress);
         }
 

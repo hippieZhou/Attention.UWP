@@ -99,9 +99,19 @@ namespace HENG.Services
 
     public partial class DataService
     {
-        public async Task DownLoad(Uri sourceUri, CancellationTokenSource cancellationToken)
+        public List<DownloadItem> Downloads { get; private set; } = new List<DownloadItem>();
+
+        public event EventHandler<IList<DownloadItem>> DownloadsEvent = delegate { };
+        public async Task DownLoad(Uri sourceUri)
         {
-            await BackgroundDownloadHelper.DownLoad(sourceUri, cancellationToken);
+            var download = new DownloadItem(sourceUri);
+            await download.DownloadAsync();
+
+            if (!Downloads.Contains(download))
+            {
+                Downloads.Add(download);
+                DownloadsEvent?.Invoke(this, Downloads);
+            }
 
             //var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             //var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });

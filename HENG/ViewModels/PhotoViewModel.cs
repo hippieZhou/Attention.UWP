@@ -96,8 +96,7 @@ namespace HENG.ViewModels
                     {
                         if (!string.IsNullOrWhiteSpace(url))
                         {
-                            var cts = new CancellationTokenSource();
-                            await Singleton<DataService>.Instance.DownLoad(new Uri(url), cts);
+                            await Singleton<DataService>.Instance.DownLoad(new Uri(url));
                         }
                     });
                 }

@@ -17,6 +17,7 @@ using Windows.Foundation;
 using Windows.System.Profile;
 using Windows.ApplicationModel.Background;
 using System.Threading;
+using System.Linq;
 
 namespace HENG
 {
@@ -126,6 +127,13 @@ namespace HENG
             {
                 _cancellationTokenSource?.Cancel();
                 taskDef.Complete();
+                foreach (var cur in BackgroundTaskRegistration.AllTasks)
+                {
+                    if (cur.Value.Name == BackgroundDownloadHelper.NAME)
+                    {
+                        cur.Value.Unregister(true);
+                    }
+                }
             };
         }
     }
