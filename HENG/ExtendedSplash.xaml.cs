@@ -1,7 +1,5 @@
-﻿using GalaSoft.MvvmLight.Threading;
-using HENG.Views;
+﻿using HENG.Views;
 using System;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Graphics.Display;
@@ -15,10 +13,9 @@ namespace HENG
     {
         internal Rect splashImageRect; 
         internal bool dismissed = false; 
-        internal Frame rootFrame;
 
         private SplashScreen splash; 
-        private double ScaleFactor; 
+        private double ScaleFactor;
 
         public ExtendedSplash(SplashScreen splashscreen, bool loadState)
         {
@@ -30,13 +27,13 @@ namespace HENG
 
             if (splash != null)
             {
-                splash.Dismissed += DismissedEventHandler;
+                splash.Dismissed += (sender, e) => { dismissed = true; };
                 splashImageRect = splash.ImageLocation;
                 PositionImage();
             }
 
-            rootFrame = new Frame();
-            RestoreStateAsync(loadState);
+            var RestoreStateAction = new Action<bool>(b => { });
+            RestoreStateAction(loadState);
         }
 
         private void ExtendedSplash_OnResize(object sender, WindowSizeChangedEventArgs e)
@@ -46,19 +43,6 @@ namespace HENG
                 splashImageRect = splash.ImageLocation;
                 PositionImage();
             }
-        }
-
-        private async void DismissedEventHandler(SplashScreen sender, object args)
-        {
-            dismissed = true;
-            await Task.Delay(1000);
-
-            DispatcherHelper.CheckBeginInvokeOnUI(async () =>
-            {
-                rootFrame.Navigate(typeof(ShellPage));
-                Window.Current.Content = rootFrame;
-                await App.StartupAsync();
-            });
         }
 
         private void PositionImage()
@@ -77,12 +61,18 @@ namespace HENG
             }
         }
 
-        private void RestoreStateAsync(bool loadState)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (loadState)
+            //await Task.Delay(1000);
+
+            ShellPage page = new ShellPage();
+            if (!(Window.Current.Content is Frame rootFrame))
             {
-                //await SuspensionManager.RestoreAsync();
+                Window.Current.Content = rootFrame = new Frame();
             }
+            rootFrame.Content = page;
+
+            await App.StartupAsync();
         }
     }
 }

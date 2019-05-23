@@ -8,6 +8,7 @@
     xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="#32373f"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Grid>

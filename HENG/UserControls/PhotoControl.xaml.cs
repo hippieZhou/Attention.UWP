@@ -142,11 +142,6 @@ namespace HENG.UserControls
             }
         }
 
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            Implicit.GetAnimations(refresh)?.StartAnimation(refresh);
-        }
-
         private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)
         {
             ScrollViewer viewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
@@ -154,15 +149,41 @@ namespace HENG.UserControls
             {
                 viewer.ViewChanging += (s1, e1) => 
                 {
-                    if (refresh.Visibility == Visibility.Visible)
+                    if (RefreshButton.Visibility == Visibility.Visible)
                     {
-                        refresh.Visibility = Visibility.Collapsed;
+                        RefreshButton.Visibility = Visibility.Collapsed;
                     }
                 };
                 viewer.ViewChanged += (s2, e2) => 
                 {
-                    refresh.Visibility = Visibility.Visible;
-                    Implicit.GetShowAnimations(refresh)?.StartAnimation(refresh);
+                    RefreshButton.Visibility = Visibility.Visible;
+                    Implicit.GetShowAnimations(RefreshButton)?.StartAnimation(RefreshButton);
+
+                    var visual = VisualExtensions.GetVisual(RefreshButton);
+                    visual.StopAnimation(nameof(visual.RotationAngleInDegrees));
+                };
+            }
+        }
+
+        private void RefreshButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                var animation = Window.Current.Compositor.CreateScalarKeyFrameAnimation();
+                var easing = Window.Current.Compositor.CreateLinearEasingFunction();
+                animation.InsertKeyFrame(0.0f, 0.0f);
+                animation.InsertKeyFrame(1.0f, 360.0f, easing);
+
+                animation.Duration = TimeSpan.FromMilliseconds(1000);
+                animation.IterationBehavior = AnimationIterationBehavior.Count;
+                animation.IterationCount = 4;
+
+                var visual = VisualExtensions.GetVisual(RefreshButton);
+                visual.CenterPoint = new Vector3(visual.Size.X / 2.0f, visual.Size.Y / 2.0f, 0);
+
+                button.Click += (s1, e1) => 
+                {
+                    visual.StartAnimation(nameof(visual.RotationAngleInDegrees), animation);
                 };
             }
         }

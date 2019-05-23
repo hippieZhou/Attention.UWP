@@ -1,5 +1,7 @@
 ﻿using HENG.ViewModels;
+using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace HENG.Views
 {
@@ -10,6 +12,15 @@ namespace HENG.Views
         public LocalView()
         {
             this.InitializeComponent();
+        }
+
+        private void Grid_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            var rootGrid = sender as Grid;
+            rootGrid.Clip = new RectangleGeometry()
+            {
+                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
+            };
         }
     }
 }

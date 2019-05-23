@@ -6,6 +6,7 @@
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:helpers="using:HENG.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -424,15 +425,14 @@
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
         <Button
-            x:Name="refresh"
+            x:Name="RefreshButton"
             Margin="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Click="Refresh_Click"
             Command="{x:Bind RefreshCommand}"
+            Loaded="RefreshButton_Loaded"
             RenderTransformOrigin="0.5,0.5"
             Style="{StaticResource RefreshButtonRevealStyle}">
-
             <animations:Implicit.ShowAnimations>
                 <animations:TranslationAnimation
                     SetInitialValueBeforeDelay="True"
@@ -445,17 +445,6 @@
                     To="1.0"
                     Duration="0:0:1" />
             </animations:Implicit.ShowAnimations>
-
-            <animations:Implicit.Animations>
-                <animations:ScalarAnimation
-                    ImplicitTarget="Angle"
-                    Target="RotationAngleInDegrees"
-                    From="0"
-                    To="720"
-                    Duration="0:0:2">
-                    <animations:ScalarKeyFrame Key="0.5" Value="360" />
-                </animations:ScalarAnimation>
-            </animations:Implicit.Animations>
         </Button>
 
         <VisualStateManager.VisualStateGroups>
