@@ -61,7 +61,7 @@ namespace HENG.Services
             var items = await Home_Client?.GetItemsAsync(++pageIndex, pageSize, cancellationToken);
             IEnumerable<string> urls = from p in items.Take(5) select p.Url;
 
-            UpdateLiveTile(urls);
+            await Task.Run(() => { UpdateLiveTile(urls); });
 
             return items;
         }
@@ -112,12 +112,6 @@ namespace HENG.Services
                 Downloads.Add(download);
                 DownloadsEvent?.Invoke(this, Downloads);
             }
-
-            //var folder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
-            //var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
-            //var images = await folder.CreateFileQueryWithOptions(queryOptions)?.GetFilesAsync();
-            //var urls = from p in images select p.Path;
-            //UpdateLiveTile(urls);
         }
 
         private void UpdateLiveTile(IEnumerable<string> urls)
