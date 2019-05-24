@@ -16,6 +16,8 @@ namespace HENG.Views
 
         private void Grid_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
+            if (e.NewSize == e.PreviousSize) return;
+
             var rootGrid = sender as Grid;
             rootGrid.Clip = new RectangleGeometry()
             {

@@ -64,6 +64,7 @@ namespace HENG
                 var titleBar = ApplicationView.GetForCurrentView().TitleBar;
                 titleBar.ButtonBackgroundColor = Colors.Transparent;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
             DispatcherHelper.Initialize();

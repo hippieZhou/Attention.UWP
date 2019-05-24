@@ -11,6 +11,7 @@ using Windows.Foundation;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System.Diagnostics;
 using Microsoft.Toolkit.Uwp.UI.Animations;
+using System.Threading.Tasks;
 
 namespace HENG.UserControls
 {
@@ -127,6 +128,8 @@ namespace HENG.UserControls
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (e.NewSize == e.PreviousSize) return;
+
             var rootGrid = sender as Grid;
             rootGrid.Clip = new RectangleGeometry()
             {
@@ -147,7 +150,7 @@ namespace HENG.UserControls
             ScrollViewer viewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
             if (viewer != null)
             {
-                viewer.ViewChanging += (s1, e1) => 
+                viewer.ViewChanging += (s1, e1) =>
                 {
                     if (RefreshButton.Visibility == Visibility.Visible)
                     {
