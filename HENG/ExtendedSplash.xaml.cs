@@ -1,5 +1,6 @@
 ﻿using HENG.Views;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Graphics.Display;
@@ -34,6 +35,21 @@ namespace HENG
 
             var RestoreStateAction = new Action<bool>(b => { });
             RestoreStateAction(loadState);
+
+            Loaded += async (sender, e) => 
+            {
+                //await Task.Delay(1000);
+                await Task.Yield();
+
+                ShellPage page = new ShellPage();
+                if (!(Window.Current.Content is Frame rootFrame))
+                {
+                    Window.Current.Content = rootFrame = new Frame();
+                }
+                rootFrame.Content = page;
+
+                await App.StartupAsync();
+            };
         }
 
         private void ExtendedSplash_OnResize(object sender, WindowSizeChangedEventArgs e)
@@ -59,20 +75,6 @@ namespace HENG
                 extendedSplashImage.Height = splashImageRect.Height;
                 extendedSplashImage.Width = splashImageRect.Width;
             }
-        }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            //await Task.Delay(1000);
-
-            ShellPage page = new ShellPage();
-            if (!(Window.Current.Content is Frame rootFrame))
-            {
-                Window.Current.Content = rootFrame = new Frame();
-            }
-            rootFrame.Content = page;
-
-            await App.StartupAsync();
         }
     }
 }

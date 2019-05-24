@@ -38,7 +38,6 @@
                             Source="{x:Bind Photo}"
                             Stretch="UniformToFill"
                             UseLayoutRounding="True" />
-
                         <CommandBar
                             x:Name="CommandBar"
                             VerticalAlignment="Bottom"
@@ -47,9 +46,16 @@
                                 <Grid />
                             </CommandBar.Content>
                             <CommandBar.PrimaryCommands>
-                                <AppBarButton Icon="Share" Label="Share" />
-                                <AppBarButton Icon="Edit" Label="Edit" />
-                                <AppBarButton Icon="Delete" Label="Delete" />
+                                <AppBarButton
+                                    Command="{Binding ElementName=GridView, Path=DataContext.ShareCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    Icon="Share"
+                                    Label="Share" />
+                                <AppBarButton
+                                    Command="{Binding ElementName=GridView, Path=DataContext.DeleteCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    Icon="Delete"
+                                    Label="Delete" />
                             </CommandBar.PrimaryCommands>
                             <i:Interaction.Behaviors>
                                 <behaviors:Offset
