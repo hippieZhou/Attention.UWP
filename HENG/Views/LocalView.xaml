@@ -10,7 +10,6 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:models="using:HENG.Models"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>

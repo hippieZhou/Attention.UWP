@@ -5,6 +5,7 @@ using HENG.Helpers;
 using HENG.Models;
 using HENG.Models.Shares;
 using HENG.Services;
+using Microsoft.Toolkit.Uwp.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -129,18 +130,15 @@ namespace HENG.ViewModels
             StorageFolder downloadFolder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
             IReadOnlyList<StorageFile> sfs = await downloadFolder.CreateFileQueryWithOptions(queryOptions).GetFilesAsync();
-            await DispatcherHelper.RunAsync(async () =>
-             {
-                 foreach (var sf in sfs)
-                 {
-                     BitmapImage photo = await ImageHelper.StorageFileToBitmapImage(sf);
-                     Photos.Add(new DownloadItem()
-                     {
-                         ResultFile = sf,
-                         Photo = photo
-                     });
-                 }
-             });
+            foreach (var sf in sfs)
+            {
+                BitmapImage photo = await ImageHelper.StorageFileToBitmapImage(sf);
+                Photos.Add(new DownloadItem()
+                {
+                    ResultFile = sf,
+                    Photo = photo
+                });
+            }
         }
     }
 }

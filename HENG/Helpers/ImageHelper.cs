@@ -13,6 +13,7 @@ namespace HENG.Helpers
             using (IRandomAccessStream stream = await sf.OpenAsync(FileAccessMode.Read))
             {
                 var bitmap = new BitmapImage();
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bitmap.SetSource(stream);
                 return bitmap;
             }
