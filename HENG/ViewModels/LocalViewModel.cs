@@ -3,18 +3,12 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 using HENG.Helpers;
 using HENG.Models;
-using HENG.Models.Shares;
 using HENG.Services;
-using Microsoft.Toolkit.Uwp.UI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.Storage.Search;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace HENG.ViewModels
 {
@@ -37,26 +31,19 @@ namespace HENG.ViewModels
                     _loadedCommand = new RelayCommand(async () =>
                    {
                        Photos.Clear();
-                       await InitializeAsync();
 
-                       await DispatcherHelper.RunAsync(() => 
+                       var hostories = await Singleton<DataService>.Instance.LoadHostoryAsync();
+                       await DispatcherHelper.UIDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
                        {
-                           var items = Singleton<DataService>.Instance.Downloads;
-                           foreach (DownloadItem item in items)
+                           foreach (DownloadItem item in hostories)
                            {
                                Photos.Add(item);
                            }
                        });
 
-                       Singleton<DataService>.Instance.DownloadsEvent += async (sender, items) => 
+                       Singleton<DataService>.Instance.DownloadEvent += (sender, item) =>
                        {
-                           await DispatcherHelper.RunAsync(() =>
-                            {
-                                foreach (DownloadItem item in items)
-                                {
-                                    Photos.Add(item);
-                                }
-                            });
+                           DispatcherHelper.CheckBeginInvokeOnUI(() => { Photos.Add(item); });
                        };
                    });
                 }
@@ -73,35 +60,7 @@ namespace HENG.ViewModels
                 {
                     _shareCommand = new RelayCommand<DownloadItem>(item =>
                     {
-                        DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
-                        dataTransferManager.DataRequested += (sender, e) =>
-                        {
-                            var deferral = e.Request.GetDeferral();
-                            sender.TargetApplicationChosen += (s1, s2) =>
-                            {
-                                deferral.Complete();
-                            };
-
-                            var data = new ShareSourceData("AppDisplayName".GetLocalized());
-                            if (item.RequestedUri != null)
-                            {
-                                data.SetWebLink(item.RequestedUri);
-                            }
-                            if (item.ResultFile != null)
-                            {
-                                data.SetImage(item.ResultFile as StorageFile);
-                            }
-
-                            if (data != null)
-                            {
-                                e.Request.SetData(data);
-                            }
-                            e.Request.Data.OperationCompleted += (s, _) =>
-                            {
-                                //Messenger.Default.Send(new NotificationMessageAction<string>(sender, "分享成功", reply => { Trace.WriteLine(reply); }));
-                            };
-                        };
-                        DataTransferManager.ShowShareUI();
+                        Singleton<DataService>.Instance.Share(item);
                     });
                 }
                 return _shareCommand;
@@ -122,22 +81,6 @@ namespace HENG.ViewModels
                     });
                 }
                 return _deleteCommand;
-            }
-        }
-
-        private async Task InitializeAsync()
-        {
-            StorageFolder downloadFolder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
-            var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
-            IReadOnlyList<StorageFile> sfs = await downloadFolder.CreateFileQueryWithOptions(queryOptions).GetFilesAsync();
-            foreach (var sf in sfs)
-            {
-                BitmapImage photo = await ImageHelper.StorageFileToBitmapImage(sf);
-                Photos.Add(new DownloadItem()
-                {
-                    ResultFile = sf,
-                    Photo = photo
-                });
             }
         }
     }

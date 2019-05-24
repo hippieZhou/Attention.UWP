@@ -13,6 +13,9 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 using System.Linq;
 using Windows.System.UserProfile;
+using Windows.ApplicationModel.DataTransfer;
+using HENG.Models.Shares;
+using Windows.Storage.Search;
 
 namespace HENG.Services
 {
@@ -102,18 +105,39 @@ namespace HENG.Services
 
     public partial class DataService
     {
-        public List<DownloadItem> Downloads { get; private set; } = new List<DownloadItem>();
+        private readonly List<DownloadItem> downloads = new List<DownloadItem>();
 
-        public event EventHandler<IList<DownloadItem>> DownloadsEvent = delegate { };
+        public event EventHandler<DownloadItem> DownloadEvent = delegate { };
+
+        public async Task<IEnumerable<DownloadItem>> LoadHostoryAsync()
+        {
+            downloads.Clear();
+
+            StorageFolder downloadFolder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
+            var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
+            IReadOnlyList<StorageFile> sfs = await downloadFolder.CreateFileQueryWithOptions(queryOptions).GetFilesAsync();
+            foreach (var sf in sfs)
+            {
+                BitmapImage photo = await ImageHelper.StorageFileToBitmapImage(sf);
+                var item = new DownloadItem() { ResultFile = sf, Photo = photo };
+                if (!downloads.Contains(item))
+                {
+                    downloads.Add(item);
+                }
+            }
+
+            return downloads;
+        }
+
         public async Task DownLoad(Uri sourceUri)
         {
             var download = new DownloadItem(sourceUri);
             await download.DownloadAsync();
 
-            if (!Downloads.Contains(download))
+            if (!downloads.Contains(download))
             {
-                Downloads.Add(download);
-                DownloadsEvent?.Invoke(this, Downloads);
+                downloads.Add(download);
+                DownloadEvent?.Invoke(this, download);
             }
         }
 
@@ -167,6 +191,39 @@ namespace HENG.Services
                     }
                 }
             }
+        }
+    }
+
+    public partial class DataService
+    {
+        public void Share(DownloadItem download)
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += (sender, e) =>
+            {
+                var deferral = e.Request.GetDeferral();
+                sender.TargetApplicationChosen += (s1, s2) =>
+                {
+                    deferral.Complete();
+                };
+
+                var data = new ShareSourceData("AppDisplayName".GetLocalized());
+                if (download.RequestedUri != null)
+                {
+                    data.SetWebLink(download.RequestedUri);
+                }
+                if (download.ResultFile != null)
+                {
+                    data.SetImage(download.ResultFile as StorageFile);
+                }
+
+                if (data != null)
+                {
+                    e.Request.SetData(data);
+                }
+                e.Request.Data.OperationCompleted += (s, _) => { };
+            };
+            DataTransferManager.ShowShareUI();
         }
     }
 }

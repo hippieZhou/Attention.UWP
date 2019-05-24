@@ -21,6 +21,12 @@
     </i:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition IsStaggeringEnabled="True" />
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
         <muxc:NavigationView
             x:Name="NavView"
             AlwaysShowHeader="False"
