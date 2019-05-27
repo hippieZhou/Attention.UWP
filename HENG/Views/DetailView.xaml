@@ -33,7 +33,11 @@
             ContentTemplate="{StaticResource BaseItemTemplate}" />
         <CommandBar VerticalAlignment="Bottom">
             <CommandBar.Background>
-                <media:BackdropBlurBrush Amount="8" />
+                <AcrylicBrush
+                    BackgroundSource="HostBackdrop"
+                    FallbackColor="{ThemeResource SystemAccentColor}"
+                    TintColor="{ThemeResource SystemAccentColor}"
+                    TintOpacity="0.8" />
             </CommandBar.Background>
             <CommandBar.Content>
                 <Grid />

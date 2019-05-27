@@ -13,6 +13,15 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     extensions:StatusBarExtensions.IsVisible="False"
     mc:Ignorable="d">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
 
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
@@ -55,22 +64,22 @@
                 <muxc:NavigationViewItemHeader x:Name="MainPagesHeader" x:Uid="Shell_MainPagesHeader" />
                 <muxc:NavigationViewItem x:Uid="Shell_Newest" helpers:NavHelper.NavigateTo="HENG.ViewModels.NewestViewModel">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF146;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECC5;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem x:Uid="Shell_Hottest" helpers:NavHelper.NavigateTo="HENG.ViewModels.HottestViewModel">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF147;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECAD;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem x:Uid="Shell_Grils" helpers:NavHelper.NavigateTo="HENG.ViewModels.GirlsViewModel">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF148;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED53;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem x:Uid="Shell_Skyland" helpers:NavHelper.NavigateTo="HENG.ViewModels.SkylandViewModel">
                     <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF149;" />
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE128;" />
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItemSeparator />
@@ -86,7 +95,9 @@
                     <Frame x:Name="ContentFrame" IsTabStop="True">
                         <Frame.ContentTransitions>
                             <TransitionCollection>
-                                <NavigationThemeTransition />
+                                <NavigationThemeTransition>
+                                    <DrillInNavigationTransitionInfo />
+                                </NavigationThemeTransition>
                             </TransitionCollection>
                         </Frame.ContentTransitions>
                     </Frame>
