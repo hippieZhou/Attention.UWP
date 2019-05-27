@@ -172,12 +172,22 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth, Mode=OneWay}" />
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.ExpandedModeThresholdWidth, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavView.PaneDisplayMode" Value="Top" />
                         <Setter Target="NavView.Header" Value="{x:Null}" />
                         <Setter Target="MainPagesHeader.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavView.PaneDisplayMode" Value="Auto" />
+                        <Setter Target="NavView.Header" Value="{x:Null}" />
+                        <Setter Target="MainPagesHeader.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>

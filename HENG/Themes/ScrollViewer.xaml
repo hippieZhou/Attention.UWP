@@ -198,8 +198,8 @@
                                 <Rectangle
                                     x:Name="ThumbVisual"
                                     Fill="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                                    RadiusX="5"
-                                    RadiusY="5">
+                                    RadiusX="4"
+                                    RadiusY="4">
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="CommonStates">
                                             <VisualState x:Name="Normal" />
@@ -234,8 +234,8 @@
                                 <Rectangle
                                     x:Name="ThumbVisual"
                                     Fill="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                                    RadiusX="5"
-                                    RadiusY="5">
+                                    RadiusX="4"
+                                    RadiusY="4">
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="CommonStates">
                                             <VisualState x:Name="Normal" />

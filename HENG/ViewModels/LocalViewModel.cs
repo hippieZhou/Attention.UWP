@@ -6,14 +6,25 @@ using HENG.Models;
 using HENG.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.ViewModels
 {
     public class LocalViewModel : ViewModelBase
     {
+        public LocalViewModel()
+        {
+            Messenger.Default.Register<DownloadItem>(this, item =>
+            {
+                if (!Photos.Contains(item))
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => { Photos.Add(item); });
+                }
+            });
+        }
+
         private ObservableCollection<DownloadItem> _photos;
         public ObservableCollection<DownloadItem> Photos
         {
@@ -28,23 +39,18 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _loadedCommand = new RelayCommand(() =>
                    {
-                       Photos.Clear();
-
-                       var hostories = await Singleton<DataService>.Instance.LoadHostoryAsync();
-                       await DispatcherHelper.UIDispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, () =>
+                       DispatcherHelper.CheckBeginInvokeOnUI(() => 
                        {
-                           foreach (DownloadItem item in hostories)
+                           Singleton<DataService>.Instance.Downloads.ForEach(item =>
                            {
-                               Photos.Add(item);
-                           }
+                               if (!Photos.Contains(item))
+                               {
+                                   Photos.Add(item);
+                               }
+                           });
                        });
-
-                       Singleton<DataService>.Instance.DownloadEvent += (sender, item) =>
-                       {
-                           DispatcherHelper.CheckBeginInvokeOnUI(() => { Photos.Add(item); });
-                       };
                    });
                 }
                 return _loadedCommand;

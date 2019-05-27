@@ -16,6 +16,7 @@ using Windows.System.UserProfile;
 using Windows.ApplicationModel.DataTransfer;
 using HENG.Models.Shares;
 using Windows.Storage.Search;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.Services
 {
@@ -105,13 +106,10 @@ namespace HENG.Services
 
     public partial class DataService
     {
-        private readonly List<DownloadItem> downloads = new List<DownloadItem>();
-
-        public event EventHandler<DownloadItem> DownloadEvent = delegate { };
-
-        public async Task<IEnumerable<DownloadItem>> LoadHostoryAsync()
+        public readonly List<DownloadItem> Downloads = new List<DownloadItem>();
+        public async Task LoadHistoryAsync()
         {
-            downloads.Clear();
+            Downloads.Clear();
 
             StorageFolder downloadFolder = await StorageFolder.GetFolderFromPathAsync(App.Settings.DownloadPath);
             var queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, new List<string> { ".jpg", ".png" });
@@ -120,13 +118,11 @@ namespace HENG.Services
             {
                 BitmapImage photo = await ImageHelper.StorageFileToBitmapImage(sf);
                 var item = new DownloadItem() { ResultFile = sf, Photo = photo };
-                if (!downloads.Contains(item))
+                if (!Downloads.Contains(item))
                 {
-                    downloads.Add(item);
+                    Downloads.Add(item);
                 }
             }
-
-            return downloads;
         }
 
         public async Task DownLoad(Uri sourceUri)
@@ -134,10 +130,10 @@ namespace HENG.Services
             var download = new DownloadItem(sourceUri);
             await download.DownloadAsync();
 
-            if (!downloads.Contains(download))
+            if (!Downloads.Contains(download))
             {
-                downloads.Add(download);
-                DownloadEvent?.Invoke(this, download);
+                Downloads.Add(download);
+                Messenger.Default.Send(download);
             }
         }
 

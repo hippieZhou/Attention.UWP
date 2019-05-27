@@ -1,4 +1,6 @@
-﻿using HENG.Views;
+﻿using HENG.Helpers;
+using HENG.Services;
+using HENG.Views;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;

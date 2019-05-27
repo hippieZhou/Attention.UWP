@@ -99,11 +99,10 @@ namespace HENG
                     Settings.DownloadPath = sf.Path;
                 }
             }
+
             await LoadConfigurationAsync();
-
             await ThemeSelectorService.InitializeAsync();
-
-            await Task.CompletedTask;
+            await Singleton<DataService>.Instance.LoadHistoryAsync();
         }
 
         public static async Task StartupAsync()

@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Views;
 using CommonServiceLocator;
 using HENG.Views;
-using System.Net.Http;
 using HENG.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -32,7 +31,6 @@ namespace HENG.ViewModels
             nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsView));
 
             SimpleIoc.Default.Register<INavigationService>(() => nav);
-            SimpleIoc.Default.Register<IDialogService, DialogService>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<DetailViewModel>();
