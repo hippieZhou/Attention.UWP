@@ -9,9 +9,6 @@ using System.Numerics;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
-using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.UI.Animations;
-using System.Threading.Tasks;
 
 namespace HENG.UserControls
 {
@@ -165,6 +162,15 @@ namespace HENG.UserControls
                 //    var visual = VisualExtensions.GetVisual(RefreshButton);
                 //    visual.StopAnimation(nameof(visual.RotationAngleInDegrees));
                 //};
+            }
+        }
+
+        private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var item = this.AdaptiveGridViewControl.SelectedItem;
+            if (item != null)
+            {
+                this.AdaptiveGridViewControl.ScrollIntoView(item);
             }
         }
 

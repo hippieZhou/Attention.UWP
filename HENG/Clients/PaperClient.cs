@@ -26,7 +26,8 @@ namespace HENG.Clients
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c68ffb9463b7fbfe72b0db0?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
-            var items = JsonConvert.DeserializeObject<IEnumerable<PaperItem>>(json);
+            var items = JsonConvert.DeserializeObject<PaperItem[]>(json);
+            Array.ForEach(items, p => { p.ImageCache = p.Urls.Full; });
             return items;
         }
 
@@ -34,7 +35,8 @@ namespace HENG.Clients
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c69251c9b1c011c41bb97be?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
-            var items = JsonConvert.DeserializeObject<IEnumerable<PaperItem>>(json);
+            var items = JsonConvert.DeserializeObject<PaperItem[]>(json);
+            Array.ForEach(items, p => { p.ImageCache = p.Urls.Full; });
             return items;
         }
 
@@ -42,7 +44,8 @@ namespace HENG.Clients
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c81087e6aee28c541eefc26?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
-            var items = JsonConvert.DeserializeObject<IEnumerable<PaperItem>>(json);
+            var items = JsonConvert.DeserializeObject<PaperItem[]>(json);
+            Array.ForEach(items, p => { p.ImageCache = p.Urls.Full; });
             return items;
         }
 
@@ -50,7 +53,8 @@ namespace HENG.Clients
         {
             var url = $"https://service.paper.meiyuan.in/api/v2/columns/flow/5c81f64c96fad8fe211f5367?page={page}&per_page={per_page}";
             string json = await GetPaperJsonAsync(url, cancellationToken);
-            var items = JsonConvert.DeserializeObject<IEnumerable<PaperItem>>(json);
+            var items = JsonConvert.DeserializeObject<PaperItem[]>(json);
+            Array.ForEach(items, p => { p.ImageCache = p.Urls.Full; });
             return items;
         }
 

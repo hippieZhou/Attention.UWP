@@ -62,8 +62,11 @@ namespace HENG.Clients
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             var bings = JsonConvert.DeserializeObject<BingSource>(json)?.Bings;
-            items.AddRange(bings);
-
+            if (bings != null)
+            {
+                Array.ForEach(bings, p => { p.ImageCache = p.Url; });
+                items.AddRange(bings);
+            }
             return items;
         }
     }

@@ -5,16 +5,19 @@ using System.Windows.Input;
 using HENG.Helpers;
 using GalaSoft.MvvmLight.Messaging;
 using System.Diagnostics;
+using HENG.Models;
+using Microsoft.Toolkit.Uwp.UI;
+using System;
 
 namespace HENG.ViewModels
 {
     public class DetailViewModel : ViewModelBase
     {
-        private object _model;
-        public object Model
+        private DataItem _photo;
+        public DataItem Photo
         {
-            get { return _model; }
-            set { Set(ref _model, value); }
+            get { return _photo; }
+            set { Set(ref _photo, value); }
         }
 
         private ICommand _refreshCommand;
@@ -24,57 +27,12 @@ namespace HENG.ViewModels
             {
                 if (_refreshCommand == null)
                 {
-                    _refreshCommand = new RelayCommand(() =>
+                    _refreshCommand = new RelayCommand(async () =>
                     {
-                       // Model.ParseModel(async b1 =>
-                       //{
-                       //    b1.ImageCache = b1.Url;
-                       //    Model = b1;
-
-                       //    await Singleton<DataService>.Instance.GetFromCacheAsync(b1.Url, bmp =>
-                       //    {
-                       //        if (bmp != null)
-                       //        {
-                       //            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                       //            {
-                       //                b1.ImageCache = bmp;
-                       //                Model = b1;
-                       //            });
-                       //        }
-                       //    });
-                       //}, async b2 =>
-                       //{
-                       //    b2.ImageCache = b2.Thumb;
-                       //    Model = b2;
-
-                       //    await Singleton<DataService>.Instance.GetFromCacheAsync(b2.Download_url, bmp =>
-                       //    {
-                       //        if (bmp != null)
-                       //        {
-                       //            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                       //            {
-                       //                b2.ImageCache = bmp;
-                       //                Model = b2;
-                       //            });
-                       //        }
-                       //    });
-                       //}, async b3 =>
-                       //{
-                       //    b3.ImageCache = b3.Urls.Regular;
-                       //    Model = b3;
-
-                       //    await Singleton<DataService>.Instance.GetFromCacheAsync(b3.Urls.Full, bmp =>
-                       //    {
-                       //        if (bmp != null)
-                       //        {
-                       //            DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                       //            {
-                       //                b3.ImageCache = bmp;
-                       //                Model = b3;
-                       //            });
-                       //        }
-                       //    });
-                       //});
+                        if (Photo.ImageCache is string str)
+                        {
+                            Photo.ImageCache = await ImageCache.Instance.GetFromCacheAsync(new Uri(str));
+                        }
                     });
                 }
                 return _refreshCommand;
@@ -90,7 +48,7 @@ namespace HENG.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        await Singleton<DataService>.Instance.DownLoad(Model);
+                        await Singleton<DataService>.Instance.DownLoad(Photo);
                         Messenger.Default.Send(new NotificationMessageAction<string>("downloading".GetLocalized(), str => { Trace.WriteLine(str); }));
                     });
                 }

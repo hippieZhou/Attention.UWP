@@ -17,7 +17,6 @@ using Windows.Foundation;
 using Windows.System.Profile;
 using Windows.ApplicationModel.Background;
 using System.Threading;
-using System.Linq;
 
 namespace HENG
 {

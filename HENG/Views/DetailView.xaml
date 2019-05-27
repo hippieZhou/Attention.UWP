@@ -2,34 +2,44 @@
     x:Class="HENG.Views.DetailView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:HENG.Models"
     mc:Ignorable="d">
-    <Page.Resources>
-        <DataTemplate x:Key="BaseItemTemplate" x:DataType="models:DataItem">
-            <Grid>
-                <controls:ImageEx
-                    CacheMode="BitmapCache"
-                    IsCacheEnabled="True"
-                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                    PlaceholderStretch="None"
-                    Source="{x:Bind ImageCache}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>
 
     <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
+        <Grid.Transitions>
+            <TransitionCollection>
+                <PopupThemeTransition />
+            </TransitionCollection>
+        </Grid.Transitions>
+
         <ContentControl
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
-            Content="{x:Bind ViewModel.Model, Mode=OneWay}"
-            ContentTemplate="{StaticResource BaseItemTemplate}" />
+            Content="{x:Bind ViewModel.Photo, Mode=OneWay}">
+            <ContentControl.ContentTemplate>
+                <DataTemplate x:DataType="models:DataItem">
+                    <Grid>
+                        <controls:ImageEx
+                            CacheMode="BitmapCache"
+                            IsCacheEnabled="True"
+                            PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                            PlaceholderStretch="None"
+                            Source="{x:Bind ImageCache}"
+                            Stretch="UniformToFill"
+                            UseLayoutRounding="True" />
+                    </Grid>
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+
         <CommandBar VerticalAlignment="Bottom">
             <CommandBar.Background>
                 <AcrylicBrush
@@ -43,7 +53,7 @@
             </CommandBar.Content>
             <CommandBar.PrimaryCommands>
                 <AppBarButton
-                    Command="{x:Bind BackCommand}"
+                    Command="{x:Bind BackCommand, Mode=OneWay}"
                     Icon="Back"
                     Label="Back" />
                 <AppBarButton

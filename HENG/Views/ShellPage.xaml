@@ -107,22 +107,8 @@
 
         <local:DetailView
             x:Name="DetailView"
-            BackCommand="{x:Bind ViewModel.BackCommand}"
-            Photo="{x:Bind ViewModel.Photo, Mode=OneWay}"
-            Visibility="Collapsed">
-            <animations:Implicit.ShowAnimations>
-                <animations:OpacityAnimation
-                    From="0"
-                    To="1.0"
-                    Duration="0:0:1" />
-            </animations:Implicit.ShowAnimations>
-            <animations:Implicit.HideAnimations>
-                <animations:OpacityAnimation
-                    From="1.0"
-                    To="0"
-                    Duration="0:0:1" />
-            </animations:Implicit.HideAnimations>
-        </local:DetailView>
+            BackCommand="{x:Bind ViewModel.DetailBackCommand, Mode=OneWay}"
+            Visibility="Collapsed" />
 
         <Grid
             x:Name="NotifGrid"
@@ -158,7 +144,6 @@
                     Duration="0:0:1" />
             </animations:Implicit.HideAnimations>
         </Grid>
-
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">

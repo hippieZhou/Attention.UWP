@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using System.Windows.Input;
@@ -9,9 +8,8 @@ using System;
 using GalaSoft.MvvmLight.Messaging;
 using HENG.Services;
 using HENG.Helpers;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Diagnostics;
+using HENG.Models;
 
 namespace HENG.ViewModels
 {
@@ -115,10 +113,7 @@ namespace HENG.ViewModels
                 {
                     _itemClickCommand = new RelayCommand<IType>(model =>
                     {
-                        if (typeof(IType) == model.GetType())
-                        {
-                            Messenger.Default.Send(new GenericMessage<IType>(this, model));
-                        }
+                        Messenger.Default.Send(model as DataItem, nameof(DataItem));
                     });
                 }
                 return _itemClickCommand;

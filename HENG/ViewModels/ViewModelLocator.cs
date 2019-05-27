@@ -5,6 +5,8 @@ using HENG.Views;
 using HENG.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml;
 
 namespace HENG.ViewModels
 {
@@ -69,5 +71,6 @@ namespace HENG.ViewModels
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
 
         public IServiceProvider ServiceProvider => ServiceLocator.Current.GetInstance<IServiceProvider>();
+
     }
 }

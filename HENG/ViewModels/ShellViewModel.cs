@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
+using HENG.Models;
 using HENG.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,20 +21,18 @@ namespace HENG.ViewModels
     {
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
-        private Page _detailView;
+        private DetailView _detailView;
         private Grid _notifGrid;
 
         public ShellViewModel(INavigationService navigationService)
         {
             _navService = (NavigationService)navigationService;
 
+            Messenger.Default.Register<DataItem>(this, nameof(DataItem), item =>
+             {
+                 _detailView.Photo = item; _detailView.Visibility = Visibility.Visible;
+             });
             Messenger.Default.Register<NotificationMessageAction<string>>(this, HandleNotificationMessage);
-
-            Messenger.Default.Register<GenericMessage<object>>(this, item =>
-            {
-                Photo = item.Content;
-                _detailView.Visibility = Visibility.Visible;
-            });
         }
 
         private void HandleNotificationMessage(NotificationMessageAction<string> message)
@@ -48,17 +47,15 @@ namespace HENG.ViewModels
             });
         }
 
-        public void Initialize(Frame shellFrame, muxc.NavigationView navView, DetailView detailView, Grid notifGrid)
+        public void Initialize(muxc.NavigationView navView, Frame shellFrame, DetailView detailView, Grid notifGrid)
         {
-            _navService.CurrentFrame = shellFrame;
-            _navService.CurrentFrame.Navigated += Frame_Navigated;
-
             _navView = navView;
             _navView.BackRequested += OnBackRequested;
 
-            _detailView = detailView;
-            _detailView.Visibility = Visibility.Collapsed;
+            _navService.CurrentFrame = shellFrame;
+            _navService.CurrentFrame.Navigated += Frame_Navigated;
 
+            _detailView = detailView;
             _notifGrid = notifGrid;
         }
 
@@ -114,7 +111,6 @@ namespace HENG.ViewModels
                     _loadedCommand = new RelayCommand(() =>
                     {
                         var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
-                        //var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p=>NavHelper.GetNavigateTo(p) == typeof(LocalViewModel).FullName);
                         if (first != null)
                         {
                             var pageKey = NavHelper.GetNavigateTo(first);
@@ -162,19 +158,20 @@ namespace HENG.ViewModels
             }
         }
 
-        private ICommand _backCommand;
-        public ICommand BackCommand
+        private ICommand _detailBackCommand;
+        public ICommand DetailBackCommand
         {
             get
             {
-                if (_backCommand == null)
+                if (_detailBackCommand == null)
                 {
-                    _backCommand = new RelayCommand(() => 
+                    _detailBackCommand = new RelayCommand(() =>
                     {
-                        _detailView.Visibility = Visibility.Collapsed;
+                        this._detailView.Visibility = Visibility.Collapsed;
                     });
                 }
-                return _backCommand; }
+                return _detailBackCommand;
+            }
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)

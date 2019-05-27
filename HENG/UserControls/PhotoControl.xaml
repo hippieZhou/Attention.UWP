@@ -392,8 +392,9 @@
             ItemsSource="{x:Bind Photos, Mode=OneWay}"
             Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
-            SelectionMode="None"
-            ShowsScrollingPlaceholders="False">
+            SelectionMode="Single"
+            ShowsScrollingPlaceholders="False"
+            SizeChanged="AdaptiveGridViewControl_SizeChanged">
             <controls:AdaptiveGridView.ItemContainerTransitions>
                 <TransitionCollection>
                     <EntranceThemeTransition IsStaggeringEnabled="True" />

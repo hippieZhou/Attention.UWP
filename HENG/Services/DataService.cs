@@ -22,40 +22,6 @@ namespace HENG.Services
 {
     public partial class DataService
     {
-        static DataService()
-        {
-            ImageCache.Instance.MaxMemoryCacheCount = 1000;
-            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
-        }
-
-        public async Task GetFromCacheAsync(string url, Action<BitmapImage> action)
-        {
-            var file = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(url));
-            if (file != null)
-            {
-                var props = await file.GetBasicPropertiesAsync();
-                if (props.Size == 0)
-                {
-                    await file.DeleteAsync();
-                }
-            }
-            var task = ImageCache.Instance.PreCacheAsync(new Uri(url));
-            await task.ContinueWith(async t =>
-            {
-                var bmp = await ImageCache.Instance.GetFromCacheAsync(new Uri(url));
-                action(bmp);
-            }).ConfigureAwait(false); ;
-        }
-
-        public async Task<StorageFile> GetFileFromCacheAsync(string url)
-        {
-            var sf = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(url));
-            return sf;
-        }
-    }
-
-    public partial class DataService
-    {
         private IBaseClient<BingItem> Home_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(BingClient)) as IBaseClient<BingItem>;
         private IBaseClient<PicsumItem> Picsum_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(PicsumClient)) as IBaseClient<PicsumItem>;
         private PaperClient Paper_Client => ViewModelLocator.Current.ServiceProvider.GetService(typeof(PaperClient)) as PaperClient;

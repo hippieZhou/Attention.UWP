@@ -33,9 +33,12 @@ namespace HENG.Clients
             HttpResponseMessage response = await _client.GetAsync(new Uri(url), cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var picsums = JsonConvert.DeserializeObject<IEnumerable<PicsumItem>>(json);
-            items.AddRange(picsums);
-
+            var picsums = JsonConvert.DeserializeObject<PicsumItem[]>(json);
+            if (picsums != null)
+            {
+                Array.ForEach(picsums, p => { p.ImageCache = p.Download_url; });
+                items.AddRange(picsums);
+            }
             return items;
         }
     }

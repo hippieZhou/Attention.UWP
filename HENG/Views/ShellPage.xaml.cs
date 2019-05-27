@@ -10,7 +10,7 @@ namespace HENG.Views
         public ShellPage()
         {
             InitializeComponent();
-            ViewModel.Initialize(ContentFrame, NavView, DetailView, NotifGrid);
+            ViewModel.Initialize(NavView, ContentFrame, DetailView, NotifGrid);
         }
 
 
