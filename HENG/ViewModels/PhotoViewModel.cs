@@ -11,6 +11,7 @@ using HENG.Services;
 using HENG.Helpers;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace HENG.ViewModels
 {
@@ -97,6 +98,7 @@ namespace HENG.ViewModels
                         if (!string.IsNullOrWhiteSpace(url))
                         {
                             await Singleton<DataService>.Instance.DownLoad(new Uri(url));
+                            Messenger.Default.Send(new NotificationMessageAction<string>("downloading".GetLocalized(), str => { Trace.WriteLine(str); }));
                         }
                     });
                 }
@@ -115,7 +117,7 @@ namespace HENG.ViewModels
                     {
                         if (typeof(IType) == model.GetType())
                         {
-                            Messenger.Default.Send(new GenericMessage<object>(this, model));
+                            Messenger.Default.Send(new GenericMessage<IType>(this, model));
                         }
                     });
                 }

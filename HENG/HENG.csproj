@@ -115,7 +115,6 @@
     <Compile Include="Helpers\ExDataTemplateSelector.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Json.cs" />
-    <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\ResourceExtensions.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />

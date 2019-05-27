@@ -125,6 +125,22 @@ namespace HENG.Services
             }
         }
 
+        public async Task DownLoad(object model)
+        {
+            if (model is BingItem t1)
+            {
+                await DownLoad(new Uri(t1.Url));
+            }
+            else if (model is PicsumItem t2)
+            {
+                await DownLoad(new Uri(t2.Download_url));
+            }
+            else if (model is PaperItem t3)
+            {
+                await DownLoad(new Uri(t3.Urls.Full));
+            }
+        }
+
         public async Task DownLoad(Uri sourceUri)
         {
             var download = new DownloadItem(sourceUri);

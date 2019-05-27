@@ -101,50 +101,6 @@
                             </TransitionCollection>
                         </Frame.ContentTransitions>
                     </Frame>
-                    <Grid
-                        x:Name="NotifGrid"
-                        Height="44"
-                        Margin="0,0,0,36"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        CornerRadius="10"
-                        RequestedTheme="Dark"
-                        Visibility="Collapsed">
-                        <Grid.Background>
-                            <AcrylicBrush
-                                BackgroundSource="Backdrop"
-                                FallbackColor="{ThemeResource SystemChromeAltHighColor}"
-                                TintColor="{ThemeResource SystemChromeAltHighColor}"
-                                TintOpacity="0.8" />
-                        </Grid.Background>
-                        <TextBlock
-                            Margin="24,12"
-                            Style="{ThemeResource CaptionTextBlockStyle}"
-                            Text="{x:Bind ViewModel.NotificationMessage, Mode=OneWay}" />
-
-                        <animations:Implicit.ShowAnimations>
-                            <animations:TranslationAnimation
-                                From="0,48, 0"
-                                To="0"
-                                Duration="0:0:1" />
-                            <animations:OpacityAnimation
-                                From="0"
-                                To="1.0"
-                                Duration="0:0:1" />
-                        </animations:Implicit.ShowAnimations>
-                        <animations:Implicit.HideAnimations>
-                            <animations:ScalarAnimation
-                                Delay="0:0:1"
-                                Target="Opacity"
-                                To="0.0"
-                                Duration="0:0:1" />
-                            <animations:ScalarAnimation
-                                Delay="0:0:1"
-                                Target="Translation.Y"
-                                To="48"
-                                Duration="0:0:1" />
-                        </animations:Implicit.HideAnimations>
-                    </Grid>
                 </Grid>
             </muxc:NavigationView.Content>
         </muxc:NavigationView>
@@ -167,6 +123,42 @@
                     Duration="0:0:1" />
             </animations:Implicit.HideAnimations>
         </local:DetailView>
+
+        <Grid
+            x:Name="NotifGrid"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{ThemeResource SystemControlAcrylicElementBrush}"
+            CornerRadius="8"
+            Visibility="Collapsed">
+            <TextBlock
+                Margin="24,12"
+                Style="{ThemeResource CaptionTextBlockStyle}"
+                Text="{x:Bind ViewModel.NotificationMessage, Mode=OneWay}" />
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    From="0,48,0"
+                    To="0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:ScalarAnimation
+                    Delay="0:0:1"
+                    Target="Opacity"
+                    To="0.0"
+                    Duration="0:0:1" />
+                <animations:ScalarAnimation
+                    Delay="0:0:1"
+                    Target="Translation.Y"
+                    To="48"
+                    Duration="0:0:1" />
+            </animations:Implicit.HideAnimations>
+        </Grid>
+
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">

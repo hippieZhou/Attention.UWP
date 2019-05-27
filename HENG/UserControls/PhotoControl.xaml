@@ -28,6 +28,7 @@
         <DataTemplate x:Key="BingTemplate" x:DataType="models:BingItem">
             <Grid
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                 PointerEntered="Grid_PointerEntered"
                 PointerExited="Grid_PointerExited"
                 SizeChanged="Grid_SizeChanged">
@@ -140,6 +141,7 @@
         <DataTemplate x:Key="PicsumTemplate" x:DataType="models:PicsumItem">
             <Grid
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
+                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                 PointerEntered="Grid_PointerEntered"
                 PointerExited="Grid_PointerExited"
                 SizeChanged="Grid_SizeChanged">
@@ -251,6 +253,7 @@
         </DataTemplate>
         <DataTemplate x:Key="PaperTemplate" x:DataType="models:PaperItem">
             <Grid
+                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                 PointerEntered="Grid_PointerEntered"
                 PointerExited="Grid_PointerExited"
                 SizeChanged="Grid_SizeChanged">
