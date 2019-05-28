@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using HENG.Clients;
 using HENG.Models;
 using HENG.ViewModels;
-using Microsoft.Toolkit.Uwp.UI;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using HENG.Helpers;
