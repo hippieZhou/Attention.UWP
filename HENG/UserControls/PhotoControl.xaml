@@ -432,24 +432,10 @@
             Margin="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            extensions:VisualExtensions.CenterPoint="22,22,0"
+            Click="RefreshButton_Click"
             Command="{x:Bind RefreshCommand}"
-            Loaded="RefreshButton_Loaded"
             RenderTransformOrigin="0.5,0.5"
-            Style="{StaticResource RefreshButtonRevealStyle}">
-            <!--<animations:Implicit.ShowAnimations>
-                <animations:TranslationAnimation
-                    SetInitialValueBeforeDelay="True"
-                    From="0,200,0"
-                    To="0"
-                    Duration="0:0:1" />
-                <animations:OpacityAnimation
-                    SetInitialValueBeforeDelay="True"
-                    From="0"
-                    To="1.0"
-                    Duration="0:0:1" />
-            </animations:Implicit.ShowAnimations>-->
-        </Button>
+            Style="{StaticResource RefreshButtonRevealStyle}" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

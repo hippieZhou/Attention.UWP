@@ -15,8 +15,8 @@ namespace HENG.Clients
     /// </summary>
     public class BingClient: IBaseClient<BingItem>
     {
-        private const string auth_str = "https://hippiezhou.fun/api/v1/Auth/";
-        private const string query_str = "https://hippiezhou.fun/api/v1/Bing/";
+        private const string auth_str = "https://hippiezhou.fun/api/v1/auth/";
+        private const string query_str = "https://hippiezhou.fun/api/v1/bing/";
 
         private readonly HttpClient _client;
         public string Token { get; private set; }

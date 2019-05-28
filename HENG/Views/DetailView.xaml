@@ -9,9 +9,10 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:HENG.Models"
+    Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
+    <Grid>
         <Grid.Transitions>
             <TransitionCollection>
                 <PopupThemeTransition />

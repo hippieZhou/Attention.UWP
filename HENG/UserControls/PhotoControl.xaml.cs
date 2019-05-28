@@ -174,27 +174,21 @@ namespace HENG.UserControls
             }
         }
 
-        private void RefreshButton_Loaded(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
-            {
-                var animation = Window.Current.Compositor.CreateScalarKeyFrameAnimation();
-                var easing = Window.Current.Compositor.CreateLinearEasingFunction();
-                animation.InsertKeyFrame(0.0f, 0.0f);
-                animation.InsertKeyFrame(1.0f, 360.0f, easing);
+            var animation = Window.Current.Compositor.CreateScalarKeyFrameAnimation();
+            var easing = Window.Current.Compositor.CreateLinearEasingFunction();
+            animation.InsertKeyFrame(0.0f, 0.0f);
+            animation.InsertKeyFrame(1.0f, 360.0f, easing);
 
-                animation.Duration = TimeSpan.FromMilliseconds(1000);
-                animation.IterationBehavior = AnimationIterationBehavior.Count;
-                animation.IterationCount = 4;
+            animation.Duration = TimeSpan.FromMilliseconds(1000);
+            animation.IterationBehavior = AnimationIterationBehavior.Count;
+            animation.IterationCount = 4;
 
-                var visual = VisualExtensions.GetVisual(RefreshButton);
-                visual.CenterPoint = new Vector3(visual.Size.X / 2.0f, visual.Size.Y / 2.0f, 0);
+            var visual = VisualExtensions.GetVisual(RefreshButton);
+            visual.CenterPoint = new Vector3(visual.Size.X / 2.0f, visual.Size.Y / 2.0f, 0);
 
-                button.Click += (s1, e1) => 
-                {
-                    visual.StartAnimation(nameof(visual.RotationAngleInDegrees), animation);
-                };
-            }
+            visual.StartAnimation(nameof(visual.RotationAngleInDegrees), animation);
         }
     }
 }
