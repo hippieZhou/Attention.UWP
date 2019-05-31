@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="HENG.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:HENG.Helpers"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:HENG"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}"
+    mc:Ignorable="d">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid>
+        <muxc:NavigationView
+            x:Name="NavView"
+            AlwaysShowHeader="False"
+            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IsTabStop="False"
+            PaneDisplayMode="Top"
+            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="ItemInvoked">
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem helpers:NavHelper.NavigateTo="HENG.ViewModels.HomeViewModel" Icon="Home" />
+                <muxc:NavigationViewItemSeparator />
+            </muxc:NavigationView.MenuItems>
+
+            <muxc:NavigationView.Content>
+                <Grid x:Name="RootContent">
+                    <Frame x:Name="ContentFrame" IsTabStop="True">
+                        <Frame.ContentTransitions>
+                            <TransitionCollection>
+                                <NavigationThemeTransition>
+                                    <DrillInNavigationTransitionInfo />
+                                </NavigationThemeTransition>
+                            </TransitionCollection>
+                        </Frame.ContentTransitions>
+                    </Frame>
+                </Grid>
+            </muxc:NavigationView.Content>
+        </muxc:NavigationView>
+    </Grid>
+</Page>

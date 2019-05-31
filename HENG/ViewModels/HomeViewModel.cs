@@ -1,24 +1,32 @@
-﻿using HENG.Models;
-using Microsoft.Toolkit.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using HENG.Helpers;
-using HENG.Services;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using HENG.Core.Services;
+using System.Windows.Input;
 
 namespace HENG.ViewModels
 {
-    public class HomeViewModel : PhotoViewModel<BingItemSource, BingItem>
+    public class HomeViewModel : ViewModelBase
     {
-
-    }
-
-    public class BingItemSource : IIncrementalSource<BingItem>
-    {
-        public async Task<IEnumerable<BingItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        private readonly PixabayService _service;
+        public HomeViewModel(PixabayService service)
         {
-            var items = await Singleton<DataService>.Instance.GetItemsForBingAsync(pageIndex, pageSize, cancellationToken);
-            return items;
+            _service = service;
+        }
+
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(async () =>
+                    {
+                        await _service.QueryImagesAsync();
+                    });
+                }
+                return _loadedCommand;
+            }
         }
     }
 }

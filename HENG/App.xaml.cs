@@ -1,60 +1,47 @@
-﻿using Microsoft.HockeyApp;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
-using GalaSoft.MvvmLight.Threading;
 using Windows.ApplicationModel.Core;
-using Windows.UI.ViewManagement;
-using Windows.UI;
-using HENG.Services;
-using System.Threading.Tasks;
-using HENG.Models;
-using Microsoft.Extensions.Configuration;
-using Windows.Storage;
-using HENG.Helpers;
 using Windows.Foundation;
-using Windows.System.Profile;
-using Windows.ApplicationModel.Background;
-using System.Threading;
+using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
 
 namespace HENG
 {
-    sealed partial class App
+    /// <summary>
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// </summary>
+    sealed partial class App : Application
     {
-        public static AppSettings Settings { get; private set; }
-
-        private CancellationTokenSource _cancellationTokenSource;
-
+        /// <summary>
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// </summary>
         public App()
         {
-            HockeyClient.Current.Configure("f9f04c24aefd4b3fa38f825676a79aa6");
-            InitializeComponent();
-            Suspending += OnSuspending;
+            this.InitializeComponent();
+            this.Suspending += OnSuspending;
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        /// <summary>
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// </summary>
+        /// <param name="e">Details about the launch request and process.</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox")
-            {
-                ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
-                bool result = ApplicationViewScaling.TrySetDisableLayoutScaling(true);
-            }
-
-            await InitializeAsync();
-            bool loadState = e.PreviousExecutionState == ApplicationExecutionState.Terminated;
-            await InitWindowAsync(e.SplashScreen, loadState);
-
-        }
-
-        private async Task InitWindowAsync(SplashScreen splashScreen,bool loadState)
-        {
-            ExtendedSplash extendedSplash = new ExtendedSplash(splashScreen, loadState);
-            Window.Current.Content = extendedSplash;
-
-            ApplicationView.PreferredLaunchViewSize = new Size(1280, 800);
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-
             ExtendAcrylicIntoTitleBar();
 
             void ExtendAcrylicIntoTitleBar()
@@ -66,74 +53,60 @@ namespace HENG
                 titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
-            DispatcherHelper.Initialize();
-
-            _cancellationTokenSource = new CancellationTokenSource();
-            await Window.Current.Dispatcher.RunIdleAsync(async (s) => await BackgroundDownloadHelper.AttachToDownloadsAsync(_cancellationTokenSource));
-            Window.Current.Activate();
-        }
-
-        protected override async void OnActivated(IActivatedEventArgs args)
-        {
-            base.OnActivated(args);
-            if (args.Kind == ActivationKind.ToastNotification)
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (!(Window.Current.Content is Frame rootFrame))
             {
-                await InitializeAsync();
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
 
-                await InitWindowAsync(args.SplashScreen, false);
-            }
-        }
+                rootFrame.NavigationFailed += OnNavigationFailed;
 
-        private async Task InitializeAsync()
-        {
-            async Task LoadConfigurationAsync()
-            {
-                var builder = new ConfigurationBuilder().AddJsonFile("AppSettings.json", true, true);
-                var conf = builder.Build();
-                Settings = conf.Get<AppSettings>();
-
-                if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    StorageFolder sf = await KnownFolders.PicturesLibrary.CreateFolderAsync("HENG", CreationCollisionOption.OpenIfExists);
-                    Settings.DownloadPath = sf.Path;
+                    //TODO: Load state from previously suspended application
                 }
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
             }
 
-            await LoadConfigurationAsync();
-            await ThemeSelectorService.InitializeAsync();
-            await Singleton<DataService>.Instance.LoadHistoryAsync();
+            if (e.PrelaunchActivated == false)
+            {
+                if (rootFrame.Content == null)
+                {
+                    // When the navigation stack isn't restored navigate to the first page,
+                    // configuring the new page by passing required information as a navigation
+                    // parameter
+                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
+                }
+                // Ensure the current window is active
+                Window.Current.Activate();
+            }
         }
 
-        public static async Task StartupAsync()
+        /// <summary>
+        /// Invoked when Navigation to a certain page fails
+        /// </summary>
+        /// <param name="sender">The Frame which failed navigation</param>
+        /// <param name="e">Details about the navigation failure</param>
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            await ThemeSelectorService.SetRequestedThemeAsync();
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
+        /// <summary>
+        /// Invoked when application execution is being suspended.  Application state is saved
+        /// without knowing whether the application will be terminated or resumed with the contents
+        /// of memory still intact.
+        /// </summary>
+        /// <param name="sender">The source of the suspend request.</param>
+        /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: Save application state and stop any background activity
             deferral.Complete();
-        }
-
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
-        {
-            base.OnBackgroundActivated(args);
-
-            IBackgroundTaskInstance taskInstance = args.TaskInstance;
-            var taskDef = taskInstance.GetDeferral();
-
-            taskInstance.Canceled += (sender, reason) => 
-            {
-                _cancellationTokenSource?.Cancel();
-                taskDef.Complete();
-                foreach (var cur in BackgroundTaskRegistration.AllTasks)
-                {
-                    if (cur.Value.Name == BackgroundDownloadHelper.NAME)
-                    {
-                        cur.Value.Unregister(true);
-                    }
-                }
-            };
         }
     }
 }
