@@ -27,38 +27,49 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid>
-        <muxc:NavigationView
-            x:Name="NavView"
-            AlwaysShowHeader="False"
-            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-            IsTabStop="False"
-            PaneDisplayMode="Top"
-            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="ItemInvoked">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
+    <muxc:NavigationView
+        x:Name="NavView"
+        AlwaysShowHeader="False"
+        CompactPaneLength="48"
+        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+        IsTabStop="False"
+        PaneDisplayMode="Top"
+        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+        <i:Interaction.Behaviors>
+            <ic:EventTriggerBehavior EventName="ItemInvoked">
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}" />
+            </ic:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
 
-            <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem helpers:NavHelper.NavigateTo="HENG.ViewModels.HomeViewModel" Icon="Home" />
-                <muxc:NavigationViewItemSeparator />
-            </muxc:NavigationView.MenuItems>
+        <muxc:NavigationView.MenuItems>
+            <muxc:NavigationViewItem helpers:NavHelper.NavigateTo="HENG.ViewModels.HomeViewModel" Icon="Home" />
+            <muxc:NavigationViewItemSeparator />
+        </muxc:NavigationView.MenuItems>
 
-            <muxc:NavigationView.Content>
-                <Grid x:Name="RootContent">
-                    <Frame x:Name="ContentFrame" IsTabStop="True">
-                        <Frame.ContentTransitions>
-                            <TransitionCollection>
-                                <NavigationThemeTransition>
-                                    <DrillInNavigationTransitionInfo />
-                                </NavigationThemeTransition>
-                            </TransitionCollection>
-                        </Frame.ContentTransitions>
-                    </Frame>
-                </Grid>
-            </muxc:NavigationView.Content>
-        </muxc:NavigationView>
-    </Grid>
+        <muxc:NavigationView.PaneFooter>
+            <StackPanel Orientation="Horizontal">
+                <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}" Icon="Find" />
+                <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE118;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </StackPanel>
+        </muxc:NavigationView.PaneFooter>
+
+        <muxc:NavigationView.Content>
+            <Grid x:Name="RootContent">
+                <Frame x:Name="ContentFrame" IsTabStop="True">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition>
+                                <DrillInNavigationTransitionInfo />
+                            </NavigationThemeTransition>
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
+            </Grid>
+        </muxc:NavigationView.Content>
+    </muxc:NavigationView>
+
 </Page>

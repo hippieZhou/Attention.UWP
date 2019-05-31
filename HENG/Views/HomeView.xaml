@@ -7,6 +7,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:HENG.UserControls"
     mc:Ignorable="d">
 
     <i:Interaction.Behaviors>
@@ -15,5 +16,7 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid />
+    <Grid>
+        <uc:PhotoControl ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}" />
+    </Grid>
 </Page>
