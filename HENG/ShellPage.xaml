@@ -10,6 +10,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}"
     mc:Ignorable="d">
@@ -88,37 +89,60 @@
                 x:Name="destinationElement"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                AllowDrop="True"
+                Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
                 SizeChanged="Grid_SizeChanged">
                 <controls:ImageEx
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"
+                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
                     Source="{x:Bind ViewModel.StoredItem.LargeImageURL, Mode=OneWay}"
                     Stretch="UniformToFill"
                     UseLayoutRounding="True" />
                 <CommandBar
                     x:Name="CommandBar"
                     VerticalAlignment="Bottom"
-                    Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    VerticalContentAlignment="Center"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                    DefaultLabelPosition="Right"
+                    IsOpen="False">
                     <CommandBar.Content>
-                        <Grid />
+                        <StackPanel Margin="12,0" Orientation="Horizontal">
+                            <muxc:PersonPicture
+                                Width="30"
+                                Height="30"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                DisplayName="{x:Bind ViewModel.StoredItem.User}"
+                                ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay}" />
+                            <HyperlinkButton
+                                Margin="12,0"
+                                VerticalAlignment="Center"
+                                Content="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}"
+                                FontSize="12"
+                                Foreground="Gray" />
+                        </StackPanel>
                     </CommandBar.Content>
                     <CommandBar.PrimaryCommands>
                         <AppBarButton
-                            CommandParameter="{x:Bind}"
-                            Icon="ShowResults"
-                            Label="Info" />
-                        <AppBarButton
-                            CommandParameter="{x:Bind}"
-                            Icon="Link"
-                            Label="Web" />
+                            Command="{x:Bind ViewModel.LauncherCommand}"
+                            CommandParameter="{x:Bind ViewModel.StoredItem.PageURL, Mode=OneWay}"
+                            LabelPosition="Collapsed"
+                            ToolTipService.ToolTip="Web">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <AppBarButton
                             CommandParameter="{x:Bind}"
                             Icon="Download"
-                            Label="Download" />
+                            LabelPosition="Collapsed"
+                            ToolTipService.ToolTip="Download" />
                         <AppBarButton
                             Command="{x:Bind ViewModel.BackCommand}"
                             Icon="BackToWindow"
-                            Label="Close" />
+                            LabelPosition="Collapsed"
+                            ToolTipService.ToolTip="Close" />
                     </CommandBar.PrimaryCommands>
                     <i:Interaction.Behaviors>
                         <behaviors:Offset
@@ -163,8 +187,8 @@
                         <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.ExpandedModeThresholdWidth, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Height" Value="500" />
-                        <Setter Target="destinationElement.Width" Value="800" />
+                        <Setter Target="destinationElement.Height" Value="600" />
+                        <Setter Target="destinationElement.Width" Value="880" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>

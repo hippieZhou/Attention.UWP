@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 using Windows.Foundation.Metadata;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -194,5 +195,24 @@ namespace HENG.ViewModels
                 return _backCommand;
             }
         }
+
+        private ICommand _launcherCommand;
+        public ICommand LauncherCommand
+        {
+            get
+            {
+                if (_launcherCommand == null)
+                {
+                    _launcherCommand = new RelayCommand<string>(async url => 
+                    {
+                        if (!string.IsNullOrWhiteSpace(url))
+                        {
+                            await Launcher.LaunchUriAsync(new Uri(url));
+                        }
+                    });
+                }
+                return _launcherCommand; }
+        }
+
     }
 }

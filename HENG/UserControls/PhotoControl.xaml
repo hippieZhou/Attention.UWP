@@ -34,8 +34,7 @@
                 <Grid
                     x:Name="SmokeGrid"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Opacity="0">
+                    VerticalAlignment="Stretch">
                     <Grid.Background>
                         <media:BackdropBlurBrush Amount="2" />
                     </Grid.Background>
