@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HENG.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,12 +14,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace HENG.UserControls
 {
     public sealed partial class FilterDialog : ContentDialog
     {
+        public FilterViewModel ViewModel => ViewModelLocator.Current.Filter;
+
         public FilterDialog()
         {
             this.InitializeComponent();

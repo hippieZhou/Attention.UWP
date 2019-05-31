@@ -1,34 +1,54 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
 using HENG.UserControls;
 using HENG.Views;
+using PixabaySharp.Models;
 using System;
 using System.Linq;
 using System.Windows.Input;
+using Windows.Foundation.Metadata;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
-    public class ShellViewModel:ViewModelBase
+    public class ShellViewModel : ViewModelBase
     {
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
+        private Grid _smokeGrid;
+
         public ShellViewModel(NavigationService navigationService)
         {
             _navService = navigationService;
+
+            Messenger.Default.Register<GenericMessage<ImageItem>>(this, "forwardAnimation", item =>
+            {
+                _smokeGrid.Visibility = Visibility.Visible;
+
+                if (item.Target is ConnectedAnimation animation)
+                {
+                    animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
+                }
+                StoredItem = item.Content;
+            });
         }
 
-        public void Initialize(muxc.NavigationView navView, Frame shellFrame)
+        public void Initialize(muxc.NavigationView navView, Frame shellFrame, Grid smokeGrid)
         {
             _navView = navView;
             _navView.BackRequested += (sender, args) => { _navService.GoBack(); };
 
             _navService.CurrentFrame = shellFrame;
             _navService.CurrentFrame.Navigated += Frame_Navigated;
+
+            _smokeGrid = smokeGrid;
         }
 
         private void Frame_Navigated(object sender, NavigationEventArgs e)
@@ -52,6 +72,13 @@ namespace HENG.ViewModels
 
                 return pageKey == navigaedPageKey;
             }
+        }
+
+        private ImageItem _storedItem;
+        public ImageItem StoredItem
+        {
+            get { return _storedItem; }
+            set { Set(ref _storedItem, value); }
         }
 
         private bool _isBackEnabled;
@@ -139,6 +166,32 @@ namespace HENG.ViewModels
                     });
                 }
                 return _filterCommand;
+            }
+        }
+
+        private ICommand _backCommand;
+        public ICommand BackCommand
+        {
+            get
+            {
+                if (_backCommand == null)
+                {
+                    _backCommand = new RelayCommand(() =>
+                    {
+                        ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _smokeGrid.FindName("destinationElement") as UIElement);
+                        animation.Completed += (sender, e) =>
+                        {
+                            _smokeGrid.Visibility = Visibility.Collapsed;
+                        };
+                        if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7))
+                        {
+                            animation.Configuration = new DirectConnectedAnimationConfiguration();
+                        }
+
+                        Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, StoredItem), "backwardsAnimation");
+                    });
+                }
+                return _backCommand;
             }
         }
     }

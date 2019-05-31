@@ -31,15 +31,14 @@ namespace HENG.UserControls
             {
                 if (d is PhotoControl handler && e.NewValue is PhotoViewModel vm)
                 {
-                    vm.Initialize();
+                    vm.Initialize(handler.AdaptiveGridViewControl);
                     handler.DataContext = vm;
                 }
-       
             }));
 
         private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ScrollViewer viewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
+            ScrollViewer myScrollViewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
         }
 
         private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)

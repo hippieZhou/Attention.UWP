@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
+using GalaSoft.MvvmLight.Messaging;
+using Windows.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
+        protected ListViewBase _listView;
+
         private IncrementalLoadingCollection<TSource, IType> _items;
         public IncrementalLoadingCollection<TSource, IType> Items
         {
@@ -33,8 +37,10 @@ namespace HENG.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(int itemsPerPage = 20)
+        public virtual void Initialize(ListViewBase listView,int itemsPerPage = 20)
         {
+            _listView = listView;
+
             if (Items == null)
             {
                 Items = new IncrementalLoadingCollection<TSource, IType>(itemsPerPage,
@@ -61,14 +67,13 @@ namespace HENG.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(item =>
-                    {
-
-                    });
+                    _itemClickCommand = new RelayCommand<IType>(item => NavToByItem(item));
                 }
                 return _itemClickCommand;
             }
         }
+
+        protected virtual void NavToByItem(IType item) => Messenger.Default.Send(item, item.GetType());
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
@@ -85,7 +90,6 @@ namespace HENG.ViewModels
                 return _refreshCommand; }
         }
 
-
         private ICommand _downloadCommand;
         public ICommand DownloadCommand
         {
@@ -98,7 +102,8 @@ namespace HENG.ViewModels
 
                     });
                 }
-                return _downloadCommand; }
+                return _downloadCommand;
+            }
         }
     }
 }

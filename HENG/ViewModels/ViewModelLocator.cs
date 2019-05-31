@@ -26,12 +26,14 @@ namespace HENG.ViewModels
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
+            SimpleIoc.Default.Register<FilterViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         public PixabayService PxService => ServiceLocator.Current.GetInstance<PixabayService>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
+        public FilterViewModel Filter => ServiceLocator.Current.GetInstance<FilterViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }

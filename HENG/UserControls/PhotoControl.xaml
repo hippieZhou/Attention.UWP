@@ -18,6 +18,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="ImageTemplate" x:DataType="pix:ImageItem">
             <Grid
+                x:Name="connectedElement"
                 Background="{ThemeResource NavigationViewExpandedPaneBackground}"
                 BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
                 PointerEntered="Grid_PointerEntered"
@@ -142,7 +143,6 @@
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-            Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
             SelectionMode="Single"
             ShowsScrollingPlaceholders="False"
