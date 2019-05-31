@@ -29,10 +29,12 @@ namespace HENG.UserControls
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register("ViewModel", typeof(PhotoViewModel), typeof(PhotoControl), new PropertyMetadata(null,  (d, e) => 
             {
-                if (e.NewValue is PhotoViewModel vm)
+                if (d is PhotoControl handler && e.NewValue is PhotoViewModel vm)
                 {
                     vm.Initialize();
+                    handler.DataContext = vm;
                 }
+       
             }));
 
         private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)

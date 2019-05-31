@@ -86,6 +86,7 @@
                     </TextBlock>
                     <Button
                         HorizontalAlignment="Right"
+                        Command="{Binding Path=DataContext.DownloadCommand, ElementName=RootGrid}"
                         CommandParameter="{x:Bind}"
                         Opacity="0"
                         Style="{ThemeResource ButtonRevealStyle}">
@@ -129,7 +130,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
             animations:ReorderGridAnimation.Duration="300"
@@ -137,7 +138,7 @@
             DataFetchSize="1"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
-            ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
+            ItemClickCommand="{Binding ItemClickCommand}"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
@@ -178,6 +179,13 @@
                 </Grid>
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
+
+        <Button
+            Margin="32"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding RefreshCommand}"
+            Style="{StaticResource RefreshButtonRevealStyle}" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

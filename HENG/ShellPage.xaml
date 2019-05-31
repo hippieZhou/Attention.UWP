@@ -48,11 +48,12 @@
 
         <muxc:NavigationView.PaneFooter>
             <StackPanel Orientation="Horizontal">
-                <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}" Icon="Find" />
-                <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}">
-                    <muxc:NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE118;" />
-                    </muxc:NavigationViewItem.Icon>
+                <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}" Icon="Find">
+                    <i:Interaction.Behaviors>
+                        <ic:EventTriggerBehavior EventName="Tapped">
+                            <ic:InvokeCommandAction Command="{x:Bind ViewModel.FilterCommand, Mode=OneWay}" />
+                        </ic:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                 </muxc:NavigationViewItem>
             </StackPanel>
         </muxc:NavigationView.PaneFooter>

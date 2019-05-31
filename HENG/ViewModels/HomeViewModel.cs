@@ -37,7 +37,10 @@ namespace HENG.ViewModels
         }
     }
 
-    public class PhotoViewModel : PixViewModel<PhotoItemSource, ImageItem> { }
+    public class PhotoViewModel : PixViewModel<PhotoItemSource, ImageItem>
+    {
+
+    }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>
     {

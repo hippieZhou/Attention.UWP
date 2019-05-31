@@ -54,18 +54,6 @@ namespace HENG.ViewModels
             };
         }
 
-        private ICommand _downloadCommand;
-        public ICommand DownloadCommand
-        {
-            get
-            {
-                if (_downloadCommand == null)
-                {
-                    _downloadCommand = new RelayCommand<IType>(item => { });
-                }
-                return _downloadCommand; }
-        }
-
         private ICommand _itemClickCommand;
         public ICommand ItemClickCommand
         {
@@ -80,6 +68,37 @@ namespace HENG.ViewModels
                 }
                 return _itemClickCommand;
             }
+        }
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new RelayCommand(async () => 
+                    {
+                        await Items.RefreshAsync();
+                    });
+                }
+                return _refreshCommand; }
+        }
+
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<IType>(item => 
+                    {
+
+                    });
+                }
+                return _downloadCommand; }
         }
     }
 }

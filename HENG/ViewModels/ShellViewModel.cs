@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
+using HENG.UserControls;
 using HENG.Views;
 using System;
 using System.Linq;
@@ -121,6 +122,23 @@ namespace HENG.ViewModels
                     });
                 }
                 return _itemInvokedCommand;
+            }
+        }
+
+        private ICommand _filterCommand;
+        public ICommand FilterCommand
+        {
+            get
+            {
+                if (_filterCommand == null)
+                {
+                    _filterCommand = new RelayCommand(async () =>
+                    {
+                        var dlg = new FilterDialog();
+                        await dlg.ShowAsync();
+                    });
+                }
+                return _filterCommand;
             }
         }
     }
