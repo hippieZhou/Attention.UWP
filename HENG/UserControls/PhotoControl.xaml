@@ -8,10 +8,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:HENG.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:pix="using:PixabaySharp.Models"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -60,71 +58,42 @@
                 </Grid>
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                     <TextBlock
-                        Margin="8,0"
+                        Margin="12"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         FontWeight="Medium"
                         Foreground="{ThemeResource ButtonForegroundPressed}"
+                        Opacity="0"
                         RequestedTheme="Dark"
                         Text="{x:Bind User}">
                         <i:Interaction.Behaviors>
                             <behaviors:Fade
-                                x:Name="DateTimeUp"
+                                x:Name="UserUp"
                                 AutomaticallyStart="True"
                                 Delay="0"
                                 EasingMode="EaseOut"
                                 EasingType="Linear"
-                                Value="0"
-                                Duration="300" />
+                                Value="1"
+                                Duration="400" />
                             <behaviors:Fade
-                                x:Name="DateTimeDowm"
+                                x:Name="UserDowm"
                                 AutomaticallyStart="True"
                                 Delay="0"
                                 EasingMode="EaseIn"
                                 EasingType="Linear"
-                                Value="1"
-                                Duration="300" />
+                                Value="0"
+                                Duration="400" />
                         </i:Interaction.Behaviors>
                     </TextBlock>
-                    <Button
-                        HorizontalAlignment="Right"
-                        Command="{Binding Path=DataContext.DownloadCommand, ElementName=RootGrid}"
-                        CommandParameter="{x:Bind}"
-                        Opacity="0"
-                        Style="{ThemeResource ButtonRevealStyle}">
-                        <FontIcon
-                            FontFamily="Segoe MDL2 Assets"
-                            Foreground="White"
-                            Glyph="&#xE118;" />
-                        <i:Interaction.Behaviors>
-                            <behaviors:Fade
-                                x:Name="DownloadUp"
-                                AutomaticallyStart="True"
-                                Delay="0"
-                                EasingMode="EaseOut"
-                                EasingType="Linear"
-                                Value="1"
-                                Duration="400" />
-                            <behaviors:Fade
-                                x:Name="DownloadDowm"
-                                AutomaticallyStart="True"
-                                Delay="0"
-                                EasingMode="EaseIn"
-                                EasingType="Linear"
-                                Value="0"
-                                Duration="400" />
-                        </i:Interaction.Behaviors>
-                    </Button>
                 </Grid>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="PointerEntered">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadUp}" />
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DownloadDowm}" />
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=DateTimeDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
@@ -152,6 +121,11 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
+            <controls:AdaptiveGridView.Header>
+                <controls:ScrollHeader Mode="QuickReturn">
+                    <!--  todo  -->
+                </controls:ScrollHeader>
+            </controls:AdaptiveGridView.Header>
             <controls:AdaptiveGridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel
@@ -185,7 +159,38 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding RefreshCommand}"
-            Style="{StaticResource RefreshButtonRevealStyle}" />
+            Style="{StaticResource RefreshButtonRevealStyle}">
+            <i:Interaction.Behaviors>
+                <behaviors:Scale
+                    x:Name="ButtonUp"
+                    AutomaticallyStart="True"
+                    CenterX="22"
+                    CenterY="22"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Linear"
+                    ScaleX="1"
+                    ScaleY="1"
+                    Duration="300" />
+                <behaviors:Scale
+                    x:Name="ButtonDown"
+                    AutomaticallyStart="True"
+                    CenterX="22"
+                    CenterY="22"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Linear"
+                    ScaleX="0.8"
+                    ScaleY="0.8"
+                    Duration="300" />
+                <ic:EventTriggerBehavior EventName="PointerEntered">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonUp}" />
+                </ic:EventTriggerBehavior>
+                <ic:EventTriggerBehavior EventName="PointerExited">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonDown}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </Button>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

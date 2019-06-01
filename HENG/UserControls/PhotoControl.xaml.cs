@@ -19,17 +19,17 @@ namespace HENG.UserControls
             this.InitializeComponent();
         }
 
-        public PhotoViewModel ViewModel
+        public HomeViewModel ViewModel
         {
-            get { return (PhotoViewModel)GetValue(ViewModelProperty); }
+            get { return (HomeViewModel)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoViewModel), typeof(PhotoControl), new PropertyMetadata(null,  (d, e) => 
+            DependencyProperty.Register("ViewModel", typeof(HomeViewModel), typeof(PhotoControl), new PropertyMetadata(null,  (d, e) => 
             {
-                if (d is PhotoControl handler && e.NewValue is PhotoViewModel vm)
+                if (d is PhotoControl handler && e.NewValue is HomeViewModel vm)
                 {
                     vm.Initialize(handler.AdaptiveGridViewControl);
                     handler.DataContext = vm;

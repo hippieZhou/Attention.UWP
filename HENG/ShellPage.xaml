@@ -10,6 +10,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}"
     mc:Ignorable="d">
@@ -52,12 +53,12 @@
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
                     <muxc:NavigationViewItem
-                        helpers:NavHelper.NavigateTo="HENG.ViewModels.DownloadViewModel"
+                        helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel"
                         Icon="Download"
                         Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="Tapped">
-                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.NavDownloadCommand, Mode=OneWay}" />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.NavToLocalCommand, Mode=OneWay}" />
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </muxc:NavigationViewItem>
@@ -85,7 +86,7 @@
             VerticalAlignment="Stretch"
             Visibility="Collapsed">
             <Grid.Background>
-                <SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />
+                <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
             </Grid.Background>
             <Grid
                 x:Name="destinationElement"
@@ -111,18 +112,19 @@
                     <CommandBar.Content>
                         <StackPanel Margin="12,0" Orientation="Horizontal">
                             <muxc:PersonPicture
-                                Width="30"
-                                Height="30"
+                                Width="28"
+                                Height="28"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 DisplayName="{x:Bind ViewModel.StoredItem.User}"
-                                ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay}" />
-                            <HyperlinkButton
+                                ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay}"
+                                UseLayoutRounding="True" />
+                            <TextBlock
                                 Margin="12,0"
                                 VerticalAlignment="Center"
-                                Content="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}"
                                 FontSize="12"
-                                Foreground="Gray" />
+                                Style="{ThemeResource TitleTextBlockStyle}"
+                                Text="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}" />
                         </StackPanel>
                     </CommandBar.Content>
                     <CommandBar.PrimaryCommands>
@@ -132,11 +134,12 @@
                             LabelPosition="Collapsed"
                             ToolTipService.ToolTip="Web">
                             <AppBarButton.Icon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" />
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
                             </AppBarButton.Icon>
                         </AppBarButton>
                         <AppBarButton
-                            CommandParameter="{x:Bind}"
+                            Command="{x:Bind ViewModel.DownloadCommand}"
+                            CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
                             Icon="Download"
                             LabelPosition="Collapsed"
                             ToolTipService.ToolTip="Download" />

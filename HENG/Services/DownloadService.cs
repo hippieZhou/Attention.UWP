@@ -142,7 +142,7 @@ namespace HENG.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                Trace.WriteLine(ex.ToString());
             }
         }
 

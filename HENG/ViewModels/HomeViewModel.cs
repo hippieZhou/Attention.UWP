@@ -18,36 +18,9 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace HENG.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
-        private PhotoViewModel _photo;
-        public PhotoViewModel Photo
-        {
-            get { return _photo; }
-            set { Set(ref _photo, value); }
-        }
-
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand(() =>
-                    {
-                        if (Photo == null)
-                            Photo = new PhotoViewModel();
-                    });
-                }
-                return _loadedCommand;
-            }
-        }
-    }
-
-    public class PhotoViewModel : PixViewModel<PhotoItemSource, ImageItem>
-    {
-        public PhotoViewModel()
+        public HomeViewModel()
         {
             Messenger.Default.Register<GenericMessage<ImageItem>>(this, "backwardsAnimation", async item =>
             {
@@ -60,6 +33,21 @@ namespace HENG.ViewModels
             });
         }
 
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(() =>
+                    {
+                    });
+                }
+                return _loadedCommand;
+            }
+        }
+
         protected override void NavToByItem(ImageItem item)
         {
             ConnectedAnimation animation = null;
@@ -69,6 +57,7 @@ namespace HENG.ViewModels
             }
             Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, item), "forwardAnimation");
         }
+
     }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>

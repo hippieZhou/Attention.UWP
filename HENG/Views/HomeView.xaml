@@ -18,6 +18,6 @@
     </i:Interaction.Behaviors>
 
     <Grid>
-        <uc:PhotoControl ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}" />
+        <uc:PhotoControl ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
     </Grid>
 </Page>

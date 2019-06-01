@@ -112,5 +112,17 @@ namespace HENG
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            switch (args.Kind)
+            {
+                case ActivationKind.ToastNotification:
+                    break;
+                default:
+                    break;
+            }
+            base.OnActivated(args);
+        }
     }
 }

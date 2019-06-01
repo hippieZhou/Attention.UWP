@@ -19,7 +19,7 @@ namespace HENG.ViewModels
             var nav = new NavigationService();
             nav.Configure(typeof(HomeViewModel).FullName, typeof(HomeView));
             nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsView));
-            nav.Configure(typeof(DownloadViewModel).FullName, typeof(DownloadView));
+            nav.Configure(typeof(LocalViewModel).FullName, typeof(LocalView));
 
             SimpleIoc.Default.Register(() => nav);
 
@@ -27,14 +27,14 @@ namespace HENG.ViewModels
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
-            SimpleIoc.Default.Register<DownloadViewModel>();
+            SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         public PixabayService PxService => ServiceLocator.Current.GetInstance<PixabayService>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
-        public DownloadViewModel Download => ServiceLocator.Current.GetInstance<DownloadViewModel>();
+        public LocalViewModel Download => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }

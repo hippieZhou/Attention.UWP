@@ -131,13 +131,13 @@
     <Compile Include="UserControls\PhotoControl.xaml.cs">
       <DependentUpon>PhotoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DownloadViewModel.cs" />
+    <Compile Include="ViewModels\LocalViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\DownloadView.xaml.cs">
-      <DependentUpon>DownloadView.xaml</DependentUpon>
+    <Compile Include="Views\LocalView.xaml.cs">
+      <DependentUpon>LocalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
@@ -192,7 +192,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadView.xaml">
+    <Page Include="Views\LocalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

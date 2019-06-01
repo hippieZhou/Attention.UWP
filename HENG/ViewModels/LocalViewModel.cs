@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HENG.ViewModels
 {
-    public class DownloadViewModel : ViewModelBase
+    public class LocalViewModel : ViewModelBase
     {
     }
 }

@@ -153,19 +153,19 @@ namespace HENG.ViewModels
             }
         }
 
-        private ICommand _navDownloadCommand;
-        public ICommand NavDownloadCommand
+        private ICommand _navToLocalCommand;
+        public ICommand NavToLocalCommand
         {
             get
             {
-                if (_navDownloadCommand == null)
+                if (_navToLocalCommand == null)
                 {
-                    _navDownloadCommand = new RelayCommand(() =>
+                    _navToLocalCommand = new RelayCommand(() =>
                     {
-                        _navService.NavigateTo(typeof(DownloadViewModel).FullName);
+                        _navService.NavigateTo(typeof(LocalViewModel).FullName);
                     });
                 }
-                return _navDownloadCommand;
+                return _navToLocalCommand;
             }
         }
 
@@ -212,6 +212,22 @@ namespace HENG.ViewModels
                 }
                 return _launcherCommand; }
         }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<ImageItem>(item => 
+                    {
+                        ViewModelLocator.Current.Home.DownloadCommand.Execute(item);
+                    });
+                }
+                return _downloadCommand; }
+        }
+
 
     }
 }
