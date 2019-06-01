@@ -8,6 +8,7 @@ using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,11 +25,18 @@ namespace HENG.ViewModels
         {
             Messenger.Default.Register<GenericMessage<ImageItem>>(this, "backwardsAnimation", async item =>
             {
-                _listView.ScrollIntoView(item.Content, ScrollIntoViewAlignment.Default);
-                _listView.UpdateLayout();
-                if (item.Target is ConnectedAnimation animation)
+                try
                 {
-                    await _listView.TryStartConnectedAnimationAsync(animation, item.Content, "connectedElement");
+                    _listView.ScrollIntoView(item.Content, ScrollIntoViewAlignment.Default);
+                    _listView.UpdateLayout();
+                    if (item.Target is ConnectedAnimation animation)
+                    {
+                        await _listView.TryStartConnectedAnimationAsync(animation, item.Content, "connectedElement");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex);
                 }
             });
         }
@@ -48,7 +56,7 @@ namespace HENG.ViewModels
             }
         }
 
-        protected override void NavToByItem(ImageItem item)
+        protected override void NavToHomeByItem(ImageItem item)
         {
             ConnectedAnimation animation = null;
             if (item != null)
@@ -57,7 +65,6 @@ namespace HENG.ViewModels
             }
             Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, item), "forwardAnimation");
         }
-
     }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>
@@ -129,13 +136,13 @@ namespace HENG.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(item => NavToByItem(item));
+                    _itemClickCommand = new RelayCommand<IType>(item => NavToHomeByItem(item));
                 }
                 return _itemClickCommand;
             }
         }
 
-        protected virtual void NavToByItem(IType item) => Messenger.Default.Send(item, item.GetType());
+        protected virtual void NavToHomeByItem(IType item) => throw new NotImplementedException();
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand

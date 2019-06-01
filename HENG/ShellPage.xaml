@@ -130,7 +130,7 @@
                     <CommandBar.PrimaryCommands>
                         <AppBarButton
                             Command="{x:Bind ViewModel.LauncherCommand}"
-                            CommandParameter="{x:Bind ViewModel.StoredItem.PageURL, Mode=OneWay}"
+                            CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
                             LabelPosition="Collapsed"
                             ToolTipService.ToolTip="Web">
                             <AppBarButton.Icon>
@@ -145,6 +145,7 @@
                             ToolTipService.ToolTip="Download" />
                         <AppBarButton
                             Command="{x:Bind ViewModel.BackCommand}"
+                            CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
                             Icon="BackToWindow"
                             LabelPosition="Collapsed"
                             ToolTipService.ToolTip="Close" />

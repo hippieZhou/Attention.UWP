@@ -31,19 +31,21 @@ namespace HENG.ViewModels
 
             Messenger.Default.Register<GenericMessage<ImageItem>>(this, "forwardAnimation", item =>
             {
-                _smokeGrid.Visibility = Visibility.Visible;
-
                 if (item.Target is ConnectedAnimation animation)
                 {
-                    animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
-                }
-                try
-                {
-                    StoredItem = item.Content;
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex);
+                    try
+                    {
+                        StoredItem = item.Content;
+                        _smokeGrid.Visibility = Visibility.Visible;
+                        animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
+                    }
+                    catch (Exception ex)
+                    {
+                        StoredItem = null;
+                        _smokeGrid.Visibility = Visibility.Collapsed;
+                        animation.Cancel();
+                        Trace.WriteLine(ex);
+                    }
                 }
             });
         }
@@ -176,6 +178,40 @@ namespace HENG.ViewModels
             }
         }
 
+        private ICommand _launcherCommand;
+        public ICommand LauncherCommand
+        {
+            get
+            {
+                if (_launcherCommand == null)
+                {
+                    _launcherCommand = new RelayCommand<ImageItem>(async item =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(item?.PageURL))
+                        {
+                            await Launcher.LaunchUriAsync(new Uri(item.PageURL));
+                        }
+                    }, item => item != null);
+                }
+                return _launcherCommand;
+            }
+        }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<ImageItem>(item =>
+                    {
+                        ViewModelLocator.Current.Home.DownloadCommand.Execute(item);
+                    }, item => item != null);
+                }
+                return _downloadCommand; }
+        }
+
         private ICommand _backCommand;
         public ICommand BackCommand
         {
@@ -183,7 +219,7 @@ namespace HENG.ViewModels
             {
                 if (_backCommand == null)
                 {
-                    _backCommand = new RelayCommand(() =>
+                    _backCommand = new RelayCommand<ImageItem>(item =>
                     {
                         ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _smokeGrid.FindName("destinationElement") as UIElement);
                         animation.Completed += (sender, e) =>
@@ -195,46 +231,11 @@ namespace HENG.ViewModels
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
                         }
 
-                        Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, StoredItem), "backwardsAnimation");
-                    });
+                        Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, item), "backwardsAnimation");
+                    }, item => item != null);
                 }
                 return _backCommand;
             }
         }
-
-        private ICommand _launcherCommand;
-        public ICommand LauncherCommand
-        {
-            get
-            {
-                if (_launcherCommand == null)
-                {
-                    _launcherCommand = new RelayCommand<string>(async url => 
-                    {
-                        if (!string.IsNullOrWhiteSpace(url))
-                        {
-                            await Launcher.LaunchUriAsync(new Uri(url));
-                        }
-                    });
-                }
-                return _launcherCommand; }
-        }
-
-        private ICommand _downloadCommand;
-        public ICommand DownloadCommand
-        {
-            get
-            {
-                if (_downloadCommand == null)
-                {
-                    _downloadCommand = new RelayCommand<ImageItem>(item => 
-                    {
-                        ViewModelLocator.Current.Home.DownloadCommand.Execute(item);
-                    });
-                }
-                return _downloadCommand; }
-        }
-
-
     }
 }
