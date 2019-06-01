@@ -11,6 +11,7 @@
     xmlns:local="using:HENG.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:pix="using:PixabaySharp.Models"
     d:DesignHeight="300"
     d:DesignWidth="400"

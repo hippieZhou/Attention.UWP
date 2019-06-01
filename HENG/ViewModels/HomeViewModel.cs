@@ -8,6 +8,7 @@ using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -75,6 +76,11 @@ namespace HENG.ViewModels
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             var result = await ViewModelLocator.Current.PxService.QueryImagesAsync("", ++pageIndex, pageSize);
+            if (result?.Images != null)
+            {
+                IEnumerable<string> urls = from p in result.Images.Take(5) select p.LargeImageURL;
+                DataService.UpdateLiveTile(urls);
+            }
             return result?.Images;
         }
     }
