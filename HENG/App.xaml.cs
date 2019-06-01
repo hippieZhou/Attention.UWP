@@ -1,23 +1,14 @@
 ﻿using HENG.Services;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
 using System.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace HENG
@@ -35,6 +26,7 @@ namespace HENG
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += OnUnhandledException;
         }
 
         /// <summary>
@@ -111,6 +103,11 @@ namespace HENG
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            Trace.WriteLine(e.Exception);
         }
 
         protected override void OnActivated(IActivatedEventArgs args)

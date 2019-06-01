@@ -3,10 +3,10 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using HENG.Helpers;
-using HENG.UserControls;
 using HENG.Views;
 using PixabaySharp.Models;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Windows.Foundation.Metadata;
@@ -37,7 +37,14 @@ namespace HENG.ViewModels
                 {
                     animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
                 }
-                StoredItem = item.Content;
+                try
+                {
+                    StoredItem = item.Content;
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(ex);
+                }
             });
         }
 
