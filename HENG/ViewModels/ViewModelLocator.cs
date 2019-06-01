@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Views;
 using HENG.Core.Services;
+using HENG.Services;
 using HENG.Views;
 
 namespace HENG.ViewModels
@@ -24,6 +25,7 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register(() => nav);
 
             SimpleIoc.Default.Register(() => new PixabayService("12645414-59a5251905dfea7b916dd796f"));
+            SimpleIoc.Default.Register<LoggingService>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
@@ -36,5 +38,6 @@ namespace HENG.ViewModels
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+        public LoggingService Log => ServiceLocator.Current.GetInstance<LoggingService>();
     }
 }
