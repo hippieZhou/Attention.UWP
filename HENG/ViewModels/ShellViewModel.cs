@@ -153,20 +153,19 @@ namespace HENG.ViewModels
             }
         }
 
-        private ICommand _filterCommand;
-        public ICommand FilterCommand
+        private ICommand _navDownloadCommand;
+        public ICommand NavDownloadCommand
         {
             get
             {
-                if (_filterCommand == null)
+                if (_navDownloadCommand == null)
                 {
-                    _filterCommand = new RelayCommand(async () =>
+                    _navDownloadCommand = new RelayCommand(() =>
                     {
-                        var dlg = new FilterDialog();
-                        await dlg.ShowAsync();
+                        _navService.NavigateTo(typeof(DownloadViewModel).FullName);
                     });
                 }
-                return _filterCommand;
+                return _navDownloadCommand;
             }
         }
 

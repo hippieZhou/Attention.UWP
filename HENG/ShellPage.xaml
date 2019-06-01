@@ -10,7 +10,6 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlChromeMediumAcrylicWindowMediumBrush}"
     mc:Ignorable="d">
@@ -52,10 +51,13 @@
 
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
-                    <muxc:NavigationViewItem Width="{x:Bind NavView.CompactPaneLength, Mode=OneWay}" Icon="Find">
+                    <muxc:NavigationViewItem
+                        helpers:NavHelper.NavigateTo="HENG.ViewModels.DownloadViewModel"
+                        Icon="Download"
+                        Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="Tapped">
-                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.FilterCommand, Mode=OneWay}" />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.NavDownloadCommand, Mode=OneWay}" />
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </muxc:NavigationViewItem>

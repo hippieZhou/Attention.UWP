@@ -1,15 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using HENG.Models;
+using HENG.Services;
 using Microsoft.Toolkit.Collections;
-using Microsoft.Toolkit.Uwp.UI.Controls;
+using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -74,6 +76,106 @@ namespace HENG.ViewModels
         {
             var result = await ViewModelLocator.Current.PxService.QueryImagesAsync("", ++pageIndex, pageSize);
             return result?.Images;
+        }
+    }
+
+    public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
+    {
+        protected ListViewBase _listView;
+
+        private IncrementalLoadingCollection<TSource, IType> _items;
+        public IncrementalLoadingCollection<TSource, IType> Items
+        {
+            get { return _items; }
+            set { Set(ref _items, value); }
+        }
+
+        private Visibility _loadingVisibility = Visibility.Collapsed;
+        public Visibility LoadingVisibility
+        {
+            get { return _loadingVisibility; }
+            set { Set(ref _loadingVisibility, value); }
+        }
+
+        private Visibility _errorVisibility = Visibility.Collapsed;
+        public Visibility ErrorVisibility
+        {
+            get { return _errorVisibility; }
+            set { Set(ref _errorVisibility, value); }
+        }
+
+        public virtual void Initialize(ListViewBase listView, int itemsPerPage = 20)
+        {
+            _listView = listView;
+
+            if (Items == null)
+            {
+                Items = new IncrementalLoadingCollection<TSource, IType>(itemsPerPage,
+                    () =>
+                    {
+                        LoadingVisibility = Visibility.Visible;
+                        ErrorVisibility = Visibility.Collapsed;
+                    },
+                    () =>
+                    {
+                        LoadingVisibility = Visibility.Collapsed;
+                    },
+                    ex =>
+                    {
+                        ErrorVisibility = Visibility.Visible;
+                    });
+            };
+        }
+
+        private ICommand _itemClickCommand;
+        public ICommand ItemClickCommand
+        {
+            get
+            {
+                if (_itemClickCommand == null)
+                {
+                    _itemClickCommand = new RelayCommand<IType>(item => NavToByItem(item));
+                }
+                return _itemClickCommand;
+            }
+        }
+
+        protected virtual void NavToByItem(IType item) => Messenger.Default.Send(item, item.GetType());
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new RelayCommand(async () =>
+                    {
+                        await Items.RefreshAsync();
+                    });
+                }
+                return _refreshCommand;
+            }
+        }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<IType>(async item =>
+                    {
+                        if (item is ImageItem val)
+                        {
+                            var download = new DownloadItem(val);
+                            await DownloadService.DownloadAsync(download);
+                        }
+                    });
+                }
+                return _downloadCommand;
+            }
         }
     }
 }
