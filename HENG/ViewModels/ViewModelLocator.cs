@@ -34,7 +34,7 @@ namespace HENG.ViewModels
         public PixabayService PxService => ServiceLocator.Current.GetInstance<PixabayService>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
-        public LocalViewModel Download => ServiceLocator.Current.GetInstance<LocalViewModel>();
+        public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }

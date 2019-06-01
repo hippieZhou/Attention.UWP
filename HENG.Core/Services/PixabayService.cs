@@ -17,7 +17,7 @@ namespace HENG.Core.Services
             _client = new PixabaySharpClient(apiKey);
         }
 
-        public async Task<ImageResult> QueryImagesAsync(string query = "", int page = 1, int per_page = 20)
+        public async Task<ImageResult> QueryImagesAsync(string query = "all", int page = 1, int per_page = 20)
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {

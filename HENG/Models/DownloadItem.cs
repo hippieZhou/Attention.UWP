@@ -13,14 +13,14 @@ namespace HENG.Models
         public readonly CancellationTokenSource CancellationToken;
 
         public ImageItem Item { get; set; }
-        public string Hash { get; private set; }
+        public string HashFile { get; private set; }
 
         public DownloadItem(ImageItem item)
         {
             CancellationToken = new CancellationTokenSource();
 
             Item = item;
-            Hash = SafeHashUri(item.LargeImageURL);
+            HashFile = $"{SafeHashUri(item.LargeImageURL)}.jpg";
         }
 
         private string SafeHashUri(string sourceUri)
@@ -39,9 +39,8 @@ namespace HENG.Models
                 return sb.ToString();
             }
 
-            string safeUri = sourceUri.ToLower();
-            var hash = Hash(safeUri);
-            return $"{hash}.jpg";
+            var hash = Hash(sourceUri.ToLower());
+            return hash;
         }
     }
 }
