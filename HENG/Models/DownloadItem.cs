@@ -1,4 +1,6 @@
-﻿using PixabaySharp.Models;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using PixabaySharp.Models;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
@@ -8,12 +10,19 @@ using Windows.Storage.Streams;
 
 namespace HENG.Models
 {
-    public class DownloadItem
+    public class DownloadItem: ObservableObject
     {
         public readonly CancellationTokenSource CancellationToken;
 
         public ImageItem Item { get; set; }
         public string HashFile { get; private set; }
+
+        private int _progress = 100;
+        public int Progress
+        {
+            get { return _progress; }
+            set { Set(ref _progress, value); }
+        }
 
         public DownloadItem(ImageItem item)
         {
@@ -21,6 +30,8 @@ namespace HENG.Models
 
             Item = item;
             HashFile = $"{SafeHashUri(item.LargeImageURL)}.jpg";
+
+            Messenger.Default.Register<int>(this, HashFile, val => { Progress = val; });
         }
 
         private string SafeHashUri(string sourceUri)

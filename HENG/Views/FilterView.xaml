@@ -9,11 +9,24 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Button
+        <StackPanel
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Command="{x:Bind CollapsedCommand, Mode=OneWay}"
-            CommandParameter="{x:Bind}"
-            Content="CollapsedView" />
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Margin="6,12"
+                Background="Transparent"
+                Command="{x:Bind Home.CollapsedViewCommand, Mode=OneWay}"
+                CommandParameter="{x:Bind}"
+                Content="CANCEL"
+                Style="{ThemeResource ButtonRevealStyle}" />
+            <Button
+                Margin="6,12"
+                Background="Transparent"
+                Command="{x:Bind Home.CollapsedViewCommand, Mode=OneWay}"
+                CommandParameter="{x:Bind}"
+                Content="GET IT"
+                Style="{ThemeResource ButtonRevealStyle}" />
+        </StackPanel>
     </Grid>
 </Page>

@@ -1,4 +1,5 @@
-﻿using HENG.Services;
+﻿using GalaSoft.MvvmLight.Threading;
+using HENG.Services;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -78,6 +79,7 @@ namespace HENG
                 Window.Current.Activate();
             }
 
+            DispatcherHelper.Initialize();
             await DownloadService.AttachToDownloadsAsync(new CancellationTokenSource());
         }
 

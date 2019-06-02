@@ -24,7 +24,7 @@ namespace HENG.Views
     /// </summary>
     public sealed partial class FilterView : Page
     {
-        public ICommand CollapsedCommand => ViewModelLocator.Current.Home.CollapsedViewCommand;
+        public HomeViewModel Home => ViewModelLocator.Current.Home;
         public FilterView()
         {
             this.InitializeComponent();
