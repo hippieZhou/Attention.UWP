@@ -11,13 +11,11 @@
     NavigationCacheMode="Required"
     mc:Ignorable="d">
 
-    <i:Interaction.Behaviors>
-        <ic:EventTriggerBehavior EventName="Loaded">
-            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
-        </ic:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <Grid>
         <uc:PhotoControl ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
+        <local:FilterView
+            x:Name="FilterView"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch" />
     </Grid>
 </Page>

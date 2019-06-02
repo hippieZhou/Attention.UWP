@@ -128,7 +128,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 DisplayName="{x:Bind ViewModel.StoredItem.User}"
-                                ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay}"
+                                ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay, Converter={StaticResource NnllUserImageConverter}}"
                                 UseLayoutRounding="True" />
                             <TextBlock
                                 Margin="12,0"

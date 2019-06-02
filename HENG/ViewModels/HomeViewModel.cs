@@ -5,6 +5,7 @@ using HENG.Models;
 using HENG.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace HENG.ViewModels
 {
     public class HomeViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
+        private Page filerPage;
         public HomeViewModel()
         {
             Messenger.Default.Register<GenericMessage<ImageItem>>(this, "backwardsAnimation", async item =>
@@ -41,19 +43,61 @@ namespace HENG.ViewModels
             });
         }
 
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
+        private ICommand _collapsedViewCommand;
+        public ICommand CollapsedViewCommand
         {
             get
             {
-                if (_loadedCommand == null)
+                if (_collapsedViewCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _collapsedViewCommand = new RelayCommand<Page>(async page =>
                     {
+                        filerPage = page;
+                        await CollapsedViewDown();
                     });
                 }
-                return _loadedCommand;
+                return _collapsedViewCommand;
             }
+        }
+
+        private ICommand _expandViewCommand;
+        public ICommand ExpandViewCommand
+        {
+            get
+            {
+                if (_expandViewCommand == null)
+                {
+                    _expandViewCommand = new RelayCommand(async () => 
+                    {
+                        if (filerPage?.Visibility == Visibility.Collapsed)
+                        {
+                            await CollapsedViewDown();
+                            await ExplandViewUp();
+                        }
+                    });
+                }
+                return _expandViewCommand;
+            }
+        }
+
+        private async Task ExplandViewUp()
+        {
+            if (_listView != null)
+            {
+                _listView.IsEnabled = false;
+            }
+            filerPage.Visibility = Visibility.Visible;
+            await filerPage.Offset(0).StartAsync();
+        }
+
+        private async Task CollapsedViewDown()
+        {
+            if (_listView != null)
+            {
+                _listView.IsEnabled = true;
+            }
+            filerPage.Visibility = Visibility.Collapsed;
+            await filerPage.Offset(0, (float)(Window.Current.Bounds.Height), 0).StartAsync();
         }
 
         protected override void NavToHomeByItem(ImageItem item)
