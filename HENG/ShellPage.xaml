@@ -53,9 +53,20 @@
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
                     <muxc:NavigationViewItem
+                        Icon="Filter"
+                        Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}"
+                        ToolTipService.ToolTip="Filter">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="Tapped">
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.FilterCommand, Mode=OneWay}" />
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </muxc:NavigationViewItem>
+                    <muxc:NavigationViewItem
                         helpers:NavHelper.NavigateTo="HENG.ViewModels.LocalViewModel"
                         Icon="Download"
-                        Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}">
+                        Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}"
+                        ToolTipService.ToolTip="Download">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="Tapped">
                                 <ic:InvokeCommandAction Command="{x:Bind ViewModel.NavToLocalCommand, Mode=OneWay}" />

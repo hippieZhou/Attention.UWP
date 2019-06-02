@@ -162,6 +162,22 @@ namespace HENG.ViewModels
             }
         }
 
+        private ICommand _filterCommand;
+        public ICommand FilterCommand
+        {
+            get
+            {
+                if (_filterCommand == null)
+                {
+                    _filterCommand = new RelayCommand(() =>
+                    {
+                    });
+                }
+                return _filterCommand;
+            }
+        }
+
+
         private ICommand _navToLocalCommand;
         public ICommand NavToLocalCommand
         {

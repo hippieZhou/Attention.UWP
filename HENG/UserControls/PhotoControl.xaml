@@ -112,6 +112,7 @@
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
             SelectionMode="Single"
             ShowsScrollingPlaceholders="False"
@@ -121,11 +122,6 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
-            <controls:AdaptiveGridView.Header>
-                <controls:ScrollHeader Mode="QuickReturn">
-                    <!--  todo  -->
-                </controls:ScrollHeader>
-            </controls:AdaptiveGridView.Header>
             <controls:AdaptiveGridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel
