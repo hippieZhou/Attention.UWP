@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="2f4b15b6-23a8-451d-b48e-96ab699e5d31"
-    Publisher="CN=hippie"
+    Name="49037hippieZhou.HENG"
+    Publisher="CN=FB39366C-1F01-4867-BE1F-B5C0C7888AAA"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="2f4b15b6-23a8-451d-b48e-96ab699e5d31" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="5c699eb5-53e9-49aa-93f2-30814622a8e0" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>HENG</DisplayName>
-    <PublisherDisplayName>hippie</PublisherDisplayName>
+    <PublisherDisplayName>hippieZhou</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
