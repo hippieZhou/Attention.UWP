@@ -133,11 +133,6 @@ namespace HENG.ViewModels
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             var result = await ViewModelLocator.Current.PxService.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
-            if (result?.Images != null)
-            {
-                IEnumerable<string> urls = from p in result.Images.Take(5) select p.LargeImageURL;
-                DataService.UpdateLiveTile(urls);
-            }
             return result?.Images;
         }
     }

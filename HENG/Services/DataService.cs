@@ -10,7 +10,7 @@ namespace HENG.Services
 {
     public class DataService
     {
-        public static void UpdateLiveTile(IEnumerable<string> urls)
+        public static void UpdateLiveTileAsync(IEnumerable<string> urls)
         {
             var photosContent = new TileBindingContentPhotos();
             foreach (var item in urls)

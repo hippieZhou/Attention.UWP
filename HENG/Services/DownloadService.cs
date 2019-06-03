@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HENG.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.ApplicationModel.Background;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.UI.Notifications;
@@ -21,7 +22,53 @@ namespace HENG.Services
 
     public class DownloadService
     {
+        public const string NAME = "DownloadCompleteTrigger";
+
         private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+
+        public static async Task AttachToDownloadsAsync()
+        {
+            IReadOnlyList<DownloadOperation> downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            foreach (DownloadOperation download in downloads)
+            {
+                Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(ProgressChanged);
+                await download.AttachAsync().AsTask(progressCallback);
+            }
+        }
+
+        public static async Task<DownloadStartResult> DownloadAsync(DownloadItem download)
+        {
+            IStorageItem file = await CheckLocalFileExistsAsync(download.HashFile);
+            var downloadingAlready = await IsDownloading(new Uri(download.Item.LargeImageURL));
+            if (file == null && !downloadingAlready)
+            {
+                await Task.Run(() =>
+                {
+                    var task = StartDownloadAsync(download.Item.LargeImageURL, download.HashFile, download.CancellationToken);
+                    task.ContinueWith(state =>
+                    {
+                        if (state.Exception != null)
+                        {
+                            Trace.WriteLine($"An error occured with this download {state.Exception}");
+                        }
+                        else
+                        {
+                            Trace.WriteLine("Download Completed");
+                        }
+                    });
+                });
+                return DownloadStartResult.Started;
+            }
+            else if (file != null)
+            {
+                Trace.WriteLine("Already downloaded.");
+                return DownloadStartResult.AllreadyDownloaded;
+            }
+            else
+            {
+                return DownloadStartResult.Error;
+            }
+        }
 
         private static async Task StartDownloadAsync(string url, string hash, CancellationTokenSource cancellationToken)
         {
@@ -32,11 +79,22 @@ namespace HENG.Services
                 file = await folder.CreateFileAsync(hash, CreationCollisionOption.ReplaceExisting);
             }
 
-            Uri downloadUrl = new Uri(url);
+            var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
+            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
+            BackgroundTaskRegistration taskRegistration = RegisterBackgroundTask(completionGroup.Trigger);
+            if (taskRegistration == null)
+            {
+                return;
+            }
 
-            BackgroundDownloader downloader = new BackgroundDownloader();
+            BackgroundDownloader downloader = new BackgroundDownloader
+            {
+                TransferGroup = group
+            };
             CreateNotifications(downloader);
 
+            Uri downloadUrl = new Uri(url);
             var downloadOperation = downloader.CreateDownload(downloadUrl, file);
             Progress<DownloadOperation> progress = new Progress<DownloadOperation>(x => ProgressChanged(downloadOperation));
             Trace.WriteLine("Initializing...");
@@ -57,6 +115,26 @@ namespace HENG.Services
             {
                 Trace.WriteLine(ex);
             }
+        }
+
+        private static BackgroundTaskRegistration RegisterBackgroundTask(IBackgroundTrigger trigger)
+        {
+            //var res = await BackgroundExecutionManager.RequestAccessAsync();
+            //if (res == BackgroundAccessStatus.AlwaysAllowed || res == BackgroundAccessStatus.AllowedSubjectToSystemPolicy)
+            //{
+
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
+            var builder = new BackgroundTaskBuilder
+            {
+                Name = NAME
+            };
+            builder.SetTrigger(trigger);
+            return builder.Register();
         }
 
         private static void CreateNotifications(BackgroundDownloader downloader)
@@ -171,50 +249,6 @@ namespace HENG.Services
                 }
             }
             return file;
-        }
-
-        public static async Task AttachToDownloadsAsync(CancellationTokenSource cancellationToken)
-        {
-            IReadOnlyList<DownloadOperation> downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-            foreach (DownloadOperation download in downloads)
-            {
-                Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(ProgressChanged);
-                await download.AttachAsync().AsTask(cancellationToken.Token, progressCallback);
-            }
-        }
-
-        public static async Task<DownloadStartResult> DownloadAsync(DownloadItem download)
-        {
-            IStorageItem file = await CheckLocalFileExistsAsync(download.HashFile);
-            var downloadingAlready = await IsDownloading(new Uri(download.Item.LargeImageURL));
-            if (file == null && !downloadingAlready)
-            {
-                await Task.Run(() =>
-                {
-                    var task = StartDownloadAsync(download.Item.LargeImageURL, download.HashFile, download.CancellationToken);
-                    task.ContinueWith(state =>
-                    {
-                        if (state.Exception != null)
-                        {
-                            Trace.WriteLine($"An error occured with this download {state.Exception}");
-                        }
-                        else
-                        {
-                            Trace.WriteLine("Download Completed");
-                        }
-                    });
-                });
-                return DownloadStartResult.Started;
-            }
-            else if (file != null)
-            {
-                Trace.WriteLine("Already downloaded.");
-                return DownloadStartResult.AllreadyDownloaded;
-            }
-            else
-            {
-                return DownloadStartResult.Error;
-            }
         }
     }
 }

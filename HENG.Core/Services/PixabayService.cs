@@ -1,4 +1,5 @@
 ﻿using PixabaySharp;
+using PixabaySharp.Enums;
 using PixabaySharp.Models;
 using PixabaySharp.Utility;
 using System;
@@ -21,7 +22,8 @@ namespace HENG.Core.Services
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
-                Query = query,
+                Category = Category.Backgrounds,
+                ImageType = ImageType.Photo,
                 Page = page,
                 PerPage = per_page
             };

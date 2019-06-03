@@ -1,15 +1,19 @@
 ﻿using GalaSoft.MvvmLight.Threading;
+using HENG.Helpers;
 using HENG.Services;
+using HENG.Tasks;
 using System;
-using System.Threading;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace HENG
 {
@@ -29,13 +33,6 @@ namespace HENG
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-#if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                DebugSettings.EnableFrameRateCounter = true;
-            }
-#endif
-
             if (e.PrelaunchActivated)
                 return;
 
@@ -50,13 +47,23 @@ namespace HENG
             }
 
             CreateFrameWithArgurments(e.Arguments);
+
+            await RegisterBackgroundTaskAsync();
             DispatcherHelper.Initialize();
-            await DownloadService.AttachToDownloadsAsync(new CancellationTokenSource());
+            await DownloadService.AttachToDownloadsAsync();
         }
 
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private Frame CreateFrameWithArgurments(string args)
         {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+            if (!(Window.Current.Content is Frame rootFrame))
+            {
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
+                Window.Current.Content = rootFrame;
+            }
+            rootFrame.Navigate(typeof(Shell), args);
+            Window.Current.Activate();
+            return rootFrame;
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)
@@ -69,12 +76,15 @@ namespace HENG
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             var taskInstance = args.TaskInstance;
+            var deferral = taskInstance.GetDeferral();
 
             taskInstance.Canceled += (sender, reason) => 
             {
-                var deferral = taskInstance.GetDeferral();
-                deferral.Complete();
+                var tasks = BackgroundTaskRegistration.AllTasks.Values.Where(t => t.Name == DownloadService.NAME);
+                tasks.AsParallel().ForAll(p => p.Unregister(true));
             };
+
+            deferral.Complete();
             base.OnBackgroundActivated(args);
         }
 
@@ -89,17 +99,12 @@ namespace HENG
             CreateFrameWithArgurments(arg);
         }
 
-        private Frame CreateFrameWithArgurments(string args)
+        private async Task RegisterBackgroundTaskAsync()
         {
-            if (!(Window.Current.Content is Frame rootFrame))
-            {
-                rootFrame = new Frame();
-                rootFrame.NavigationFailed += OnNavigationFailed;
-                Window.Current.Content = rootFrame;
-            }
-            rootFrame.Navigate(typeof(Shell), args);
-            Window.Current.Activate();
-            return rootFrame;
+            BackgroundTaskRegistration task = await BackgroundTaskHelper.RegisterBackgroundTask(typeof(HENGBackgroundTask),
+                "HENGBackgroundTask", new TimeTrigger(15, false), null);
+            task.Progress += (sender, args) => { Trace.WriteLine($"Background {sender.Name} TaskOnProgress."); };
+            task.Completed += (sender, args) => { Debug.WriteLine($"Background {sender.Name} TaskOnCompleted."); };
         }
     }
 }
