@@ -1,7 +1,4 @@
-﻿using Serilog;
-using Serilog.Events;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 
 namespace HENG.Services
 {
@@ -11,15 +8,6 @@ namespace HENG.Services
     /// </summary>
     public class LoggingService
     {
-        public ObservableCollection<LogEvent> LogItems { get; }
-        public LoggingService()
-        {
-            LogItems = new ObservableCollection<LogEvent>();
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .CreateLogger();
-        }
-
         private string GetTimeStamp()
         {
             DateTime now = DateTime.Now;

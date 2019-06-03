@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace HENG.ViewModels
@@ -43,6 +44,22 @@ namespace HENG.ViewModels
             });
         }
 
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(async () =>
+                    {
+                        await ViewDown();
+                    });
+                }
+                return _loadedCommand;
+            }
+        }
+
         private ICommand _collapsedViewCommand;
         public ICommand CollapsedViewCommand
         {
@@ -53,7 +70,14 @@ namespace HENG.ViewModels
                     _collapsedViewCommand = new RelayCommand<Page>(async page =>
                     {
                         filerPage = page;
-                        await CollapsedViewDown();
+
+                        var anim = filerPage.Offset(0, (float)Window.Current.Bounds.Height);
+                        anim.Completed += (sender, e) =>
+                        {
+                            filerPage.Visibility = Visibility.Collapsed;
+                            _listView.IsEnabled = true;
+                        };
+                        await anim.StartAsync();
                     });
                 }
                 return _collapsedViewCommand;
@@ -71,8 +95,9 @@ namespace HENG.ViewModels
                     {
                         if (filerPage?.Visibility == Visibility.Collapsed)
                         {
-                            await CollapsedViewDown();
-                            await ExplandViewUp();
+                            _listView.IsEnabled = false;
+                            await ViewDown();
+                            await ViewUp();
                         }
                     });
                 }
@@ -80,22 +105,14 @@ namespace HENG.ViewModels
             }
         }
 
-        private async Task ExplandViewUp()
+        private async Task ViewUp()
         {
-            if (_listView != null)
-            {
-                _listView.IsEnabled = false;
-            }
             filerPage.Visibility = Visibility.Visible;
             await filerPage.Offset(0).StartAsync();
         }
 
-        private async Task CollapsedViewDown()
+        private async Task ViewDown()
         {
-            if (_listView != null)
-            {
-                _listView.IsEnabled = true;
-            }
             filerPage.Visibility = Visibility.Collapsed;
             await filerPage.Offset(0, (float)(Window.Current.Bounds.Height), 0).StartAsync();
         }

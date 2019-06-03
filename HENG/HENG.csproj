@@ -234,18 +234,11 @@
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
     </PackageReference>
-    <PackageReference Include="Serilog">
-      <Version>2.8.1-dev-01090</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HENG.Core\HENG.Core.csproj">
       <Project>{c3edaf21-efce-48cc-bfba-61bed4b6d9ee}</Project>
       <Name>HENG.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HENG.Tasks\HENG.Tasks.csproj">
-      <Project>{af1bf56a-81f6-4a76-badc-48ba2509c997}</Project>
-      <Name>HENG.Tasks</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
