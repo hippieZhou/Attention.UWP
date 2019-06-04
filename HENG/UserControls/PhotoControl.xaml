@@ -98,6 +98,7 @@
                 </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
+
     </UserControl.Resources>
 
     <Grid x:Name="RootGrid">
@@ -206,7 +207,8 @@
                     Grid.Row="0"
                     MaxWidth="400"
                     PlaceholderText="Find what you want ?"
-                    QueryIcon="Find">
+                    QueryIcon="Find"
+                    TextBoxStyle="{StaticResource MyAutoSuggestBoxTextBoxStyle}">
                     <i:Interaction.Behaviors>
                         <ic:EventTriggerBehavior EventName="QuerySubmitted">
                             <ic:InvokeCommandAction Command="{x:Bind ViewModel.QueryCommand, Mode=OneWay}" />
