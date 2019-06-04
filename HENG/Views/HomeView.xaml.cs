@@ -1,6 +1,5 @@
 ﻿using HENG.ViewModels;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace HENG.Views
 {
@@ -10,11 +9,6 @@ namespace HENG.Views
         public HomeView()
         {
             this.InitializeComponent();
-
-        }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
         }
     }
 }
