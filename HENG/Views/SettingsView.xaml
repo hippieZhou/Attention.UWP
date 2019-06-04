@@ -21,7 +21,10 @@
     </i:Interaction.Behaviors>
 
     <Grid>
-        <StackPanel Margin="24">
+        <StackPanel
+            Margin="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="0,12">
                 <TextBlock x:Uid="Settings_Theme" />
@@ -62,24 +65,29 @@
             <TextBlock x:Uid="Settings_Download" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="0,12">
                 <TextBlock x:Uid="Settings_DownloadPath" />
-                <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
-                    <TextBox
-                        Width="380"
-                        IsReadOnly="True"
-                        Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}" />
-                    <Button
-                        x:Uid="Settings_DownloadOpen"
-                        Margin="8,0,0,0"
-                        Command="{x:Bind ViewModel.OpenFolderCommand}"
-                        Style="{ThemeResource ButtonRevealStyle}" />
-                </StackPanel>
+                <TextBox
+                    Width="400"
+                    Margin="0,8,0,0"
+                    IsReadOnly="True"
+                    Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}" />
+                <Button
+                    x:Uid="Settings_DownloadOpen"
+                    Width="120"
+                    Margin="12"
+                    HorizontalAlignment="Center"
+                    Command="{x:Bind ViewModel.OpenFolderCommand}"
+                    Style="{ThemeResource ButtonRevealStyle}" />
             </StackPanel>
 
-            <StackPanel Margin="0,12">
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+            <StackPanel Margin="0,12" HorizontalAlignment="Center">
+                <TextBlock
+                    Foreground="Gray"
+                    Style="{ThemeResource BodyTextBlockStyle}"
+                    Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
                 <TextBlock
                     x:Uid="Settings_AboutDescription"
                     Margin="0,12"
+                    Foreground="Gray"
                     Style="{ThemeResource BodyTextBlockStyle}" />
             </StackPanel>
         </StackPanel>
