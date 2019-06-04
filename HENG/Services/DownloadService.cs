@@ -39,12 +39,13 @@ namespace HENG.Services
         public static async Task<DownloadStartResult> DownloadAsync(DownloadItem download)
         {
             IStorageItem file = await CheckLocalFileExistsAsync(download.HashFile);
-            var downloadingAlready = await IsDownloading(new Uri(download.Item.LargeImageURL));
+            Uri uri = (!string.IsNullOrWhiteSpace(download.Item.ImageURL)) ? new Uri(download.Item.ImageURL) : new Uri(download.Item.LargeImageURL);
+            var downloadingAlready = await IsDownloading(uri);
             if (file == null && !downloadingAlready)
             {
                 await Task.Run(() =>
                 {
-                    var task = StartDownloadAsync(download.Item.LargeImageURL, download.HashFile, download.CancellationToken);
+                    var task = StartDownloadAsync(uri.OriginalString, download.HashFile, download.CancellationToken);
                     task.ContinueWith(state =>
                     {
                         if (state.Exception != null)

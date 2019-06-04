@@ -30,7 +30,7 @@ namespace HENG.Tasks
         {
             try
             {
-                var result = await new PixabayService("12645414-59a5251905dfea7b916dd796f").QueryImagesAsync(per_page: 5);
+                var result = await new PixabayService().QueryImagesAsync(per_page: 5);
                 IEnumerable<string> urls = from p in result.Images select p.LargeImageURL;
                 UpdateLiveTile(urls);
             }

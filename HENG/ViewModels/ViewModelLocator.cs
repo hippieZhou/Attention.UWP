@@ -24,7 +24,7 @@ namespace HENG.ViewModels
 
             SimpleIoc.Default.Register(() => nav);
 
-            SimpleIoc.Default.Register(() => new PixabayService("12645414-59a5251905dfea7b916dd796f"));
+            SimpleIoc.Default.Register(() => new PixabayService());
             SimpleIoc.Default.Register<LoggingService>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
