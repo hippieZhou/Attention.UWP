@@ -33,7 +33,7 @@ namespace HENG.UserControls
             {
                 if (d is PhotoControl handler && e.NewValue is HomeViewModel vm)
                 {
-                    vm.Initialize(handler.AdaptiveGridViewControl);
+                    vm.Initialize(handler.AdaptiveGridViewControl, handler.HeaderMask);
                     handler.DataContext = vm;
                 }
             }));

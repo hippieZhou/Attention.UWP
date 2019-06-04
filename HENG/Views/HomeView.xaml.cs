@@ -15,7 +15,6 @@ namespace HENG.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.CollapsedViewCommand.Execute(FilterView);
         }
     }
 }

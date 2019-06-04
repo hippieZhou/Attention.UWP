@@ -12,16 +12,20 @@ namespace HENG.Core.Services
     /// </summary>
     public class PixabayService
     {
+        public string QueryText;
+
         private readonly PixabaySharpClient _client;
         public PixabayService(string apiKey)
         {
             _client = new PixabaySharpClient(apiKey);
         }
 
-        public async Task<ImageResult> QueryImagesAsync(string query = "all", int page = 1, int per_page = 20)
+        public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20)
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
+                Query = QueryText,
+                Orientation = Orientation.All,
                 Page = page,
                 PerPage = per_page
             };

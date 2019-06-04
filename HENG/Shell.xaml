@@ -53,7 +53,7 @@
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
                     <muxc:NavigationViewItem
-                        Icon="Filter"
+                        Icon="Find"
                         Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}"
                         ToolTipService.ToolTip="Filter">
                         <i:Interaction.Behaviors>

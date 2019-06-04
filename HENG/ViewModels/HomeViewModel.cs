@@ -6,6 +6,7 @@ using HENG.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI.Animations;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,6 @@ namespace HENG.ViewModels
 {
     public class HomeViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
-        private Page filerPage;
         public HomeViewModel()
         {
             Messenger.Default.Register<GenericMessage<ImageItem>>(this, "backwardsAnimation", async item =>
@@ -53,68 +53,81 @@ namespace HENG.ViewModels
                 {
                     _loadedCommand = new RelayCommand(async () =>
                     {
-                        await ViewDown();
+                        await HeaderDown();
                     });
                 }
                 return _loadedCommand;
             }
         }
 
-        private ICommand _collapsedViewCommand;
-        public ICommand CollapsedViewCommand
+        private ICommand _queryCommand;
+        public ICommand QueryCommand
         {
             get
             {
-                if (_collapsedViewCommand == null)
+                if (_queryCommand == null)
                 {
-                    _collapsedViewCommand = new RelayCommand<Page>(async page =>
+                    _queryCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
                     {
-                        filerPage = page;
+                        ViewModelLocator.Current.PxService.QueryText = args.QueryText;
+                        this.RefreshCommand.Execute(null);
+                        HeaderDownCommand.Execute(null);
+                    });
+                }
+                return _queryCommand;
+            }
+        }
 
-                        var anim = filerPage.Offset(0, (float)Window.Current.Bounds.Height);
+        private ICommand _headerUpCommand;
+        public ICommand HeaderUpCommand
+        {
+            get
+            {
+                if (_headerUpCommand == null)
+                {
+                    _headerUpCommand = new RelayCommand(async () => 
+                    {
+                        if (_headerMask.Visibility == Visibility.Collapsed)
+                        {
+                            await HeaderDown();
+                            await HeaderUp();
+                        }
+                    });
+                }
+                return _headerUpCommand;
+            }
+        }
+
+        private ICommand _headerDownCommand;
+        public ICommand HeaderDownCommand
+        {
+            get
+            {
+                if (_headerDownCommand == null)
+                {
+                    _headerDownCommand = new RelayCommand(async () =>
+                    {
+                        var anim = _headerGrid.Offset(0, -(float)_headerGrid.ActualHeight);
                         anim.Completed += (sender, e) =>
                         {
-                            filerPage.Visibility = Visibility.Collapsed;
-                            _listView.IsEnabled = true;
+                            _headerMask.Visibility = Visibility.Collapsed;
                         };
                         await anim.StartAsync();
                     });
                 }
-                return _collapsedViewCommand;
+                return _headerDownCommand;
             }
         }
 
-        private ICommand _expandViewCommand;
-        public ICommand ExpandViewCommand
+        private async Task HeaderUp()
         {
-            get
-            {
-                if (_expandViewCommand == null)
-                {
-                    _expandViewCommand = new RelayCommand(async () => 
-                    {
-                        if (filerPage?.Visibility == Visibility.Collapsed)
-                        {
-                            _listView.IsEnabled = false;
-                            await ViewDown();
-                            await ViewUp();
-                        }
-                    });
-                }
-                return _expandViewCommand;
-            }
+            _headerMask.Visibility = Visibility.Visible;
+            await _headerGrid.Offset(0).StartAsync();
         }
-
-        private async Task ViewUp()
+        private async Task HeaderDown()
         {
-            filerPage.Visibility = Visibility.Visible;
-            await filerPage.Offset(0).StartAsync();
-        }
-
-        private async Task ViewDown()
-        {
-            filerPage.Visibility = Visibility.Collapsed;
-            await filerPage.Offset(0, (float)(Window.Current.Bounds.Height), 0).StartAsync();
+            _headerMask.Visibility = Visibility.Collapsed;
+            await _headerGrid.Offset(0, -(float)_headerGrid.ActualHeight, 0).StartAsync();
         }
 
         protected override void NavToHomeByItem(ImageItem item)
@@ -140,6 +153,8 @@ namespace HENG.ViewModels
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
         protected ListViewBase _listView;
+        protected Grid _headerMask;
+        protected Grid _headerGrid;
 
         private IncrementalLoadingCollection<TSource, IType> _items;
         public IncrementalLoadingCollection<TSource, IType> Items
@@ -162,9 +177,11 @@ namespace HENG.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(ListViewBase listView, int itemsPerPage = 20)
+        public virtual void Initialize(ListViewBase listView, Grid headerMask, int itemsPerPage = 20)
         {
             _listView = listView;
+            _headerMask = headerMask;
+            _headerGrid = _headerMask.FindName("HeaderGrid") as Grid;
 
             if (Items == null)
             {

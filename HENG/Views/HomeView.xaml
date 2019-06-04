@@ -18,9 +18,5 @@
 
     <Grid>
         <uc:PhotoControl ViewModel="{x:Bind ViewModel, Mode=OneWay}" />
-        <local:FilterView
-            x:Name="FilterView"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch" />
     </Grid>
 </Page>

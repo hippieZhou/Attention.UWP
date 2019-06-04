@@ -171,7 +171,7 @@ namespace HENG.ViewModels
                 {
                     _filterCommand = new RelayCommand(() =>
                     {
-                        ViewModelLocator.Current.Home.ExpandViewCommand.Execute(null);
+                        ViewModelLocator.Current.Home.HeaderUpCommand.Execute(null);
                     });
                 }
                 return _filterCommand;

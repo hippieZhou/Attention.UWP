@@ -146,9 +146,6 @@
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\FilterView.xaml.cs">
-      <DependentUpon>FilterView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\LocalView.xaml.cs">
       <DependentUpon>LocalView.xaml</DependentUpon>
     </Compile>
@@ -204,10 +201,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PhotoControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

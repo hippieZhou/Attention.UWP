@@ -188,6 +188,34 @@
             </i:Interaction.Behaviors>
         </Button>
 
+        <Grid x:Name="HeaderMask">
+            <Grid.Background>
+                <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
+            </Grid.Background>
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="Tapped">
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.HeaderDownCommand, Mode=OneWay}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Grid
+                x:Name="HeaderGrid"
+                Padding="60"
+                VerticalAlignment="Top"
+                Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}">
+                <AutoSuggestBox
+                    Grid.Row="0"
+                    MaxWidth="400"
+                    PlaceholderText="Find what you want ?"
+                    QueryIcon="Find">
+                    <i:Interaction.Behaviors>
+                        <ic:EventTriggerBehavior EventName="QuerySubmitted">
+                            <ic:InvokeCommandAction Command="{x:Bind ViewModel.QueryCommand, Mode=OneWay}" />
+                        </ic:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </AutoSuggestBox>
+            </Grid>
+        </Grid>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -196,8 +224,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="AdaptiveGridViewControl.Padding" Value="12,12,8,0" />
-                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="300" />
-                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="200" />
+                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="400" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="250" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -207,7 +235,7 @@
                     <VisualState.Setters>
                         <Setter Target="AdaptiveGridViewControl.Padding" Value="12,12,8,0" />
                         <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="380" />
-                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="280" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="250" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
