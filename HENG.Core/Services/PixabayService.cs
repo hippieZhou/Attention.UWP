@@ -32,10 +32,5 @@ namespace HENG.Core.Services
             var result = await _client.QueryImagesAsync(qb);
             return result;
         }
-
-        public Task<VideoResult> QueryVideosAsync(VideoQueryBuilder qb)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

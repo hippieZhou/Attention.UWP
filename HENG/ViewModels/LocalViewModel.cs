@@ -22,13 +22,8 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(async () =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
-                        var result = await ViewModelLocator.Current.PxService.QueryImagesAsync(page: 1, per_page: 20);
-                        foreach (var item in result?.Images)
-                        {
-                            Photos.Add(new DownloadItem(item));
-                        }
                     });
                 }
                 return _loadedCommand;

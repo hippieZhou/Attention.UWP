@@ -14,6 +14,7 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using XamlBrewer.Uwp.Controls;
 
 namespace HENG
 {
@@ -46,14 +47,14 @@ namespace HENG
                 titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
-            CreateFrameWithArgurments(e.Arguments);
+            CreateFrameWithArgurments(e.Arguments, e.SplashScreen);
 
             await RegisterBackgroundTaskAsync();
             DispatcherHelper.Initialize();
             await DownloadService.AttachToDownloadsAsync();
         }
 
-        private Frame CreateFrameWithArgurments(string args)
+        private Frame CreateFrameWithArgurments(string args, SplashScreen splashScreen)
         {
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -62,6 +63,7 @@ namespace HENG
                 Window.Current.Content = rootFrame;
             }
             rootFrame.Navigate(typeof(Shell), args);
+            (rootFrame.Content as Page).OpenFromSplashScreen(splashScreen.ImageLocation);
             Window.Current.Activate();
             return rootFrame;
         }
@@ -96,7 +98,7 @@ namespace HENG
                 var toastActivationArgs = e as ToastNotificationActivatedEventArgs;
                 arg = toastActivationArgs.Argument;
             }
-            CreateFrameWithArgurments(arg);
+            CreateFrameWithArgurments(arg, e.SplashScreen);
         }
 
         private async Task RegisterBackgroundTaskAsync()
