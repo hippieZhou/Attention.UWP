@@ -54,6 +54,7 @@
                 <StackPanel Orientation="Horizontal">
                     <muxc:NavigationViewItem
                         Icon="Find"
+                        IsEnabled="{x:Bind ViewModel.FindIsEnabled, Mode=OneWay}"
                         Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}"
                         ToolTipService.ToolTip="Filter">
                         <i:Interaction.Behaviors>

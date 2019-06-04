@@ -64,6 +64,7 @@ namespace HENG.ViewModels
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             IsBackEnabled = _navService.CanGoBack;
+            FindIsEnabled = e.SourcePageType == typeof(HomeView);
 
             if (e.SourcePageType == typeof(SettingsView))
             {
@@ -71,8 +72,7 @@ namespace HENG.ViewModels
             }
             else
             {
-                var item = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
-                Selected = item;
+                Selected = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
             }
 
             bool IsMenuItemForPageType(muxc.NavigationViewItem menuItem, Type sourcePageType)
@@ -103,6 +103,13 @@ namespace HENG.ViewModels
         {
             get { return _selected; }
             set { Set(ref _selected, value); }
+        }
+
+        private bool _findIsEnabled;
+        public bool FindIsEnabled
+        {
+            get { return _findIsEnabled; }
+            set { Set(ref _findIsEnabled, value); }
         }
 
         private ICommand _loadedCommand;
@@ -177,7 +184,6 @@ namespace HENG.ViewModels
                 return _filterCommand;
             }
         }
-
 
         private ICommand _navToLocalCommand;
         public ICommand NavToLocalCommand
