@@ -22,8 +22,6 @@ namespace HENG.Core.Services
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
-                Category = Category.Backgrounds,
-                ImageType = ImageType.Photo,
                 Page = page,
                 PerPage = per_page
             };

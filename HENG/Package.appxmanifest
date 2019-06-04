@@ -9,7 +9,7 @@
   <Identity
     Name="49037hippieZhou.HENG"
     Publisher="CN=FB39366C-1F01-4867-BE1F-B5C0C7888AAA"
-    Version="1.0.3.0" />
+    Version="1.0.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="5c699eb5-53e9-49aa-93f2-30814622a8e0" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
