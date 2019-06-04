@@ -127,13 +127,17 @@
     </Compile>
     <Compile Include="Converters\NnllUserImageConverter.cs" />
     <Compile Include="Helpers\BackgroundTaskHelper.cs" />
+    <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
+    <Compile Include="Helpers\ResourceExtensions.cs" />
+    <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\VisualTreeHelperExtensions.cs" />
     <Compile Include="Models\DownloadItem.cs" />
     <Compile Include="Models\Parameters.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\LoggingService.cs" />
+    <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -235,6 +239,9 @@
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="XamlBrewer.Uwp.AnimatedSplashScreen">
       <Version>1.0.0</Version>

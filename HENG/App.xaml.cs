@@ -6,7 +6,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
@@ -23,13 +22,13 @@ namespace HENG
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
-            UnhandledException += App_UnhandledException;
-        }
-
-        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
-        {
-            e.Handled = true;
+            this.Suspending += (sender, e) => 
+            {
+                var deferral = e.SuspendingOperation.GetDeferral();
+                //TODO: Save application state and stop any background activity
+                deferral.Complete();
+            };
+            this.UnhandledException += (sender,e)=> { e.Handled = true; };
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
@@ -47,32 +46,13 @@ namespace HENG
                 titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
-            CreateFrameWithArgurments(e.Arguments, e.SplashScreen);
+            await InitializeAsync();
+            await InitWindowAsync(e.Arguments, e.SplashScreen);
 
             await RegisterBackgroundTaskAsync();
+
             DispatcherHelper.Initialize();
             await DownloadService.AttachToDownloadsAsync();
-        }
-
-        private Frame CreateFrameWithArgurments(string args, SplashScreen splashScreen)
-        {
-            if (!(Window.Current.Content is Frame rootFrame))
-            {
-                rootFrame = new Frame();
-                rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
-                Window.Current.Content = rootFrame;
-            }
-            rootFrame.Navigate(typeof(Shell), args);
-            (rootFrame.Content as Page).OpenFromSplashScreen(splashScreen.ImageLocation);
-            Window.Current.Activate();
-            return rootFrame;
-        }
-
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
@@ -90,7 +70,7 @@ namespace HENG
             base.OnBackgroundActivated(args);
         }
 
-        protected override void OnActivated(IActivatedEventArgs e)
+        protected override async void OnActivated(IActivatedEventArgs e)
         {
             string arg = null;
             if (e is ToastNotificationActivatedEventArgs)
@@ -98,7 +78,34 @@ namespace HENG
                 var toastActivationArgs = e as ToastNotificationActivatedEventArgs;
                 arg = toastActivationArgs.Argument;
             }
-            CreateFrameWithArgurments(arg, e.SplashScreen);
+            await InitWindowAsync(arg, e.SplashScreen);
+        }
+
+        private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen)
+        {
+            if (!(Window.Current.Content is Frame rootFrame))
+            {
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
+                Window.Current.Content = rootFrame;
+            }
+            rootFrame.Navigate(typeof(Shell), args);
+            (rootFrame.Content as Page).OpenFromSplashScreen(splashScreen.ImageLocation);
+            Window.Current.Activate();
+
+            await StartupAsync();
+
+            return rootFrame;
+        }
+
+        private async Task InitializeAsync()
+        {
+            await ThemeSelectorService.InitializeAsync();
+        }
+
+        public static async Task StartupAsync()
+        {
+            await ThemeSelectorService.SetRequestedThemeAsync();
         }
 
         private async Task RegisterBackgroundTaskAsync()

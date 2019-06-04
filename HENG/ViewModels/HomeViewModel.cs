@@ -104,7 +104,7 @@ namespace HENG.ViewModels
                 {
                     _headerDownCommand = new RelayCommand(async () =>
                     {
-                        var anim = _headerGrid.Offset(0, -(float)_headerGrid.ActualHeight);
+                        var anim = _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight));
                         anim.Completed += (sender, e) =>
                         {
                             _headerMask.Visibility = Visibility.Collapsed;
@@ -124,7 +124,7 @@ namespace HENG.ViewModels
         private async Task HeaderDown()
         {
             _headerMask.Visibility = Visibility.Collapsed;
-            await _headerGrid.Offset(0, -(float)_headerGrid.ActualHeight, 0).StartAsync();
+            await _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight), 0).StartAsync();
         }
 
         protected override void NavToHomeByItem(ImageItem item)
