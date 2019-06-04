@@ -119,16 +119,6 @@ namespace HENG.Services
 
         private static BackgroundTaskRegistration RegisterBackgroundTask(IBackgroundTrigger trigger)
         {
-            //var res = await BackgroundExecutionManager.RequestAccessAsync();
-            //if (res == BackgroundAccessStatus.AlwaysAllowed || res == BackgroundAccessStatus.AllowedSubjectToSystemPolicy)
-            //{
-
-            //}
-            //else
-            //{
-            //    return null;
-            //}
-
             var builder = new BackgroundTaskBuilder
             {
                 Name = NAME

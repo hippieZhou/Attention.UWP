@@ -66,9 +66,13 @@ namespace HENG.ViewModels
                 {
                     _queryCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
                     {
-                        ViewModelLocator.Current.PxService.QueryText = args.QueryText;
-                        this.RefreshCommand.Execute(null);
-                        HeaderDownCommand.Execute(null);
+                        var queryStr = args.QueryText;
+                        if (!string.IsNullOrWhiteSpace(queryStr))
+                        {
+                            ViewModelLocator.Current.PxService.QueryText = args.QueryText;
+                            RefreshCommand.Execute(null);
+                            HeaderDownCommand.Execute(null);
+                        }
                     });
                 }
                 return _queryCommand;
