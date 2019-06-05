@@ -53,10 +53,12 @@
             <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal">
                     <muxc:NavigationViewItem
-                        Icon="Find"
                         IsEnabled="{x:Bind ViewModel.FindIsEnabled, Mode=OneWay}"
                         Style="{StaticResource NavigationViewSettingsItemStyleWhenOnTopPane}"
                         ToolTipService.ToolTip="Filter">
+                        <muxc:NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
+                        </muxc:NavigationViewItem.Icon>
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="Tapped">
                                 <ic:InvokeCommandAction Command="{x:Bind ViewModel.FilterCommand, Mode=OneWay}" />
