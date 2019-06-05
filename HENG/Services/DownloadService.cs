@@ -45,7 +45,7 @@ namespace HENG.Services
             {
                 await Task.Run(() =>
                 {
-                    var task = StartDownloadAsync(uri.OriginalString, download.HashFile, download.CancellationToken);
+                    var task = StartDownloadAsync(uri.OriginalString, download.Item.PreviewURL, download.HashFile, download.CancellationToken);
                     task.ContinueWith(state =>
                     {
                         if (state.Exception != null)
@@ -71,7 +71,7 @@ namespace HENG.Services
             }
         }
 
-        private static async Task StartDownloadAsync(string url, string hash, CancellationTokenSource cancellationToken)
+        private static async Task StartDownloadAsync(string url, string smallUrl,string hash, CancellationTokenSource cancellationToken)
         {
             StorageFile file = await CheckLocalFileExistsAsync(hash) as StorageFile;
             if (file == null)
@@ -100,7 +100,7 @@ namespace HENG.Services
             Progress<DownloadOperation> progress = new Progress<DownloadOperation>(x => ProgressChanged(downloadOperation));
             Trace.WriteLine("Initializing...");
             var downloadTask = downloadOperation.StartAsync().AsTask(cancellationToken.Token, progress);
-            CreateToast(file.Name, downloadUrl.AbsoluteUri);
+            CreateToast(file.Name, smallUrl);
             try
             {
                 await downloadTask;
@@ -198,6 +198,7 @@ namespace HENG.Services
         private static void UpdateToast(string toastTag, int progressValue)
         {
             string now = DateTime.Now.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            Trace.WriteLine(progressValue);
 
             var data = new Dictionary<string, string>
             {

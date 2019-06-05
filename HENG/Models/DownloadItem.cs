@@ -29,7 +29,7 @@ namespace HENG.Models
             CancellationToken = new CancellationTokenSource();
 
             Item = item;
-            HashFile = $"{SafeHashUri(item.LargeImageURL)}.jpg";
+            HashFile = $"{SafeHashUri(item.PageURL)}.jpg";
 
             Messenger.Default.Register<int>(this, HashFile, val => { Progress = val; });
         }

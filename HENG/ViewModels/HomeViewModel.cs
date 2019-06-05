@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace HENG.ViewModels
@@ -66,13 +67,8 @@ namespace HENG.ViewModels
                 {
                     _queryCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
                     {
-                        var queryStr = args.QueryText;
-                        if (!string.IsNullOrWhiteSpace(queryStr))
-                        {
-                            ViewModelLocator.Current.PxService.QueryText = args.QueryText;
-                            RefreshCommand.Execute(null);
-                            HeaderDownCommand.Execute(null);
-                        }
+                        ViewModelLocator.Current.PxService.QueryText = args.QueryText;
+                        RefreshCommand.Execute(null);
                     });
                 }
                 return _queryCommand;
@@ -106,14 +102,20 @@ namespace HENG.ViewModels
             {
                 if (_headerDownCommand == null)
                 {
-                    _headerDownCommand = new RelayCommand(async () =>
+                    _headerDownCommand = new RelayCommand<TappedRoutedEventArgs>(async (obj) =>
                     {
-                        var anim = _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight));
-                        anim.Completed += (sender, e) =>
+                        if (obj == null)
+                            return;
+                        if (obj.OriginalSource.GetType() == typeof(Grid))
                         {
-                            _headerMask.Visibility = Visibility.Collapsed;
-                        };
-                        await anim.StartAsync();
+                            var anim = _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight));
+                            anim.Completed += (sender, e) =>
+                            {
+                                _headerMask.Visibility = Visibility.Collapsed;
+                            };
+                            await anim.StartAsync();
+                        }
+                        obj.Handled = true;
                     });
                 }
                 return _headerDownCommand;
