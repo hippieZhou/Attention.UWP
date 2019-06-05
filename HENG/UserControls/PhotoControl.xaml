@@ -204,8 +204,9 @@
                 VerticalAlignment="Top"
                 Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}">
                 <AutoSuggestBox
-                    Grid.Row="0"
                     MaxWidth="400"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
                     PlaceholderText="Find what you want ?"
                     TextBoxStyle="{StaticResource MyAutoSuggestBoxTextBoxStyle}">
                     <AutoSuggestBox.QueryIcon>
