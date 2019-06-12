@@ -28,26 +28,6 @@ namespace HENG.ViewModels
         public ShellViewModel(NavigationService navigationService)
         {
             _navService = navigationService;
-
-            Messenger.Default.Register<GenericMessage<ImageItem>>(this, "forwardAnimation", item =>
-            {
-                if (item.Target is ConnectedAnimation animation)
-                {
-                    try
-                    {
-                        StoredItem = item.Content;
-                        _smokeGrid.Visibility = Visibility.Visible;
-                        animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
-                    }
-                    catch (Exception ex)
-                    {
-                        StoredItem = null;
-                        _smokeGrid.Visibility = Visibility.Collapsed;
-                        animation.Cancel();
-                        Trace.WriteLine(ex);
-                    }
-                }
-            });
         }
 
         public void Initialize(muxc.NavigationView navView, Frame shellFrame, Grid smokeGrid)
@@ -246,7 +226,7 @@ namespace HENG.ViewModels
             {
                 if (_backCommand == null)
                 {
-                    _backCommand = new RelayCommand<ImageItem>(item =>
+                    _backCommand = new RelayCommand<ImageItem>(async item =>
                     {
                         ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _smokeGrid.FindName("destinationElement") as UIElement);
                         animation.Completed += (sender, e) =>
@@ -257,11 +237,27 @@ namespace HENG.ViewModels
                         {
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
                         }
-
-                        Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, item), "backwardsAnimation");
+                       await ViewModelLocator.Current.Home.HideDetailAsync(item, animation);
                     }, item => item != null);
                 }
                 return _backCommand;
+            }
+        }
+
+        public void ShowDetail(ImageItem storedItem, ConnectedAnimation animation)
+        {
+            try
+            {
+                StoredItem = storedItem;
+                _smokeGrid.Visibility = Visibility.Visible;
+                animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
+            }
+            catch (Exception ex)
+            {
+                StoredItem = null;
+                _smokeGrid.Visibility = Visibility.Collapsed;
+                animation.Cancel();
+                Trace.WriteLine(ex);
             }
         }
     }

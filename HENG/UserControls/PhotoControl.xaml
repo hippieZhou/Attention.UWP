@@ -98,7 +98,6 @@
                 </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
-
     </UserControl.Resources>
 
     <Grid x:Name="RootGrid">

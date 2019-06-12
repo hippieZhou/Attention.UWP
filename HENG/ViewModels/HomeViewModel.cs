@@ -22,26 +22,6 @@ namespace HENG.ViewModels
 {
     public class HomeViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
-        public HomeViewModel()
-        {
-            Messenger.Default.Register<GenericMessage<ImageItem>>(this, "backwardsAnimation", async item =>
-            {
-                try
-                {
-                    _listView.ScrollIntoView(item.Content, ScrollIntoViewAlignment.Default);
-                    _listView.UpdateLayout();
-                    if (item.Target is ConnectedAnimation animation)
-                    {
-                        await _listView.TryStartConnectedAnimationAsync(animation, item.Content, "connectedElement");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine(ex);
-                }
-            });
-        }
-
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -133,14 +113,28 @@ namespace HENG.ViewModels
             await _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight), 0).StartAsync();
         }
 
-        protected override void NavToHomeByItem(ImageItem item)
+        protected override void NavToDetailByItem()
         {
             ConnectedAnimation animation = null;
-            if (item != null)
+            if (StoredItem != null)
             {
-                animation = this._listView.PrepareConnectedAnimation("forwardAnimation", item, "connectedElement");
+                animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
             }
-            Messenger.Default.Send(new GenericMessage<ImageItem>(this, animation, item), "forwardAnimation");
+            ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
+        }
+
+        public async Task HideDetailAsync(ImageItem item, ConnectedAnimation animation)
+        {
+            try
+            {
+                _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Default);
+                _listView.UpdateLayout();
+                await _listView.TryStartConnectedAnimationAsync(animation, item, "connectedElement");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+            }
         }
     }
 
@@ -158,6 +152,13 @@ namespace HENG.ViewModels
         protected ListViewBase _listView;
         protected Grid _headerMask;
         protected Grid _headerGrid;
+
+        private IType _storedItem;
+        public IType StoredItem
+        {
+            get { return _storedItem; }
+            private set { Set(ref _storedItem, value); }
+        }
 
         private IncrementalLoadingCollection<TSource, IType> _items;
         public IncrementalLoadingCollection<TSource, IType> Items
@@ -212,13 +213,17 @@ namespace HENG.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(item => NavToHomeByItem(item));
+                    _itemClickCommand = new RelayCommand<IType>(item =>
+                    {
+                        StoredItem = item;
+                        NavToDetailByItem();
+                    });
                 }
                 return _itemClickCommand;
             }
         }
 
-        protected virtual void NavToHomeByItem(IType item) => throw new NotImplementedException();
+        protected virtual void NavToDetailByItem() => throw new NotImplementedException();
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
