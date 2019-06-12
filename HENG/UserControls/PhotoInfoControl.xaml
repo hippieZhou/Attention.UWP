@@ -39,38 +39,123 @@
                     Stretch="UniformToFill"
                     UseLayoutRounding="True" />
                 <Grid
-                    x:Name="CommandBar"
-                    VerticalAlignment="Bottom"
-                    Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel
-                        Grid.Column="0"
-                        Margin="12,0"
-                        Orientation="Horizontal">
-                        <muxc:PersonPicture
-                            Width="28"
-                            Height="28"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            DisplayName="{x:Bind StoredItem.User}"
-                            ProfilePicture="{x:Bind StoredItem.UserImageURL, Mode=OneWay, Converter={StaticResource NnllUserImageConverter}}"
-                            UseLayoutRounding="True" />
+                    x:Name="InfoGrid"
+                    Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <muxc:PersonPicture
+                        Grid.Row="0"
+                        Margin="0,36,0,12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        DisplayName="{x:Bind StoredItem.User}"
+                        ProfilePicture="{x:Bind StoredItem.UserImageURL, Mode=OneWay, Converter={StaticResource NnllUserImageConverter}}"
+                        UseLayoutRounding="True" />
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Center">
                         <TextBlock
                             Margin="12,0"
                             VerticalAlignment="Center"
-                            FontSize="12"
-                            Style="{ThemeResource TitleTextBlockStyle}"
+                            FontStyle="Oblique"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"
                             Text="{x:Bind StoredItem.User, Mode=OneWay}" />
+                        <StackPanel
+                            Margin="24,12"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                Width="48"
+                                Height="48"
+                                Background="Transparent"
+                                Style="{ThemeResource TextBlockButtonStyle}">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE97C;" />
+                            </Button>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="Light"
+                                Text="{x:Bind StoredItem.ImageHeight}" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="Light"
+                                Text="*" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="Light"
+                                Text="{x:Bind StoredItem.ImageWidth}" />
+                        </StackPanel>
+                        <Button
+                            Width="48"
+                            Height="48"
+                            Background="Transparent"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8EC;" />
+                        </Button>
+                        <Button
+                            Width="48"
+                            Height="48"
+                            Background="Transparent"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE902;" />
+                        </Button>
+                        <Button
+                            Width="48"
+                            Height="48"
+                            Background="Transparent"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE00B;" />
+                        </Button>
+                        <Button
+                            Width="48"
+                            Height="48"
+                            Background="Transparent"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" />
+                        </Button>
+                        <Button
+                            Width="48"
+                            Height="48"
+                            Background="Transparent"
+                            Style="{ThemeResource TextBlockButtonStyle}">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF78D;" />
+                        </Button>
+
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                </Grid>
+                <CommandBar
+                    x:Name="CommandBar"
+                    VerticalAlignment="Bottom"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <CommandBar.PrimaryCommands>
+                        <AppBarToggleButton
+                            x:Name="AppBarToggleButton"
+                            CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                            IsChecked="False"
+                            Label="TAGS">
+                            <AppBarToggleButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
+                            </AppBarToggleButton.Icon>
+                            <i:Interaction.Behaviors>
+                                <ic:EventTriggerBehavior EventName="Checked">
+                                    <ic:ChangePropertyAction
+                                        PropertyName="Visibility"
+                                        TargetObject="{Binding ElementName=InfoGrid}"
+                                        Value="Visible" />
+                                </ic:EventTriggerBehavior>
+                                <ic:EventTriggerBehavior EventName="Unchecked">
+                                    <ic:ChangePropertyAction
+                                        PropertyName="Visibility"
+                                        TargetObject="{Binding ElementName=InfoGrid}"
+                                        Value="Collapsed" />
+                                </ic:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </AppBarToggleButton>
                         <AppBarButton
                             Command="{x:Bind BrowseCommand}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
-                            LabelPosition="Collapsed"
-                            ToolTipService.ToolTip="Browse">
+                            Label="WEB">
                             <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
                             </AppBarButton.Icon>
@@ -79,15 +164,14 @@
                             Command="{x:Bind DownloadCommand}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
                             Icon="Download"
-                            LabelPosition="Collapsed"
-                            ToolTipService.ToolTip="Download" />
+                            Label="SAVE" />
                         <AppBarButton
+                            Click="BackButton_Click"
                             Command="{x:Bind BackCommand}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
                             Icon="BackToWindow"
-                            LabelPosition="Collapsed"
-                            ToolTipService.ToolTip="Close" />
-                    </StackPanel>
+                            Label="BACK" />
+                    </CommandBar.PrimaryCommands>
                     <i:Interaction.Behaviors>
                         <behaviors:Offset
                             x:Name="CommandBarUp"
@@ -108,12 +192,16 @@
                             OffsetY="40"
                             Duration="400" />
                     </i:Interaction.Behaviors>
-                </Grid>
+                </CommandBar>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="PointerEntered">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
+                        <ic:ChangePropertyAction
+                            PropertyName="IsOpen"
+                            TargetObject="{Binding ElementName=CommandBar}"
+                            Value="False" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>

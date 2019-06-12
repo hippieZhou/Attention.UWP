@@ -60,5 +60,11 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for BackCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackCommandProperty =
             DependencyProperty.Register("BackCommand", typeof(ICommand), typeof(PhotoInfoControl), new PropertyMetadata(null));
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppBarToggleButton.IsChecked = false;
+            InfoGrid.Visibility = Visibility.Collapsed;
+        }
     }
 }

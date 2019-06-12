@@ -164,7 +164,7 @@
                     CenterY="22"
                     Delay="0"
                     EasingMode="EaseOut"
-                    EasingType="Linear"
+                    EasingType="Back"
                     ScaleX="1"
                     ScaleY="1"
                     Duration="300" />
@@ -175,7 +175,7 @@
                     CenterY="22"
                     Delay="0"
                     EasingMode="EaseOut"
-                    EasingType="Linear"
+                    EasingType="Back"
                     ScaleX="0.8"
                     ScaleY="0.8"
                     Duration="300" />

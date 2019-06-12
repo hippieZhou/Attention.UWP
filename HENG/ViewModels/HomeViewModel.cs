@@ -113,28 +113,26 @@ namespace HENG.ViewModels
             await _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight), 0).StartAsync();
         }
 
-        protected override void NavToDetailByItem()
+        public override ICommand ItemClickCommand => new RelayCommand<ImageItem>(item => 
         {
+            base.ItemClickCommand.Execute(item);
+
             ConnectedAnimation animation = null;
             if (StoredItem != null)
             {
                 animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
+                animation.Completed += (sender, e) =>
+                {
+                };
             }
             ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
-        }
+        });
 
         public async Task HideDetailAsync(ImageItem item, ConnectedAnimation animation)
         {
-            try
-            {
-                _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Default);
-                _listView.UpdateLayout();
-                await _listView.TryStartConnectedAnimationAsync(animation, item, "connectedElement");
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex);
-            }
+            _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Leading);
+            _listView.UpdateLayout();
+            await _listView.TryStartConnectedAnimationAsync(animation, item, "connectedElement");
         }
     }
 
@@ -207,7 +205,7 @@ namespace HENG.ViewModels
         }
 
         private ICommand _itemClickCommand;
-        public ICommand ItemClickCommand
+        public virtual ICommand ItemClickCommand
         {
             get
             {
@@ -216,14 +214,11 @@ namespace HENG.ViewModels
                     _itemClickCommand = new RelayCommand<IType>(item =>
                     {
                         StoredItem = item;
-                        NavToDetailByItem();
                     });
                 }
                 return _itemClickCommand;
             }
         }
-
-        protected virtual void NavToDetailByItem() => throw new NotImplementedException();
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
