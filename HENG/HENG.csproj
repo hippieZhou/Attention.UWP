@@ -146,6 +146,9 @@
     <Compile Include="UserControls\PhotoControl.xaml.cs">
       <DependentUpon>PhotoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PhotoInfoControl.xaml.cs">
+      <DependentUpon>PhotoInfoControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\LocalViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -211,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PhotoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PhotoInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

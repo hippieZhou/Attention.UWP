@@ -2,7 +2,6 @@
 using PixabaySharp.Enums;
 using PixabaySharp.Models;
 using PixabaySharp.Utility;
-using System;
 using System.Threading.Tasks;
 
 namespace HENG.Core.Services
@@ -15,9 +14,8 @@ namespace HENG.Core.Services
         public string QueryText;
 
         private readonly PixabaySharpClient _client;
-        public PixabayService(string apiKey= "12645414-59a5251905dfea7b916dd796f")
+        public PixabayService(string apiKey= "3153915-c1b347f3736d73ef2cd6a0e79")
         {
-            apiKey = "3153915-c1b347f3736d73ef2cd6a0e79";
             _client = new PixabaySharpClient(apiKey);
         }
 

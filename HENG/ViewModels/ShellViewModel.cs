@@ -19,7 +19,7 @@ using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
-    public class ShellViewModel : ViewModelBase
+    public partial class ShellViewModel : ViewModelBase
     {
         private readonly NavigationService _navService;
         private muxc.NavigationView _navView;
@@ -82,13 +82,6 @@ namespace HENG.ViewModels
 
                 return pageKey == navigaedPageKey;
             }
-        }
-
-        private ImageItem _storedItem;
-        public ImageItem StoredItem
-        {
-            get { return _storedItem; }
-            set { Set(ref _storedItem, value); }
         }
 
         private bool _isBackEnabled;
@@ -200,15 +193,25 @@ namespace HENG.ViewModels
                 return _navToLocalCommand;
             }
         }
+    }
 
-        private ICommand _launcherCommand;
-        public ICommand LauncherCommand
+    public partial class ShellViewModel : ViewModelBase
+    {
+        private ImageItem _storedItem;
+        public ImageItem StoredItem
+        {
+            get { return _storedItem; }
+            set { Set(ref _storedItem, value); }
+        }
+
+        private ICommand _browseCommand;
+        public ICommand BrowseCommand
         {
             get
             {
-                if (_launcherCommand == null)
+                if (_browseCommand == null)
                 {
-                    _launcherCommand = new RelayCommand<ImageItem>(async item =>
+                    _browseCommand = new RelayCommand<ImageItem>(async item =>
                     {
                         if (!string.IsNullOrWhiteSpace(item?.PageURL))
                         {
@@ -216,7 +219,7 @@ namespace HENG.ViewModels
                         }
                     }, item => item != null);
                 }
-                return _launcherCommand;
+                return _browseCommand;
             }
         }
 
@@ -232,7 +235,8 @@ namespace HENG.ViewModels
                         ViewModelLocator.Current.Home.DownloadCommand.Execute(item);
                     }, item => item != null);
                 }
-                return _downloadCommand; }
+                return _downloadCommand;
+            }
         }
 
         private ICommand _backCommand;
