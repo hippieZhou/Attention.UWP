@@ -1,6 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using HENG.ViewModels;
-using Microsoft.Toolkit.Uwp.UI.Animations;
+﻿using HENG.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
@@ -45,10 +43,10 @@ namespace HENG.UserControls
 
         private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var item = this.AdaptiveGridViewControl.SelectedItem;
+            var item = AdaptiveGridViewControl.SelectedItem;
             if (item != null)
             {
-                this.AdaptiveGridViewControl.ScrollIntoView(item);
+                AdaptiveGridViewControl.ScrollIntoView(item);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using HENG.Models;
 using HENG.Services;
 using Microsoft.Toolkit.Collections;
@@ -9,7 +8,6 @@ using Microsoft.Toolkit.Uwp.UI.Animations;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -123,6 +121,8 @@ namespace HENG.ViewModels
                 animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
                 animation.Completed += (sender, e) =>
                 {
+                    var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
+                    element.Visibility = Visibility.Collapsed;
                 };
             }
             ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
@@ -130,7 +130,10 @@ namespace HENG.ViewModels
 
         public async Task HideDetailAsync(ImageItem item, ConnectedAnimation animation)
         {
-            _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Leading);
+            var element = _listView.ContainerFromItem(item) as GridViewItem;
+            element.Visibility = Visibility.Visible;
+
+            _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Default);
             _listView.UpdateLayout();
             await _listView.TryStartConnectedAnimationAsync(animation, item, "connectedElement");
         }
@@ -147,7 +150,7 @@ namespace HENG.ViewModels
 
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
-        protected ListViewBase _listView;
+        protected GridView _listView;
         protected Grid _headerMask;
         protected Grid _headerGrid;
 
@@ -179,7 +182,7 @@ namespace HENG.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(ListViewBase listView, Grid headerMask, int itemsPerPage = 20)
+        public virtual void Initialize(GridView listView, Grid headerMask, int itemsPerPage = 20)
         {
             _listView = listView;
             _headerMask = headerMask;
