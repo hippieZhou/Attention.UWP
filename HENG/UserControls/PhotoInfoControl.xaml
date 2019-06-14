@@ -20,6 +20,7 @@
             x:Name="SmokeGrid"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
+            x:DeferLoadStrategy="Lazy"
             Visibility="Collapsed">
             <Grid.Background>
                 <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
