@@ -67,6 +67,38 @@ namespace HENG.ViewModels
                 return _loadedCommand;
             }
         }
+
+        private ICommand _shareCommand;
+        public ICommand ShareCommand
+        {
+            get
+            {
+                if (_shareCommand == null)
+                {
+                    _shareCommand = new RelayCommand<DownloadItem>(item =>
+                    {
+
+                    });
+                }
+                return _shareCommand;
+            }
+        }
+
+        private ICommand _deleteCommand;
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_deleteCommand == null)
+                {
+                    _deleteCommand = new RelayCommand<DownloadItem>(item =>
+                    {
+
+                    });
+                }
+                return _deleteCommand;
+            }
+        }
     }
 
     public class DownloadSource : IIncrementalSource<DownloadItem>

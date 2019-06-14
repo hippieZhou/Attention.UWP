@@ -158,7 +158,7 @@
                         OffsetY="0"
                         Duration="400" />
                     <behaviors:Offset
-                        x:Name="CommandBarDowm"
+                        x:Name="CommandBarDown"
                         AutomaticallyStart="True"
                         Delay="0"
                         EasingMode="EaseOut"
@@ -177,7 +177,7 @@
                         PropertyName="IsOpen"
                         TargetObject="{Binding ElementName=CommandBar}"
                         Value="False" />
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDown}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </Grid>
@@ -190,7 +190,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="destinationElement.Height" Value="600" />
-                        <Setter Target="destinationElement.Width" Value="880" />
+                        <Setter Target="destinationElement.Width" Value="900" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -207,7 +207,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Height" Value="260" />
+                        <Setter Target="destinationElement.Height" Value="280" />
                         <Setter Target="destinationElement.Width" Value="440" />
                     </VisualState.Setters>
                 </VisualState>

@@ -12,6 +12,7 @@ namespace HENG.Views
         public LocalView()
         {
             this.InitializeComponent();
+            this.DataContext = ViewModel;
         }
 
         private void Grid_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)

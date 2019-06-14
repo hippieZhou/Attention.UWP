@@ -18,7 +18,7 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <GridView
             x:Name="GridView"
             animations:ReorderGridAnimation.Duration="300"
@@ -54,19 +54,16 @@
                             </CommandBar.Content>
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton
-                                    Command="{Binding ElementName=GridView, Path=DataContext.ShareCommand}"
+                                    Command="{Binding ElementName=RootGrid, Path=DataContext.ShareCommand}"
                                     CommandParameter="{x:Bind}"
                                     Icon="Share"
                                     Label="Share" />
                                 <AppBarButton
-                                    Command="{Binding ElementName=GridView, Path=DataContext.DeleteCommand}"
+                                    Command="{Binding ElementName=RootGrid, Path=DataContext.DeleteCommand}"
                                     CommandParameter="{x:Bind}"
                                     Icon="Delete"
                                     Label="Delete" />
-                                <AppBarButton
-                                    Command="{Binding ElementName=GridView, Path=DataContext.ShareCommand}"
-                                    Icon="SetLockScreen"
-                                    Label="As" />
+                                <AppBarButton Icon="SetLockScreen" Label="As" />
                             </CommandBar.PrimaryCommands>
                             <i:Interaction.Behaviors>
                                 <behaviors:Offset
@@ -79,7 +76,7 @@
                                     OffsetY="0"
                                     Duration="400" />
                                 <behaviors:Offset
-                                    x:Name="CommandBarDowm"
+                                    x:Name="CommandBarDown"
                                     AutomaticallyStart="True"
                                     Delay="0"
                                     EasingMode="EaseOut"
@@ -99,7 +96,7 @@
                                     PropertyName="IsOpen"
                                     TargetObject="{Binding ElementName=CommandBar}"
                                     Value="False" />
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
+                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDown}" />
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </Grid>
