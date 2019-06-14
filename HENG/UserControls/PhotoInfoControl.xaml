@@ -15,169 +15,171 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid
+        x:Name="SmokeGrid"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        x:DeferLoadStrategy="Lazy"
+        Visibility="Collapsed">
+        <Grid.Background>
+            <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
+        </Grid.Background>
         <Grid
-            x:Name="SmokeGrid"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            x:DeferLoadStrategy="Lazy"
-            Visibility="Collapsed">
-            <Grid.Background>
-                <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
-            </Grid.Background>
-            <Grid
-                x:Name="destinationElement"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                AllowDrop="True"
-                Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
-                SizeChanged="Grid_SizeChanged">
-                <controls:ImageEx
-                    CacheMode="BitmapCache"
-                    IsCacheEnabled="True"
-                    PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                    Source="{x:Bind StoredItem.LargeImageURL, Mode=OneWay}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
-                <muxc:TeachingTip
-                    x:Name="teachingTip"
-                    x:DeferLoadStrategy="Lazy"
-                    IsLightDismissEnabled="True"
-                    IsOpen="False"
-                    PreferredPlacement="Auto"
-                    Target="{x:Bind TipAppBarButton}">
-                    <muxc:TeachingTip.HeroContent>
-                        <StackPanel>
-                            <ListViewItem HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Text="Author" />
-                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.User, Mode=OneWay}" />
-                                </Grid>
-                            </ListViewItem>
-                            <ListViewItem HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Text="Tag" />
-                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Tags, Mode=OneWay}" />
-                                </Grid>
-                            </ListViewItem>
-                            <ListViewItem HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Text="Type" />
-                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Type, Mode=OneWay}" />
-                                </Grid>
-                            </ListViewItem>
-                            <ListViewItem HorizontalContentAlignment="Stretch">
-                                <Grid>
-                                    <TextBlock Text="Resolution" />
-                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind StoredItem.ImageWidth, Mode=OneWay}" />
-                                        <TextBlock Text="x" />
-                                        <TextBlock Text="{x:Bind StoredItem.ImageHeight, Mode=OneWay}" />
-                                    </StackPanel>
-                                </Grid>
-                            </ListViewItem>
-                        </StackPanel>
-                    </muxc:TeachingTip.HeroContent>
-                    <muxc:TeachingTip.Content>
-                        <Grid HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <AppBarButton
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Stretch"
-                                Icon="View"
-                                Label="{x:Bind StoredItem.Views, Mode=OneWay}" />
-                            <AppBarButton
-                                Grid.Column="1"
-                                Icon="Like"
-                                Label="{x:Bind StoredItem.Likes, Mode=OneWay}" />
-                            <AppBarButton
-                                Grid.Column="2"
-                                Icon="Favorite"
-                                Label="{x:Bind StoredItem.Favorites, Mode=OneWay}" />
-                            <AppBarButton
-                                Grid.Column="3"
-                                Icon="Comment"
-                                Label="{x:Bind StoredItem.Comments, Mode=OneWay}" />
-                            <AppBarButton
-                                Grid.Column="4"
-                                Icon="Download"
-                                Label="{x:Bind StoredItem.Downloads, Mode=OneWay}" />
-                        </Grid>
-                    </muxc:TeachingTip.Content>
-                </muxc:TeachingTip>
-                <CommandBar
-                    x:Name="CommandBar"
-                    VerticalAlignment="Bottom"
-                    Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                    <CommandBar.PrimaryCommands>
+            x:Name="destinationElement"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            AllowDrop="True"
+            Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
+            SizeChanged="Grid_SizeChanged">
+            <controls:ImageEx
+                CacheMode="BitmapCache"
+                IsCacheEnabled="True"
+                PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                Source="{x:Bind StoredItem.LargeImageURL, Mode=OneWay}"
+                Stretch="UniformToFill"
+                UseLayoutRounding="True" />
+            <muxc:TeachingTip
+                x:Name="teachingTip"
+                x:DeferLoadStrategy="Lazy"
+                IsLightDismissEnabled="True"
+                IsOpen="False"
+                PreferredPlacement="Auto"
+                Target="{x:Bind TipAppBarButton}">
+                <muxc:TeachingTip.HeroContent>
+                    <StackPanel>
+                        <ListViewItem HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <TextBlock Text="Author" />
+                                <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.User, Mode=OneWay}" />
+                            </Grid>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <TextBlock Text="Tag" />
+                                <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Tags, Mode=OneWay}" />
+                            </Grid>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <TextBlock Text="Type" />
+                                <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Type, Mode=OneWay}" />
+                            </Grid>
+                        </ListViewItem>
+                        <ListViewItem HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <TextBlock Text="Resolution" />
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind StoredItem.ImageWidth, Mode=OneWay}" />
+                                    <TextBlock Text="x" />
+                                    <TextBlock Text="{x:Bind StoredItem.ImageHeight, Mode=OneWay}" />
+                                </StackPanel>
+                            </Grid>
+                        </ListViewItem>
+                    </StackPanel>
+                </muxc:TeachingTip.HeroContent>
+                <muxc:TeachingTip.Content>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <AppBarButton
-                            x:Name="TipAppBarButton"
-                            Command="{x:Bind ShowTipsCommand, Mode=OneWay}"
-                            CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
-                            Label="TAGS">
-                            <AppBarButton.Icon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Icon="View"
+                            Label="{x:Bind StoredItem.Views, Mode=OneWay}" />
                         <AppBarButton
-                            Command="{x:Bind BrowseCommand}"
-                            CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
-                            Label="WEB">
-                            <AppBarButton.Icon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Icon="Like"
+                            Label="{x:Bind StoredItem.Likes, Mode=OneWay}" />
                         <AppBarButton
-                            Command="{x:Bind DownloadCommand}"
-                            CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            Icon="Favorite"
+                            Label="{x:Bind StoredItem.Favorites, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            Icon="Comment"
+                            Label="{x:Bind StoredItem.Comments, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="4"
+                            HorizontalAlignment="Center"
                             Icon="Download"
-                            Label="SAVE" />
-                        <AppBarButton
-                            Command="{x:Bind BackCommand}"
-                            CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
-                            Icon="BackToWindow"
-                            Label="BACK" />
-                    </CommandBar.PrimaryCommands>
-                    <i:Interaction.Behaviors>
-                        <behaviors:Offset
-                            x:Name="CommandBarUp"
-                            AutomaticallyStart="True"
-                            Delay="0"
-                            EasingMode="EaseOut"
-                            EasingType="Linear"
-                            OffsetX="0"
-                            OffsetY="0"
-                            Duration="400" />
-                        <behaviors:Offset
-                            x:Name="CommandBarDowm"
-                            AutomaticallyStart="True"
-                            Delay="0"
-                            EasingMode="EaseOut"
-                            EasingType="Linear"
-                            OffsetX="0"
-                            OffsetY="40"
-                            Duration="400" />
-                    </i:Interaction.Behaviors>
-                </CommandBar>
+                            Label="{x:Bind StoredItem.Downloads, Mode=OneWay}" />
+                    </Grid>
+                </muxc:TeachingTip.Content>
+            </muxc:TeachingTip>
+            <CommandBar
+                x:Name="CommandBar"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton
+                        x:Name="TipAppBarButton"
+                        Command="{x:Bind ShowTipsCommand, Mode=OneWay}"
+                        CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                        Label="TAGS">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton
+                        Command="{x:Bind BrowseCommand}"
+                        CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                        Label="WEB">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton
+                        Command="{x:Bind DownloadCommand}"
+                        CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                        Icon="Download"
+                        Label="SAVE" />
+                    <AppBarButton
+                        Command="{x:Bind BackCommand}"
+                        CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
+                        Icon="BackToWindow"
+                        Label="BACK" />
+                </CommandBar.PrimaryCommands>
                 <i:Interaction.Behaviors>
-                    <ic:EventTriggerBehavior EventName="PointerEntered">
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
-                    </ic:EventTriggerBehavior>
-                    <ic:EventTriggerBehavior EventName="PointerExited">
-                        <ic:ChangePropertyAction
-                            PropertyName="IsOpen"
-                            TargetObject="{Binding ElementName=CommandBar}"
-                            Value="False" />
-                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
-                    </ic:EventTriggerBehavior>
+                    <behaviors:Offset
+                        x:Name="CommandBarUp"
+                        AutomaticallyStart="True"
+                        Delay="0"
+                        EasingMode="EaseOut"
+                        EasingType="Linear"
+                        OffsetX="0"
+                        OffsetY="0"
+                        Duration="400" />
+                    <behaviors:Offset
+                        x:Name="CommandBarDowm"
+                        AutomaticallyStart="True"
+                        Delay="0"
+                        EasingMode="EaseOut"
+                        EasingType="Linear"
+                        OffsetX="0"
+                        OffsetY="40"
+                        Duration="400" />
                 </i:Interaction.Behaviors>
-            </Grid>
+            </CommandBar>
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="PointerEntered">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
+                </ic:EventTriggerBehavior>
+                <ic:EventTriggerBehavior EventName="PointerExited">
+                    <ic:ChangePropertyAction
+                        PropertyName="IsOpen"
+                        TargetObject="{Binding ElementName=CommandBar}"
+                        Value="False" />
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDowm}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
         </Grid>
 
         <VisualStateManager.VisualStateGroups>
