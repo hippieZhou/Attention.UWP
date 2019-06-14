@@ -38,120 +38,92 @@
                     Source="{x:Bind StoredItem.LargeImageURL, Mode=OneWay}"
                     Stretch="UniformToFill"
                     UseLayoutRounding="True" />
-                <Grid
-                    x:Name="InfoGrid"
-                    Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
-                    Visibility="Collapsed">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <muxc:PersonPicture
-                        Grid.Row="0"
-                        Margin="0,36,0,12"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        DisplayName="{x:Bind StoredItem.User}"
-                        ProfilePicture="{x:Bind StoredItem.UserImageURL, Mode=OneWay, Converter={StaticResource NnllUserImageConverter}}"
-                        UseLayoutRounding="True" />
-                    <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-                        <TextBlock
-                            Margin="12,0"
-                            VerticalAlignment="Center"
-                            FontStyle="Oblique"
-                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                            Text="{x:Bind StoredItem.User, Mode=OneWay}" />
-                        <StackPanel
-                            Margin="24,12"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal" />
-                        <StackPanel Orientation="Horizontal">
-                            <Button
-                                Width="48"
-                                Height="48"
-                                Background="Transparent"
-                                Style="{ThemeResource TextBlockButtonStyle}">
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE97C;" />
-                            </Button>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontWeight="Light"
-                                Text="{x:Bind StoredItem.ImageHeight}" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontWeight="Light"
-                                Text="*" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontWeight="Light"
-                                Text="{x:Bind StoredItem.ImageWidth}" />
+                <muxc:TeachingTip
+                    x:Name="teachingTip"
+                    x:DeferLoadStrategy="Lazy"
+                    IsLightDismissEnabled="True"
+                    IsOpen="False"
+                    PreferredPlacement="Auto"
+                    Target="{x:Bind TipAppBarButton}">
+                    <muxc:TeachingTip.HeroContent>
+                        <StackPanel>
+                            <ListViewItem HorizontalContentAlignment="Stretch">
+                                <Grid>
+                                    <TextBlock Text="Author" />
+                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.User, Mode=OneWay}" />
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem HorizontalContentAlignment="Stretch">
+                                <Grid>
+                                    <TextBlock Text="Tag" />
+                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Tags, Mode=OneWay}" />
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem HorizontalContentAlignment="Stretch">
+                                <Grid>
+                                    <TextBlock Text="Type" />
+                                    <TextBlock HorizontalAlignment="Right" Text="{x:Bind StoredItem.Type, Mode=OneWay}" />
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem HorizontalContentAlignment="Stretch">
+                                <Grid>
+                                    <TextBlock Text="Resolution" />
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind StoredItem.ImageWidth, Mode=OneWay}" />
+                                        <TextBlock Text="x" />
+                                        <TextBlock Text="{x:Bind StoredItem.ImageHeight, Mode=OneWay}" />
+                                    </StackPanel>
+                                </Grid>
+                            </ListViewItem>
                         </StackPanel>
-                        <Button
-                            Width="48"
-                            Height="48"
-                            Background="Transparent"
-                            Style="{ThemeResource TextBlockButtonStyle}">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8EC;" />
-                        </Button>
-                        <Button
-                            Width="48"
-                            Height="48"
-                            Background="Transparent"
-                            Style="{ThemeResource TextBlockButtonStyle}">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE902;" />
-                        </Button>
-                        <Button
-                            Width="48"
-                            Height="48"
-                            Background="Transparent"
-                            Style="{ThemeResource TextBlockButtonStyle}">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE00B;" />
-                        </Button>
-                        <Button
-                            Width="48"
-                            Height="48"
-                            Background="Transparent"
-                            Style="{ThemeResource TextBlockButtonStyle}">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;" />
-                        </Button>
-                        <Button
-                            Width="48"
-                            Height="48"
-                            Background="Transparent"
-                            Style="{ThemeResource TextBlockButtonStyle}">
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF78D;" />
-                        </Button>
-
-                    </StackPanel>
-                </Grid>
+                    </muxc:TeachingTip.HeroContent>
+                    <muxc:TeachingTip.Content>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <AppBarButton
+                                Grid.Column="0"
+                                HorizontalContentAlignment="Stretch"
+                                Icon="View"
+                                Label="{x:Bind StoredItem.Views, Mode=OneWay}" />
+                            <AppBarButton
+                                Grid.Column="1"
+                                Icon="Like"
+                                Label="{x:Bind StoredItem.Likes, Mode=OneWay}" />
+                            <AppBarButton
+                                Grid.Column="2"
+                                Icon="Favorite"
+                                Label="{x:Bind StoredItem.Favorites, Mode=OneWay}" />
+                            <AppBarButton
+                                Grid.Column="3"
+                                Icon="Comment"
+                                Label="{x:Bind StoredItem.Comments, Mode=OneWay}" />
+                            <AppBarButton
+                                Grid.Column="4"
+                                Icon="Download"
+                                Label="{x:Bind StoredItem.Downloads, Mode=OneWay}" />
+                        </Grid>
+                    </muxc:TeachingTip.Content>
+                </muxc:TeachingTip>
                 <CommandBar
                     x:Name="CommandBar"
                     VerticalAlignment="Bottom"
                     Background="{ThemeResource SystemControlAcrylicElementBrush}">
                     <CommandBar.PrimaryCommands>
-                        <AppBarToggleButton
-                            x:Name="AppBarToggleButton"
+                        <AppBarButton
+                            x:Name="TipAppBarButton"
+                            Command="{x:Bind ShowTipsCommand, Mode=OneWay}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
-                            IsChecked="False"
                             Label="TAGS">
-                            <AppBarToggleButton.Icon>
+                            <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
-                            </AppBarToggleButton.Icon>
-                            <i:Interaction.Behaviors>
-                                <ic:EventTriggerBehavior EventName="Checked">
-                                    <ic:ChangePropertyAction
-                                        PropertyName="Visibility"
-                                        TargetObject="{Binding ElementName=InfoGrid}"
-                                        Value="Visible" />
-                                </ic:EventTriggerBehavior>
-                                <ic:EventTriggerBehavior EventName="Unchecked">
-                                    <ic:ChangePropertyAction
-                                        PropertyName="Visibility"
-                                        TargetObject="{Binding ElementName=InfoGrid}"
-                                        Value="Collapsed" />
-                                </ic:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
-                        </AppBarToggleButton>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <AppBarButton
                             Command="{x:Bind BrowseCommand}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
@@ -166,7 +138,6 @@
                             Icon="Download"
                             Label="SAVE" />
                         <AppBarButton
-                            Click="BackButton_Click"
                             Command="{x:Bind BackCommand}"
                             CommandParameter="{x:Bind StoredItem, Mode=OneWay}"
                             Icon="BackToWindow"
@@ -233,8 +204,8 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Height" Value="250" />
-                        <Setter Target="destinationElement.Width" Value="400" />
+                        <Setter Target="destinationElement.Height" Value="260" />
+                        <Setter Target="destinationElement.Width" Value="440" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

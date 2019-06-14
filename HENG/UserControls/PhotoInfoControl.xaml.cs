@@ -1,4 +1,6 @@
-﻿using PixabaySharp.Models;
+﻿using GalaSoft.MvvmLight.Command;
+using Microsoft.UI.Xaml.Controls;
+using PixabaySharp.Models;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml;
@@ -34,6 +36,26 @@ namespace HENG.UserControls
         public static readonly DependencyProperty StoredItemProperty =
             DependencyProperty.Register("StoredItem", typeof(ImageItem), typeof(PhotoInfoControl), new PropertyMetadata(null));
 
+        private ICommand _showTipsCommand;
+        public ICommand ShowTipsCommand
+        {
+            get
+            {
+                if (_showTipsCommand == null)
+                {
+                    _showTipsCommand = new RelayCommand<ImageItem>(item =>
+                    {
+                        if (FindName("teachingTip") is TeachingTip tip)
+                        {
+                            tip.IsOpen = !tip.IsOpen;
+                        }
+                    });
+                }
+                return _showTipsCommand;
+            }
+        }
+
+
         public ICommand BrowseCommand
         {
             get { return (ICommand)GetValue(BrowseCommandProperty); }
@@ -60,11 +82,5 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for BackCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackCommandProperty =
             DependencyProperty.Register("BackCommand", typeof(ICommand), typeof(PhotoInfoControl), new PropertyMetadata(null));
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            AppBarToggleButton.IsChecked = false;
-            InfoGrid.Visibility = Visibility.Collapsed;
-        }
     }
 }
