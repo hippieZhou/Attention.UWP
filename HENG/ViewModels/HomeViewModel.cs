@@ -111,22 +111,52 @@ namespace HENG.ViewModels
             await _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight), 0).StartAsync();
         }
 
-        public override ICommand ItemClickCommand => new RelayCommand<ImageItem>(item =>
+        public override ICommand ItemClickCommand
         {
-            base.ItemClickCommand.Execute(item);
-
-            ConnectedAnimation animation = null;
-            if (StoredItem != null)
+            get
             {
-                animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
-                animation.Completed += (sender, e) =>
+                if (_itemClickCommand == null)
                 {
-                    var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
-                    element.Opacity = 0d;
-                };
+                    _itemClickCommand = new RelayCommand<ImageItem>(item => 
+                    {
+                        StoredItem = item;
+
+                        ConnectedAnimation animation = null;
+                        if (StoredItem != null)
+                        {
+                            animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
+                            animation.Completed += (sender, e) =>
+                            {
+                                var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
+                                element.Opacity = 0d;
+                            };
+                        }
+                        ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
+                    });
+                }
+                return _itemClickCommand;
             }
-            ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
-        });
+        }
+
+        public override ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand<ImageItem>(async item => 
+                    {
+                        var count = ViewModelLocator.Current.Db.InsertItem(item);
+                        if (count > 0)
+                        {
+                            var download = new DownloadItem(item);
+                            await DownloadService.DownloadAsync(download);
+                        }
+                    });
+                }
+                return _downloadCommand;
+            }
+        }
 
         public async Task HideDetailAsync(ImageItem item, ConnectedAnimation animation)
         {
@@ -158,7 +188,7 @@ namespace HENG.ViewModels
         public IType StoredItem
         {
             get { return _storedItem; }
-            private set { Set(ref _storedItem, value); }
+            protected set { Set(ref _storedItem, value); }
         }
 
         private IncrementalLoadingCollection<TSource, IType> _items;
@@ -207,21 +237,11 @@ namespace HENG.ViewModels
             };
         }
 
-        private ICommand _itemClickCommand;
-        public virtual ICommand ItemClickCommand
-        {
-            get
-            {
-                if (_itemClickCommand == null)
-                {
-                    _itemClickCommand = new RelayCommand<IType>(item =>
-                    {
-                        StoredItem = item;
-                    });
-                }
-                return _itemClickCommand;
-            }
-        }
+        protected ICommand _itemClickCommand;
+        public virtual ICommand ItemClickCommand => _itemClickCommand;
+
+        protected ICommand _downloadCommand;
+        public virtual ICommand DownloadCommand => _downloadCommand;
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
@@ -236,26 +256,6 @@ namespace HENG.ViewModels
                     });
                 }
                 return _refreshCommand;
-            }
-        }
-
-        private ICommand _downloadCommand;
-        public ICommand DownloadCommand
-        {
-            get
-            {
-                if (_downloadCommand == null)
-                {
-                    _downloadCommand = new RelayCommand<IType>(async item =>
-                    {
-                        if (item is ImageItem val)
-                        {
-                            var download = new DownloadItem(val);
-                            await DownloadService.DownloadAsync(download);
-                        }
-                    });
-                }
-                return _downloadCommand;
             }
         }
     }

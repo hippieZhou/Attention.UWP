@@ -3,16 +3,15 @@ using System.Collections.Concurrent;
 
 namespace HENG.Core.Helpers
 {
-    public static class SingletonProvider<T> where T : new()
+    public class SingletonProvider<T> where T : new()
     {
-        private static ConcurrentDictionary<Type, T> _instances = new ConcurrentDictionary<Type, T>();
+        public SingletonProvider() { }
+        public static T Instance => SingletonCreator.instance;
 
-        public static T Instance
+        class SingletonCreator
         {
-            get
-            {
-                return _instances.GetOrAdd(typeof(T), (t) => new T());
-            }
+            static SingletonCreator() { }
+            internal static readonly T instance = new T();
         }
     }
 }

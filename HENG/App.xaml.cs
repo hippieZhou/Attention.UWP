@@ -100,6 +100,7 @@ namespace HENG
 
         private async Task InitializeAsync()
         {
+            await ViewModelLocator.Current.Db.Initialize();
             await ThemeSelectorService.InitializeAsync();
         }
 
