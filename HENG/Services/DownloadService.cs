@@ -71,7 +71,7 @@ namespace HENG.Services
             }
         }
 
-        private static async Task StartDownloadAsync(string url, string smallUrl,string hash, CancellationTokenSource cancellationToken)
+        private static async Task StartDownloadAsync(string url, string smallUrl, string hash, CancellationTokenSource cancellationToken)
         {
             StorageFile file = await CheckLocalFileExistsAsync(hash) as StorageFile;
             if (file == null)
@@ -80,19 +80,16 @@ namespace HENG.Services
                 file = await folder.CreateFileAsync(hash, CreationCollisionOption.ReplaceExisting);
             }
 
-            var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
-            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
-            BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
-            BackgroundTaskRegistration taskRegistration = RegisterBackgroundTask(completionGroup.Trigger);
-            if (taskRegistration == null)
-            {
-                return;
-            }
+            //var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
+            //group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            //BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
+            //BackgroundTaskRegistration taskRegistration = RegisterBackgroundTask(completionGroup.Trigger);
+            //if (taskRegistration == null)
+            //{
+            //    return;
+            //}
 
-            BackgroundDownloader downloader = new BackgroundDownloader
-            {
-                TransferGroup = group
-            };
+            BackgroundDownloader downloader = new BackgroundDownloader();
             CreateNotifications(downloader);
 
             Uri downloadUrl = new Uri(url);
