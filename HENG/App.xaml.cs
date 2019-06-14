@@ -1,7 +1,7 @@
-﻿using GalaSoft.MvvmLight.Threading;
-using HENG.Helpers;
-using HENG.Services;
+﻿using HENG.Services;
 using HENG.Tasks;
+using HENG.ViewModels;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -22,13 +22,13 @@ namespace HENG
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += (sender, e) => 
+            this.Suspending += (sender, e) =>
             {
                 var deferral = e.SuspendingOperation.GetDeferral();
                 //TODO: Save application state and stop any background activity
                 deferral.Complete();
             };
-            this.UnhandledException += (sender,e)=> { e.Handled = true; };
+            this.UnhandledException += (sender, e) => { e.Handled = true; };
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
@@ -46,28 +46,28 @@ namespace HENG
                 titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
 
+            RegisterBackgroundTask();
+
             await InitializeAsync();
             await InitWindowAsync(e.Arguments, e.SplashScreen);
-
-            await RegisterBackgroundTaskAsync();
-
-            DispatcherHelper.Initialize();
             await DownloadService.AttachToDownloadsAsync();
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
+            base.OnBackgroundActivated(args);
+
+
             var taskInstance = args.TaskInstance;
             var deferral = taskInstance.GetDeferral();
 
-            taskInstance.Canceled += (sender, reason) => 
+            taskInstance.Canceled += (sender, reason) =>
             {
                 var tasks = BackgroundTaskRegistration.AllTasks.Values.Where(t => t.Name == DownloadService.NAME);
                 tasks.AsParallel().ForAll(p => p.Unregister(true));
             };
 
             deferral.Complete();
-            base.OnBackgroundActivated(args);
         }
 
         protected override async void OnActivated(IActivatedEventArgs e)
@@ -103,17 +103,20 @@ namespace HENG
             await ThemeSelectorService.InitializeAsync();
         }
 
-        public static async Task StartupAsync()
+        private async Task StartupAsync()
         {
             await ThemeSelectorService.SetRequestedThemeAsync();
         }
 
-        private async Task RegisterBackgroundTaskAsync()
+        private void RegisterBackgroundTask()
         {
-            BackgroundTaskRegistration task = await BackgroundTaskHelper.RegisterBackgroundTask(typeof(HENGBackgroundTask),
-                "HENGBackgroundTask", new TimeTrigger(15, false), null);
-            task.Progress += (sender, args) => { Trace.WriteLine($"Background {sender.Name} TaskOnProgress."); };
-            task.Completed += (sender, args) => { Debug.WriteLine($"Background {sender.Name} TaskOnCompleted."); };
+            BackgroundTaskRegistration registered = BackgroundTaskHelper.Register(typeof(HENGBackgroundTask),
+                                new TimeTrigger(15, true), false, true,
+                                new SystemCondition(SystemConditionType.InternetAvailable));
+            if (registered != null)
+            {
+                Trace.WriteLine($"Task {typeof(HENGBackgroundTask)} registered successfully.");
+            }
         }
     }
 }
