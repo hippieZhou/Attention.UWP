@@ -43,7 +43,7 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
                         if (Photos == null)
                         {
@@ -61,6 +61,8 @@ namespace HENG.ViewModels
                                 {
                                     ErrorVisibility = Visibility.Visible;
                                 });
+
+                            await Photos.RefreshAsync();
                         };
                     });
                 }
