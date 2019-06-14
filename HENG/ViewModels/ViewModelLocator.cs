@@ -25,7 +25,7 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register(() => nav);
 
             SimpleIoc.Default.Register(() => new PixabayService());
-            SimpleIoc.Default.Register<LoggingService>();
+            SimpleIoc.Default.Register(() => new LoggingService());
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
@@ -33,11 +33,12 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
-        public PixabayService PxService => ServiceLocator.Current.GetInstance<PixabayService>();
+        public PixabayService Px => ServiceLocator.Current.GetInstance<PixabayService>();
+        public LoggingService Log => ServiceLocator.Current.GetInstance<LoggingService>();
+
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
-        public LoggingService Log => ServiceLocator.Current.GetInstance<LoggingService>();
     }
 }

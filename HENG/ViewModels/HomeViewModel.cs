@@ -45,7 +45,7 @@ namespace HENG.ViewModels
                 {
                     _queryCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
                     {
-                        ViewModelLocator.Current.PxService.QueryText = args.QueryText;
+                        ViewModelLocator.Current.Px.QueryText = args.QueryText;
                         RefreshCommand.Execute(null);
                     });
                 }
@@ -60,7 +60,7 @@ namespace HENG.ViewModels
             {
                 if (_headerUpCommand == null)
                 {
-                    _headerUpCommand = new RelayCommand(async () => 
+                    _headerUpCommand = new RelayCommand(async () =>
                     {
                         if (_headerMask.Visibility == Visibility.Collapsed)
                         {
@@ -111,7 +111,7 @@ namespace HENG.ViewModels
             await _headerGrid.Offset(0, -(float)Math.Max(152, _headerGrid.ActualHeight), 0).StartAsync();
         }
 
-        public override ICommand ItemClickCommand => new RelayCommand<ImageItem>(item => 
+        public override ICommand ItemClickCommand => new RelayCommand<ImageItem>(item =>
         {
             base.ItemClickCommand.Execute(item);
 
@@ -122,7 +122,7 @@ namespace HENG.ViewModels
                 animation.Completed += (sender, e) =>
                 {
                     var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
-                    element.Visibility = Visibility.Collapsed;
+                    element.Opacity = 0d;
                 };
             }
             ViewModelLocator.Current.Shell.ShowDetail(StoredItem, animation);
@@ -131,7 +131,7 @@ namespace HENG.ViewModels
         public async Task HideDetailAsync(ImageItem item, ConnectedAnimation animation)
         {
             var element = _listView.ContainerFromItem(item) as GridViewItem;
-            element.Visibility = Visibility.Visible;
+            element.Opacity = 1.0d;
 
             _listView.ScrollIntoView(item, ScrollIntoViewAlignment.Default);
             _listView.UpdateLayout();
@@ -143,7 +143,7 @@ namespace HENG.ViewModels
     {
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            var result = await ViewModelLocator.Current.PxService.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
+            var result = await ViewModelLocator.Current.Px.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
             return result?.Images;
         }
     }
