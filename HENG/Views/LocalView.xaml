@@ -63,8 +63,8 @@
                                     Label="Delete" />
                                 <AppBarButton
                                     Command="{Binding ElementName=GridView, Path=DataContext.ShareCommand}"
-                                    Icon="Setting"
-                                    Label="Setting" />
+                                    Icon="SetLockScreen"
+                                    Label="As" />
                             </CommandBar.PrimaryCommands>
                             <i:Interaction.Behaviors>
                                 <behaviors:Offset

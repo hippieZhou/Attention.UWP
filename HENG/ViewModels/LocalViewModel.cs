@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HENG.Models;
+using Microsoft.Toolkit.Uwp.Helpers;
 using PixabaySharp.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace HENG.ViewModels
@@ -24,13 +26,19 @@ namespace HENG.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
-                        IEnumerable<ImageItem> items = ViewModelLocator.Current.Db.GetAllItems<ImageItem>();
-                        foreach (var item in items)
+                        await Task.Run(async () => 
                         {
-                            Photos.Add(new DownloadItem(item));
-                        }
+                            IEnumerable<ImageItem> items = ViewModelLocator.Current.Db.GetAllItems<ImageItem>();
+                            await DispatcherHelper.ExecuteOnUIThreadAsync(() => 
+                            {
+                                foreach (var item in items)
+                                {
+                                    Photos.Add(new DownloadItem(item));
+                                }
+                            });
+                        });
                     });
                 }
                 return _loadedCommand;
