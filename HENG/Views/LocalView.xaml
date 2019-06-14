@@ -23,6 +23,8 @@
             x:Name="GridView"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
+            DataFetchSize="1"
+            IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemsSource="{x:Bind ViewModel.Photos, Mode=OneWay}"
@@ -111,6 +113,32 @@
                         DesiredColumnWidth="300" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
+            <GridView.Footer>
+                <Grid Margin="0,12">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind ViewModel.LoadingVisibility, Mode=OneWay}">
+                        <ProgressRing Foreground="{ThemeResource SystemBaseHighColor}" IsActive="True" />
+                        <TextBlock
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource SystemBaseHighColor}"
+                            Text="LOADING..." />
+                    </StackPanel>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind ViewModel.ErrorVisibility, Mode=OneWay}">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource SystemBaseHighColor}"
+                            Text="THERE HAVE SOMETHING WRONG !" />
+                    </StackPanel>
+                </Grid>
+            </GridView.Footer>
         </GridView>
     </Grid>
 </Page>
