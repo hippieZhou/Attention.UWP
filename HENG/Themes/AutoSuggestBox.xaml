@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HENG.Themes">
-    <Style x:Key="MyAutoSuggestBoxTextBoxStyle" TargetType="TextBox">
+    <!--  C:\Program Files (x86)\Windows Kits\10\DesignTime\CommonConfiguration\Neutral\UAP\10.0.17763.0\Generic  -->
+    <Style x:Key="SearchAutoSuggestBoxTextBoxStyle" TargetType="TextBox">
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Height" Value="40" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

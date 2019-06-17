@@ -207,7 +207,7 @@
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     PlaceholderText="Find what you want ?"
-                    TextBoxStyle="{StaticResource MyAutoSuggestBoxTextBoxStyle}">
+                    TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
                     </AutoSuggestBox.QueryIcon>

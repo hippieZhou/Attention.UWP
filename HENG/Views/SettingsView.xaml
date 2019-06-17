@@ -12,6 +12,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" EnumType="ElementTheme" />
+        <converters:EnumToStringConverter x:Key="EnumToStringConverter" EnumType="ElementTheme" />
     </Page.Resources>
 
     <i:Interaction.Behaviors>
@@ -21,102 +22,110 @@
     </i:Interaction.Behaviors>
 
     <Grid>
-        <StackPanel
-            Margin="24"
+        <Grid
+            Width="400"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="0,12">
-                <TextBlock x:Uid="Settings_Theme" />
-                <StackPanel Margin="0,8,0,0">
-                    <RadioButton
-                        x:Uid="Settings_Theme_Light"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Light</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Dark"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Default"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Default</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                x:Uid="Settings_Personalization"
+                Grid.Row="0"
+                Margin="0,12"
+                Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <ComboBox
+                x:Uid="Settings_Theme"
+                Grid.Row="1"
+                Margin="0,4"
+                HorizontalAlignment="Stretch"
+                SelectedIndex="{Binding ElementTheme, Mode=TwoWay}">
+                <ComboBoxItem>
+                    <ComboBoxItem.DataContext>
+                        <xaml:ElementTheme>Default</xaml:ElementTheme>
+                    </ComboBoxItem.DataContext>
+                    <ComboBoxItem.Content>
+                        <TextBlock x:Uid="Settings_Theme_Default" />
+                    </ComboBoxItem.Content>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <ComboBoxItem.DataContext>
+                        <xaml:ElementTheme>Light</xaml:ElementTheme>
+                    </ComboBoxItem.DataContext>
+                    <ComboBoxItem.Content>
+                        <TextBlock x:Uid="Settings_Theme_Light" />
+                    </ComboBoxItem.Content>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <ComboBoxItem.DataContext>
+                        <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                    </ComboBoxItem.DataContext>
+                    <ComboBoxItem.Content>
+                        <TextBlock x:Uid="Settings_Theme_Dark" />
+                    </ComboBoxItem.Content>
+                </ComboBoxItem>
+            </ComboBox>
+            <AutoSuggestBox
+                x:Uid="Settings_Download"
+                Grid.Row="2"
+                Margin="0,4"
+                HorizontalAlignment="Stretch"
+                Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}">
+                <AutoSuggestBox.QueryIcon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC50;" />
+                </AutoSuggestBox.QueryIcon>
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="QuerySubmitted">
+                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </AutoSuggestBox>
+            <StackPanel
+                Grid.Row="3"
+                Margin="24"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Button
+                        Width="48"
+                        Height="48"
+                        Margin="4"
+                        Background="Transparent"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                    </Button>
+                    <Button
+                        Width="48"
+                        Height="48"
+                        Margin="4"
+                        Background="Transparent"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                    </Button>
+                    <Button
+                        Width="48"
+                        Height="48"
+                        Margin="4"
+                        Background="Transparent"
+                        Style="{ThemeResource ButtonRevealStyle}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="0,12" HorizontalAlignment="Center">
+                    <TextBlock
+                        Foreground="Gray"
+                        Style="{ThemeResource BodyTextBlockStyle}"
+                        Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+                    <TextBlock
+                        x:Uid="Settings_AboutDescription"
+                        Margin="0,12"
+                        Foreground="Gray"
+                        Style="{ThemeResource BodyTextBlockStyle}" />
                 </StackPanel>
             </StackPanel>
-
-            <TextBlock x:Uid="Settings_Download" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="0,12">
-                <TextBlock x:Uid="Settings_DownloadPath" />
-                <TextBox
-                    Width="400"
-                    Margin="0,8,0,0"
-                    IsReadOnly="True"
-                    Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}" />
-                <Button
-                    x:Uid="Settings_DownloadOpen"
-                    Width="120"
-                    Margin="12"
-                    HorizontalAlignment="Center"
-                    Command="{x:Bind ViewModel.OpenFolderCommand}"
-                    Style="{ThemeResource ButtonRevealStyle}" />
-            </StackPanel>
-
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button
-                    Width="48"
-                    Height="48"
-                    Margin="4"
-                    Background="Transparent"
-                    Style="{ThemeResource ButtonRevealStyle}">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                </Button>
-                <Button
-                    Width="48"
-                    Height="48"
-                    Margin="4"
-                    Background="Transparent"
-                    Style="{ThemeResource ButtonRevealStyle}">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                </Button>
-                <Button
-                    Width="48"
-                    Height="48"
-                    Margin="4"
-                    Background="Transparent"
-                    Style="{ThemeResource ButtonRevealStyle}">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                </Button>
-            </StackPanel>
-
-            <StackPanel Margin="0,12" HorizontalAlignment="Center">
-                <TextBlock
-                    Foreground="Gray"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="0,12"
-                    Foreground="Gray"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-            </StackPanel>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

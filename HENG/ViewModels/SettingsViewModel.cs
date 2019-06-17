@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight.Command;
 using HENG.Helpers;
 using HENG.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -13,12 +15,15 @@ namespace HENG.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private ElementTheme _elementTheme = ThemeSelectorService.Theme;
-        public ElementTheme ElementTheme
+        private int _elementTheme = (int)ThemeSelectorService.Theme;
+        public int ElementTheme
         {
             get { return _elementTheme; }
-
-            set { Set(ref _elementTheme, value); }
+            set
+            {
+                Set(ref _elementTheme, value);
+                SwitchThemeCommand.Execute((ElementTheme)ElementTheme);
+            }
         }
 
         private string _versionDescription;
@@ -61,14 +66,11 @@ namespace HENG.ViewModels
             {
                 if (_switchThemeCommand == null)
                 {
-                    _switchThemeCommand = new RelayCommand<ElementTheme>(
-                        async (param) =>
+                    _switchThemeCommand = new RelayCommand<ElementTheme>(async (param) =>
                         {
-                            ElementTheme = param;
                             await ThemeSelectorService.SetThemeAsync(param);
                         });
                 }
-
                 return _switchThemeCommand;
             }
         }
