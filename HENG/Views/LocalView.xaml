@@ -46,7 +46,7 @@
                             IsCacheEnabled="True"
                             PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
                             PlaceholderStretch="None"
-                            Source="{x:Bind Item.LargeImageURL}"
+                            Source="{x:Bind Item.PreviewURL}"
                             Stretch="UniformToFill"
                             UseLayoutRounding="True" />
                         <CommandBar
