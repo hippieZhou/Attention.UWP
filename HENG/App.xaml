@@ -2,13 +2,13 @@
     x:Class="HENG.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="using:HENG.Converters"
-    xmlns:local="using:HENG">
+    xmlns:local="using:HENG"
+    xmlns:models="using:HENG.Models">
     <Application.Resources>
         <ResourceDictionary>
             <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
-            <converters:NnllUserImageConverter x:Key="NnllUserImageConverter" />
+            <models:AppSettings x:Key="AppSettings" />
 
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />

@@ -79,6 +79,33 @@
                     Style="{ThemeResource ButtonRevealStyle}" />
             </StackPanel>
 
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Width="48"
+                    Height="48"
+                    Margin="4"
+                    Background="Transparent"
+                    Style="{ThemeResource ButtonRevealStyle}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                </Button>
+                <Button
+                    Width="48"
+                    Height="48"
+                    Margin="4"
+                    Background="Transparent"
+                    Style="{ThemeResource ButtonRevealStyle}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                </Button>
+                <Button
+                    Width="48"
+                    Height="48"
+                    Margin="4"
+                    Background="Transparent"
+                    Style="{ThemeResource ButtonRevealStyle}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
+                </Button>
+            </StackPanel>
+
             <StackPanel Margin="0,12" HorizontalAlignment="Center">
                 <TextBlock
                     Foreground="Gray"
