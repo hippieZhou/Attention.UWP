@@ -19,26 +19,24 @@
     </i:Interaction.Behaviors>
 
     <Grid x:Name="RootGrid">
-        <GridView
+        <controls:AdaptiveGridView
+            x:Name="AdaptiveGridViewControl"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
             DataFetchSize="1"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
+            ItemClickCommand="{Binding ItemClickCommand}"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemsSource="{x:Bind ViewModel.Photos, Mode=OneWay}"
-            SelectionMode="None"
+            OneRowModeEnabled="False"
+            SelectionMode="Single"
             ShowsScrollingPlaceholders="False">
             <GridView.ItemContainerTransitions>
                 <TransitionCollection>
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </GridView.ItemContainerTransitions>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <controls:StaggeredPanel HorizontalAlignment="Stretch" DesiredColumnWidth="250" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:DownloadItem">
                     <Grid Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}" SizeChanged="Grid_SizeChanged">
@@ -132,6 +130,31 @@
                     </StackPanel>
                 </Grid>
             </GridView.Footer>
-        </GridView>
+        </controls:AdaptiveGridView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AdaptiveGridViewControl.Padding" Value="12,12,8,0" />
+                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="400" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="250" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AdaptiveGridViewControl.Padding" Value="12,12,8,0" />
+                        <Setter Target="AdaptiveGridViewControl.DesiredWidth" Value="380" />
+                        <Setter Target="AdaptiveGridViewControl.ItemHeight" Value="260" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

@@ -123,11 +123,8 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>HENG</value>
   </data>
-  <data name="Settings_Download.Description" xml:space="preserve">
-    <value>default download path</value>
-  </data>
   <data name="Settings_Download.Header" xml:space="preserve">
-    <value>Download</value>
+    <value>Download Path</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
