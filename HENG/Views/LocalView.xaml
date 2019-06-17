@@ -20,7 +20,6 @@
 
     <Grid x:Name="RootGrid">
         <GridView
-            x:Name="GridView"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
             DataFetchSize="1"
@@ -35,6 +34,11 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </GridView.ItemContainerTransitions>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:StaggeredPanel HorizontalAlignment="Stretch" DesiredColumnWidth="250" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:DownloadItem">
                     <Grid Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}" SizeChanged="Grid_SizeChanged">
@@ -102,14 +106,6 @@
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <controls:StaggeredPanel
-                        Margin="12,12,8,0"
-                        HorizontalAlignment="Stretch"
-                        DesiredColumnWidth="300" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
             <GridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel
