@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Linq;
 using Microsoft.Toolkit.Uwp;
 using Windows.UI.Xaml;
+using Windows.Storage;
+using System;
 
 namespace HENG.ViewModels
 {
@@ -93,9 +95,19 @@ namespace HENG.ViewModels
             {
                 if (_deleteCommand == null)
                 {
-                    _deleteCommand = new RelayCommand<DownloadItem>(item =>
+                    _deleteCommand = new RelayCommand<DownloadItem>(async item =>
                     {
-
+                        int n = ViewModelLocator.Current.Db.DeleteItem(item.Item);
+                        if (n > 0)
+                        {
+                            StorageFolder folder = await KnownFolders.PicturesLibrary.GetFolderAsync("HENG");
+                            IStorageItem file = await folder.TryGetItemAsync(item.HashFile);
+                            if (file != null)
+                            {
+                                await file?.DeleteAsync(StorageDeleteOption.Default);
+                            }
+                            Photos.Remove(item);
+                        }
                     });
                 }
                 return _deleteCommand;

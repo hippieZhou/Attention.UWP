@@ -15,7 +15,13 @@ namespace HENG.Models
         public readonly CancellationTokenSource CancellationToken;
 
         public ImageItem Item { get; set; }
-        public string HashFile { get; private set; }
+
+        private string _hashFile;
+        public string HashFile
+        {
+            get { return _hashFile; }
+            set { Set(ref _hashFile, value); }
+        }
 
         private int _progress = 100;
         public int Progress

@@ -61,6 +61,15 @@ namespace HENG.Models
                 return count == 0 ? db.Insert(item) : count;
             }
         }
+
+        public int DeleteItem(ImageItem item)
+        {
+            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
+            {
+                db.TraceListener = new DebugTraceListener();
+                return db.Execute($"delete from {nameof(ImageItem)} where id={item.Id}");
+            }
+        }
     }
 
     public class DebugTraceListener : ITraceListener

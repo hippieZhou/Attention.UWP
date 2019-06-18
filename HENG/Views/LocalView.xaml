@@ -14,7 +14,7 @@
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
-            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand, Mode=OneWay}" />
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
@@ -44,7 +44,6 @@
                             IsCacheEnabled="True"
                             PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
                             PlaceholderStretch="None"
-                            Source="{x:Bind Item.PreviewURL}"
                             Stretch="UniformToFill"
                             UseLayoutRounding="True" />
                         <CommandBar
