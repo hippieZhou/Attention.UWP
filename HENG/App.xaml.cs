@@ -1,6 +1,7 @@
 ﻿using HENG.Services;
 using HENG.Tasks;
 using HENG.ViewModels;
+using HENG.Views;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Diagnostics;
@@ -13,7 +14,6 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using XamlBrewer.Uwp.Controls;
 
 namespace HENG
 {
@@ -81,7 +81,7 @@ namespace HENG
             await InitWindowAsync(arg, e.SplashScreen);
         }
 
-        private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen)
+        private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen = null)
         {
             if (!(Window.Current.Content is Frame rootFrame))
             {
@@ -89,8 +89,7 @@ namespace HENG
                 rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
                 Window.Current.Content = rootFrame;
             }
-            rootFrame.Navigate(typeof(Shell), args);
-            (rootFrame.Content as Page).OpenFromSplashScreen(splashScreen.ImageLocation);
+            rootFrame.Navigate(typeof(ShellPage), args);
             Window.Current.Activate();
 
             await StartupAsync();

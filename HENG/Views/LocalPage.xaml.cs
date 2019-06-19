@@ -5,11 +5,11 @@ using Windows.UI.Xaml.Media;
 
 namespace HENG.Views
 {
-    public sealed partial class LocalView : Page
+    public sealed partial class LocalPage : Page
     {
         public LocalViewModel ViewModel => ViewModelLocator.Current.Local;
 
-        public LocalView()
+        public LocalPage()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;

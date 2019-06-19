@@ -14,31 +14,16 @@ namespace HENG.UserControls
 {
     public sealed partial class PhotoControl : UserControl
     {
+        public PhotoViewModel ViewModel => ViewModelLocator.Current.Photo;
         public PhotoControl()
         {
             this.InitializeComponent();
-        }
+            ViewModel.Initialize(FindName("AdaptiveGridViewControl") as GridView);
 
-        public HomeViewModel ViewModel
-        {
-            get { return (HomeViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(HomeViewModel), typeof(PhotoControl), new PropertyMetadata(null,  (d, e) => 
+            AdaptiveGridViewControl.Loaded += (sender, e) => 
             {
-                if (d is PhotoControl handler && e.NewValue is HomeViewModel vm)
-                {
-                    vm.Initialize(handler.AdaptiveGridViewControl, handler.HeaderMask);
-                    handler.DataContext = vm;
-                }
-            }));
-
-        private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            ScrollViewer myScrollViewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
+                ScrollViewer myScrollViewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
+            };
         }
 
         private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)

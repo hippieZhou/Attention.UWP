@@ -1,17 +1,14 @@
 ﻿using HENG.ViewModels;
-using System;
-using System.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace HENG.Views
 {
 
-    public sealed partial class SettingsView : Page
+    public sealed partial class SettingsPage : Page
     {
         public SettingsViewModel ViewModel => ViewModelLocator.Current.Settings;
 
-        public SettingsView()
+        public SettingsPage()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;

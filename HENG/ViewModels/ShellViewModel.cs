@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Input;
 using Windows.Foundation.Metadata;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -22,88 +23,10 @@ namespace HENG.ViewModels
     public partial class ShellViewModel : ViewModelBase
     {
         private readonly NavigationService _navService;
-        private muxc.NavigationView _navView;
-        private Grid _smokeGrid;
 
         public ShellViewModel(NavigationService navigationService)
         {
             _navService = navigationService;
-        }
-
-        public void Initialize(muxc.NavigationView navView, Frame shellFrame, Grid smokeGrid)
-        {
-            _navView = navView;
-            _navView.BackRequested += (sender, args) => { _navService.GoBack(); };
-
-            _navService.CurrentFrame = shellFrame;
-            _navService.CurrentFrame.Navigated += Frame_Navigated;
-
-            _smokeGrid = smokeGrid;
-        }
-
-        private void Frame_Navigated(object sender, NavigationEventArgs e)
-        {
-            IsBackEnabled = _navService.CanGoBack;
-            FindIsEnabled = e.SourcePageType == typeof(HomeView);
-
-            if (e.SourcePageType == typeof(SettingsView))
-            {
-                Selected = _navView.SettingsItem;
-            }
-            else
-            {
-                Selected = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(p => IsMenuItemForPageType(p, e.SourcePageType));
-            }
-
-            bool IsMenuItemForPageType(muxc.NavigationViewItem menuItem, Type sourcePageType)
-            {
-                var pageKey = menuItem.GetValue(NavHelper.NavigateToProperty) as string;
-                var navigaedPageKey = _navService.GetKeyForPage(sourcePageType);
-
-                return pageKey == navigaedPageKey;
-            }
-        }
-
-        private bool _isBackEnabled;
-        public bool IsBackEnabled
-        {
-            get { return _isBackEnabled; }
-            set { Set(ref _isBackEnabled, value); }
-        }
-
-        private object _selected;
-        public object Selected
-        {
-            get { return _selected; }
-            set { Set(ref _selected, value); }
-        }
-
-        private bool _findIsEnabled;
-        public bool FindIsEnabled
-        {
-            get { return _findIsEnabled; }
-            set { Set(ref _findIsEnabled, value); }
-        }
-
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand(() =>
-                    {
-                        var first = _navView.MenuItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
-                        if (first != null)
-                        {
-                            var pageKey = NavHelper.GetNavigateTo(first);
-                            _navService.NavigateTo(pageKey);
-                        }
-                    });
-                }
-                return _loadedCommand;
-            }
         }
 
         private ICommand _itemInvokedCommand;
@@ -113,152 +36,47 @@ namespace HENG.ViewModels
             {
                 if (_itemInvokedCommand == null)
                 {
-                    _itemInvokedCommand = new RelayCommand<muxc.NavigationViewItemInvokedEventArgs>(args =>
+                    _itemInvokedCommand = new RelayCommand<string>(pageKey =>
                     {
-                        if (args.IsSettingsInvoked)
-                        {
-                            var has = _navService.CurrentPageKey == typeof(SettingsViewModel).FullName;
-                            if (!has)
-                            {
-                                _navService.NavigateTo(typeof(SettingsViewModel).FullName);
-                            }
-                            return;
-                        }
-
-                        var item = _navView.MenuItems.OfType<muxc.NavigationViewItem>()
-                        .FirstOrDefault(menuItem => (string)menuItem.Content == args.InvokedItem as string);
-                        if (item != null)
-                        {
-                            var pageKey = item.GetValue(NavHelper.NavigateToProperty) as string;
-                            var has = _navService.GetKeyForPage(_navService.CurrentFrame.CurrentSourcePageType) == pageKey;
-                            if (!has)
-                            {
-                                _navService.NavigateTo(pageKey);
-                            }
-                        }
+                        _navService.NavigateTo(pageKey);
                     });
                 }
                 return _itemInvokedCommand;
             }
         }
 
-        private ICommand _filterCommand;
-        public ICommand FilterCommand
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
         {
             get
             {
-                if (_filterCommand == null)
+                if (_refreshCommand == null)
                 {
-                    _filterCommand = new RelayCommand(() =>
+                    _refreshCommand = new RelayCommand(() =>
                     {
-                        ViewModelLocator.Current.Home.HeaderUpCommand.Execute(null);
+                        ViewModelLocator.Current.Photo.RefreshCommand.Execute(null);
                     });
                 }
-                return _filterCommand;
+                return _refreshCommand;
             }
         }
 
-        private ICommand _navToLocalCommand;
-        public ICommand NavToLocalCommand
+        public void Initialize()
         {
-            get
+            _navService.CurrentFrame.Navigated += (sender, e) =>
             {
-                if (_navToLocalCommand == null)
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = _navService.CanGoBack ?
+                AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+            };
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, e) =>
+            {
+                if (_navService.CanGoBack)
                 {
-                    _navToLocalCommand = new RelayCommand(() =>
-                    {
-                        _navService.NavigateTo(typeof(LocalViewModel).FullName);
-                    });
+                    _navService.GoBack();
+                    e.Handled = true;
                 }
-                return _navToLocalCommand;
-            }
-        }
-    }
-
-    public partial class ShellViewModel : ViewModelBase
-    {
-        private ImageItem _storedItem;
-        public ImageItem StoredItem
-        {
-            get { return _storedItem; }
-            set { Set(ref _storedItem, value); }
-        }
-
-        private ICommand _browseCommand;
-        public ICommand BrowseCommand
-        {
-            get
-            {
-                if (_browseCommand == null)
-                {
-                    _browseCommand = new RelayCommand<ImageItem>(async item =>
-                    {
-                        if (!string.IsNullOrWhiteSpace(item?.PageURL))
-                        {
-                            await Launcher.LaunchUriAsync(new Uri(item.PageURL));
-                        }
-                    }, item => item != null);
-                }
-                return _browseCommand;
-            }
-        }
-
-        private ICommand _downloadCommand;
-        public ICommand DownloadCommand
-        {
-            get
-            {
-                if (_downloadCommand == null)
-                {
-                    _downloadCommand = new RelayCommand<ImageItem>(item =>
-                    {
-                        ViewModelLocator.Current.Home.DownloadCommand.Execute(item);
-                    }, item => item != null);
-                }
-                return _downloadCommand;
-            }
-        }
-
-        private ICommand _backCommand;
-        public ICommand BackCommand
-        {
-            get
-            {
-                if (_backCommand == null)
-                {
-                    _backCommand = new RelayCommand<ImageItem>(async item =>
-                    {
-                        ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _smokeGrid.FindName("destinationElement") as UIElement);
-                        animation.Completed += (sender, e) =>
-                        {
-                            _smokeGrid.Visibility = Visibility.Collapsed;
-                        };
-                        if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7))
-                        {
-                            animation.Configuration = new DirectConnectedAnimationConfiguration();
-                        }
-                       await ViewModelLocator.Current.Home.HideDetailAsync(item, animation);
-                    }, item => item != null);
-                }
-                return _backCommand;
-            }
-        }
-
-        public void ShowDetail(ImageItem storedItem, ConnectedAnimation animation)
-        {
-            try
-            {
-                StoredItem = storedItem;
-                _smokeGrid.Visibility = Visibility.Visible;
-                animation.TryStart(_smokeGrid.FindName("destinationElement") as UIElement);
-            }
-            catch (Exception ex)
-            {
-                StoredItem = null;
-                _smokeGrid.Visibility = Visibility.Collapsed;
-                animation.Cancel();
-                Trace.WriteLine(ex);
-            }
+            };
         }
     }
 }

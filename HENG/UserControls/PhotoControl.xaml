@@ -8,8 +8,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:pix="using:PixabaySharp.Models"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -100,19 +102,19 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid x:Name="RootGrid">
+    <Grid>
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"
             animations:ReorderGridAnimation.Duration="300"
+            x:DeferLoadStrategy="Lazy"
             Background="Transparent"
             DataFetchSize="1"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
-            ItemClickCommand="{Binding ItemClickCommand}"
+            ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-            Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
             SelectionMode="Single"
             ShowsScrollingPlaceholders="False"
@@ -122,6 +124,11 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
+            <!--<controls:AdaptiveGridView.Header>
+                <muxc:AnimatedVisualPlayer AutoPlay="True" Visibility="{x:Bind ViewModel.HeaderVisibility, Mode=OneWay}">
+                    <lottie:LottieVisualSource UriSource="ms-appx:///Assets/loading.json" />
+                </muxc:AnimatedVisualPlayer>
+            </controls:AdaptiveGridView.Header>-->
             <controls:AdaptiveGridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel
@@ -149,76 +156,6 @@
                 </Grid>
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
-
-        <Button
-            Margin="32"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding RefreshCommand}"
-            Style="{StaticResource RefreshButtonRevealStyle}">
-            <i:Interaction.Behaviors>
-                <behaviors:Scale
-                    x:Name="ButtonUp"
-                    AutomaticallyStart="True"
-                    CenterX="22"
-                    CenterY="22"
-                    Delay="0"
-                    EasingMode="EaseOut"
-                    EasingType="Back"
-                    ScaleX="1"
-                    ScaleY="1"
-                    Duration="300" />
-                <behaviors:Scale
-                    x:Name="ButtonDown"
-                    AutomaticallyStart="True"
-                    CenterX="22"
-                    CenterY="22"
-                    Delay="0"
-                    EasingMode="EaseOut"
-                    EasingType="Back"
-                    ScaleX="0.8"
-                    ScaleY="0.8"
-                    Duration="300" />
-                <ic:EventTriggerBehavior EventName="PointerEntered">
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonUp}" />
-                </ic:EventTriggerBehavior>
-                <ic:EventTriggerBehavior EventName="PointerExited">
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonDown}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </Button>
-
-        <Grid x:Name="HeaderMask">
-            <Grid.Background>
-                <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
-            </Grid.Background>
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="Tapped">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.HeaderDownCommand, Mode=OneWay}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <Grid
-                x:Name="HeaderGrid"
-                Padding="60"
-                VerticalAlignment="Top"
-                Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}">
-                <AutoSuggestBox
-                    MaxWidth="400"
-                    BorderBrush="Transparent"
-                    BorderThickness="0"
-                    PlaceholderText="Find what you want ?"
-                    TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
-                    <AutoSuggestBox.QueryIcon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
-                    </AutoSuggestBox.QueryIcon>
-                    <i:Interaction.Behaviors>
-                        <ic:EventTriggerBehavior EventName="QuerySubmitted">
-                            <ic:InvokeCommandAction Command="{x:Bind ViewModel.QueryCommand, Mode=OneWay}" />
-                        </ic:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
-                </AutoSuggestBox>
-            </Grid>
-        </Grid>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
