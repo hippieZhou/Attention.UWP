@@ -39,10 +39,9 @@ namespace HENG.ViewModels
                     {
                         StoredItem = item;
 
-                        ConnectedAnimation animation = null;
                         if (StoredItem != null)
                         {
-                            animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
+                            ConnectedAnimation animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
                             animation.Completed += (sender, e) =>
                             {
                                 var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
@@ -58,13 +57,14 @@ namespace HENG.ViewModels
 
         public async Task TryBackwardAsync(ImageItem storedItem, ConnectedAnimation animation)
         {
-            var element = _listView.ContainerFromItem(storedItem) as GridViewItem;
+            StoredItem = storedItem;
+            GridViewItem element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
             element.Opacity = 1.0d;
 
-            await _listView.TryStartConnectedAnimationAsync(animation, storedItem, "connectedElement");
-
-            _listView.ScrollIntoView(storedItem, ScrollIntoViewAlignment.Default);
+            _listView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
             _listView.UpdateLayout();
+
+            await _listView.TryStartConnectedAnimationAsync(animation, storedItem, "connectedElement");
         }
     }
 
