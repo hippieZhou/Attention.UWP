@@ -24,11 +24,11 @@ namespace HENG.ViewModels
             set { Set(ref _storedItem, value); }
         }
 
-        private bool _teachingTipIsOpen;
-        public bool TeachingTipIsOpen
+        private bool _isPaneOpen;
+        public bool IsPaneOpen
         {
-            get { return _teachingTipIsOpen; }
-            set { Set(ref _teachingTipIsOpen, value); }
+            get { return _isPaneOpen; }
+            set { Set(ref _isPaneOpen, value); }
         }
 
         private ICommand _showTipsCommand;
@@ -40,7 +40,7 @@ namespace HENG.ViewModels
                 {
                     _showTipsCommand = new RelayCommand(() =>
                     {
-                        TeachingTipIsOpen = !TeachingTipIsOpen;
+                        IsPaneOpen = !IsPaneOpen;
                     }, () => StoredItem != null);
                 }
                 return _showTipsCommand;

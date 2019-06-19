@@ -26,6 +26,16 @@ namespace HENG.UserControls
             };
         }
 
+        public object Header
+        {
+            get { return (object)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
+
         private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var item = AdaptiveGridViewControl.SelectedItem;

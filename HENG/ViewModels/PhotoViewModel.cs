@@ -62,6 +62,10 @@ namespace HENG.ViewModels
             element.Opacity = 1.0d;
 
             _listView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
+            _listView.StartBringIntoView(new BringIntoViewOptions
+            {
+                AnimationDesired = true,
+            });
             _listView.UpdateLayout();
 
             await _listView.TryStartConnectedAnimationAsync(animation, storedItem, "connectedElement");

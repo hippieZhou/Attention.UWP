@@ -109,6 +109,7 @@
             x:DeferLoadStrategy="Lazy"
             Background="Transparent"
             DataFetchSize="1"
+            Header="{x:Bind Header, Mode=OneWay}"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
@@ -116,6 +117,7 @@
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
             OneRowModeEnabled="False"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionMode="Single"
             ShowsScrollingPlaceholders="False"
             SizeChanged="AdaptiveGridViewControl_SizeChanged">

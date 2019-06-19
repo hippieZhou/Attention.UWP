@@ -24,21 +24,33 @@
         <Grid.Background>
             <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
-        <Grid
+        <SplitView
             x:Name="destinationElement"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             AllowDrop="True"
             Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
-            SizeChanged="Grid_SizeChanged">
-            <controls:ImageEx
-                CacheMode="BitmapCache"
-                IsCacheEnabled="True"
-                PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
-                Source="{x:Bind ViewModel.StoredItem.LargeImageURL, Mode=OneWay}"
-                Stretch="UniformToFill"
-                UseLayoutRounding="True" />
-            <muxc:TeachingTip
+            IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
+            PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}"
+            PanePlacement="Right">
+            <SplitView.Pane>
+                <controls:HeaderedItemsControl Margin="12">
+                    <controls:HeaderedItemsControl.Header>
+                        <ListViewHeaderItem Margin="0,0,0,12" Content="图片信息" />
+                    </controls:HeaderedItemsControl.Header>
+                    <controls:HeaderedItemsControl.Items>
+                        <controls:HeaderedContentControl Content="{x:Bind ViewModel.StoredItem.Views, Mode=OneWay}">
+                            <controls:HeaderedContentControl.Header>
+                                <TextBlock
+                                    FontWeight="Light"
+                                    Foreground="Gray"
+                                    Text="浏览" />
+                            </controls:HeaderedContentControl.Header>
+                        </controls:HeaderedContentControl>
+                    </controls:HeaderedItemsControl.Items>
+                </controls:HeaderedItemsControl>
+                <!--
+                    <!--<muxc:TeachingTip
                 x:Name="teachingTip"
                 x:DeferLoadStrategy="Lazy"
                 IsLightDismissEnabled="True"
@@ -113,68 +125,105 @@
                             Label="{x:Bind ViewModel.StoredItem.Downloads, Mode=OneWay}" />
                     </Grid>
                 </muxc:TeachingTip.Content>
-            </muxc:TeachingTip>
-            <CommandBar
-                x:Name="CommandBar"
-                VerticalAlignment="Bottom"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                <CommandBar.PrimaryCommands>
-                    <AppBarButton
-                        x:Name="TipAppBarButton"
-                        Command="{Binding ShowTipsCommand, Mode=TwoWay}"
-                        Label="TAGS">
-                        <AppBarButton.Icon>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
-                    <AppBarButton Command="{Binding BrowseCommand, Mode=TwoWay}" Label="WEB">
-                        <AppBarButton.Icon>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
-                    <AppBarButton
-                        Command="{Binding DownloadCommand, Mode=TwoWay}"
+            </muxc:TeachingTip>-->
+                <ListView>
+                    <muxc:NavigationViewItemHeader Content="图片信息" />
+                    <muxc:NavigationViewItemSeparator />
+                    <ListViewItem />
+                    <muxc:NavigationViewItem
+                        Content="{x:Bind ViewModel.StoredItem.Views, Mode=OneWay}"
+                        Icon="View"
+                        ToolTipService.ToolTip="Views" />
+                    <muxc:NavigationViewItem
+                        Content="{x:Bind ViewModel.StoredItem.Likes, Mode=OneWay}"
+                        Icon="Like"
+                        ToolTipService.ToolTip="Likes" />
+                    <muxc:NavigationViewItem
+                        Content="{x:Bind ViewModel.StoredItem.Favorites, Mode=OneWay}"
+                        Icon="Favorite"
+                        ToolTipService.ToolTip="Favorites" />
+                    <muxc:NavigationViewItem
+                        Content="{x:Bind ViewModel.StoredItem.Comments, Mode=OneWay}"
+                        Icon="Comment"
+                        ToolTipService.ToolTip="Comments" />
+                    <muxc:NavigationViewItem
+                        Content="{x:Bind ViewModel.StoredItem.Downloads, Mode=OneWay}"
                         Icon="Download"
-                        Label="SAVE" />
-                    <AppBarButton
-                        Command="{Binding BackCommand, Mode=TwoWay}"
-                        Icon="BackToWindow"
-                        Label="BACK" />
-                </CommandBar.PrimaryCommands>
-                <i:Interaction.Behaviors>
-                    <behaviors:Offset
-                        x:Name="CommandBarUp"
-                        AutomaticallyStart="True"
-                        Delay="0"
-                        EasingMode="EaseOut"
-                        EasingType="Linear"
-                        OffsetX="0"
-                        OffsetY="0"
-                        Duration="400" />
-                    <behaviors:Offset
-                        x:Name="CommandBarDown"
-                        AutomaticallyStart="True"
-                        Delay="0"
-                        EasingMode="EaseOut"
-                        EasingType="Linear"
-                        OffsetX="0"
-                        OffsetY="40"
-                        Duration="400" />
-                </i:Interaction.Behaviors>
-            </CommandBar>
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="PointerEntered">
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
-                </ic:EventTriggerBehavior>
-                <ic:EventTriggerBehavior EventName="PointerExited">
-                    <ic:ChangePropertyAction
-                        PropertyName="IsOpen"
-                        TargetObject="{Binding ElementName=CommandBar}"
-                        Value="False" />
-                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDown}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </Grid>
+                        ToolTipService.ToolTip="Downloads" />
+                </ListView>-->
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid SizeChanged="Grid_SizeChanged">
+                    <controls:ImageEx
+                        CacheMode="BitmapCache"
+                        IsCacheEnabled="True"
+                        PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                        Source="{x:Bind ViewModel.StoredItem.LargeImageURL, Mode=OneWay}"
+                        Stretch="UniformToFill"
+                        UseLayoutRounding="True" />
+                    <CommandBar
+                        x:Name="CommandBar"
+                        VerticalAlignment="Bottom"
+                        Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                        <CommandBar.PrimaryCommands>
+                            <AppBarButton
+                                x:Name="TipAppBarButton"
+                                Command="{Binding ShowTipsCommand, Mode=TwoWay}"
+                                Label="TAGS">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton Command="{Binding BrowseCommand, Mode=TwoWay}" Label="WEB">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton
+                                Command="{Binding DownloadCommand, Mode=TwoWay}"
+                                Icon="Download"
+                                Label="SAVE" />
+                            <AppBarButton
+                                Command="{Binding BackCommand, Mode=TwoWay}"
+                                Icon="BackToWindow"
+                                Label="BACK" />
+                        </CommandBar.PrimaryCommands>
+                        <i:Interaction.Behaviors>
+                            <behaviors:Offset
+                                x:Name="CommandBarUp"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                OffsetX="0"
+                                OffsetY="0"
+                                Duration="400" />
+                            <behaviors:Offset
+                                x:Name="CommandBarDown"
+                                AutomaticallyStart="True"
+                                Delay="0"
+                                EasingMode="EaseOut"
+                                EasingType="Linear"
+                                OffsetX="0"
+                                OffsetY="40"
+                                Duration="400" />
+                        </i:Interaction.Behaviors>
+                    </CommandBar>
+                    <i:Interaction.Behaviors>
+                        <ic:EventTriggerBehavior EventName="PointerEntered">
+                            <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarUp}" />
+                        </ic:EventTriggerBehavior>
+                        <ic:EventTriggerBehavior EventName="PointerExited">
+                            <ic:ChangePropertyAction
+                                PropertyName="IsOpen"
+                                TargetObject="{Binding ElementName=CommandBar}"
+                                Value="False" />
+                            <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=CommandBarDown}" />
+                        </ic:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
