@@ -1,22 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
-using HENG.Helpers;
-using HENG.Views;
-using PixabaySharp.Models;
-using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Input;
-using Windows.Foundation.Metadata;
-using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
@@ -63,20 +50,25 @@ namespace HENG.ViewModels
 
         public void Initialize()
         {
-            _navService.CurrentFrame.Navigated += (sender, e) =>
-            {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = _navService.CanGoBack ?
-                AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
-            };
+            _navService.CurrentFrame.Navigated -= OnNavigated;
+            _navService.CurrentFrame.Navigated += OnNavigated;
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+        }
 
-            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, e) =>
+        private void OnNavigated(object sender, NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = _navService.CanGoBack ?
+          AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (_navService.CanGoBack)
             {
-                if (_navService.CanGoBack)
-                {
-                    _navService.GoBack();
-                    e.Handled = true;
-                }
-            };
+                e.Handled = true;
+                _navService.GoBack();
+            }
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using HENG.Models;
+using HENG.Services;
 using PixabaySharp.Models;
+using System;
 using System.Windows.Input;
 using Windows.Foundation.Metadata;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -37,7 +41,7 @@ namespace HENG.ViewModels
                     _showTipsCommand = new RelayCommand(() =>
                     {
                         TeachingTipIsOpen = !TeachingTipIsOpen;
-                    });
+                    }, () => StoredItem != null);
                 }
                 return _showTipsCommand;
             }
@@ -50,10 +54,13 @@ namespace HENG.ViewModels
             {
                 if (_browseCommand == null)
                 {
-                    _browseCommand = new RelayCommand(() =>
+                    _browseCommand = new RelayCommand(async () =>
                     {
-
-                    });
+                        if (!string.IsNullOrWhiteSpace(StoredItem?.PageURL))
+                        {
+                            await Launcher.LaunchUriAsync(new Uri(StoredItem.PageURL));
+                        }
+                    }, () => StoredItem != null);
                 }
                 return _browseCommand;
             }
@@ -66,10 +73,15 @@ namespace HENG.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand<ImageItem>(item =>
+                    _downloadCommand = new RelayCommand(async () =>
                     {
-
-                    });
+                        var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);
+                        if (count > 0)
+                        {
+                            var download = new DownloadItem(StoredItem);
+                            await DownloadService.DownloadAsync(download);
+                        }
+                    }, () => StoredItem != null);
                 }
                 return _downloadCommand;
             }
@@ -94,7 +106,7 @@ namespace HENG.ViewModels
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
                         }
                         await ViewModelLocator.Current.Photo.TryBackwardAsync(StoredItem, animation);
-                    });
+                    }, () => StoredItem != null);
                 }
                 return _backCommand;
             }

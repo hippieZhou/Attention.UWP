@@ -121,28 +121,23 @@
                 <CommandBar.PrimaryCommands>
                     <AppBarButton
                         x:Name="TipAppBarButton"
-                        Command="{x:Bind ViewModel.ShowTipsCommand}"
+                        Command="{Binding ShowTipsCommand, Mode=TwoWay}"
                         Label="TAGS">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE783;" />
                         </AppBarButton.Icon>
                     </AppBarButton>
-                    <AppBarButton
-                        Command="{x:Bind ViewModel.BrowseCommand}"
-                        CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
-                        Label="WEB">
+                    <AppBarButton Command="{Binding BrowseCommand, Mode=TwoWay}" Label="WEB">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF6FA;" />
                         </AppBarButton.Icon>
                     </AppBarButton>
                     <AppBarButton
-                        Command="{x:Bind ViewModel.DownloadCommand}"
-                        CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
+                        Command="{Binding DownloadCommand, Mode=TwoWay}"
                         Icon="Download"
                         Label="SAVE" />
                     <AppBarButton
-                        Command="{x:Bind ViewModel.BackCommand}"
-                        CommandParameter="{x:Bind ViewModel.StoredItem, Mode=OneWay}"
+                        Command="{Binding BackCommand, Mode=TwoWay}"
                         Icon="BackToWindow"
                         Label="BACK" />
                 </CommandBar.PrimaryCommands>

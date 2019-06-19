@@ -5,7 +5,6 @@ using HENG.Core.Services;
 using HENG.Models;
 using HENG.Services;
 using HENG.Views;
-using Windows.UI.Core;
 
 namespace HENG.ViewModels
 {
