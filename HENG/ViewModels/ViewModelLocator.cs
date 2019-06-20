@@ -1,6 +1,8 @@
-﻿using CommonServiceLocator;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Views;
 using HENG.Core.Services;
 using HENG.Models;
 using HENG.Services;
@@ -15,14 +17,15 @@ namespace HENG.ViewModels
         private static ViewModelLocator _current;
         public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
 
+        public static Dictionary<string, Type> ControlsByKey { get; private set; } = new Dictionary<string, Type>();
+       
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            var nav = new NavigationService();
-            nav.Configure(typeof(LocalViewModel).FullName, typeof(LocalControl));
-            nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsControl));
-            SimpleIoc.Default.Register(() => nav);
+            Configure(typeof(HomeViewModel).FullName, typeof(HomeView));
+            Configure(typeof(LocalViewModel).FullName, typeof(LocalControl));
+            Configure(typeof(SettingsViewModel).FullName, typeof(SettingsControl));
 
             SimpleIoc.Default.Register(() => new DbContext());
             SimpleIoc.Default.Register(() => new PixabayService());
@@ -32,8 +35,25 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<PhotoInfoViewModel>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
+            SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
+        }
+
+        private static void Configure(string key, Type controlType)
+        {
+            lock (ControlsByKey)
+            {
+                if (ControlsByKey.ContainsKey(key))
+                {
+                    throw new ArgumentException("This key is already used: " + key);
+                }
+                if (ControlsByKey.Any(p => p.Value.GetType() == controlType))
+                {
+                    throw new ArgumentException("This type is already configured with key " + ControlsByKey.First(p => p.Value.GetType() == controlType).Key);
+                }
+                ControlsByKey.Add(key, controlType);
+            }
         }
 
         public DbContext Db => ServiceLocator.Current.GetInstance<DbContext>();
@@ -44,6 +64,7 @@ namespace HENG.ViewModels
         public PhotoInfoViewModel PhotoInfo => ServiceLocator.Current.GetInstance<PhotoInfoViewModel>();
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
+        public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }

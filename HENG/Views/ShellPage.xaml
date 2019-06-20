@@ -22,25 +22,6 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-    <Page.Resources>
-        <local:ContentTemplateSelector x:Key="ContentTemplateSelector">
-            <local:ContentTemplateSelector.HomeTemplate>
-                <DataTemplate>
-                    <Grid />
-                </DataTemplate>
-            </local:ContentTemplateSelector.HomeTemplate>
-            <local:ContentTemplateSelector.LocalTemplate>
-                <DataTemplate>
-                    <uc:LocalControl />
-                </DataTemplate>
-            </local:ContentTemplateSelector.LocalTemplate>
-            <local:ContentTemplateSelector.SettingsTemplate>
-                <DataTemplate>
-                    <uc:SettingsControl />
-                </DataTemplate>
-            </local:ContentTemplateSelector.SettingsTemplate>
-        </local:ContentTemplateSelector>
-    </Page.Resources>
 
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">

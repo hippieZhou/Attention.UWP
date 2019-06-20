@@ -30,6 +30,7 @@ namespace HENG.ViewModels
                 return _loadedCommand;
             }
         }
+
         public override ICommand ItemClickCommand
         {
             get

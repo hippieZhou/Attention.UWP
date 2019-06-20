@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HENG.UserControls;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Windows.Input;
@@ -11,7 +10,7 @@ namespace HENG.ViewModels
 {
     public partial class ShellViewModel : ViewModelBase
     {
-        private ContentControl _root;
+        private ContentControl _rootControl;
 
         private ViewModelBase _controlViewModel;
         public ViewModelBase ControlViewModel
@@ -29,7 +28,7 @@ namespace HENG.ViewModels
                 {
                     _loadedCommand = new RelayCommand(async () =>
                     {
-                        var anim = _root.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _root.ActualHeight), 0);
+                        var anim = _rootControl.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _rootControl.ActualHeight), 0);
                         await anim.StartAsync();
                     });
                 }
@@ -47,7 +46,7 @@ namespace HENG.ViewModels
 
                     _backCommand = new RelayCommand(async () =>
                     {
-                        var anim = _root.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _root.ActualHeight));
+                        var anim = _rootControl.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _rootControl.ActualHeight));
                         await anim.StartAsync();
                     });
                 }
@@ -62,17 +61,13 @@ namespace HENG.ViewModels
             {
                 if (_itemInvokedCommand == null)
                 {
-                    _itemInvokedCommand = new RelayCommand<string>(async pageKey =>
+                    _itemInvokedCommand = new RelayCommand<string>(async controlKey =>
                     {
-                        if (pageKey == typeof(LocalViewModel).FullName)
+                        if (ViewModelLocator.ControlsByKey.TryGetValue(controlKey, out Type type))
                         {
-                            _root.Content = new LocalControl();
+                            _rootControl.Content = Activator.CreateInstance(type);
+                            await _rootControl.Offset(0, duration: 1000).StartAsync();
                         }
-                        if (pageKey == typeof(SettingsViewModel).FullName)
-                        {
-                            _root.Content = new SettingsControl();
-                        }
-                        await _root.Offset(0, duration: 1000).StartAsync();
                     });
                 }
                 return _itemInvokedCommand;
@@ -81,7 +76,7 @@ namespace HENG.ViewModels
 
         public void Initialize(ContentControl contentControl)
         {
-            _root = contentControl;
+            _rootControl = contentControl;
         }
     }
 }
