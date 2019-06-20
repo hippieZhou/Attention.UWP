@@ -42,7 +42,6 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Button
                             x:Name="HeaderRefresh"
@@ -71,22 +70,15 @@
                             Content="&#xE896;"
                             Style="{StaticResource PrimaryButtonRevealStyle}" />
                         <Button
-                            x:Name="HeaderFullScreen"
-                            Grid.Column="3"
-                            Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
-                            CommandParameter="HENG.ViewModels.ShellViewModel"
-                            Content="&#xE740;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
-                        <Button
                             x:Name="headerSetting"
-                            Grid.Column="4"
+                            Grid.Column="3"
                             Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
                             CommandParameter="HENG.ViewModels.SettingsViewModel"
                             Content="&#xE713;"
                             Style="{StaticResource PrimaryButtonRevealStyle}" />
                         <Button
                             x:Name="headerMore"
-                            Grid.Column="4"
+                            Grid.Column="3"
                             Content="&#xE712;"
                             Style="{StaticResource PrimaryButtonRevealStyle}" />
                     </Grid>

@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:HENG.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -14,6 +15,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:NullUserImageURLConverter x:Key="NullUserImageURLConverter" />
+    </UserControl.Resources>
 
     <Grid
         x:Name="SmokeGrid"
@@ -31,8 +35,7 @@
             AllowDrop="True"
             Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
             IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
-            PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}"
-            PanePlacement="Right">
+            PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}">
             <SplitView.Pane>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -44,11 +47,11 @@
                             <ListViewHeaderItem x:Uid="Shell_Photo" Margin="0,0,0,12" />
                         </controls:HeaderedItemsControl.Header>
                         <controls:HeaderedItemsControl.Items>
-                            <muxc:NavigationViewItem Content="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}">
-                                <muxc:NavigationViewItem.Icon>
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEE57;" />
-                                </muxc:NavigationViewItem.Icon>
-                            </muxc:NavigationViewItem>
+                            <muxc:PersonPicture DisplayName="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}" ProfilePicture="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay, Converter={StaticResource NullUserImageURLConverter}}" />
+                            <TextBlock
+                                Margin="0,12"
+                                HorizontalAlignment="Center"
+                                Text="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}" />
                             <muxc:NavigationViewItem>
                                 <muxc:NavigationViewItem.Icon>
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F7;" />

@@ -5,6 +5,7 @@ using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -62,10 +63,6 @@ namespace HENG.ViewModels
             element.Opacity = 1.0d;
 
             _listView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
-            _listView.StartBringIntoView(new BringIntoViewOptions
-            {
-                AnimationDesired = true,
-            });
             _listView.UpdateLayout();
 
             await _listView.TryStartConnectedAnimationAsync(animation, storedItem, "connectedElement");
@@ -78,7 +75,7 @@ namespace HENG.ViewModels
         {
             var result = await ViewModelLocator.Current.Px.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
             await Task.Yield();
-            return result?.Images;
+            return result != null ? result.Images : new List<ImageItem>();
         }
     }
 
