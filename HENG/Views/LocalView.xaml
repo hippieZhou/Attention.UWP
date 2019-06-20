@@ -15,6 +15,11 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.RowDefinitions>

@@ -140,6 +140,9 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\HeaderControl.xaml.cs">
+      <DependentUpon>HeaderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\NavBackControl.xaml.cs">
       <DependentUpon>NavBackControl.xaml</DependentUpon>
     </Compile>
@@ -197,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\HeaderControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\NavBackControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

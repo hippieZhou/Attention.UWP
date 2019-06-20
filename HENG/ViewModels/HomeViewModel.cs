@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
+using Windows.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
@@ -49,6 +50,23 @@ namespace HENG.ViewModels
                     });
                 }
                 return _refreshCommand;
+            }
+        }
+
+        private ICommand _searchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand == null)
+                {
+                    _searchCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
+                    {
+                        ViewModelLocator.Current.Px.QueryText = args.QueryText;
+                        RefreshCommand.Execute(null);
+                    });
+                }
+                return _searchCommand;
             }
         }
     }

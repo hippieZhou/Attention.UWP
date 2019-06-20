@@ -7,7 +7,6 @@
     xmlns:local="using:HENG.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:HENG.UserControls"
-    xmlns:vm="using:HENG.ViewModels"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -16,84 +15,13 @@
         <uc:PhotoControl Background="{ThemeResource SystemControlAcrylicWindowBrush}" ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}">
             <uc:PhotoControl.Header>
                 <controls:ScrollHeader Mode="Fade">
-                    <Grid
-                        x:Name="ScrollHeader"
-                        Grid.Row="0"
-                        Padding="0,0,4,6"
-                        Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Button
-                            x:Name="HeaderRefresh"
-                            Grid.Column="0"
-                            Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
-                            Content="&#xE895;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
-                        <AutoSuggestBox
-                            Grid.Column="1"
-                            MaxWidth="480"
-                            Margin="4"
-                            VerticalAlignment="Center"
-                            BorderBrush="Transparent"
-                            BorderThickness="0"
-                            PlaceholderText="Find what you want ?"
-                            TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
-                            <AutoSuggestBox.QueryIcon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
-                            </AutoSuggestBox.QueryIcon>
-                        </AutoSuggestBox>
-                        <Button
-                            x:Name="HeaderLocal"
-                            Grid.Column="2"
-                            Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
-                            CommandParameter="HENG.ViewModels.LocalViewModel"
-                            Content="&#xE896;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
-                        <Button
-                            x:Name="headerSetting"
-                            Grid.Column="3"
-                            Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
-                            CommandParameter="HENG.ViewModels.SettingsViewModel"
-                            Content="&#xE713;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
-                        <Button
-                            x:Name="headerMore"
-                            Grid.Column="3"
-                            Content="&#xE712;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
-                    </Grid>
+                    <uc:HeaderControl
+                        ItemInvokedCommand="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
+                        RefreshCommand="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                        SearchCommand="{x:Bind ViewModel.SearchCommand, Mode=OneWay}" />
                 </controls:ScrollHeader>
             </uc:PhotoControl.Header>
         </uc:PhotoControl>
         <uc:PhotoInfoControl ViewModel="{x:Bind ViewModel.PhotoInfo, Mode=OneWay}" />
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="HeaderLocal.Visibility" Value="Visible" />
-                        <Setter Target="headerSetting.Visibility" Value="Visible" />
-                        <Setter Target="headerMore.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="HeaderLocal.Visibility" Value="Collapsed" />
-                        <Setter Target="headerSetting.Visibility" Value="Collapsed" />
-                        <Setter Target="headerMore.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>
