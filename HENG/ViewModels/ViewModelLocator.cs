@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Views;
 using HENG.Core.Services;
 using HENG.Models;
 using HENG.Services;
+using HENG.UserControls;
 using HENG.Views;
 
 namespace HENG.ViewModels
@@ -19,10 +20,8 @@ namespace HENG.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             var nav = new NavigationService();
-            nav.Configure(typeof(ShellViewModel).FullName, typeof(ShellPage));
-            nav.Configure(typeof(LocalViewModel).FullName, typeof(LocalPage));
-            nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsPage));
-
+            nav.Configure(typeof(LocalViewModel).FullName, typeof(LocalControl));
+            nav.Configure(typeof(SettingsViewModel).FullName, typeof(SettingsControl));
             SimpleIoc.Default.Register(() => nav);
 
             SimpleIoc.Default.Register(() => new DbContext());
@@ -33,7 +32,6 @@ namespace HENG.ViewModels
             SimpleIoc.Default.Register<PhotoInfoViewModel>();
 
             SimpleIoc.Default.Register<ShellViewModel>();
-     
             SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
         }

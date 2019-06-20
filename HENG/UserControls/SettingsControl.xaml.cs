@@ -1,14 +1,14 @@
 ﻿using HENG.ViewModels;
+using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
-namespace HENG.Views
+namespace HENG.UserControls
 {
-
-    public sealed partial class SettingsPage : Page
+    public sealed partial class SettingsControl : UserControl
     {
         public SettingsViewModel ViewModel => ViewModelLocator.Current.Settings;
-
-        public SettingsPage()
+        public ICommand BackCommand => ViewModelLocator.Current.Shell.BackCommand;
+        public SettingsControl()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;

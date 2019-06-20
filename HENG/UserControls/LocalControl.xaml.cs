@@ -1,20 +1,21 @@
 ﻿using HENG.ViewModels;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace HENG.Views
+namespace HENG.UserControls
 {
-    public sealed partial class LocalPage : Page
+    public sealed partial class LocalControl : UserControl
     {
         public LocalViewModel ViewModel => ViewModelLocator.Current.Local;
+        public ICommand BackCommand => ViewModelLocator.Current.Shell.BackCommand;
 
-        public LocalPage()
+        public LocalControl()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
         }
-
         private void Grid_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
             if (e.NewSize == e.PreviousSize) return;

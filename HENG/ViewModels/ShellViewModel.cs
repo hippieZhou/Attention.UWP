@@ -1,21 +1,58 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Views;
+using HENG.UserControls;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Windows.Input;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace HENG.ViewModels
 {
     public partial class ShellViewModel : ViewModelBase
     {
-        private readonly NavigationService _navService;
+        private ContentControl _root;
 
-        public ShellViewModel(NavigationService navigationService)
+        private ViewModelBase _controlViewModel;
+        public ViewModelBase ControlViewModel
         {
-            _navService = navigationService;
+            get { return _controlViewModel; }
+            set { Set(ref _controlViewModel, value); }
+        }
+
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(async () =>
+                    {
+                        var anim = _root.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _root.ActualHeight), 0);
+                        await anim.StartAsync();
+                    });
+                }
+                return _loadedCommand;
+            }
+        }
+
+        private ICommand _backCommand;
+        public ICommand BackCommand
+        {
+            get
+            {
+                if (_backCommand == null)
+                {
+
+                    _backCommand = new RelayCommand(async () =>
+                    {
+                        var anim = _root.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _root.ActualHeight));
+                        await anim.StartAsync();
+                    });
+                }
+                return _backCommand;
+            }
         }
 
         private ICommand _itemInvokedCommand;
@@ -25,52 +62,26 @@ namespace HENG.ViewModels
             {
                 if (_itemInvokedCommand == null)
                 {
-                    _itemInvokedCommand = new RelayCommand<string>(pageKey =>
+                    _itemInvokedCommand = new RelayCommand<string>(async pageKey =>
                     {
-                        _navService.NavigateTo(pageKey);
+                        if (pageKey == typeof(LocalViewModel).FullName)
+                        {
+                            _root.Content = new LocalControl();
+                        }
+                        if (pageKey == typeof(SettingsViewModel).FullName)
+                        {
+                            _root.Content = new SettingsControl();
+                        }
+                        await _root.Offset(0, duration: 1000).StartAsync();
                     });
                 }
                 return _itemInvokedCommand;
             }
         }
 
-        private ICommand _refreshCommand;
-        public ICommand RefreshCommand
+        public void Initialize(ContentControl contentControl)
         {
-            get
-            {
-                if (_refreshCommand == null)
-                {
-                    _refreshCommand = new RelayCommand(() =>
-                    {
-                        ViewModelLocator.Current.Photo.RefreshCommand.Execute(null);
-                    });
-                }
-                return _refreshCommand;
-            }
-        }
-
-        public void Initialize()
-        {
-            _navService.CurrentFrame.Navigated -= OnNavigated;
-            _navService.CurrentFrame.Navigated += OnNavigated;
-            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
-            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
-        }
-
-        private void OnNavigated(object sender, NavigationEventArgs e)
-        {
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = _navService.CanGoBack ?
-          AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
-        }
-
-        private void OnBackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (_navService.CanGoBack)
-            {
-                e.Handled = true;
-                _navService.GoBack();
-            }
+            _root = contentControl;
         }
     }
 }
