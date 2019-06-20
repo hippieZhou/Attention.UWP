@@ -7,7 +7,6 @@ using HENG.Core.Services;
 using HENG.Models;
 using HENG.Services;
 using HENG.Views;
-using HENG.Views;
 
 namespace HENG.ViewModels
 {
