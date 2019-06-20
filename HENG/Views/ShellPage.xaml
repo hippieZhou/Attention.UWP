@@ -39,8 +39,8 @@
                         Background="{ThemeResource SystemControlAcrylicWindowBrush}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -50,15 +50,8 @@
                             Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
                             Content="&#xE895;"
                             Style="{StaticResource PrimaryButtonRevealStyle}" />
-                        <Button
-                            x:Name="HeaderHome"
-                            Grid.Column="1"
-                            Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
-                            CommandParameter="HENG.ViewModels.ShellViewModel"
-                            Content="&#xE10F;"
-                            Style="{StaticResource PrimaryButtonRevealStyle}" />
                         <AutoSuggestBox
-                            Grid.Column="2"
+                            Grid.Column="1"
                             MaxWidth="480"
                             Margin="4"
                             VerticalAlignment="Center"
@@ -72,10 +65,17 @@
                         </AutoSuggestBox>
                         <Button
                             x:Name="HeaderLocal"
-                            Grid.Column="3"
+                            Grid.Column="2"
                             Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
                             CommandParameter="HENG.ViewModels.LocalViewModel"
                             Content="&#xE896;"
+                            Style="{StaticResource PrimaryButtonRevealStyle}" />
+                        <Button
+                            x:Name="HeaderFullScreen"
+                            Grid.Column="3"
+                            Command="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
+                            CommandParameter="HENG.ViewModels.ShellViewModel"
+                            Content="&#xE740;"
                             Style="{StaticResource PrimaryButtonRevealStyle}" />
                         <Button
                             x:Name="headerSetting"
@@ -101,6 +101,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="HeaderFullScreen.Visibility" Value="Visible" />
                         <Setter Target="HeaderLocal.Visibility" Value="Visible" />
                         <Setter Target="headerSetting.Visibility" Value="Visible" />
                         <Setter Target="headerMore.Visibility" Value="Collapsed" />
@@ -111,6 +112,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="HeaderFullScreen.Visibility" Value="Collapsed" />
                         <Setter Target="HeaderLocal.Visibility" Value="Collapsed" />
                         <Setter Target="headerSetting.Visibility" Value="Collapsed" />
                         <Setter Target="headerMore.Visibility" Value="Visible" />
