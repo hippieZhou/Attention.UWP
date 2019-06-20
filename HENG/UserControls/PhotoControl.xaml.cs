@@ -13,11 +13,9 @@ namespace HENG.UserControls
 {
     public sealed partial class PhotoControl : UserControl
     {
-        public PhotoViewModel ViewModel => ViewModelLocator.Current.Photo;
         public PhotoControl()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(FindName("AdaptiveGridViewControl") as GridView);
         }
 
         public object Header
@@ -29,6 +27,23 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(object), typeof(PhotoControl), new PropertyMetadata(null));
+
+        public PhotoViewModel ViewModel
+        {
+            get { return (PhotoViewModel)GetValue(ViewModelProperty); }
+            set { SetValue(ViewModelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(PhotoViewModel), typeof(PhotoControl), new PropertyMetadata(null,(d,e)=> 
+            {
+                if (d is PhotoControl handler)
+                {
+                    var vm = e.NewValue as PhotoViewModel;
+                    vm.Initialize(handler.FindName("AdaptiveGridViewControl") as GridView);
+                }
+            }));
 
         private void AdaptiveGridViewControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {

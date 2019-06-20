@@ -4,12 +4,12 @@ using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace HENG.UserControls
+namespace HENG.Views
 {
     public sealed partial class LocalControl : UserControl
     {
         public LocalViewModel ViewModel => ViewModelLocator.Current.Local;
-        public ICommand BackCommand => ViewModelLocator.Current.Shell.BackCommand;
+        public ICommand BackCommand => ViewModelLocator.Current.Shell.NavBackCommand;
 
         public LocalControl()
         {

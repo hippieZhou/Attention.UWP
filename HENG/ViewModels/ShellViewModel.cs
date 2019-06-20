@@ -12,13 +12,6 @@ namespace HENG.ViewModels
     {
         private ContentControl _rootControl;
 
-        private ViewModelBase _controlViewModel;
-        public ViewModelBase ControlViewModel
-        {
-            get { return _controlViewModel; }
-            set { Set(ref _controlViewModel, value); }
-        }
-
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -36,32 +29,14 @@ namespace HENG.ViewModels
             }
         }
 
-        private ICommand _backCommand;
-        public ICommand BackCommand
+        private ICommand _navToCommand;
+        public ICommand NavToCommand
         {
             get
             {
-                if (_backCommand == null)
+                if (_navToCommand == null)
                 {
-
-                    _backCommand = new RelayCommand(async () =>
-                    {
-                        var anim = _rootControl.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _rootControl.ActualHeight));
-                        await anim.StartAsync();
-                    });
-                }
-                return _backCommand;
-            }
-        }
-
-        private ICommand _itemInvokedCommand;
-        public ICommand ItemInvokedCommand
-        {
-            get
-            {
-                if (_itemInvokedCommand == null)
-                {
-                    _itemInvokedCommand = new RelayCommand<string>(async controlKey =>
+                    _navToCommand = new RelayCommand<string>(async controlKey =>
                     {
                         if (ViewModelLocator.ControlsByKey.TryGetValue(controlKey, out Type type))
                         {
@@ -70,7 +45,25 @@ namespace HENG.ViewModels
                         }
                     });
                 }
-                return _itemInvokedCommand;
+                return _navToCommand;
+            }
+        }
+
+        private ICommand _navBackCommand;
+        public ICommand NavBackCommand
+        {
+            get
+            {
+                if (_navBackCommand == null)
+                {
+
+                    _navBackCommand = new RelayCommand(async () =>
+                    {
+                        var anim = _rootControl.Offset(0, -(float)Math.Max(Window.Current.Bounds.Height, _rootControl.ActualHeight));
+                        await anim.StartAsync();
+                    });
+                }
+                return _navBackCommand;
             }
         }
 

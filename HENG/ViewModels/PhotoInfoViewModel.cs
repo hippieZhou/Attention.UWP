@@ -105,7 +105,7 @@ namespace HENG.ViewModels
                         {
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
                         }
-                        await ViewModelLocator.Current.Photo.TryBackwardAsync(StoredItem, animation);
+                        await ViewModelLocator.Current.Home.Photo.TryBackwardAsync(StoredItem, animation);
                     }, () => StoredItem != null);
                 }
                 return _backCommand;

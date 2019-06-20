@@ -17,20 +17,6 @@ namespace HENG.ViewModels
 {
     public class PhotoViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
-        public override ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand<object>(obj => 
-                    {
-                    });
-                }
-                return _loadedCommand;
-            }
-        }
-
         public override ICommand ItemClickCommand
         {
             get
@@ -49,7 +35,7 @@ namespace HENG.ViewModels
                                 var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
                                 element.Opacity = 0d;
                             };
-                            ViewModelLocator.Current.PhotoInfo.TryForwardStart(StoredItem, animation);
+                            ViewModelLocator.Current.Home.PhotoInfo.TryForwardStart(StoredItem, animation);
                         }
                     });
                 }
