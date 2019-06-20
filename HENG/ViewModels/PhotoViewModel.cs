@@ -2,10 +2,10 @@
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -151,7 +151,7 @@ namespace HENG.ViewModels
         public virtual ICommand ItemClickCommand => _itemClickCommand;
 
         private ICommand _refreshCommand;
-        public ICommand RefreshCommand
+        public virtual ICommand RefreshCommand
         {
             get
             {
@@ -163,6 +163,22 @@ namespace HENG.ViewModels
                     });
                 }
                 return _refreshCommand;
+            }
+        }
+
+        private ICommand _backToTopCommand;
+        public virtual ICommand BackToTopCommand
+        {
+            get
+            {
+                if (_backToTopCommand == null)
+                {
+                    _backToTopCommand = new RelayCommand(() =>
+                    {
+                        _listView.FindDescendant<ScrollViewer>()?.ChangeView(0.0f, 0.0f, 1.0f, false);
+                    });
+                }
+                return _backToTopCommand;
             }
         }
     }

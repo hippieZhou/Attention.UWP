@@ -93,7 +93,6 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="HeaderFullScreen.Visibility" Value="Visible" />
                         <Setter Target="HeaderLocal.Visibility" Value="Visible" />
                         <Setter Target="headerSetting.Visibility" Value="Visible" />
                         <Setter Target="headerMore.Visibility" Value="Collapsed" />
@@ -104,7 +103,6 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="HeaderFullScreen.Visibility" Value="Collapsed" />
                         <Setter Target="HeaderLocal.Visibility" Value="Collapsed" />
                         <Setter Target="headerSetting.Visibility" Value="Collapsed" />
                         <Setter Target="headerMore.Visibility" Value="Visible" />

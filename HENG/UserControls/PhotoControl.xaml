@@ -159,10 +159,11 @@
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
 
-        <Button Click="ToTopButton_Click"
-            Margin="32"
+        <Button
+            Margin="24"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
+            Command="{x:Bind ViewModel.BackToTopCommand, Mode=OneWay}"
             Style="{StaticResource UpButtonRevealStyle}">
             <i:Interaction.Behaviors>
                 <behaviors:Scale

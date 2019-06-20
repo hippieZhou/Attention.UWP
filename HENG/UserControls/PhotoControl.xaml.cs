@@ -1,6 +1,5 @@
 ﻿using HENG.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Controls;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Numerics;
 using Windows.Foundation;
@@ -15,16 +14,10 @@ namespace HENG.UserControls
     public sealed partial class PhotoControl : UserControl
     {
         public PhotoViewModel ViewModel => ViewModelLocator.Current.Photo;
-        private ScrollViewer myScrollViewer;
         public PhotoControl()
         {
             this.InitializeComponent();
             ViewModel.Initialize(FindName("AdaptiveGridViewControl") as GridView);
-
-            AdaptiveGridViewControl.Loaded += (sender, e) =>
-            {
-                myScrollViewer = AdaptiveGridViewControl.FindDescendant<ScrollViewer>();
-            };
         }
 
         public object Header
@@ -100,11 +93,6 @@ namespace HENG.UserControls
             {
                 Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
             };
-        }
-
-        private void ToTopButton_Click(object sender, RoutedEventArgs e)
-        {
-            myScrollViewer?.ChangeView(0.0f, 0.0f, 1.0f, false);
         }
     }
 }
