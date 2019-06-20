@@ -12,11 +12,7 @@
     mc:Ignorable="d">
     <Page.Transitions>
         <TransitionCollection>
-            <NavigationThemeTransition>
-                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <DrillInNavigationTransitionInfo />
-                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
-            </NavigationThemeTransition>
+            <EdgeUIThemeTransition Edge="Top" />
         </TransitionCollection>
     </Page.Transitions>
 
