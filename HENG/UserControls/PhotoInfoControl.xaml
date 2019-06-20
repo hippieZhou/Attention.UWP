@@ -34,21 +34,80 @@
             PaneBackground="{ThemeResource SystemControlAcrylicElementBrush}"
             PanePlacement="Right">
             <SplitView.Pane>
-                <controls:HeaderedItemsControl Margin="12">
-                    <controls:HeaderedItemsControl.Header>
-                        <ListViewHeaderItem Margin="0,0,0,12" Content="图片信息" />
-                    </controls:HeaderedItemsControl.Header>
-                    <controls:HeaderedItemsControl.Items>
-                        <controls:HeaderedContentControl Content="{x:Bind ViewModel.StoredItem.Views, Mode=OneWay}">
-                            <controls:HeaderedContentControl.Header>
-                                <TextBlock
-                                    FontWeight="Light"
-                                    Foreground="Gray"
-                                    Text="浏览" />
-                            </controls:HeaderedContentControl.Header>
-                        </controls:HeaderedContentControl>
-                    </controls:HeaderedItemsControl.Items>
-                </controls:HeaderedItemsControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <controls:HeaderedItemsControl Grid.Row="0">
+                        <controls:HeaderedItemsControl.Header>
+                            <ListViewHeaderItem x:Uid="Shell_Photo" Margin="0,0,0,12" />
+                        </controls:HeaderedItemsControl.Header>
+                        <controls:HeaderedItemsControl.Items>
+                            <muxc:NavigationViewItem Content="{x:Bind ViewModel.StoredItem.User, Mode=OneWay}">
+                                <muxc:NavigationViewItem.Icon>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEE57;" />
+                                </muxc:NavigationViewItem.Icon>
+                            </muxc:NavigationViewItem>
+                            <muxc:NavigationViewItem>
+                                <muxc:NavigationViewItem.Icon>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7F7;" />
+                                </muxc:NavigationViewItem.Icon>
+                                <muxc:NavigationViewItem.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind ViewModel.StoredItem.ImageWidth, Mode=OneWay}" />
+                                        <TextBlock FontWeight="Light" Text="x" />
+                                        <TextBlock Text="{x:Bind ViewModel.StoredItem.ImageHeight, Mode=OneWay}" />
+                                    </StackPanel>
+                                </muxc:NavigationViewItem.Content>
+                            </muxc:NavigationViewItem>
+                            <muxc:NavigationViewItem Content="{x:Bind ViewModel.StoredItem.Type, Mode=OneWay}">
+                                <muxc:NavigationViewItem.Icon>
+                                    <SymbolIcon Symbol="Flag" />
+                                </muxc:NavigationViewItem.Icon>
+                            </muxc:NavigationViewItem>
+                            <muxc:NavigationViewItem Content="{x:Bind ViewModel.StoredItem.Tags, Mode=OneWay}">
+                                <muxc:NavigationViewItem.Icon>
+                                    <SymbolIcon Symbol="Tag" />
+                                </muxc:NavigationViewItem.Icon>
+                            </muxc:NavigationViewItem>
+                        </controls:HeaderedItemsControl.Items>
+                    </controls:HeaderedItemsControl>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <AppBarButton
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Icon="Comment"
+                            Label="{x:Bind ViewModel.StoredItem.Comments, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Icon="Download"
+                            Label="{x:Bind ViewModel.StoredItem.Downloads, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            Icon="Favorite"
+                            Label="{x:Bind ViewModel.StoredItem.Favorites, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            Icon="Like"
+                            Label="{x:Bind ViewModel.StoredItem.Likes, Mode=OneWay}" />
+                        <AppBarButton
+                            Grid.Column="4"
+                            HorizontalAlignment="Center"
+                            Icon="View"
+                            Label="{x:Bind ViewModel.StoredItem.Views, Mode=OneWay}" />
+                    </Grid>
+                </Grid>
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid SizeChanged="Grid_SizeChanged">

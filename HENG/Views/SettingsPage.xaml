@@ -81,7 +81,7 @@
                 Text="{x:Bind ViewModel.DownloadPath, Mode=OneWay}"
                 TextBoxStyle="{StaticResource ReadOnlyAutoSuggestBoxTextBoxStyle}">
                 <AutoSuggestBox.QueryIcon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC50;" />
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED25;" />
                 </AutoSuggestBox.QueryIcon>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="QuerySubmitted">
