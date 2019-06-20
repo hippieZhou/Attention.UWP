@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -11,6 +12,16 @@ namespace HENG.UserControls
         {
             this.InitializeComponent();
         }
+
+        public ScrollHeaderMode HeaderMode
+        {
+            get { return (ScrollHeaderMode)GetValue(HeaderModeProperty); }
+            set { SetValue(HeaderModeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HeaderMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderModeProperty =
+            DependencyProperty.Register("HeaderMode", typeof(ScrollHeaderMode), typeof(HeaderControl), new PropertyMetadata(ScrollHeaderMode.None));
 
         public ICommand RefreshCommand
         {
