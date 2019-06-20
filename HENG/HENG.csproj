@@ -140,11 +140,14 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\LocalControl.xaml.cs">
-      <DependentUpon>LocalControl.xaml</DependentUpon>
+    <Compile Include="UserControls\NavBackControl.xaml.cs">
+      <DependentUpon>NavBackControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsControl.xaml.cs">
-      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    <Compile Include="Views\LocalView.xaml.cs">
+      <DependentUpon>LocalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\PhotoInfoViewModel.cs" />
@@ -194,11 +197,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\LocalControl.xaml">
+    <Page Include="UserControls\NavBackControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsControl.xaml">
+    <Page Include="Views\LocalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,17 +1,15 @@
 ﻿using HENG.ViewModels;
-using System.Windows.Input;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace HENG.Views
 {
-    public sealed partial class LocalControl : UserControl
+    public sealed partial class LocalView : UserControl
     {
         public LocalViewModel ViewModel => ViewModelLocator.Current.Local;
-        public ICommand BackCommand => ViewModelLocator.Current.Shell.NavBackCommand;
 
-        public LocalControl()
+        public LocalView()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;

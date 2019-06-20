@@ -24,8 +24,8 @@ namespace HENG.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             Configure(typeof(HomeViewModel).FullName, typeof(HomeView));
-            Configure(typeof(LocalViewModel).FullName, typeof(LocalControl));
-            Configure(typeof(SettingsViewModel).FullName, typeof(SettingsControl));
+            Configure(typeof(LocalViewModel).FullName, typeof(LocalView));
+            Configure(typeof(SettingsViewModel).FullName, typeof(SettingsView));
 
             SimpleIoc.Default.Register(() => new DbContext());
             SimpleIoc.Default.Register(() => new PixabayService());
