@@ -48,15 +48,5 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for ItemInvokedCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemInvokedCommandProperty =
             DependencyProperty.Register("ItemInvokedCommand", typeof(ICommand), typeof(HeaderControl), new PropertyMetadata(null));
-
-        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SubHeaderGrid.Visibility = Visibility.Visible;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SubHeaderGrid.Visibility = Visibility.Collapsed;
-        }
     }
 }
