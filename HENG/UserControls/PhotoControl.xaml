@@ -131,11 +131,6 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
-            <!--<controls:AdaptiveGridView.Header>
-                <muxc:AnimatedVisualPlayer AutoPlay="True" Visibility="{x:Bind ViewModel.HeaderVisibility, Mode=OneWay}">
-                    <lottie:LottieVisualSource UriSource="ms-appx:///Assets/loading.json" />
-                </muxc:AnimatedVisualPlayer>
-            </controls:AdaptiveGridView.Header>-->
             <controls:AdaptiveGridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel

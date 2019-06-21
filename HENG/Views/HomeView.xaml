@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <uc:PhotoControl Background="{ThemeResource SystemControlAcrylicWindowBrush}" ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}">
+        <uc:PhotoControl ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}">
             <uc:PhotoControl.Header>
                 <uc:HeaderControl
                     Margin="0,0,6,0"

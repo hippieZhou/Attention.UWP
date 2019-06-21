@@ -1,10 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
-using System;
-using System.Diagnostics;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
 
 namespace HENG.UserControls
 {
@@ -54,7 +51,12 @@ namespace HENG.UserControls
 
         private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            Trace.WriteLine(DateTime.UtcNow);
+            SubHeaderGrid.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SubHeaderGrid.Visibility = Visibility.Collapsed;
         }
     }
 }
