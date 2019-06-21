@@ -1,4 +1,6 @@
 ﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using System;
+using System.Diagnostics;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -49,5 +51,10 @@ namespace HENG.UserControls
         // Using a DependencyProperty as the backing store for ItemInvokedCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemInvokedCommandProperty =
             DependencyProperty.Register("ItemInvokedCommand", typeof(ICommand), typeof(HeaderControl), new PropertyMetadata(null));
+
+        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine(DateTime.UtcNow);
+        }
     }
 }

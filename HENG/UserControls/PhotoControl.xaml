@@ -5,26 +5,32 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converters="using:HENG.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:pix="using:PixabaySharp.Models"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <converters:RandomColorBrushConverter x:Key="RandomColorBrushConverter" />
         <DataTemplate x:Key="ImageTemplate" x:DataType="pix:ImageItem">
             <Grid
                 x:Name="connectedElement"
-                Background="{ThemeResource NavigationViewExpandedPaneBackground}"
-                BorderBrush="{ThemeResource SystemControlBackgroundListMediumRevealBorderBrush}"
+                CornerRadius="4"
                 PointerEntered="Grid_PointerEntered"
                 PointerExited="Grid_PointerExited"
                 SizeChanged="Grid_SizeChanged">
+                <Grid.Background>
+                    <AcrylicBrush
+                        BackgroundSource="Backdrop"
+                        FallbackColor="{x:Bind Id, Converter={StaticResource RandomColorBrushConverter}}"
+                        TintColor="{x:Bind Id, Converter={StaticResource RandomColorBrushConverter}}"
+                        TintOpacity="0.4" />
+                </Grid.Background>
                 <controls:ImageEx
                     x:Name="imageEx"
                     CacheMode="BitmapCache"
@@ -101,7 +107,6 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-
     <Grid>
         <controls:AdaptiveGridView
             x:Name="AdaptiveGridViewControl"

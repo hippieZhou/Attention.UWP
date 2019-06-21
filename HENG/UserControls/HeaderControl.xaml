@@ -14,11 +14,7 @@
 
     <Grid>
         <controls:ScrollHeader Mode="{x:Bind HeaderMode}">
-            <Grid
-                x:Name="ScrollHeader"
-                Grid.Row="0"
-                MinHeight="60"
-                Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+            <Grid Height="60" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -38,7 +34,8 @@
                     VerticalAlignment="Center"
                     BorderBrush="Transparent"
                     BorderThickness="0"
-                    PlaceholderText="Find what you want ?"
+                    GotFocus="AutoSuggestBox_GotFocus"
+                    PlaceholderText="Search ..."
                     TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
                     <AutoSuggestBox.QueryIcon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
@@ -67,7 +64,23 @@
                     x:Name="headerMore"
                     Grid.Column="3"
                     Content="&#xE712;"
-                    Style="{StaticResource PrimaryButtonRevealStyle}" />
+                    Style="{StaticResource PrimaryButtonRevealStyle}">
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                Command="{x:Bind ItemInvokedCommand}"
+                                CommandParameter="HENG.ViewModels.LocalViewModel"
+                                Icon="Download"
+                                Text="Download" />
+                            <MenuFlyoutItem
+                                Command="{x:Bind ItemInvokedCommand}"
+                                CommandParameter="HENG.ViewModels.SettingsViewModel"
+                                Icon="Setting"
+                                Text="Settings" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+
+                </Button>
             </Grid>
         </controls:ScrollHeader>
         <VisualStateManager.VisualStateGroups>

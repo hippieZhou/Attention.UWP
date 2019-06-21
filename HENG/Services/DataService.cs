@@ -1,15 +1,20 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.System.UserProfile;
+using Windows.UI;
 using Windows.UI.Notifications;
 
 namespace HENG.Services
 {
     public class DataService
     {
+        public static IEnumerable<Color> SystemColors => typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null));
+
         public static void UpdateLiveTileAsync(IEnumerable<string> urls)
         {
             var photosContent = new TileBindingContentPhotos();

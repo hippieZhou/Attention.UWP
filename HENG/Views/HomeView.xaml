@@ -14,6 +14,7 @@
         <uc:PhotoControl Background="{ThemeResource SystemControlAcrylicWindowBrush}" ViewModel="{x:Bind ViewModel.Photo, Mode=OneWay}">
             <uc:PhotoControl.Header>
                 <uc:HeaderControl
+                    Margin="0,0,6,0"
                     HeaderMode="Fade"
                     ItemInvokedCommand="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
                     RefreshCommand="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
