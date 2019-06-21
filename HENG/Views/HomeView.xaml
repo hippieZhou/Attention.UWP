@@ -15,7 +15,7 @@
             <uc:PhotoControl.Header>
                 <uc:HeaderControl
                     Margin="0,0,6,0"
-                    HeaderMode="Fade"
+                    HeaderMode="{x:Bind ViewModel.HeaderMode, Mode=OneWay}"
                     ItemInvokedCommand="{x:Bind ViewModel.ItemInvokedCommand, Mode=OneWay}"
                     RefreshCommand="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
                     SearchCommand="{x:Bind ViewModel.SearchCommand, Mode=OneWay}" />

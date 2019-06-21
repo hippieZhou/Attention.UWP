@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
@@ -7,6 +8,13 @@ namespace HENG.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
+        private ScrollHeaderMode _headerMode = ScrollHeaderMode.Sticky;
+        public ScrollHeaderMode HeaderMode
+        {
+            get { return _headerMode; }
+            set { Set(ref _headerMode, value); }
+        }
+
         private PhotoViewModel _photo;
         public PhotoViewModel Photo
         {

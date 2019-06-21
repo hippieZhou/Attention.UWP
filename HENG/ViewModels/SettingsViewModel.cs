@@ -2,9 +2,8 @@
 using GalaSoft.MvvmLight.Command;
 using HENG.Helpers;
 using HENG.Services;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.Storage;
@@ -23,6 +22,17 @@ namespace HENG.ViewModels
             {
                 Set(ref _elementTheme, value);
                 SwitchThemeCommand.Execute((ElementTheme)ElementTheme);
+            }
+        }
+
+        private int _headerMode = (int)ScrollHeaderMode.Sticky;
+        public int HeaderMode
+        {
+            get { return _headerMode; }
+            set
+            {
+                Set(ref _headerMode, value);
+                SwitchHeaderModeCommand.Execute((ElementTheme)HeaderMode);
             }
         }
 
@@ -72,6 +82,21 @@ namespace HENG.ViewModels
                         });
                 }
                 return _switchThemeCommand;
+            }
+        }
+
+        private ICommand _switchHeaderModeCommand;
+        public ICommand SwitchHeaderModeCommand
+        {
+            get
+            {
+                if (_switchHeaderModeCommand == null)
+                {
+                    _switchHeaderModeCommand = new RelayCommand<ScrollHeaderMode>(mode =>
+                    {
+                    });
+                }
+                return _switchHeaderModeCommand;
             }
         }
 
