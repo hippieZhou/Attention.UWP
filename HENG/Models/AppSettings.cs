@@ -1,10 +1,6 @@
-﻿using Windows.ApplicationModel.Core;
-using Windows.Storage;
-using Windows.UI.Core;
+﻿using Windows.Storage;
 using Windows.UI.Xaml;
 using System;
-using GalaSoft.MvvmLight;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace HENG.Models
 {
@@ -14,39 +10,38 @@ namespace HENG.Models
     /// https://edi.wang/post/2017/9/9/windows-10-uwp-switching-language
     /// https://edi.wang/post/2015/12/30/windows-10-uwp-report-error-page
     /// </summary>
-    public class AppSettings: ObservableObject
+    public class AppSettings
     {
-        private const string ThemeKey = "AppBackgroundRequestedTheme";
-        public ApplicationDataContainer LocalSettings { get;private set; }
-        public AppSettings()
-        {
-            LocalSettings = ApplicationData.Current.LocalSettings;
-            Theme = ReadSettings(ThemeKey, ElementTheme.Default);
-        }
+        static private AppSettings _current = null;
+        static public AppSettings Current => _current ?? (_current = new AppSettings());
 
-        private ElementTheme _theme;
+        public ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
+
         public ElementTheme Theme
         {
-            get { return _theme; }
-            set { Set(ref _theme, value); }
+            get => GetSettingsValue("AppBackgroundRequestedTheme", ElementTheme.Default);
+            set => SetSettingsValue("AppBackgroundRequestedTheme", value);
         }
 
-        private void SaveSettings(string key, object value)
+        private TResult GetSettingsValue<TResult>(string name, TResult defaultValue)
         {
-            LocalSettings.Values[key] = value;
-        }
-
-        private T ReadSettings<T>(string key, T defaultValue)
-        {
-            if (LocalSettings.Values.ContainsKey(key))
+            try
             {
-                return (T)LocalSettings.Values[key];
+                if (!LocalSettings.Values.ContainsKey(name))
+                {
+                    LocalSettings.Values[name] = defaultValue;
+                }
+                return (TResult)LocalSettings.Values[name];
             }
-            if (null != defaultValue)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 return defaultValue;
             }
-            return default(T);
+        }
+        private void SetSettingsValue(string name, object value)
+        {
+            LocalSettings.Values[name] = value;
         }
     }
 }
