@@ -137,7 +137,6 @@
     <Compile Include="Models\DownloadItem.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\DownloadService.cs" />
-    <Compile Include="Services\ExNavigationService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -201,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Themes\NavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\HeaderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

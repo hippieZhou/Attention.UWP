@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="/Themes/AutoSuggestBox.xaml" />
                 <ResourceDictionary Source="/Themes/Button.xaml" />
                 <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
+                <ResourceDictionary Source="/Themes/NavigationView.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!--  Other app resources here  -->
