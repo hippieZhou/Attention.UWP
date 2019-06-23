@@ -9,6 +9,7 @@ namespace HENG.App.Views
         public HomePage()
         {
             this.InitializeComponent();
+            ViewModel.Initialize(masterView.FindName("adaptiveGridViewControl") as GridView, detailView.FindName("SmokeGrid") as Grid);
         }
     }
 }

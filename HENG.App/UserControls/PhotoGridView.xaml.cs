@@ -26,13 +26,7 @@ namespace HENG.App.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null,(d,e)=> 
-            {
-                if (d is PhotoGridView handler && e.NewValue is PhotoGridViewModel vm)
-                {
-                    vm.Initialize(handler.adaptiveGridViewControl);
-                }
-            }));
+            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {

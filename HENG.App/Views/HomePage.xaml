@@ -38,7 +38,15 @@
                     Duration="0:0:1" />
             </animations:Implicit.ShowAnimations>
         </Grid>
-        <uc:PhotoGridView Grid.Row="1" ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
+        <uc:PhotoGridView
+            x:Name="masterView"
+            Grid.Row="1"
+            ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
+        <uc:PhotoDetailView
+            x:Name="detailView"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

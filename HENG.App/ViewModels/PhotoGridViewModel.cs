@@ -8,8 +8,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System;
+using Windows.UI.Xaml.Media.Animation;
+using Windows.System;
 
 namespace HENG.App.ViewModels
 {
@@ -27,13 +31,15 @@ namespace HENG.App.ViewModels
 
                         if (StoredItem != null)
                         {
-                            //ConnectedAnimation animation = _listView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
-                            //animation.Completed += (sender, e) =>
-                            //{
-                            //    var element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
-                            //    element.Opacity = 0d;
-                            //};
-                            //ViewModelLocator.Current.Home.PhotoInfo.TryForwardStart(StoredItem, animation);
+                            ConnectedAnimation animation = _masterView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
+                            animation.Completed += (sender, e) =>
+                            {
+                                var element = _masterView.ContainerFromItem(StoredItem) as GridViewItem;
+                                element.Opacity = 0d;
+                            };
+
+                            _detailView.Visibility = Visibility.Visible;
+                            animation.TryStart(_detailView.FindName("destinationElement") as UIElement);
                         }
                     });
                 }
@@ -41,17 +47,98 @@ namespace HENG.App.ViewModels
             }
         }
 
-        //public async Task TryBackwardAsync(ImageItem storedItem, ConnectedAnimation animation)
-        //{
-        //    StoredItem = storedItem;
-        //    GridViewItem element = _listView.ContainerFromItem(StoredItem) as GridViewItem;
-        //    element.Opacity = 1.0d;
+        public override ICommand BackToMasterCommand
+        {
+            get
+            {
+                if (_backToMasterCommand == null)
+                {
+                    _backToMasterCommand = new RelayCommand(async () =>
+                    {
+                        ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _detailView.FindName("destinationElement") as UIElement);
+                        animation.Completed += (sender, e) =>
+                        {
+                            _detailView.Visibility = Visibility.Collapsed;
+                        };
+                        if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7))
+                        {
+                            animation.Configuration = new DirectConnectedAnimationConfiguration();
+                        }
 
-        //    _listView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
-        //    _listView.UpdateLayout();
+                        GridViewItem element = _masterView.ContainerFromItem(StoredItem) as GridViewItem;
+                        element.Opacity = 1.0d;
 
-        //    await _listView.TryStartConnectedAnimationAsync(animation, storedItem, "connectedElement");
-        //}
+                        _masterView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
+                        _masterView.UpdateLayout();
+                        await _masterView.TryStartConnectedAnimationAsync(animation, StoredItem, "connectedElement");
+                    });
+                }
+                return _backToMasterCommand;
+            }
+        }
+
+        private bool _isPaneOpen;
+        public bool IsPaneOpen
+        {
+            get { return _isPaneOpen; }
+            set { Set(ref _isPaneOpen, value); }
+        }
+
+        private ICommand _showTipsCommand;
+        public ICommand ShowTipsCommand
+        {
+            get
+            {
+                if (_showTipsCommand == null)
+                {
+                    _showTipsCommand = new RelayCommand(() =>
+                    {
+                        IsPaneOpen = !IsPaneOpen;
+                    }, () => StoredItem != null);
+                }
+                return _showTipsCommand;
+            }
+        }
+
+        private ICommand _browseCommand;
+        public ICommand BrowseCommand
+        {
+            get
+            {
+                if (_browseCommand == null)
+                {
+                    _browseCommand = new RelayCommand(async () =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(StoredItem?.PageURL))
+                        {
+                            await Launcher.LaunchUriAsync(new Uri(StoredItem.PageURL));
+                        }
+                    }, () => StoredItem != null);
+                }
+                return _browseCommand;
+            }
+        }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand(() =>
+                    {
+                        //var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);
+                        //if (count > 0)
+                        //{
+                        //    var download = new DownloadItem(StoredItem);
+                        //    await DownloadService.DownloadAsync(download);
+                        //}
+                    }, () => StoredItem != null);
+                }
+                return _downloadCommand;
+            }
+        }
     }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>
@@ -66,7 +153,8 @@ namespace HENG.App.ViewModels
 
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
-        protected GridView _listView;
+        protected GridView _masterView;
+        protected Grid _detailView;
 
         private IType _storedItem;
         public IType StoredItem
@@ -103,9 +191,10 @@ namespace HENG.App.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(GridView listView)
+        public virtual void Initialize(GridView listView, Grid detailView)
         {
-            _listView = listView;
+            _masterView = listView;
+            _detailView = detailView;
         }
 
         protected ICommand _loadedCommand;
@@ -184,11 +273,14 @@ namespace HENG.App.ViewModels
                 {
                     _backToTopCommand = new RelayCommand(() =>
                     {
-                        _listView.FindDescendant<ScrollViewer>()?.ChangeView(0.0f, 0.0f, 1.0f, false);
+                        _masterView.FindDescendant<ScrollViewer>()?.ChangeView(0.0f, 0.0f, 1.0f, false);
                     });
                 }
                 return _backToTopCommand;
             }
         }
+
+        protected ICommand _backToMasterCommand;
+        public virtual ICommand BackToMasterCommand => _backToMasterCommand;
     }
 }

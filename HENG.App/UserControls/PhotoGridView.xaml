@@ -121,6 +121,8 @@
             x:Name="adaptiveGridViewControl"
             Padding="12,0,8,0"
             animations:ReorderGridAnimation.Duration="300"
+            x:DeferLoadStrategy="Lazy"
+            x:FieldModifier="public"
             Background="Transparent"
             DataFetchSize="1"
             IncrementalLoadingTrigger="Edge"

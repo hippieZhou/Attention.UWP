@@ -127,6 +127,9 @@
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PhotoDetailView.xaml.cs">
+      <DependentUpon>PhotoDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\PhotoGridView.xaml.cs">
       <DependentUpon>PhotoGridView.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
     <Page Include="Themes\ScrollViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\PhotoDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PhotoGridView.xaml">
       <SubType>Designer</SubType>
