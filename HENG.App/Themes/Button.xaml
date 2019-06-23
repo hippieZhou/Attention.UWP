@@ -19,7 +19,7 @@
         x:Key="UpButtonRevealStyle"
         BasedOn="{StaticResource RoutePrimaryButtonStyle}"
         TargetType="Button">
-        <Setter Property="Content" Value="&#xE96D;" />
+        <Setter Property="Content" Value="&#xE878;" />
         <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
         <Setter Property="BorderBrush" Value="Transparent" />

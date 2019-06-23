@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:local="using:HENG.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="62"
@@ -19,12 +20,29 @@
             <Button
                 Command="{x:Bind OpenPaneCommand}"
                 Content="&#xEA37;"
+                FontWeight="Bold"
                 Style="{StaticResource RoutePrimaryButtonStyle}" />
             <TextBlock
                 Margin="12,0"
                 VerticalAlignment="Center"
                 Style="{StaticResource BaseTextBlockStyle}"
                 Text="HENG" />
+
+            <Button
+                Margin="6,0"
+                extensions:Mouse.Cursor="Hand"
+                Content="&#xE118;"
+                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                FontWeight="ExtraBold"
+                Foreground="{ThemeResource TextBoxButtonForegroundThemeBrush}"
+                Style="{StaticResource TextBlockButtonStyle}" />
+            <Button
+                extensions:Mouse.Cursor="Hand"
+                Content="&#xE712;"
+                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                FontWeight="ExtraBold"
+                Foreground="{ThemeResource TextBoxButtonForegroundThemeBrush}"
+                Style="{StaticResource TextBlockButtonStyle}" />
         </StackPanel>
     </Grid>
 </UserControl>
