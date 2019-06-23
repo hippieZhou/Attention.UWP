@@ -103,37 +103,61 @@ namespace HENG.App.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(GridView listView, int itemsPerPage = 20)
+        public virtual void Initialize(GridView listView)
         {
             _listView = listView;
-
-            if (Items == null)
-            {
-                Items = new IncrementalLoadingCollection<TSource, IType>(itemsPerPage,
-                    async () =>
-                    {
-                        await Task.Delay(1000);
-
-                        HeaderVisibility = Visibility.Collapsed;
-                        LoadingVisibility = Visibility.Visible;
-                        ErrorVisibility = Visibility.Collapsed;
-                    },
-                    () =>
-                    {
-                        LoadingVisibility = Visibility.Collapsed;
-                    },
-                    ex =>
-                    {
-                        ErrorVisibility = Visibility.Visible;
-                    });
-            };
         }
 
         protected ICommand _loadedCommand;
-        public virtual ICommand LoadedCommand => _loadedCommand;
+        public virtual ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(() =>
+                    {
+                        if (Items == null)
+                        {
+                            Items = new IncrementalLoadingCollection<TSource, IType>(itemsPerPage: 20,
+                                async () =>
+                                {
+                                    await Task.Delay(1000);
+
+                                    HeaderVisibility = Visibility.Collapsed;
+                                    LoadingVisibility = Visibility.Visible;
+                                    ErrorVisibility = Visibility.Collapsed;
+                                },
+                                () =>
+                                {
+                                    LoadingVisibility = Visibility.Collapsed;
+                                },
+                                ex =>
+                                {
+                                    ErrorVisibility = Visibility.Visible;
+                                });
+                        };
+                    });
+                }
+                return _loadedCommand;
+            }
+        }
 
         protected ICommand _itemClickCommand;
-        public virtual ICommand ItemClickCommand => _itemClickCommand;
+        public virtual ICommand ItemClickCommand
+        {
+            get
+            {
+                if (_itemClickCommand == null)
+                {
+                    _itemClickCommand = new RelayCommand<IType>(item =>
+                    {
+                        StoredItem = item;
+                    });
+                }
+                return _itemClickCommand;
+            }
+        }
 
         private ICommand _refreshCommand;
         public virtual ICommand RefreshCommand

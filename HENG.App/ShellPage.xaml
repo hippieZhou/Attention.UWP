@@ -28,6 +28,9 @@
 
     <Grid>
         <SplitView IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
+            <SplitView.Pane>
+                <uc:ViewPaneControl />
+            </SplitView.Pane>
             <SplitView.Content>
                 <Grid>
                     <Grid.RowDefinitions>

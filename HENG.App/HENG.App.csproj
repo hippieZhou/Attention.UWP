@@ -130,6 +130,9 @@
     <Compile Include="UserControls\PhotoGridView.xaml.cs">
       <DependentUpon>PhotoGridView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ViewPaneControl.xaml.cs">
+      <DependentUpon>ViewPaneControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\TitleBarControl.xaml.cs">
       <DependentUpon>TitleBarControl.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\PhotoGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ViewPaneControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

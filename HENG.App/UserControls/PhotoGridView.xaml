@@ -17,6 +17,12 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand, Mode=OneWay}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
     <UserControl.Resources>
         <converters:RandomColorBrushConverter x:Key="RandomColorBrushConverter" />
         <DataTemplate x:Key="ImageTemplate" x:DataType="pix:ImageItem">
@@ -161,6 +167,44 @@
             </controls:AdaptiveGridView.Footer>
         </controls:AdaptiveGridView>
 
+        <Button
+            Margin="24"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{x:Bind ViewModel.BackToTopCommand, Mode=OneWay}"
+            Style="{StaticResource UpButtonRevealStyle}">
+            <i:Interaction.Behaviors>
+                <behaviors:Scale
+                    x:Name="ButtonUp"
+                    AutomaticallyStart="True"
+                    CenterX="20"
+                    CenterY="20"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Back"
+                    ScaleX="1"
+                    ScaleY="1"
+                    Duration="300" />
+                <behaviors:Scale
+                    x:Name="ButtonDown"
+                    AutomaticallyStart="True"
+                    CenterX="20"
+                    CenterY="20"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Back"
+                    ScaleX="0.8"
+                    ScaleY="0.8"
+                    Duration="300" />
+                <ic:EventTriggerBehavior EventName="PointerEntered">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonUp}" />
+                </ic:EventTriggerBehavior>
+                <ic:EventTriggerBehavior EventName="PointerExited">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ButtonDown}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </Button>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -184,5 +228,4 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
-
 </UserControl>
