@@ -118,10 +118,28 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\RandomColorBrushConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="ShellPage.xaml.cs">
+      <DependentUpon>ShellPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PhotoGridView.xaml.cs">
+      <DependentUpon>PhotoGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TitleBarControl.xaml.cs">
+      <DependentUpon>TitleBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\PhotoGridViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -147,14 +165,64 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ShellPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\AutoSuggestBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\GridViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\PhotoGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TitleBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
+      <Version>5.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>5.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.1.190606001</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmLightLibs">
+      <Version>5.4.1.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HENG.Core\HENG.Core.csproj">
+      <Project>{c3edaf21-efce-48cc-bfba-61bed4b6d9ee}</Project>
+      <Name>HENG.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
