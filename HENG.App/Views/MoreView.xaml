@@ -34,7 +34,7 @@
                 CornerRadius="4">
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
-                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchThemeCommand}" CommandParameter="{Binding Source={StaticResource AppSettings}, Path=ElementTheme}" />
+                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchThemeCommand}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
                 <ComboBoxItem>

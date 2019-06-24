@@ -21,15 +21,15 @@ namespace HENG.App.Models
 
         public ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
 
-        public ElementTheme ElementTheme
-        {
-            get => GetSettingsValue("AppBackgroundRequestedTheme", ElementTheme.Default);
-            set
-            {
-                SetSettingsValue("AppBackgroundRequestedTheme", value);
-                RaisePropertyChanged(() => ElementTheme);
-            }
-        }
+        //public ElementTheme ElementTheme
+        //{
+        //    get => GetSettingsValue("AppBackgroundRequestedTheme", ElementTheme.Default);
+        //    set
+        //    {
+        //        SetSettingsValue("AppBackgroundRequestedTheme", value);
+        //        RaisePropertyChanged(() => ElementTheme);
+        //    }
+        //}
 
         public string AppName => "AppDisplayName".GetLocalized();
 
