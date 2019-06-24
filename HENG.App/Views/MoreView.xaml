@@ -13,19 +13,13 @@
     d:DesignWidth="320"
     mc:Ignorable="d">
 
-    <i:Interaction.Behaviors>
-        <ic:EventTriggerBehavior EventName="Loaded">
-            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
-        </ic:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
     <Grid Padding="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <controls:HeaderedItemsControl>
+        <controls:HeaderedItemsControl Grid.Row="1">
             <controls:HeaderedItemsControl.Header>
                 <TextBlock
                     x:Uid="Settings_Personalization"
@@ -37,8 +31,12 @@
                 x:Uid="Settings_Theme"
                 Margin="0,6"
                 HorizontalAlignment="Stretch"
-                CornerRadius="4"
-                SelectedIndex="{Binding ElementTheme, Mode=TwoWay}">
+                CornerRadius="4">
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="SelectionChanged">
+                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchThemeCommand}" CommandParameter="{Binding Source={StaticResource AppSettings}, Path=ElementTheme}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
                 <ComboBoxItem>
                     <ComboBoxItem.DataContext>
                         <xaml:ElementTheme>Default</xaml:ElementTheme>
@@ -64,56 +62,27 @@
                     </ComboBoxItem.Content>
                 </ComboBoxItem>
             </ComboBox>
-            <controls:HeaderedContentControl x:Uid="Settings_Download" Margin="0,6">
+            <controls:HeaderedContentControl x:Uid="Settings_Download">
                 <Button
                     Width="{Binding ElementName=Settings_Theme, Path=ActualWidth}"
                     Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
-                    Content="{x:Bind ViewModel.DownloadPath, Mode=OneWay}"
+                    Content="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=OneWay}"
                     CornerRadius="4"
                     Style="{ThemeResource ButtonRevealStyle}" />
             </controls:HeaderedContentControl>
-            <StackPanel
-                Margin="24"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Button
-                        Width="48"
-                        Height="48"
-                        Margin="4"
-                        Background="Transparent"
-                        Style="{ThemeResource ButtonRevealStyle}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                    </Button>
-                    <Button
-                        Width="48"
-                        Height="48"
-                        Margin="4"
-                        Background="Transparent"
-                        Style="{ThemeResource ButtonRevealStyle}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                    </Button>
-                    <Button
-                        Width="48"
-                        Height="48"
-                        Margin="4"
-                        Background="Transparent"
-                        Style="{ThemeResource ButtonRevealStyle}">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE715;" />
-                    </Button>
-                </StackPanel>
-            </StackPanel>
         </controls:HeaderedItemsControl>
-        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,12"
+            HorizontalAlignment="Center">
             <TextBlock
                 Foreground="Gray"
-                Style="{ThemeResource BodyTextBlockStyle}"
-                Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+                Style="{ThemeResource NavigationViewItemHeaderTextStyle}"
+                Text="{Binding Source={StaticResource AppSettings}, Path=AppName, Mode=TwoWay}" />
             <TextBlock
-                x:Uid="Settings_AboutDescription"
-                Margin="0,12"
                 Foreground="Gray"
-                Style="{ThemeResource BodyTextBlockStyle}" />
+                Style="{ThemeResource CaptionTextBlockStyle}"
+                Text="{Binding Source={StaticResource AppSettings}, Path=AppVersion, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

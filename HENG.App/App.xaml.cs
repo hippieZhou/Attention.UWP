@@ -1,79 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using HENG.App.Services;
+using HENG.Tasks;
+using Microsoft.Toolkit.Uwp.Helpers;
+using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace HENG.App
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            this.Suspending += (sender, e) =>
+            {
+                var deferral = e.SuspendingOperation.GetDeferral();
+                //TODO: Save application state and stop any background activity
+                deferral.Complete();
+            };
+            this.UnhandledException += (sender, e) => { e.Handled = true; };
         }
 
-        /// <summary>
-        /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used such as when the application is launched to open a specific file.
-        /// </summary>
-        /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (!(Window.Current.Content is Frame rootFrame))
-            {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+            if (e.PrelaunchActivated)
+                return;
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
-            }
-
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
-                ExtendAcrylicIntoTitleBar();
-            }
-
+            ExtendAcrylicIntoTitleBar();
             void ExtendAcrylicIntoTitleBar()
             {
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
@@ -82,30 +43,78 @@ namespace HENG.App
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
                 titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
             }
+
+            RegisterBackgroundTask();
+
+            await InitializeAsync();
+            await InitWindowAsync(e.Arguments, e.SplashScreen);
+            //await DownloadService.AttachToDownloadsAsync();
         }
 
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
-        }
+            base.OnBackgroundActivated(args);
 
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            var taskInstance = args.TaskInstance;
+            var deferral = taskInstance.GetDeferral();
+
+            taskInstance.Canceled += (sender, reason) =>
+            {
+                var tasks = BackgroundTaskRegistration.AllTasks.Values.Where(t => t.Name == DownloadService.NAME);
+                tasks.AsParallel().ForAll(p => p.Unregister(true));
+            };
+
             deferral.Complete();
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs e)
+        {
+            string arg = null;
+            if (e is ToastNotificationActivatedEventArgs)
+            {
+                var toastActivationArgs = e as ToastNotificationActivatedEventArgs;
+                arg = toastActivationArgs.Argument;
+            }
+            await InitWindowAsync(arg, e.SplashScreen);
+        }
+
+        private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen = null)
+        {
+            if (!(Window.Current.Content is Frame rootFrame))
+            {
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
+                Window.Current.Content = rootFrame;
+            }
+            rootFrame.Navigate(typeof(ShellPage), args);
+            Window.Current.Activate();
+
+            await StartupAsync();
+
+            return rootFrame;
+        }
+
+        private async Task InitializeAsync()
+        {
+            //await ViewModelLocator.Current.Db.Initialize();
+            await ThemeSelectorService.InitializeAsync();
+        }
+
+        private async Task StartupAsync()
+        {
+            await ThemeSelectorService.SetRequestedThemeAsync();
+        }
+
+        private void RegisterBackgroundTask()
+        {
+            BackgroundTaskRegistration registered = BackgroundTaskHelper.Register(typeof(HENGBackgroundTask),
+                                new TimeTrigger(15, true), false, true,
+                                new SystemCondition(SystemConditionType.InternetAvailable));
+            if (registered != null)
+            {
+                Trace.WriteLine($"Task {typeof(HENGBackgroundTask)} registered successfully.");
+            }
         }
     }
 }
