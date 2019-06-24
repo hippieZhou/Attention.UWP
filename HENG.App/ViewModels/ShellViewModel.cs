@@ -1,33 +1,23 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Views;
-using System;
 using System.Windows.Input;
-using Windows.UI.Xaml.Controls;
 
 namespace HENG.App.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        private readonly NavigationService _navService;
-        private Frame currentFrame;
-
-        public ShellViewModel(NavigationService navService)
-        {
-            _navService = navService;
-        }
-
-        public void Initialize(Frame contentFrame)
-        {
-            currentFrame = contentFrame;
-            _navService.CurrentFrame = currentFrame;
-        }
-
         private bool _isPaneOpen;
         public bool IsPaneOpen
         {
             get { return _isPaneOpen; }
             set { Set(ref _isPaneOpen, value); }
+        }
+
+        private ViewModelBase _selected;
+        public ViewModelBase Selected
+        {
+            get { return _selected; }
+            set { Set(ref _selected, value); }
         }
 
         private ICommand _loadedCommand;
@@ -39,28 +29,59 @@ namespace HENG.App.ViewModels
                 {
                     _loadedCommand = new RelayCommand(() =>
                     {
-                        _navService.NavigateTo(typeof(HomeViewModel).FullName);
+                        Selected = ViewModelLocator.Current.Home;
                     });
                 }
                 return _loadedCommand;
             }
         }
 
-        private ICommand _openPaneCommand;
-        public ICommand OpenPaneCommand
+        private ICommand _navToDownloadCommand;
+        public ICommand NavToDownloadCommand
         {
             get
             {
-                if (_openPaneCommand == null)
+                if (_navToDownloadCommand == null)
                 {
-                    _openPaneCommand = new RelayCommand(() =>
+                    _navToDownloadCommand = new RelayCommand(() =>
+                    {
+                        Selected = ViewModelLocator.Current.Local;
+                    });
+                }
+                return _navToDownloadCommand;
+            }
+        }
+
+        private ICommand _navToMoreCommand;
+        public ICommand NavToMoreCommand
+        {
+            get
+            {
+                if (_navToMoreCommand == null)
+                {
+                    _navToMoreCommand = new RelayCommand(() =>
                     {
                         IsPaneOpen = !IsPaneOpen;
                     });
                 }
-                return _openPaneCommand;
+                return _navToMoreCommand;
             }
         }
 
+        private ICommand _navToBackCommand;
+        public ICommand NavToBackCommand
+        {
+            get
+            {
+                if (_navToBackCommand == null)
+                {
+                    _navToBackCommand = new RelayCommand(() =>
+                    {
+                        Selected = ViewModelLocator.Current.Home;
+                    });
+                }
+                return _navToBackCommand;
+            }
+        }
     }
 }

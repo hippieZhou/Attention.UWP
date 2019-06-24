@@ -9,7 +9,7 @@ namespace HENG.App
         public ShellPage()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(contentFrame);
+            //ViewModel.Initialize(contentFrame);
             this.DataContext = ViewModel;
         }
     }

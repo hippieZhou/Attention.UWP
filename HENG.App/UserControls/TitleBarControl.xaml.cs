@@ -1,5 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Animations;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -12,18 +11,33 @@ namespace HENG.App.UserControls
             this.InitializeComponent();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public ICommand NavToBackCommand
         {
-            //this.Blur(30, 0, 0).Start();
+            get { return (ICommand)GetValue(NavToBackCommandProperty); }
+            set { SetValue(NavToBackCommandProperty, value); }
         }
 
-        public ICommand OpenPaneCommand
+        // Using a DependencyProperty as the backing store for NavToNackCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NavToBackCommandProperty =
+            DependencyProperty.Register("NavToNackCommand", typeof(ICommand), typeof(TitleBarControl), new PropertyMetadata(null));
+
+        public ICommand NavToDownloadCommand
         {
-            get { return (ICommand)GetValue(OpenPaneCommandProperty); }
-            set { SetValue(OpenPaneCommandProperty, value); }
+            get { return (ICommand)GetValue(NavToDownloadCommandProperty); }
+            set { SetValue(NavToDownloadCommandProperty, value); }
         }
-        // Using a DependencyProperty as the backing store for OpenPaneCommand.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty OpenPaneCommandProperty =
-            DependencyProperty.Register("OpenPaneCommand", typeof(ICommand), typeof(TitleBarControl), new PropertyMetadata(null));
+
+        // Using a DependencyProperty as the backing store for NavToDownloadCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NavToDownloadCommandProperty =
+            DependencyProperty.Register("NavToDownloadCommand", typeof(ICommand), typeof(TitleBarControl), new PropertyMetadata(null));
+
+        public ICommand NavToMoreCommand
+        {
+            get { return (ICommand)GetValue(NavToMoreCommandProperty); }
+            set { SetValue(NavToMoreCommandProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for NavToMoreCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NavToMoreCommandProperty =
+            DependencyProperty.Register("NavToMoreCommand", typeof(ICommand), typeof(TitleBarControl), new PropertyMetadata(null));
     }
 }

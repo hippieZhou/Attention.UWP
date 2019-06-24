@@ -8,6 +8,7 @@
     xmlns:local="using:HENG.App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:HENG.App.UserControls"
+    xmlns:view="using:HENG.App.Views"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
     <Page.Transitions>
@@ -29,7 +30,7 @@
     <Grid>
         <SplitView IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
             <SplitView.Pane>
-                <uc:ViewPaneControl />
+                <view:MoreView />
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid>
@@ -40,8 +41,15 @@
                     <uc:TitleBarControl
                         Grid.Row="0"
                         Height="62"
-                        OpenPaneCommand="{x:Bind ViewModel.OpenPaneCommand, Mode=OneWay}" />
-                    <Frame x:Name="contentFrame" Grid.Row="1" />
+                        NavToBackCommand="{x:Bind ViewModel.NavToBackCommand, Mode=OneWay}"
+                        NavToDownloadCommand="{x:Bind ViewModel.NavToDownloadCommand, Mode=OneWay}"
+                        NavToMoreCommand="{x:Bind ViewModel.NavToMoreCommand, Mode=OneWay}" />
+
+                    <ContentControl
+                        Grid.Row="1"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        ContentTemplate="{x:Bind ViewModel.Selected, Mode=OneWay, Converter={StaticResource ImplicitDataTemplateConverter}}" />
                 </Grid>
             </SplitView.Content>
         </SplitView>

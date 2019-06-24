@@ -1,17 +1,28 @@
-﻿<Page
-    x:Class="HENG.App.Views.HomePage"
+﻿<UserControl
+    x:Class="HENG.App.Views.HomeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:HENG.App.Views"
+    xmlns:local="using:HENG.App.Views"  
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:HENG.App.UserControls"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
     mc:Ignorable="d">
 
     <Grid>
+        <animations:Implicit.ShowAnimations>
+            <animations:TranslationAnimation
+                From="0, 100, 0"
+                To="0"
+                Duration="0:0:1" />
+            <animations:OpacityAnimation
+                From="0"
+                To="1.0"
+                Duration="0:0:1" />
+        </animations:Implicit.ShowAnimations>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -27,16 +38,6 @@
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
                 </AutoSuggestBox.QueryIcon>
             </AutoSuggestBox>
-            <animations:Implicit.ShowAnimations>
-                <animations:TranslationAnimation
-                    From="0, -200, 0"
-                    To="0"
-                    Duration="0:0:1" />
-                <animations:OpacityAnimation
-                    From="0"
-                    To="1.0"
-                    Duration="0:0:1" />
-            </animations:Implicit.ShowAnimations>
         </Grid>
         <uc:PhotoGridView
             x:Name="masterView"
@@ -47,7 +48,6 @@
             Grid.Row="0"
             Grid.RowSpan="2"
             ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -71,4 +71,4 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
-</Page>
+</UserControl>

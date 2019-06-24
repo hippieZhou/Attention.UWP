@@ -146,8 +146,9 @@ namespace HENG.App.ViewModels
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             var result = await ViewModelLocator.Current.Pix.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
-            await Task.Yield();
             return result != null ? result.Images : new List<ImageItem>();
+            //await Task.Yield();
+            //return new List<ImageItem>();
         }
     }
 

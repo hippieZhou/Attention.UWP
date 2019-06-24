@@ -118,12 +118,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Behaviors\CloseFlyoutAction.cs" />
+    <Compile Include="Behaviors\FocusAction.cs" />
+    <Compile Include="Converters\ImplicitDataTemplateConverter.cs" />
     <Compile Include="Converters\RandomColorBrushConverter.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="DataTemplates.xaml.cs">
+      <DependentUpon>DataTemplates.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Json.cs" />
+    <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Helpers\VisualTreeHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
@@ -133,18 +140,23 @@
     <Compile Include="UserControls\PhotoGridView.xaml.cs">
       <DependentUpon>PhotoGridView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ViewPaneControl.xaml.cs">
-      <DependentUpon>ViewPaneControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\TitleBarControl.xaml.cs">
       <DependentUpon>TitleBarControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LocalViewModel.cs" />
+    <Compile Include="ViewModels\MoreViewModel.cs" />
     <Compile Include="ViewModels\PhotoGridViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\HomePage.xaml.cs">
-      <DependentUpon>HomePage.xaml</DependentUpon>
+    <Compile Include="Views\LocalView.xaml.cs">
+      <DependentUpon>LocalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MoreView.xaml.cs">
+      <DependentUpon>MoreView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -167,10 +179,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ShellPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,6 +188,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\FlyoutPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,15 +215,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ViewPaneControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\TitleBarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HomePage.xaml">
+    <Page Include="Views\LocalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MoreView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,12 +251,18 @@
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
     </PackageReference>
+    <PackageReference Include="XamlFlair.UWP">
+      <Version>1.0.13</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HENG.Core\HENG.Core.csproj">
       <Project>{c3edaf21-efce-48cc-bfba-61bed4b6d9ee}</Project>
       <Name>HENG.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

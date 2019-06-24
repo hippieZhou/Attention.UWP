@@ -1,7 +1,5 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Views;
-using HENG.App.Views;
 using HENG.Core.Services;
 
 namespace HENG.App.ViewModels
@@ -16,19 +14,20 @@ namespace HENG.App.ViewModels
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            var nav = new NavigationService();
-            nav.Configure(typeof(HomeViewModel).FullName, typeof(HomePage));
-            SimpleIoc.Default.Register(() => nav);
 
             SimpleIoc.Default.Register(() => new PixabayService());
 
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
+            SimpleIoc.Default.Register<LocalViewModel>();
+            SimpleIoc.Default.Register<MoreViewModel>();
         }
 
         public PixabayService Pix => ServiceLocator.Current.GetInstance<PixabayService>();
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
+        public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
+        public MoreViewModel More => ServiceLocator.Current.GetInstance<MoreViewModel>();
     }
 }

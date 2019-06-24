@@ -1,18 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HENG.Helpers;
-using HENG.Services;
-using Microsoft.Toolkit.Uwp.UI.Controls;
-using System;
 using System.Windows.Input;
-using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
+using System;
+using Microsoft.Toolkit.Uwp.Extensions;
+using Windows.ApplicationModel;
+using HENG.App.Services;
 
-namespace HENG.ViewModels
+namespace HENG.App.ViewModels
 {
-    public class SettingsViewModel : ViewModelBase
+    public class MoreViewModel:ViewModelBase
     {
         private int _elementTheme = (int)ThemeSelectorService.Theme;
         public int ElementTheme
@@ -22,17 +21,6 @@ namespace HENG.ViewModels
             {
                 Set(ref _elementTheme, value);
                 SwitchThemeCommand.Execute((ElementTheme)ElementTheme);
-            }
-        }
-
-        private int _headerMode = (int)ThemeSelectorService.ScrollHeaderMode;
-        public int HeaderMode
-        {
-            get { return _headerMode; }
-            set
-            {
-                Set(ref _headerMode, value);
-                SwitchHeaderModeCommand.Execute((ElementTheme)HeaderMode);
             }
         }
 
@@ -77,26 +65,11 @@ namespace HENG.ViewModels
                 if (_switchThemeCommand == null)
                 {
                     _switchThemeCommand = new RelayCommand<ElementTheme>(async (param) =>
-                        {
-                            await ThemeSelectorService.SetThemeAsync(param);
-                        });
-                }
-                return _switchThemeCommand;
-            }
-        }
-
-        private ICommand _switchHeaderModeCommand;
-        public ICommand SwitchHeaderModeCommand
-        {
-            get
-            {
-                if (_switchHeaderModeCommand == null)
-                {
-                    _switchHeaderModeCommand = new RelayCommand<ScrollHeaderMode>(mode =>
                     {
+                        await ThemeSelectorService.SetThemeAsync(param);
                     });
                 }
-                return _switchHeaderModeCommand;
+                return _switchThemeCommand;
             }
         }
 
