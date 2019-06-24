@@ -39,6 +39,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <uc:TitleBarControl
+                        x:Name="titleBar"
                         Grid.Row="0"
                         Height="62"
                         NavToBackCommand="{x:Bind ViewModel.NavToBackCommand, Mode=OneWay}"
