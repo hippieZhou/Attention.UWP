@@ -27,9 +27,8 @@
             <ComboBox
                 x:Uid="Settings_Theme"
                 Margin="0,6"
-                HorizontalAlignment="Stretch"
-                CornerRadius="4"
-                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=ThemeMode, Mode=TwoWay}">
+                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=ThemeMode, Mode=TwoWay}"
+                Style="{StaticResource PrimaryComboBoxStyle}">
                 <ComboBoxItem>
                     <ComboBoxItem.DataContext>
                         <xaml:ElementTheme>Default</xaml:ElementTheme>
@@ -58,18 +57,17 @@
             <ComboBox
                 x:Uid="Settings_Language"
                 Margin="0,6"
-                HorizontalAlignment="Stretch"
-                CornerRadius="4"
-                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}">
-                <ComboBoxItem Content="en-US" />
-                <ComboBoxItem Content="zh-CN" />
+                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}"
+                Style="{StaticResource PrimaryComboBoxStyle}">
+                <ComboBoxItem x:Uid="Settings_Zh" Tag="zh-CN" />
+                <ComboBoxItem x:Uid="Settings_En" Tag="en-US" />
             </ComboBox>
             <Button
+                x:Uid="Settings_Download"
                 Margin="0,12"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
-                CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
-                Content="OPEN DEFAULT DOWNLOAD PATH"
+                CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=OneWay}"
                 CornerRadius="4"
                 Style="{ThemeResource ButtonRevealStyle}" />
         </controls:HeaderedItemsControl>

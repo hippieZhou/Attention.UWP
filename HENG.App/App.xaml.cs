@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
+using Windows.Globalization;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -98,15 +100,25 @@ namespace HENG.App
 
         private async Task InitializeAsync()
         {
+            if (SystemInformation.IsFirstRun)
+            {
+                if (Resources["AppSettings"] is AppSettings settings)
+                {
+                    settings.ThemeMode = (int)ElementTheme.Default;
+                    settings.Language = Language.CurrentInputMethodLanguageTag == "zh-Hans-CN" ? 0 : 1;
+                }
+            }
             await Task.Yield();
             //await ViewModelLocator.Current.Db.Initialize();
         }
 
         private async Task StartupAsync()
         {
-            if (Resources["AppSettings"] is AppSettings appSettings)
+            if (Resources["AppSettings"] is AppSettings settings)
             {
-                appSettings.UpdateTheme();
+                settings.UpdateTheme();
+                settings.UpdateLanguage();
+                await settings.UpdateDownloadPathAsync();
             }
             await Task.Yield();
         }

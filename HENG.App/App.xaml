@@ -21,6 +21,7 @@
 
                 <ResourceDictionary Source="/Themes/AutoSuggestBox.xaml" />
                 <ResourceDictionary Source="/Themes/Button.xaml" />
+                <ResourceDictionary Source="/Themes/ComboBox.xaml" />
                 <ResourceDictionary Source="/Themes/FlyoutPresenter.xaml" />
                 <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />

@@ -124,33 +124,33 @@
     <value>HENG</value>
   </data>
   <data name="Settings_Download.Content" xml:space="preserve">
-    <value>Open Default Download Path</value>
+    <value>打开默认下载路径</value>
   </data>
   <data name="Settings_En.Content" xml:space="preserve">
-    <value>English</value>
+    <value>英文</value>
   </data>
   <data name="Settings_Language.Header" xml:space="preserve">
-    <value>Language</value>
+    <value>语言</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
-    <value>Personalization</value>
+    <value>个性化</value>
   </data>
   <data name="Settings_Theme.Header" xml:space="preserve">
-    <value>Theme</value>
+    <value>应用模式</value>
   </data>
   <data name="Settings_Theme_Dark.Text" xml:space="preserve">
-    <value>Dark</value>
+    <value>暗</value>
   </data>
   <data name="Settings_Theme_Default.Text" xml:space="preserve">
-    <value>Windows Default</value>
+    <value>系统默认</value>
   </data>
   <data name="Settings_Theme_Light.Text" xml:space="preserve">
-    <value>Light</value>
+    <value>亮</value>
   </data>
   <data name="Settings_Zh.Content" xml:space="preserve">
-    <value>Chinese</value>
+    <value>中文</value>
   </data>
   <data name="Shell_Photo.Content" xml:space="preserve">
-    <value>Information</value>
+    <value>信息</value>
   </data>
 </root>

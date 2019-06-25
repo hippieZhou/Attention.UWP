@@ -1,8 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using HENG.App.Services;
 using Microsoft.Toolkit.Uwp.Extensions;
 using System;
-using System.IO;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
 using Windows.Storage;
@@ -18,7 +17,7 @@ namespace HENG.App.Models
     /// https://edi.wang/post/2017/9/9/windows-10-uwp-switching-language
     /// https://edi.wang/post/2015/12/30/windows-10-uwp-report-error-page
     /// </summary>
-    public class AppSettings: ObservableObject
+    public class AppSettings : ObservableObject
     {
         static private AppSettings _current = null;
         static public AppSettings Current => _current ?? (_current = new AppSettings());
@@ -47,7 +46,8 @@ namespace HENG.App.Models
             {
                 SetSettingsValue(nameof(Language), value);
                 RaisePropertyChanged(() => Language);
-                ApplicationLanguages.PrimaryLanguageOverride = value == 1 ? "zh-CN" : "en-US";
+
+                UpdateLanguage();
             }
         }
 
@@ -62,7 +62,40 @@ namespace HENG.App.Models
             }
         }
 
-        public string DownloadPath => Path.Combine(KnownFolders.PicturesLibrary.Path, "HENG");
+        //public string DownloadPath { get; private set; }
+
+        private string _downloadPath;
+        public string DownloadPath
+        {
+            get { return _downloadPath; }
+            set
+            {
+                _downloadPath = value;
+                RaisePropertyChanged(() => DownloadPath);
+            }
+        }
+
+        public void UpdateTheme()
+        {
+            var theme = (ElementTheme)ThemeMode;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = theme == ElementTheme.Default || theme == ElementTheme.Light ? Colors.Black : Colors.White;
+            if (Window.Current.Content is FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = theme;
+            }
+        }
+
+        public void UpdateLanguage()
+        {
+            ApplicationLanguages.PrimaryLanguageOverride = Language == 0 ? "zh-Hans-CN" : "en-US";
+        }
+
+        public async Task UpdateDownloadPathAsync()
+        {
+            StorageFolder folder = await KnownFolders.PicturesLibrary.GetFolderAsync("HENG");
+            DownloadPath = folder.Path;
+        }
 
         private TResult GetSettingsValue<TResult>(string name, TResult defaultValue)
         {
@@ -80,20 +113,10 @@ namespace HENG.App.Models
                 return defaultValue;
             }
         }
+
         private void SetSettingsValue(string name, object value)
         {
             LocalSettings.Values[name] = value;
-        }
-
-        public void UpdateTheme()
-        {
-            var theme = (ElementTheme)ThemeMode;
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonForegroundColor = theme == ElementTheme.Default || theme == ElementTheme.Light ? Colors.Black : Colors.White;
-            if (Window.Current.Content is FrameworkElement rootElement)
-            {
-                rootElement.RequestedTheme = theme;
-            }
         }
     }
 }

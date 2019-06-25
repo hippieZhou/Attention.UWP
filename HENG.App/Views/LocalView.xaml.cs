@@ -11,6 +11,35 @@ namespace HENG.App.Views
         public LocalView()
         {
             this.InitializeComponent();
+            //this.Loaded += (sender, e) =>
+            //{
+            //    var compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
+
+            //    _visual = compositor.CreateSpriteVisual();
+            //    _visual.Offset = new Vector3(50.0f, 50.0f, 0.0f);
+
+            //    var offsetAnimation = compositor.CreateVector3KeyFrameAnimation();
+            //    offsetAnimation.Target = nameof(Visual.Offset);
+            //    offsetAnimation.InsertExpressionKeyFrame(1.0f, "this.FinalValue");
+            //    offsetAnimation.Duration = TimeSpan.FromMilliseconds(1500);
+
+            //    var rotationAnimation = compositor.CreateScalarKeyFrameAnimation();
+            //    rotationAnimation.Target = nameof(Visual.RotationAngleInDegrees);
+            //    rotationAnimation.InsertKeyFrame(0.0f, 0.0f);
+            //    rotationAnimation.InsertKeyFrame(1.0f, 360.0f);
+            //    rotationAnimation.Duration = TimeSpan.FromMilliseconds(1500);
+
+            //    var animationGroup = compositor.CreateAnimationGroup();
+            //    animationGroup.Add(offsetAnimation);
+            //    animationGroup.Add(rotationAnimation);
+
+            //    var implicitAnimations = compositor.CreateImplicitAnimationCollection();
+            //    implicitAnimations[nameof(Visual.Offset)] = animationGroup;
+
+            //    _visual.ImplicitAnimations = implicitAnimations;
+
+            //    ElementCompositionPreview.SetElementChildVisual(backToUpBtn, _visual);
+            //};
         }
 
         public ICommand NavToBackCommand
