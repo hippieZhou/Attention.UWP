@@ -141,6 +141,21 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </controls:AdaptiveGridView.ItemContainerTransitions>
+            <controls:AdaptiveGridView.Header>
+                <controls:ScrollHeader Mode="Fade">
+                    <Grid x:Name="headerGrid" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                        <AutoSuggestBox
+                            x:Name="autoSuggestBox"
+                            VerticalAlignment="Center"
+                            PlaceholderText="Search ..."
+                            TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
+                            <AutoSuggestBox.QueryIcon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
+                            </AutoSuggestBox.QueryIcon>
+                        </AutoSuggestBox>
+                    </Grid>
+                </controls:ScrollHeader>
+            </controls:AdaptiveGridView.Header>
             <controls:AdaptiveGridView.Footer>
                 <Grid Margin="0,12">
                     <StackPanel
@@ -216,6 +231,8 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="400" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="250" />
+                        <Setter Target="headerGrid.Padding" Value="0,12,0,24" />
+                        <Setter Target="autoSuggestBox.Width" Value="480" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -225,6 +242,8 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="380" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="260" />
+                        <Setter Target="headerGrid.Padding" Value="0,6,0,12" />
+                        <Setter Target="autoSuggestBox.Width" Value="420" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

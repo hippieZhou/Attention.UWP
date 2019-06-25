@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Windows.UI.Xaml"
@@ -27,7 +25,6 @@
                     Style="{ThemeResource SubtitleTextBlockStyle}" />
             </controls:HeaderedItemsControl.Header>
             <ComboBox
-                x:Name="Settings_Theme"
                 x:Uid="Settings_Theme"
                 Margin="0,6"
                 HorizontalAlignment="Stretch"
@@ -59,24 +56,22 @@
                 </ComboBoxItem>
             </ComboBox>
             <ComboBox
-                x:Name="Settings_Lang"
-                x:Uid="Settings_Lang"
+                x:Uid="Settings_Language"
                 Margin="0,6"
                 HorizontalAlignment="Stretch"
                 CornerRadius="4"
-                Header="语言"
                 SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}">
                 <ComboBoxItem Content="en-US" />
                 <ComboBoxItem Content="zh-CN" />
             </ComboBox>
-            <controls:HeaderedContentControl x:Uid="Settings_Download">
-                <Button
-                    Width="{Binding ElementName=Settings_Theme, Path=ActualWidth}"
-                    Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
-                    Content="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
-                    CornerRadius="4"
-                    Style="{ThemeResource ButtonRevealStyle}" />
-            </controls:HeaderedContentControl>
+            <Button
+                Margin="0,12"
+                HorizontalAlignment="Stretch"
+                Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
+                CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
+                Content="OPEN DEFAULT DOWNLOAD PATH"
+                CornerRadius="4"
+                Style="{ThemeResource ButtonRevealStyle}" />
         </controls:HeaderedItemsControl>
         <StackPanel
             Grid.Row="2"

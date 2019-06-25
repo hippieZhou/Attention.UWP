@@ -47,7 +47,7 @@ namespace HENG.App
 
             RegisterBackgroundTask();
 
-            //await InitializeAsync();
+            await InitializeAsync();
             await InitWindowAsync(e.Arguments, e.SplashScreen);
             //await DownloadService.AttachToDownloadsAsync();
         }
@@ -98,6 +98,7 @@ namespace HENG.App
 
         private async Task InitializeAsync()
         {
+            await Task.Yield();
             //await ViewModelLocator.Current.Db.Initialize();
         }
 
