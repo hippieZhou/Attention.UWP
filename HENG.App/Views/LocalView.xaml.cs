@@ -3,7 +3,6 @@ using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-
 namespace HENG.App.Views
 {
     public sealed partial class LocalView : UserControl
