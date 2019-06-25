@@ -10,8 +10,17 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid>
-        <animations:Implicit.ShowAnimations>
+    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
+        <Button
+            x:Name="backButton"
+            Margin="32,22,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            x:FieldModifier="public"
+            Command="{x:Bind NavToBackCommand}"
+            Content="&#xE0A6;"
+            Style="{StaticResource RoutePrimaryButtonStyle}" />
+        <!--<animations:Implicit.ShowAnimations>
             <animations:TranslationAnimation
                 From="0, 100, 0"
                 To="0"
@@ -20,7 +29,7 @@
                 From="0"
                 To="1.0"
                 Duration="0:0:1" />
-        </animations:Implicit.ShowAnimations>
+        </animations:Implicit.ShowAnimations>-->
 
         <TextBlock
             HorizontalAlignment="Center"

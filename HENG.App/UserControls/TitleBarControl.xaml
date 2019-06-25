@@ -19,63 +19,55 @@
             Margin="32,0,0,0"
             VerticalAlignment="Bottom"
             Orientation="Horizontal">
-            <Grid>
-                <Button
-                    x:Name="backButton"
-                    x:DeferLoadStrategy="Lazy"
-                    Command="{x:Bind NavToBackCommand}"
-                    Content="&#xE72A;"
-                    Style="{StaticResource RoutePrimaryButtonStyle}" />
-                <Button
-                    x:Name="menuButton"
-                    x:DeferLoadStrategy="Lazy"
-                    Content="&#xEA37;"
-                    FontWeight="Bold"
-                    Style="{StaticResource RoutePrimaryButtonStyle}">
-                    <Button.Flyout>
-                        <Flyout FlyoutPresenterStyle="{StaticResource PrimaryFlyoutPresenterStyle}" Placement="BottomEdgeAlignedLeft">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Button
-                                    Grid.Column="0"
-                                    Margin="6,0"
-                                    extensions:Mouse.Cursor="Hand"
-                                    Command="{x:Bind NavToDownloadCommand}"
-                                    Content="&#xE118;"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                    FontWeight="ExtraBold"
-                                    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                    Style="{StaticResource TextBlockButtonStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <ic:EventTriggerBehavior EventName="Click">
-                                            <behaviors:CloseFlyoutAction />
-                                        </ic:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                                <Button
-                                    Grid.Column="1"
-                                    Margin="6,0"
-                                    extensions:Mouse.Cursor="Hand"
-                                    Command="{x:Bind NavToMoreCommand}"
-                                    Content="&#xE712;"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                    FontWeight="ExtraBold"
-                                    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                    Style="{StaticResource TextBlockButtonStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <ic:EventTriggerBehavior EventName="Click">
-                                            <behaviors:CloseFlyoutAction />
-                                        </ic:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                </Button>
-                            </Grid>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-            </Grid>
+            <Button
+                x:Name="menuButton"
+                x:FieldModifier="public"
+                Content="&#xEA37;"
+                FontWeight="Bold"
+                Style="{StaticResource RoutePrimaryButtonStyle}">
+                <Button.Flyout>
+                    <Flyout FlyoutPresenterStyle="{StaticResource PrimaryFlyoutPresenterStyle}" Placement="BottomEdgeAlignedLeft">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                Grid.Column="0"
+                                Margin="6,0"
+                                extensions:Mouse.Cursor="Hand"
+                                Command="{x:Bind NavToDownloadCommand}"
+                                Content="&#xE118;"
+                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontWeight="ExtraBold"
+                                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                                <i:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="Click">
+                                        <behaviors:CloseFlyoutAction />
+                                    </ic:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Button>
+                            <Button
+                                Grid.Column="1"
+                                Margin="6,0"
+                                extensions:Mouse.Cursor="Hand"
+                                Command="{x:Bind NavToMoreCommand}"
+                                Content="&#xE712;"
+                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontWeight="ExtraBold"
+                                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                                <i:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="Click">
+                                        <behaviors:CloseFlyoutAction />
+                                    </ic:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Button>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
             <TextBlock
                 Margin="12,0"
                 VerticalAlignment="Center"

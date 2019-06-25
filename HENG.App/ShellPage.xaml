@@ -42,17 +42,17 @@
                         x:Name="titleBar"
                         Grid.Row="0"
                         Height="62"
-                        NavToBackCommand="{x:Bind ViewModel.NavToBackCommand, Mode=OneWay}"
                         NavToDownloadCommand="{x:Bind ViewModel.NavToDownloadCommand, Mode=OneWay}"
                         NavToMoreCommand="{x:Bind ViewModel.NavToMoreCommand, Mode=OneWay}" />
-
-                    <ContentControl
-                        Grid.Row="1"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        ContentTemplate="{x:Bind ViewModel.Selected, Mode=OneWay, Converter={StaticResource ImplicitDataTemplateConverter}}" />
+                    <view:HomeView x:Name="homeView" Grid.Row="1" />
                 </Grid>
             </SplitView.Content>
         </SplitView>
+        <view:LocalView
+            x:Name="localView"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            x:DeferLoadStrategy="Lazy"
+            NavToBackCommand="{x:Bind ViewModel.NavToBackCommand, Mode=OneWay}" />
     </Grid>
 </Page>

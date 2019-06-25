@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Uwp.UI.Animations;
-using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -10,21 +9,13 @@ namespace HENG.App.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        private Button _backButton;
-        private Button _menuButton;
+        private UserControl _locaView;
 
         private bool _isPaneOpen;
         public bool IsPaneOpen
         {
             get { return _isPaneOpen; }
             set { Set(ref _isPaneOpen, value); }
-        }
-
-        private ViewModelBase _selected;
-        public ViewModelBase Selected
-        {
-            get { return _selected; }
-            set { Set(ref _selected, value); }
         }
 
         private ICommand _loadedCommand;
@@ -34,11 +25,10 @@ namespace HENG.App.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand(() =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
-                        Selected = ViewModelLocator.Current.Home;
-                        _backButton.Visibility = Visibility.Collapsed;
-                        _menuButton.Visibility = Visibility.Visible;
+                        _locaView.Visibility = Visibility.Collapsed;
+                        await _locaView.Offset(0, -(float)Window.Current.Bounds.Height, 0).StartAsync();
                     });
                 }
                 return _loadedCommand;
@@ -54,17 +44,33 @@ namespace HENG.App.ViewModels
                 {
                     _navToDownloadCommand = new RelayCommand(async () =>
                     {
-                        Selected = ViewModelLocator.Current.Local;
-                        _backButton.Visibility = Visibility.Visible;
-                        _menuButton.Visibility = Visibility.Collapsed;
-
-                        await _backButton.Rotate(value: -180.0f,
-                            centerX: (float)(_backButton.ActualWidth / 2),
-                            centerY: (float)(_backButton.ActualHeight / 2),
-                            duration: 1000, delay: 0).Fade(value: 1.0f, duration: 800, delay: 0).StartAsync();
+                        LoadedCommand.Execute(null);
+                        _locaView.Visibility = Visibility.Visible;
+                        await _locaView.Offset(duration: 1000).StartAsync();
                     });
                 }
                 return _navToDownloadCommand;
+            }
+        }
+
+        private ICommand _navToBackCommand;
+        public ICommand NavToBackCommand
+        {
+            get
+            {
+                if (_navToBackCommand == null)
+                {
+                    _navToBackCommand = new RelayCommand(async () =>
+                    {
+                        var anim = _locaView.Offset(0, -(float)Window.Current.Bounds.Height, 1000);
+                        anim.Completed += (sender, e) => 
+                        {
+                            _locaView.Visibility = Visibility.Collapsed;
+                        };
+                        await anim.StartAsync();
+                    });
+                }
+                return _navToBackCommand;
             }
         }
 
@@ -84,37 +90,9 @@ namespace HENG.App.ViewModels
             }
         }
 
-        private ICommand _navToBackCommand;
-        public ICommand NavToBackCommand
+        public void Initialize(UserControl localView)
         {
-            get
-            {
-                if (_navToBackCommand == null)
-                {
-                    _navToBackCommand = new RelayCommand(async () =>
-                    {
-                        Selected = ViewModelLocator.Current.Home;
-
-                        var anim = _backButton.Rotate(value: 0.0f,
-                            centerX: (float)(_backButton.ActualWidth / 2),
-                            centerY: (float)(_backButton.ActualHeight / 2),
-                            duration: 1000, delay: 0).Fade(value: 0.2f, duration: 800, delay: 0);
-                        anim.Completed += (sender, e) => 
-                        {
-                            _backButton.Visibility = Visibility.Collapsed;
-                            _menuButton.Visibility = Visibility.Visible;
-                        };
-                        await anim.StartAsync();
-                    });
-                }
-                return _navToBackCommand;
-            }
-        }
-
-        public void Initialize(Button backButton, Button menuButton)
-        {
-            _backButton = backButton;
-            _menuButton = menuButton;
+            _locaView = localView;
         }
     }
 }

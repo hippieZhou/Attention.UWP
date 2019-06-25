@@ -11,16 +11,6 @@ namespace HENG.App.UserControls
             this.InitializeComponent();
         }
 
-        public ICommand NavToBackCommand
-        {
-            get { return (ICommand)GetValue(NavToBackCommandProperty); }
-            set { SetValue(NavToBackCommandProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for NavToNackCommand.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty NavToBackCommandProperty =
-            DependencyProperty.Register("NavToNackCommand", typeof(ICommand), typeof(TitleBarControl), new PropertyMetadata(null));
-
         public ICommand NavToDownloadCommand
         {
             get { return (ICommand)GetValue(NavToDownloadCommandProperty); }

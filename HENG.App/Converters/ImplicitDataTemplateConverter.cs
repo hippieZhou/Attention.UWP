@@ -5,6 +5,14 @@ using Windows.UI.Xaml.Data;
 
 namespace HENG.App.Converters
 {
+
+    /// <summary>
+    /// <ContentPresenter
+    ///         Grid.Row="1"
+    ///         HorizontalContentAlignment="Stretch"
+    ///         VerticalContentAlignment="Stretch"
+    ///         ContentTemplate="{x:Bind ViewModel.Selected, Mode=OneWay, Converter={StaticResource ImplicitDataTemplateConverter}}" />
+    /// </summary>
     public class ImplicitDataTemplateConverter : IValueConverter
     {
         private readonly Dictionary<string, object> cached;

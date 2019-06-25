@@ -9,8 +9,8 @@ namespace HENG.App
         public ShellPage()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(this.titleBar.FindName("backButton") as Button, this.titleBar.FindName("menuButton") as Button);
             this.DataContext = ViewModel;
+            ViewModel.Initialize(FindName("localView") as UserControl);
         }
     }
 }
