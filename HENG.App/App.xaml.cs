@@ -1,4 +1,5 @@
-﻿using HENG.App.Services;
+﻿using HENG.App.Models;
+using HENG.App.Services;
 using HENG.Tasks;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -46,7 +47,7 @@ namespace HENG.App
 
             RegisterBackgroundTask();
 
-            await InitializeAsync();
+            //await InitializeAsync();
             await InitWindowAsync(e.Arguments, e.SplashScreen);
             //await DownloadService.AttachToDownloadsAsync();
         }
@@ -98,12 +99,15 @@ namespace HENG.App
         private async Task InitializeAsync()
         {
             //await ViewModelLocator.Current.Db.Initialize();
-            await ThemeSelectorService.InitializeAsync();
         }
 
         private async Task StartupAsync()
         {
-            await ThemeSelectorService.SetRequestedThemeAsync();
+            if (Resources["AppSettings"] is AppSettings appSettings)
+            {
+                appSettings.UpdateTheme();
+            }
+            await Task.Yield();
         }
 
         private void RegisterBackgroundTask()

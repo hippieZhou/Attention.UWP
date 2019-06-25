@@ -1,9 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
+using HENG.App.Services;
 using Microsoft.Toolkit.Uwp.Extensions;
 using System;
 using System.IO;
 using Windows.ApplicationModel;
+using Windows.Globalization;
 using Windows.Storage;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
 namespace HENG.App.Models
@@ -21,15 +25,31 @@ namespace HENG.App.Models
 
         public ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
 
-        //public ElementTheme ElementTheme
-        //{
-        //    get => GetSettingsValue("AppBackgroundRequestedTheme", ElementTheme.Default);
-        //    set
-        //    {
-        //        SetSettingsValue("AppBackgroundRequestedTheme", value);
-        //        RaisePropertyChanged(() => ElementTheme);
-        //    }
-        //}
+        public int ThemeMode
+        {
+            get => GetSettingsValue(nameof(ThemeMode), (int)ElementTheme.Default);
+            set
+            {
+                SetSettingsValue(nameof(ThemeMode), value);
+                RaisePropertyChanged(() => ThemeMode);
+
+                UpdateTheme();
+            }
+        }
+
+        public int Language
+        {
+            get
+            {
+                return GetSettingsValue(nameof(Language), 0);
+            }
+            set
+            {
+                SetSettingsValue(nameof(Language), value);
+                RaisePropertyChanged(() => Language);
+                ApplicationLanguages.PrimaryLanguageOverride = value == 1 ? "zh-CN" : "en-US";
+            }
+        }
 
         public string AppName => "AppDisplayName".GetLocalized();
 
@@ -63,6 +83,17 @@ namespace HENG.App.Models
         private void SetSettingsValue(string name, object value)
         {
             LocalSettings.Values[name] = value;
+        }
+
+        public void UpdateTheme()
+        {
+            var theme = (ElementTheme)ThemeMode;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonForegroundColor = theme == ElementTheme.Default || theme == ElementTheme.Light ? Colors.Black : Colors.White;
+            if (Window.Current.Content is FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = theme;
+            }
         }
     }
 }

@@ -31,12 +31,8 @@
                 x:Uid="Settings_Theme"
                 Margin="0,6"
                 HorizontalAlignment="Stretch"
-                CornerRadius="4">
-                <i:Interaction.Behaviors>
-                    <ic:EventTriggerBehavior EventName="SelectionChanged">
-                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchThemeCommand}" />
-                    </ic:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
+                CornerRadius="4"
+                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=ThemeMode, Mode=TwoWay}">
                 <ComboBoxItem>
                     <ComboBoxItem.DataContext>
                         <xaml:ElementTheme>Default</xaml:ElementTheme>
@@ -62,11 +58,22 @@
                     </ComboBoxItem.Content>
                 </ComboBoxItem>
             </ComboBox>
+            <ComboBox
+                x:Name="Settings_Lang"
+                x:Uid="Settings_Lang"
+                Margin="0,6"
+                HorizontalAlignment="Stretch"
+                CornerRadius="4"
+                Header="语言"
+                SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}">
+                <ComboBoxItem Content="en-US" />
+                <ComboBoxItem Content="zh-CN" />
+            </ComboBox>
             <controls:HeaderedContentControl x:Uid="Settings_Download">
                 <Button
                     Width="{Binding ElementName=Settings_Theme, Path=ActualWidth}"
                     Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
-                    Content="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=OneWay}"
+                    Content="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
                     CornerRadius="4"
                     Style="{ThemeResource ButtonRevealStyle}" />
             </controls:HeaderedContentControl>
