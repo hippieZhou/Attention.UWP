@@ -67,7 +67,7 @@
                 Margin="0,12"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
-                CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=OneWay}"
+                CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
                 CornerRadius="4"
                 Style="{ThemeResource ButtonRevealStyle}" />
         </controls:HeaderedItemsControl>

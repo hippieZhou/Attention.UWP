@@ -136,7 +136,7 @@ namespace HENG.App.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                       int count = _dbContext.InsertItem(StoredItem);
+                        int count = _dbContext.InsertItem(StoredItem);
                         if (count > 0)
                         {
                             //TODO:download
