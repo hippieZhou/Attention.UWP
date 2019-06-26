@@ -14,11 +14,19 @@ using Windows.UI.Xaml.Controls;
 using System;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.System;
+using HENG.App.Models;
 
 namespace HENG.App.ViewModels
 {
     public class PhotoGridViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
+        private readonly DbContext _dbContext;
+
+        public PhotoGridViewModel(DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public override ICommand ItemClickCommand
         {
             get
@@ -192,10 +200,10 @@ namespace HENG.App.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(GridView listView, Grid detailView)
+        public virtual void Initialize(GridView masterView, Grid detailView)
         {
-            _masterView = listView;
-            _detailView = detailView;
+            _masterView = masterView ?? throw new Exception("Master View Not Find");
+            _detailView = detailView ?? throw new Exception("Detail View Not Find");
         }
 
         protected ICommand _loadedCommand;
@@ -214,17 +222,23 @@ namespace HENG.App.ViewModels
                                 {
                                     await Task.Delay(1000);
 
-                                    HeaderVisibility = Visibility.Collapsed;
                                     LoadingVisibility = Visibility.Visible;
+
+                                    HeaderVisibility = Visibility.Collapsed;
                                     ErrorVisibility = Visibility.Collapsed;
                                 },
                                 () =>
                                 {
                                     LoadingVisibility = Visibility.Collapsed;
+                                    HeaderVisibility = Visibility.Collapsed;
+                                    ErrorVisibility = Visibility.Collapsed;
                                 },
                                 ex =>
                                 {
                                     ErrorVisibility = Visibility.Visible;
+
+                                    HeaderVisibility = Visibility.Collapsed;
+                                    ErrorVisibility = Visibility.Collapsed;
                                 });
                         };
                     });

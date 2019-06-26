@@ -1,19 +1,41 @@
 ﻿using GalaSoft.MvvmLight;
-using System;
+using GalaSoft.MvvmLight.Command;
+using HENG.App.Models;
+using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
 namespace HENG.App.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
-        public PhotoGridViewModel PhotoGridViewModel { get; private set; } = new PhotoGridViewModel();
+        private readonly DbContext _dbContext;
+
+        public PhotoGridViewModel PhotoGridViewModel { get; private set; }
+
+        public HomeViewModel(DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(() =>
+                    {
+                       
+                    });
+                }
+                return _loadedCommand;
+            }
+        }
 
         public void Initialize(GridView masterView, Grid detailView)
         {
-            if (masterView == null)
-                throw new Exception("Master View Not Find");
-            if (detailView == null)
-                throw new Exception("Detail View Not Find");
+            PhotoGridViewModel = new PhotoGridViewModel(_dbContext);
             PhotoGridViewModel.Initialize(masterView, detailView);
         }
     }
