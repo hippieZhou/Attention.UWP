@@ -70,6 +70,18 @@
                 CommandParameter="{Binding Source={StaticResource AppSettings}, Path=DownloadPath, Mode=TwoWay}"
                 CornerRadius="4"
                 Style="{ThemeResource ButtonRevealStyle}" />
+            <Button
+                Margin="0,12"
+                HorizontalAlignment="Stretch"
+                Content="清理缓存"
+                CornerRadius="4"
+                Style="{ThemeResource ButtonRevealStyle}" />
+            <Button
+                Margin="0,12"
+                HorizontalAlignment="Stretch"
+                Content="网络诊断"
+                CornerRadius="4"
+                Style="{ThemeResource ButtonRevealStyle}" />
         </controls:HeaderedItemsControl>
         <StackPanel
             Grid.Row="2"
