@@ -10,18 +10,24 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
-        <Button
-            x:Name="backBtn"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
             Margin="32,22,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{x:Bind NavToBackCommand}"
-            Content="&#xE0A6;"
-            Style="{StaticResource RoutePrimaryButtonStyle}" />
-
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="Dowlnoad" />
+            Orientation="Horizontal">
+            <Button
+                Command="{x:Bind NavToBackCommand}"
+                Content="&#xE0A6;"
+                Style="{StaticResource RoutePrimaryButtonStyle}" />
+            <TextBlock
+                x:Uid="Local_Dowlnoads"
+                Margin="12,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Style="{ThemeResource TitleTextBlockStyle}" />
+        </StackPanel>
     </Grid>
 </UserControl>

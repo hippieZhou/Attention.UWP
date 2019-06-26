@@ -11,6 +11,8 @@
     xmlns:view="using:HENG.App.Views"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
+    <!--
+    BUG:if use this,to first deploy, the ImplicitAnimation doesn't work
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition>
@@ -19,7 +21,7 @@
                 </NavigationThemeTransition.DefaultNavigationTransitionInfo>
             </NavigationThemeTransition>
         </TransitionCollection>
-    </Page.Transitions>
+    </Page.Transitions>-->
 
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">

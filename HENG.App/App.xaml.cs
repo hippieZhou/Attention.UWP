@@ -10,7 +10,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Globalization;
-using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -26,7 +25,6 @@ namespace HENG.App
             this.Suspending += (sender, e) =>
             {
                 var deferral = e.SuspendingOperation.GetDeferral();
-                //TODO: Save application state and stop any background activity
                 deferral.Complete();
             };
             this.UnhandledException += (sender, e) => { e.Handled = true; };
@@ -37,27 +35,13 @@ namespace HENG.App
             if (e.PrelaunchActivated)
                 return;
 
-            ExtendAcrylicIntoTitleBar();
-            void ExtendAcrylicIntoTitleBar()
-            {
-                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                titleBar.ButtonBackgroundColor = Colors.Transparent;
-                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
-            }
-
-            RegisterBackgroundTask();
-
             await InitializeAsync();
             await InitWindowAsync(e.Arguments, e.SplashScreen);
-            //await DownloadService.AttachToDownloadsAsync();
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
-
 
             var taskInstance = args.TaskInstance;
             var deferral = taskInstance.GetDeferral();
@@ -81,6 +65,26 @@ namespace HENG.App
             }
             await InitWindowAsync(arg, e.SplashScreen);
         }
+    }
+
+    sealed partial class App : Application
+    {
+        private async Task InitializeAsync()
+        {
+            if (SystemInformation.IsFirstRun)
+            {
+                if (Resources["AppSettings"] is AppSettings settings)
+                {
+                    settings.ThemeMode = (int)ElementTheme.Default;
+                    settings.Language = Language.CurrentInputMethodLanguageTag == "zh-Hans-CN" ? 0 : 1;
+                }
+            }
+            RegisterBackgroundTask();
+            //await DownloadService.AttachToDownloadsAsync();
+            //await ViewModelLocator.Current.Db.Initialize();
+
+            await Task.Yield();
+        }
 
         private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen = null)
         {
@@ -92,24 +96,11 @@ namespace HENG.App
             }
             rootFrame.Navigate(typeof(ShellPage), args);
             Window.Current.Activate();
+            ExtendAcrylicIntoTitleBar();
 
             await StartupAsync();
 
             return rootFrame;
-        }
-
-        private async Task InitializeAsync()
-        {
-            if (SystemInformation.IsFirstRun)
-            {
-                if (Resources["AppSettings"] is AppSettings settings)
-                {
-                    settings.ThemeMode = (int)ElementTheme.Default;
-                    settings.Language = Language.CurrentInputMethodLanguageTag == "zh-Hans-CN" ? 0 : 1;
-                }
-            }
-            await Task.Yield();
-            //await ViewModelLocator.Current.Db.Initialize();
         }
 
         private async Task StartupAsync()
@@ -126,12 +117,20 @@ namespace HENG.App
         private void RegisterBackgroundTask()
         {
             BackgroundTaskRegistration registered = BackgroundTaskHelper.Register(typeof(HENGBackgroundTask),
-                                new TimeTrigger(15, true), false, true,
-                                new SystemCondition(SystemConditionType.InternetAvailable));
+                new TimeTrigger(15, true), false, true,
+                new SystemCondition(SystemConditionType.InternetAvailable));
             if (registered != null)
             {
                 Trace.WriteLine($"Task {typeof(HENGBackgroundTask)} registered successfully.");
             }
+        }
+
+        private void ExtendAcrylicIntoTitleBar()
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
     }
 }

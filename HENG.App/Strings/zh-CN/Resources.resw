@@ -123,6 +123,9 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>HENG</value>
   </data>
+  <data name="Local_Dowlnoads.Text" xml:space="preserve">
+    <value>下载中心</value>
+  </data>
   <data name="Settings_Download.Content" xml:space="preserve">
     <value>打开默认下载路径</value>
   </data>
