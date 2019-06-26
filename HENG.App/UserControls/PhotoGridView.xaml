@@ -132,7 +132,7 @@
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
             OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
-            SelectionMode="Single"
+            SelectionMode="None"
             ShowsScrollingPlaceholders="False"
             SizeChanged="AdaptiveGridViewControl_SizeChanged">
             <controls:AdaptiveGridView.ItemContainerTransitions>

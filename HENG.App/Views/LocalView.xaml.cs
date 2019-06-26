@@ -1,7 +1,9 @@
 ﻿using HENG.App.ViewModels;
 using System.Windows.Input;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace HENG.App.Views
 {
@@ -11,6 +13,8 @@ namespace HENG.App.Views
         public LocalView()
         {
             this.InitializeComponent();
+            this.DataContext = ViewModel;
+
             //this.Loaded += (sender, e) =>
             //{
             //    var compositor = ElementCompositionPreview.GetElementVisual(this).Compositor;
@@ -51,5 +55,16 @@ namespace HENG.App.Views
         // Using a DependencyProperty as the backing store for NavToNackCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NavToBackCommandProperty =
             DependencyProperty.Register("NavToNackCommand", typeof(ICommand), typeof(LocalView), new PropertyMetadata(null));
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize == e.PreviousSize) return;
+
+            var rootGrid = sender as Grid;
+            rootGrid.Clip = new RectangleGeometry()
+            {
+                Rect = new Rect(0, 0, rootGrid.ActualWidth, rootGrid.ActualHeight)
+            };
+        }
     }
 }

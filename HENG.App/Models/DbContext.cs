@@ -66,7 +66,8 @@ namespace HENG.App.Models
             using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), dbPath))
             {
                 db.TraceListener = new DebugTraceListener();
-                return db.Execute($"delete from {nameof(ImageItem)} where id={item.Id}");
+                SQLiteCommand cmd = db.CreateCommand($"DELETE FROM {nameof(ImageItem)} WHERE Id = @id", item.Id);
+                return cmd.ExecuteNonQuery();
             }
         }
     }

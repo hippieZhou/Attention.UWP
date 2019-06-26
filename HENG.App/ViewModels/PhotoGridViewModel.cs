@@ -134,14 +134,21 @@ namespace HENG.App.ViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new RelayCommand(() =>
+                    _downloadCommand = new RelayCommand(async () =>
                     {
-                        //var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);
-                        //if (count > 0)
-                        //{
-                        //    var download = new DownloadItem(StoredItem);
-                        //    await DownloadService.DownloadAsync(download);
-                        //}
+                       int count = _dbContext.InsertItem(StoredItem);
+                        if (count > 0)
+                        {
+                            //TODO:download
+
+                            //var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);
+                            //if (count > 0)
+                            //{
+                            //    var download = new DownloadItem(StoredItem);
+                            //    await DownloadService.DownloadAsync(download);
+                            //}
+                        }
+                        await Task.Yield();
                     }, () => StoredItem != null);
                 }
                 return _downloadCommand;
