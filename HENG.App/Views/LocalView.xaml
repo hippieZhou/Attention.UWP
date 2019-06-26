@@ -43,7 +43,6 @@
         </StackPanel>
 
         <GridView
-            x:Name="gridView"
             Grid.Row="1"
             animations:ReorderGridAnimation.Duration="300"
             Background="Transparent"
@@ -65,7 +64,7 @@
                     <Grid Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}" SizeChanged="Grid_SizeChanged">
                         <controls:ImageEx
                             IsCacheEnabled="True"
-                            PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                            PlaceholderSource="ms-appx:///Assets/Images/ImageExPlaceholder.png"
                             PlaceholderStretch="None"
                             Stretch="UniformToFill"
                             UseLayoutRounding="True" />
@@ -125,27 +124,11 @@
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:StaggeredPanel HorizontalAlignment="Left" DesiredColumnWidth="260" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
         </GridView>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="gridView.Padding" Value="12,12,8,0" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="gridView.Padding" Value="12,12,8,0" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>

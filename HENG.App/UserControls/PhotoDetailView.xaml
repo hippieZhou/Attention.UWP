@@ -50,7 +50,7 @@
                                     Height="88"
                                     CornerRadius="44"
                                     IsCacheEnabled="True"
-                                    PlaceholderSource="ms-appx:///Assets/UserPlaceholder.png"
+                                    PlaceholderSource="ms-appx:///Assets/Images/ImageExPlaceholder.png"
                                     Source="{x:Bind ViewModel.StoredItem.UserImageURL, Mode=OneWay}" />
                                 <TextBlock
                                     Margin="0,6,0,12"
@@ -123,7 +123,7 @@
                     <controls:ImageEx
                         CacheMode="BitmapCache"
                         IsCacheEnabled="True"
-                        PlaceholderSource="ms-appx:///Assets/ImageExPlaceholder.png"
+                        PlaceholderSource="ms-appx:///Assets/Images/ImageExPlaceholder.png"
                         Source="{x:Bind ViewModel.StoredItem.LargeImageURL, Mode=OneWay}"
                         Stretch="UniformToFill"
                         UseLayoutRounding="True" />

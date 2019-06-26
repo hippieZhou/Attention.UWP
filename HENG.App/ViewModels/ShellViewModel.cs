@@ -45,6 +45,7 @@ namespace HENG.App.ViewModels
                     _navToDownloadCommand = new RelayCommand(async () =>
                     {
                         LoadedCommand.Execute(null);
+
                         _locaView.Visibility = Visibility.Visible;
                         await _locaView.Offset(duration: 1000).StartAsync();
                     });

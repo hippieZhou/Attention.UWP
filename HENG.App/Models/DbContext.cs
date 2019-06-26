@@ -2,12 +2,10 @@
 using SQLite.Net;
 using SQLite.Net.Interop;
 using SQLite.Net.Platform.WinRT;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace HENG.App.Models
@@ -41,7 +39,7 @@ namespace HENG.App.Models
         public IEnumerable<T> GetAllItems<T>() where T : class
         {
             List<T> models = new List<T>();
-            using (var db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
+            using (SQLiteConnection db = new SQLiteConnection(new SQLitePlatformWinRT(), DbPath))
             {
                 db.TraceListener = new DebugTraceListener();
                 models.AddRange(from p in db.Table<T>() select p);
