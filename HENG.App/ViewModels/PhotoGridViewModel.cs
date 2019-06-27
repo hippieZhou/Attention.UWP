@@ -15,16 +15,19 @@ using System;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.System;
 using HENG.App.Models;
+using HENG.App.Services;
 
 namespace HENG.App.ViewModels
 {
     public class PhotoGridViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
         private readonly DbContext _dbContext;
+        private readonly DownloadService _downloadService;
 
-        public PhotoGridViewModel(DbContext dbContext)
+        public PhotoGridViewModel(DbContext dbContext, DownloadService downloadService)
         {
             _dbContext = dbContext;
+            _downloadService = downloadService;
         }
 
         public override ICommand ItemClickCommand
@@ -136,9 +139,11 @@ namespace HENG.App.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        int count = _dbContext.InsertItem(StoredItem);
+                        var download = new DownloadItem(StoredItem);
+                        int count = _dbContext.AddDownloadItem(download);
                         if (count > 0)
                         {
+                           await  _downloadService.Download(download);
                             //TODO:download
 
                             //var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);

@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Uwp.Extensions;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -20,9 +22,20 @@ namespace HENG.App.Models
     public class AppSettings : ObservableObject
     {
         static private AppSettings _current = null;
-        static public AppSettings Current => _current ?? (_current = new AppSettings());
+        static public AppSettings Current => _current ?? (Application.Current.Resources["AppSettings"] as AppSettings);
+
+        public AppSettings()
+        {
+            if (SystemInformation.IsFirstRun)
+            {
+                ThemeMode = (int)ElementTheme.Default;
+                Language = Windows.Globalization.Language.CurrentInputMethodLanguageTag == "zh-Hans-CN" ? 0 : 1;
+            }
+        }
 
         public ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
+
+        public string DbPath => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
 
         public int ThemeMode
         {
@@ -62,8 +75,6 @@ namespace HENG.App.Models
             }
         }
 
-        //public string DownloadPath { get; private set; }
-
         private string _downloadPath;
         public string DownloadPath
         {
@@ -75,7 +86,15 @@ namespace HENG.App.Models
             }
         }
 
-        public void UpdateTheme()
+        public async Task InitConfiguration()
+        {
+            UpdateTheme();
+            UpdateLanguage();
+            await UpdateDownloadPath();
+        }
+
+        #region 私有方法
+        private void UpdateTheme()
         {
             var theme = (ElementTheme)ThemeMode;
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -86,12 +105,12 @@ namespace HENG.App.Models
             }
         }
 
-        public void UpdateLanguage()
+        private void UpdateLanguage()
         {
             ApplicationLanguages.PrimaryLanguageOverride = Language == 0 ? "zh-Hans-CN" : "en-US";
         }
 
-        public async Task UpdateDownloadPathAsync()
+        private async Task UpdateDownloadPath()
         {
             StorageFolder folder = await KnownFolders.PicturesLibrary.GetFolderAsync("HENG");
             DownloadPath = folder.Path;
@@ -118,5 +137,6 @@ namespace HENG.App.Models
         {
             LocalSettings.Values[name] = value;
         }
+        #endregion
     }
 }

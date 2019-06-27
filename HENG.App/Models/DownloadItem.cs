@@ -1,64 +1,50 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-using PixabaySharp.Models;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
-using Windows.Storage.Streams;
+﻿using PixabaySharp.Models;
+using SQLite.Net.Attributes;
 
 namespace HENG.App.Models
 {
-    public class DownloadItem : ObservableObject
+    [Table("downloads")]
+    public class DownloadItem : ImageItem
     {
-        public readonly CancellationTokenSource CancellationToken;
+        [PrimaryKey]
+        public new int Id { get; set; }
 
-        public ImageItem Item { get; set; }
+        [Ignore]
+        public int Progress { get; set; }
 
-        private string _hashFile;
-        public string HashFile
+        public DownloadItem()
         {
-            get { return _hashFile; }
-            set { Set(ref _hashFile, value); }
-        }
 
-        private int _progress = 100;
-        public int Progress
-        {
-            get { return _progress; }
-            set { Set(ref _progress, value); }
         }
 
         public DownloadItem(ImageItem item)
         {
-            CancellationToken = new CancellationTokenSource();
+            this.Id = item.Id;
+            this.Likes = item.Likes;
+            this.Favorites = item.Favorites;
+            this.Tags = item.Tags;
+            this.Views = item.Views;
+            this.Comments = item.Comments;
+            this.Downloads = item.Downloads;
+            this.PageURL = item.PageURL;
+            this.UserId = item.UserId;
+            this.User = item.User;
+            this.Type = item.Type;
+            this.UserImageURL = item.UserImageURL;
 
-            Item = item;
-            HashFile = $"{SafeHashUri(item.PageURL)}.jpg";
 
-            Messenger.Default.Register<int>(this, HashFile, val => { Progress = val; });
-        }
-
-        private string SafeHashUri(string sourceUri)
-        {
-            string Hash(string input)
-            {
-                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
-                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
-                var sb = new StringBuilder(hashByte.Length * 2);
-                foreach (byte b in hashByte)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
-
-            var hash = Hash(sourceUri.ToLower());
-            return hash;
+            this.IdHash = item.IdHash;
+            this.WebformatURL = item.WebformatURL;
+            this.WebformatWidth = item.WebformatWidth;
+            this.WebformatHeight = item.WebformatHeight;
+            this.PreviewURL = item.PreviewURL;
+            this.PreviewWidth = item.PreviewWidth;
+            this.PreviewHeight = item.PreviewHeight;
+            this.ImageURL = item.ImageURL;
+            this.ImageWidth = item.ImageWidth;
+            this.ImageHeight = item.ImageHeight;
+            this.LargeImageURL = item.LargeImageURL;
+            this.FullHDImageURL = item.FullHDImageURL;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using HENG.App.Models;
+using HENG.App.Services;
 using HENG.Core.Services;
 
 namespace HENG.App.ViewModels
@@ -17,6 +18,7 @@ namespace HENG.App.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register(() => new PixabayService());
+            SimpleIoc.Default.Register(() => new DownloadService());
             SimpleIoc.Default.Register(() => new DbContext());
 
             SimpleIoc.Default.Register<ShellViewModel>();

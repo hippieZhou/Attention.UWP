@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
-using Windows.Globalization;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -36,7 +35,15 @@ namespace HENG.App
                 return;
 
             await InitializeAsync();
-            await InitWindowAsync(e.Arguments, e.SplashScreen);
+            InitWindow(skipWindowCreation: e.PrelaunchActivated);
+            await StartupAsync();
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs e)
+        {
+            await InitializeAsync();
+            InitWindow(skipWindowCreation: false);
+            await StartupAsync();
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
@@ -54,64 +61,40 @@ namespace HENG.App
 
             deferral.Complete();
         }
-
-        protected override async void OnActivated(IActivatedEventArgs e)
-        {
-            string arg = null;
-            if (e is ToastNotificationActivatedEventArgs)
-            {
-                var toastActivationArgs = e as ToastNotificationActivatedEventArgs;
-                arg = toastActivationArgs.Argument;
-            }
-            await InitWindowAsync(arg, e.SplashScreen);
-        }
     }
 
     sealed partial class App : Application
     {
         private async Task InitializeAsync()
         {
-            if (SystemInformation.IsFirstRun)
-            {
-                if (Resources["AppSettings"] is AppSettings settings)
-                {
-                    settings.ThemeMode = (int)ElementTheme.Default;
-                    settings.Language = Language.CurrentInputMethodLanguageTag == "zh-Hans-CN" ? 0 : 1;
-                }
-            }
             RegisterBackgroundTask();
-            //await DownloadService.AttachToDownloadsAsync();
-            //await ViewModelLocator.Current.Db.Initialize();
-
             await Task.Yield();
         }
 
-        private async Task<Frame> InitWindowAsync(string args, SplashScreen splashScreen = null)
+        private void InitWindow(bool skipWindowCreation)
         {
-            if (!(Window.Current.Content is Frame rootFrame))
+            var rootFrame = Window.Current.Content as Frame;
+            bool initApp = rootFrame == null && !skipWindowCreation;
+            if (initApp)
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += (sender, e) => { throw new Exception("Failed to load Page " + e.SourcePageType.FullName); };
                 Window.Current.Content = rootFrame;
             }
-            rootFrame.Navigate(typeof(ShellPage), args);
-            Window.Current.Activate();
+            rootFrame.Navigate(typeof(ShellPage));
             ExtendAcrylicIntoTitleBar();
 
-            await StartupAsync();
-
-            return rootFrame;
+            Window.Current.Activate();
         }
 
         private async Task StartupAsync()
         {
+
             if (Resources["AppSettings"] is AppSettings settings)
             {
-                settings.UpdateTheme();
-                settings.UpdateLanguage();
-                await settings.UpdateDownloadPathAsync();
+                await settings.InitConfiguration();
             }
-            await Task.Yield();
+            await Window.Current.Dispatcher.RunIdleAsync(async _ => await DownloadService.AttachToDownloads());
         }
 
         private void RegisterBackgroundTask()

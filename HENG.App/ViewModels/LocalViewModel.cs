@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HENG.App.Models;
-using PixabaySharp.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -32,10 +31,10 @@ namespace HENG.App.ViewModels
                 {
                     _loadedCommand = new RelayCommand(() =>
                     {
-                        var items = _dbContext.GetAllItems<ImageItem>();
-                        foreach (ImageItem item in items)
+                        var items = _dbContext.GetAllDownloads();
+                        foreach (DownloadItem item in items)
                         {
-                            Downloads.Add(new DownloadItem(item));
+                            Downloads.Add(item);
                         }
                     });
                 }

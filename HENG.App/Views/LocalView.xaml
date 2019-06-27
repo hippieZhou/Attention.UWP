@@ -43,16 +43,39 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
-            <controls:Carousel ItemsSource="{x:Bind ViewModel.Downloads, Mode=OneWay}">
-                <controls:Carousel.EasingFunction>
-                    <CubicEase EasingMode="EaseOut" />
-                </controls:Carousel.EasingFunction>
-                <controls:Carousel.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Background="Red" />
+            <GridView
+                Margin="12,0,8,0"
+                IsItemClickEnabled="True"
+                ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
+                ItemsSource="{x:Bind ViewModel.Downloads, Mode=OneWay}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                SelectionMode="None"
+                ShowsScrollingPlaceholders="False">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:DownloadItem">
+                        <Grid CornerRadius="4">
+                            <Grid.Background>
+                                <AcrylicBrush
+                                    BackgroundSource="Backdrop"
+                                    FallbackColor="{x:Bind Id, Converter={StaticResource RandomColorBrushConverter}}"
+                                    TintColor="{x:Bind Id, Converter={StaticResource RandomColorBrushConverter}}"
+                                    TintOpacity="0.4" />
+                            </Grid.Background>
+                            <controls:ImageEx
+                                CacheMode="BitmapCache"
+                                IsCacheEnabled="True"
+                                Source="{x:Bind PreviewURL}"
+                                Stretch="UniformToFill"
+                                UseLayoutRounding="True" />
+                        </Grid>
                     </DataTemplate>
-                </controls:Carousel.ItemTemplate>
-            </controls:Carousel>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:StaggeredPanel HorizontalAlignment="Stretch" DesiredColumnWidth="400" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
         </Grid>
     </Grid>
 </UserControl>
