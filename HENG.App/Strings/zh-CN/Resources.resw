@@ -126,11 +126,14 @@
   <data name="Local_Dowlnoads.Text" xml:space="preserve">
     <value>下载中心</value>
   </data>
-  <data name="Settings_Download.Content" xml:space="preserve">
-    <value>打开默认下载路径</value>
-  </data>
   <data name="Settings_En.Content" xml:space="preserve">
     <value>英文</value>
+  </data>
+  <data name="Settings_Folder.Content" xml:space="preserve">
+    <value>打开默认下载路径</value>
+  </data>
+  <data name="Settings_Language.Description" xml:space="preserve">
+    <value>重启已生效</value>
   </data>
   <data name="Settings_Language.Header" xml:space="preserve">
     <value>语言</value>

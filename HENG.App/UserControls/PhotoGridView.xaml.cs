@@ -1,4 +1,6 @@
-﻿using HENG.App.ViewModels;
+﻿using HENG.App.Helpers;
+using HENG.App.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Numerics;
@@ -16,6 +18,42 @@ namespace HENG.App.UserControls
         public PhotoGridView()
         {
             this.InitializeComponent();
+        }
+
+        private void AdaptiveGridViewControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer viewer = adaptiveGridViewControl.GetFirstDescendantOfType<ScrollViewer>();
+
+            Action animation = new Action(async () =>
+            {
+                bool isShow = false;
+
+                if (viewer.VerticalOffset > 0 && !isShow)
+                {
+                    await backToTopBtn.Offset(0, 0, duration: 800, delay: 200).StartAsync();
+                    isShow = true;
+                }
+                else
+                {
+                    await backToTopBtn.Offset(100.0f, 0, duration: 800, delay: 600).StartAsync();
+                    isShow = false;
+                }
+            });
+
+            if (viewer != null)
+            {
+                viewer.ViewChanged += (s1, e1) =>
+                {
+                    animation();
+                };
+
+                viewer.SizeChanged += (s2, e2) =>
+                {
+                    animation();
+                };
+            }
+
+            animation();
         }
 
         public PhotoGridViewModel ViewModel

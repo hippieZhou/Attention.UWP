@@ -126,11 +126,14 @@
   <data name="Local_Dowlnoads.Text" xml:space="preserve">
     <value>Dowlnoads</value>
   </data>
-  <data name="Settings_Download.Content" xml:space="preserve">
-    <value>Open Default Download Path</value>
-  </data>
   <data name="Settings_En.Content" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="Settings_Folder.Content" xml:space="preserve">
+    <value>Open Default Download Path</value>
+  </data>
+  <data name="Settings_Language.Description" xml:space="preserve">
+    <value>restart to take effect</value>
   </data>
   <data name="Settings_Language.Header" xml:space="preserve">
     <value>Language</value>

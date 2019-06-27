@@ -63,7 +63,7 @@
                 <ComboBoxItem x:Uid="Settings_En" Tag="en-US" />
             </ComboBox>
             <Button
-                x:Uid="Settings_Download"
+                x:Uid="Settings_Folder"
                 Margin="0,12"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.OpenFolderCommand, Mode=OneWay}"
