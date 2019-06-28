@@ -61,12 +61,7 @@
                                     TintColor="{x:Bind Id, Converter={StaticResource RandomColorBrushConverter}}"
                                     TintOpacity="0.4" />
                             </Grid.Background>
-                            <controls:ImageEx
-                                CacheMode="BitmapCache"
-                                IsCacheEnabled="True"
-                                Source="{x:Bind PreviewURL}"
-                                Stretch="UniformToFill"
-                                UseLayoutRounding="True" />
+                            <Image CacheMode="BitmapCache" Source="{x:Bind FullHDImageURL, Converter={StaticResource PathToLocalStorageFileConverter}, FallbackValue=null}" />
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>

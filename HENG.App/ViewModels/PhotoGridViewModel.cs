@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.System;
 using HENG.App.Models;
 using HENG.App.Services;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.App.ViewModels
 {
@@ -143,7 +144,8 @@ namespace HENG.App.ViewModels
                         int count = _dbContext.AddDownloadItem(download);
                         if (count > 0)
                         {
-                           await  _downloadService.Download(download);
+                            ViewModelLocator.Current.Local.LoadedCommand.Execute(null);
+                            await _downloadService.Download(download);
                         }
                     }, () => StoredItem != null);
                 }

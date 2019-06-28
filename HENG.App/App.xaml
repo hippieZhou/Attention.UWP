@@ -12,6 +12,7 @@
 
             <converter:ImplicitDataTemplateConverter x:Key="ImplicitDataTemplateConverter" />
             <converter:RandomColorBrushConverter x:Key="RandomColorBrushConverter" />
+            <converter:PathToLocalStorageFileConverter x:Key="PathToLocalStorageFileConverter" />
 
             <model:AppSettings x:Key="AppSettings" />
 

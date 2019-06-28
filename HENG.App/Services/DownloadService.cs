@@ -156,27 +156,6 @@ namespace HENG.App.Services
             }
         }
 
-        private string SafeHashUri(Uri sourceUri)
-        {
-            string Hash(string input)
-            {
-                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
-                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
-                var sb = new StringBuilder(hashByte.Length * 2);
-                foreach (byte b in hashByte)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
-
-            var hash = Hash(Path.GetFileNameWithoutExtension(sourceUri.PathAndQuery).ToLower());
-            return hash;
-        }
-
-        private string GetFileNameFromUri(Uri sourceUri) => SafeHashUri(sourceUri) + Path.GetExtension(sourceUri.PathAndQuery);
 
         private static async Task<StorageFile> GetLocalFileFromName(string filename)
         {
@@ -290,5 +269,30 @@ namespace HENG.App.Services
                 Debug.WriteLine(ex.ToString());
             }
         }
+    }
+
+    public partial class DownloadService
+    {
+        private static string SafeHashUri(Uri sourceUri)
+        {
+            string Hash(string input)
+            {
+                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
+                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
+                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
+                var sb = new StringBuilder(hashByte.Length * 2);
+                foreach (byte b in hashByte)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+
+            var hash = Hash(Path.GetFileNameWithoutExtension(sourceUri.PathAndQuery).ToLower());
+            return hash;
+        }
+
+        public static string GetFileNameFromUri(Uri sourceUri) => SafeHashUri(sourceUri) + Path.GetExtension(sourceUri.PathAndQuery);
     }
 }

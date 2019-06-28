@@ -121,6 +121,7 @@
     <Compile Include="Behaviors\CloseFlyoutAction.cs" />
     <Compile Include="Behaviors\FocusAction.cs" />
     <Compile Include="Converters\ImplicitDataTemplateConverter.cs" />
+    <Compile Include="Converters\PathToLocalStorageFileConverter.cs" />
     <Compile Include="Converters\RandomColorBrushConverter.cs" />
     <Compile Include="DataTemplates.xaml.cs">
       <DependentUpon>DataTemplates.xaml</DependentUpon>

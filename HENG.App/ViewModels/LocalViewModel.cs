@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using HENG.App.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace HENG.App.ViewModels
@@ -34,7 +35,10 @@ namespace HENG.App.ViewModels
                         var items = _dbContext.GetAllDownloads();
                         foreach (DownloadItem item in items)
                         {
-                            Downloads.Add(item);
+                            if (!Downloads.Any(p => p.Id == item.Id))
+                            {
+                                Downloads.Add(item);
+                            }
                         }
                     });
                 }
