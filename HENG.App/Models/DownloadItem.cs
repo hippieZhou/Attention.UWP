@@ -32,7 +32,6 @@ namespace HENG.App.Models
             this.Type = item.Type;
             this.UserImageURL = item.UserImageURL;
 
-
             this.IdHash = item.IdHash;
             this.WebformatURL = item.WebformatURL;
             this.WebformatWidth = item.WebformatWidth;

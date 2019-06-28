@@ -1,4 +1,5 @@
 ﻿using HENG.App.Models;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace HENG.App.Services
         {
             var sourceUri = new Uri(download.FullHDImageURL);
 
-            var hash = SafeHashUri(sourceUri);
+            var hash = GetFileNameFromUri(sourceUri);
             var file = await CheckLocalFileExistsFromUriHash(sourceUri);
 
             var downloadingAlready = await IsDownloading(sourceUri);
@@ -78,71 +79,21 @@ namespace HENG.App.Services
             {
                 return DownloadStartResult.Error;
             }
-
-
-
-            //IStorageItem file = await CheckLocalFileExistsAsync(download.HashFile);
-            //Uri uri = (!string.IsNullOrWhiteSpace(download.Item.ImageURL)) ? new Uri(download.Item.ImageURL) : new Uri(download.Item.LargeImageURL);
-            //var downloadingAlready = await IsDownloading(uri);
-            //if (file == null && !downloadingAlready)
-            //{
-            //    await Task.Run(() =>
-            //    {
-            //        var task = StartDownloadAsync(uri.OriginalString, download.Item.PreviewURL, download.HashFile, download.CancellationToken);
-            //        task.ContinueWith(state =>
-            //        {
-            //            if (state.Exception != null)
-            //            {
-            //                Trace.WriteLine($"An error occured with this download {state.Exception}");
-            //            }
-            //            else
-            //            {
-            //                Trace.WriteLine("Download Completed");
-            //            }
-            //        });
-            //    });
-            //    return DownloadStartResult.Started;
-            //}
-            //else if (file != null)
-            //{
-            //    Trace.WriteLine("Already downloaded.");
-            //    return DownloadStartResult.AllreadyDownloaded;
-            //}
-            //else
-            //{
-            //    return DownloadStartResult.Error;
-            //}
         }
     }
 
     public partial class DownloadService
     {
-        private string SafeHashUri(Uri sourceUri)
+        private async Task<IStorageItem> CheckLocalFileExistsFromUriHash(Uri sourceUri)
         {
-            string Hash(string input)
+            string hash = GetFileNameFromUri(sourceUri);
+
+            StorageFolder folder = await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
-                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
-                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
-                var sb = new StringBuilder(hashByte.Length * 2);
-                foreach (byte b in hashByte)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
-            string safeUri = sourceUri.ToString().ToLower();
-            var hash = Hash(safeUri);
-            return hash;
-        }
-
-        private async Task<IStorageItem> CheckLocalFileExistsFromUriHash(Uri sourceUri, string suffix = "jpg")
-        {
-            string hash = SafeHashUri(sourceUri);
-
-            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(AppSettings.Current.DownloadPath);
-            IStorageItem file = await folder.TryGetItemAsync($"{hash}.{suffix}");
+                return await StorageFolder.GetFolderFromPathAsync(AppSettings.Current.DownloadPath);
+            }, Windows.UI.Core.CoreDispatcherPriority.High);
+      
+            IStorageItem file = await folder.TryGetItemAsync(hash);
             if (file != null)
             {
                 var props = await file.GetBasicPropertiesAsync();
@@ -163,9 +114,9 @@ namespace HENG.App.Services
 
         private async Task StartDownload(Uri target, BackgroundTransferPriority priority, string localFilename)
         {
-            var result = await BackgroundExecutionManager.RequestAccessAsync();
-            StorageFile destinationFile;
-            destinationFile = await GetLocalFileFromName(localFilename);
+            await BackgroundExecutionManager.RequestAccessAsync();
+
+            StorageFile destinationFile = await GetLocalFileFromName(localFilename);
 
             var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
             group.TransferBehavior = BackgroundTransferBehavior.Serialized;
@@ -176,8 +127,10 @@ namespace HENG.App.Services
             // CheckCompletionResult will be called for the final download state
             RegisterBackgroundTask(completionGroup.Trigger);
 
-            BackgroundDownloader downloader = new BackgroundDownloader(completionGroup);
-            downloader.TransferGroup = group;
+            BackgroundDownloader downloader = new BackgroundDownloader(completionGroup)
+            {
+                TransferGroup = group
+            };
             group.TransferBehavior = BackgroundTransferBehavior.Serialized;
             CreateNotifications(downloader);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
@@ -188,9 +141,7 @@ namespace HENG.App.Services
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
             var downloadTask = download.StartAsync().AsTask(progressCallback);
 
-            string tag = GetFileNameFromUri(target);
-
-            CreateToast(tag, localFilename);
+            CreateToast(GetFileNameFromUri(target), localFilename);
 
             try
             {
@@ -205,23 +156,43 @@ namespace HENG.App.Services
             }
         }
 
-        private string GetFileNameFromUri(Uri sourceUri)
+        private string SafeHashUri(Uri sourceUri)
         {
-            return Path.GetFileName(sourceUri.PathAndQuery);
+            string Hash(string input)
+            {
+                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
+                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
+                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
+                var sb = new StringBuilder(hashByte.Length * 2);
+                foreach (byte b in hashByte)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+
+            var hash = Hash(Path.GetFileNameWithoutExtension(sourceUri.PathAndQuery).ToLower());
+            return hash;
         }
+
+        private string GetFileNameFromUri(Uri sourceUri) => SafeHashUri(sourceUri) + Path.GetExtension(sourceUri.PathAndQuery);
 
         private static async Task<StorageFile> GetLocalFileFromName(string filename)
         {
             StorageFile file = null;
             try
             {
-                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(AppSettings.Current.DownloadPath);
+                StorageFolder folder = await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
+                 {
+                     return await StorageFolder.GetFolderFromPathAsync(AppSettings.Current.DownloadPath);
+                 }, Windows.UI.Core.CoreDispatcherPriority.High);
+
                 file = await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             }
             catch (FileNotFoundException)
             {
             }
-
             return file;
         }
 
@@ -281,7 +252,7 @@ namespace HENG.App.Services
             var data = new Dictionary<string, string>
             {
                 { "progressValue", "0" },
-                { "p", $"cool" }, // TODO: better than cool
+                { "p", $"{DateTime.Now}" }, // TODO: better than cool
             };
 
             // And create the toast notification
@@ -298,7 +269,7 @@ namespace HENG.App.Services
         private void DownloadProgress(DownloadOperation obj)
         {
             Debug.WriteLine(obj.Progress.ToString());
-            var progress = (double)obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
+            var progress = (double)obj.Progress.BytesReceived / obj.Progress.TotalBytesToReceive;
             UpdateToast(obj.ResultFile.Name, progress);
         }
 
@@ -307,7 +278,7 @@ namespace HENG.App.Services
             var data = new Dictionary<string, string>
             {
                 { "progressValue", progressValue.ToString() },
-                { "p", $"cool" }, // TODO: better than cool
+                { "p", $"{DateTime.Now}" }, // TODO: better than cool
             };
 
             try

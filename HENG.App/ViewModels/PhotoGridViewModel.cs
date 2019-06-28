@@ -144,16 +144,7 @@ namespace HENG.App.ViewModels
                         if (count > 0)
                         {
                            await  _downloadService.Download(download);
-                            //TODO:download
-
-                            //var count = ViewModelLocator.Current.Db.InsertItem(StoredItem);
-                            //if (count > 0)
-                            //{
-                            //    var download = new DownloadItem(StoredItem);
-                            //    await DownloadService.DownloadAsync(download);
-                            //}
                         }
-                        await Task.Yield();
                     }, () => StoredItem != null);
                 }
                 return _downloadCommand;
@@ -167,8 +158,6 @@ namespace HENG.App.ViewModels
         {
             var result = await ViewModelLocator.Current.Pix.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
             return result != null ? result.Images : new List<ImageItem>();
-            //await Task.Yield();
-            //return new List<ImageItem>();
         }
     }
 
