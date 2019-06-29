@@ -6,9 +6,9 @@ using Windows.UI.Xaml.Media;
 
 namespace HENG.App.UserControls
 {
-    public sealed partial class PhotoDetailView : UserControl
+    public sealed partial class PhotoDetailControl : UserControl
     {
-        public PhotoDetailView()
+        public PhotoDetailControl()
         {
             this.InitializeComponent();
         }
@@ -21,9 +21,9 @@ namespace HENG.App.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null, (d, e) => 
+            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridControl), new PropertyMetadata(null, (d, e) => 
             {
-                if (d is PhotoDetailView handler)
+                if (d is PhotoDetailControl handler)
                 {
                     handler.DataContext = e.NewValue;
                 }

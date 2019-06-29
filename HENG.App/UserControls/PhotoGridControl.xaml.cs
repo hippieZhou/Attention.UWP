@@ -1,6 +1,7 @@
 ﻿using HENG.App.Helpers;
 using HENG.App.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Animations;
+using Microsoft.Toolkit.Uwp.UI.Animations.Expressions;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Numerics;
@@ -13,9 +14,9 @@ using Windows.UI.Xaml.Media;
 
 namespace HENG.App.UserControls
 {
-    public sealed partial class PhotoGridView : UserControl
+    public sealed partial class PhotoGridControl : UserControl
     {
-        public PhotoGridView()
+        public PhotoGridControl()
         {
             this.InitializeComponent();
         }
@@ -54,6 +55,21 @@ namespace HENG.App.UserControls
             }
 
             animation();
+
+            ParallaxingAnimation(viewer);
+        }
+
+        private ExpressionNode _parallaxExpression;
+
+        private void ParallaxingAnimation(ScrollViewer viewer)
+        {
+            CompositionPropertySet scrollProperties = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(viewer);
+
+            var scrollPropSet = scrollProperties.GetSpecializedReference<ManipulationPropertySetReferenceNode>();
+            var startOffset = ExpressionValues.Constant.CreateConstantScalar("startOffset", 0.0f);
+            var parallaxValue = 0.5f;
+            var parallax = (scrollPropSet.Translation.Y + startOffset);
+            _parallaxExpression = parallax * parallaxValue - parallax;
         }
 
         public PhotoGridViewModel ViewModel
@@ -64,7 +80,7 @@ namespace HENG.App.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridControl), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
@@ -129,6 +145,18 @@ namespace HENG.App.UserControls
             {
                 adaptiveGridViewControl.ScrollIntoView(item);
             }
+        }
+
+        private void AdaptiveGridViewControl_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            //if (_parallaxExpression != null)
+            //{
+            //    ImageEx image = args.ItemContainer.ContentTemplateRoot.GetFirstDescendantOfType<ImageEx>();
+            //    Visual visual = ElementCompositionPreview.GetElementVisual(image);
+            //    visual.Size = new Vector2(960f, 960f);
+            //    _parallaxExpression.SetScalarParameter("StartOffset", (float)args.ItemIndex * visual.Size.Y / 4.0f);
+            //    visual.StartAnimation("Offset.Y", _parallaxExpression);
+            //}
         }
     }
 }

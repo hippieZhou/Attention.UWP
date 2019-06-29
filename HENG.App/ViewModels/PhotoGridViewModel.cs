@@ -16,7 +16,6 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.System;
 using HENG.App.Models;
 using HENG.App.Services;
-using GalaSoft.MvvmLight.Messaging;
 
 namespace HENG.App.ViewModels
 {
@@ -31,6 +30,7 @@ namespace HENG.App.ViewModels
             _downloadService = downloadService;
         }
 
+        #region Master
         public override ICommand ItemClickCommand
         {
             get
@@ -57,6 +57,15 @@ namespace HENG.App.ViewModels
                 }
                 return _itemClickCommand;
             }
+        }
+        #endregion
+
+        #region Detail
+        private bool _isPaneOpen;
+        public bool IsPaneOpen
+        {
+            get { return _isPaneOpen; }
+            set { Set(ref _isPaneOpen, value); }
         }
 
         public override ICommand BackToMasterCommand
@@ -87,13 +96,6 @@ namespace HENG.App.ViewModels
                 }
                 return _backToMasterCommand;
             }
-        }
-
-        private bool _isPaneOpen;
-        public bool IsPaneOpen
-        {
-            get { return _isPaneOpen; }
-            set { Set(ref _isPaneOpen, value); }
         }
 
         private ICommand _showTipsCommand;
@@ -152,6 +154,58 @@ namespace HENG.App.ViewModels
                 return _downloadCommand;
             }
         }
+        #endregion
+
+        #region Search
+        private ICommand _showSearchCommand;
+        public ICommand ShowSearchCommand
+        {
+            get
+            {
+                if (_showSearchCommand == null)
+                {
+                    _showSearchCommand = new RelayCommand(() =>
+                    {
+                        _searchView.Visibility = Visibility.Visible;
+                    });
+                }
+                return _showSearchCommand;
+            }
+        }
+
+        private ICommand _hideSearchCommand;
+        public ICommand HideSearchCommand
+        {
+            get
+            {
+                if (_hideSearchCommand == null)
+                {
+                    _hideSearchCommand = new RelayCommand(() =>
+                    {
+                        this._searchView.Visibility = Visibility.Collapsed;
+                    });
+                }
+                return _hideSearchCommand;
+            }
+        }
+
+        private ICommand _searchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand == null)
+                {
+                    _searchCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(args =>
+                    {
+                        ViewModelLocator.Current.Pix.QueryText = args.QueryText;
+                        RefreshCommand.Execute(null);
+                    });
+                }
+                return _searchCommand;
+            }
+        }
+        #endregion
     }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>
@@ -167,6 +221,7 @@ namespace HENG.App.ViewModels
     {
         protected GridView _masterView;
         protected Grid _detailView;
+        protected UserControl _searchView;
 
         private IType _storedItem;
         public IType StoredItem
@@ -203,10 +258,11 @@ namespace HENG.App.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(GridView masterView, Grid detailView)
+        public virtual void Initialize(GridView masterView, Grid detailView,UserControl searchControl)
         {
             _masterView = masterView ?? throw new Exception("Master View Not Find");
             _detailView = detailView ?? throw new Exception("Detail View Not Find");
+            _searchView = searchControl ?? throw new Exception("Search View Not Find");
         }
 
         protected ICommand _loadedCommand;

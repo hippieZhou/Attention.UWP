@@ -137,11 +137,14 @@
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PhotoDetailView.xaml.cs">
-      <DependentUpon>PhotoDetailView.xaml</DependentUpon>
+    <Compile Include="UserControls\PhotoDetailControl.xaml.cs">
+      <DependentUpon>PhotoDetailControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PhotoGridView.xaml.cs">
-      <DependentUpon>PhotoGridView.xaml</DependentUpon>
+    <Compile Include="UserControls\PhotoGridControl.xaml.cs">
+      <DependentUpon>PhotoGridControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SearchControl.xaml.cs">
+      <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\TitleBarControl.xaml.cs">
       <DependentUpon>TitleBarControl.xaml</DependentUpon>
@@ -215,11 +218,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\PhotoDetailView.xaml">
+    <Page Include="UserControls\PhotoDetailControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\PhotoGridView.xaml">
+    <Page Include="UserControls\PhotoGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SearchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

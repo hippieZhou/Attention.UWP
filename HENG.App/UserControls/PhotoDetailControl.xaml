@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="HENG.App.UserControls.PhotoDetailView"
+    x:Class="HENG.App.UserControls.PhotoDetailControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
@@ -23,7 +23,7 @@
         x:FieldModifier="public"
         Visibility="Collapsed">
         <Grid.Background>
-            <media:BackdropBlurBrush Amount="6" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
+            <media:BackdropBlurBrush Amount="8" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
         <SplitView
             x:Name="destinationElement"

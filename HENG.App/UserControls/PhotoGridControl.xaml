@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="HENG.App.UserControls.PhotoGridView"
+    x:Class="HENG.App.UserControls.PhotoGridControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
@@ -44,8 +44,7 @@
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"
                     Source="{x:Bind LargeImageURL}"
-                    Stretch="UniformToFill"
-                    UseLayoutRounding="True" />
+                    Stretch="UniformToFill" />
                 <Grid
                     x:Name="SmokeGrid"
                     HorizontalAlignment="Stretch"
@@ -117,12 +116,12 @@
     </UserControl.Resources>
 
     <Grid>
-        <controls:AdaptiveGridView Loaded="AdaptiveGridViewControl_Loaded"
+        <controls:AdaptiveGridView
             x:Name="adaptiveGridViewControl"
             Padding="12,0,8,0"
             animations:ReorderGridAnimation.Duration="300"
             x:DeferLoadStrategy="Lazy"
-            Background="Transparent"
+            ContainerContentChanging="AdaptiveGridViewControl_ContainerContentChanging"
             DataFetchSize="1"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
@@ -130,6 +129,7 @@
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ImageTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+            Loaded="AdaptiveGridViewControl_Loaded"
             OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionMode="None"
@@ -143,16 +143,24 @@
             </controls:AdaptiveGridView.ItemContainerTransitions>
             <controls:AdaptiveGridView.Header>
                 <controls:ScrollHeader Mode="Fade">
-                    <Grid x:Name="headerGrid" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-                        <AutoSuggestBox
-                            x:Name="autoSuggestBox"
-                            VerticalAlignment="Center"
-                            PlaceholderText="Search ..."
-                            TextBoxStyle="{StaticResource SearchAutoSuggestBoxTextBoxStyle}">
-                            <AutoSuggestBox.QueryIcon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE1A3;" />
-                            </AutoSuggestBox.QueryIcon>
-                        </AutoSuggestBox>
+                    <Grid
+                        x:Name="headerGrid"
+                        Margin="4,0,8,0"
+                        Padding="6"
+                        Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                        <StackPanel
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Spacing="12">
+                            <Button
+                                Command="{x:Bind ViewModel.ShowSearchCommand, Mode=OneWay}"
+                                Content="&#xE71E;"
+                                Style="{StaticResource RoutePrimaryButtonStyle}" />
+                            <Button
+                                Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                                Content="&#xE8EE;"
+                                Style="{StaticResource RoutePrimaryButtonStyle}" />
+                        </StackPanel>
                     </Grid>
                 </controls:ScrollHeader>
             </controls:AdaptiveGridView.Header>
@@ -232,8 +240,8 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="420" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="260" />
-                        <Setter Target="headerGrid.Padding" Value="0,12,0,24" />
-                        <Setter Target="autoSuggestBox.Width" Value="480" />
+                        <!--<Setter Target="headerGrid.Padding" Value="0,12,36,24" />-->
+                        <!--<Setter Target="autoSuggestBox.Width" Value="480" />-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -243,8 +251,8 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="400" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="280" />
-                        <Setter Target="headerGrid.Padding" Value="0,12,0,24" />
-                        <Setter Target="autoSuggestBox.Width" Value="480" />
+                        <!--<Setter Target="headerGrid.Padding" Value="0,12,0,24" />-->
+                        <!--<Setter Target="autoSuggestBox.Width" Value="480" />-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -254,8 +262,8 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="380" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="260" />
-                        <Setter Target="headerGrid.Padding" Value="0,6,0,12" />
-                        <Setter Target="autoSuggestBox.Width" Value="420" />
+                        <!--<Setter Target="headerGrid.Padding" Value="0,6,0,12" />-->
+                        <!--<Setter Target="autoSuggestBox.Width" Value="420" />-->
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
