@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.System;
 using HENG.App.Models;
 using HENG.App.Services;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Hosting;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 
 namespace HENG.App.ViewModels
 {
@@ -44,12 +47,19 @@ namespace HENG.App.ViewModels
                         if (StoredItem != null)
                         {
                             ConnectedAnimation animation = _masterView.PrepareConnectedAnimation("forwardAnimation", StoredItem, "connectedElement");
+
+                            //var customKeyFrameAnimation = ElementCompositionPreview.GetElementVisual(_masterView).Compositor.CreateScalarKeyFrameAnimation();
+                            //customKeyFrameAnimation.Duration = ConnectedAnimationService.GetForCurrentView().DefaultDuration;
+                            //customKeyFrameAnimation.InsertExpressionKeyFrame(0.0f, "StartingValue");
+                            //customKeyFrameAnimation.InsertExpressionKeyFrame(0.5f, "FinalValue + 25");
+                            //customKeyFrameAnimation.InsertExpressionKeyFrame(1.0f, "FinalValue");
+                            //animation.SetAnimationComponent(ConnectedAnimationComponent.OffsetX, customKeyFrameAnimation);
+
                             animation.Completed += (sender, e) =>
                             {
                                 var element = _masterView.ContainerFromItem(StoredItem) as GridViewItem;
                                 element.Opacity = 0d;
                             };
-
                             _detailView.Visibility = Visibility.Visible;
                             animation.TryStart(_detailView.FindName("destinationElement") as UIElement);
                         }
@@ -68,33 +78,32 @@ namespace HENG.App.ViewModels
             set { Set(ref _isPaneOpen, value); }
         }
 
-        public override ICommand BackToMasterCommand
+        public override ICommand BackCommand
         {
             get
             {
-                if (_backToMasterCommand == null)
+                if (_backCommand == null)
                 {
-                    _backToMasterCommand = new RelayCommand(async () =>
+                    _backCommand = new RelayCommand(async () =>
                     {
                         ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _detailView.FindName("destinationElement") as UIElement);
                         animation.Completed += (sender, e) =>
                         {
                             _detailView.Visibility = Visibility.Collapsed;
+                            GridViewItem element = _masterView.ContainerFromItem(StoredItem) as GridViewItem;
+                            element.Opacity = 1.0d;
                         };
                         if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 7))
                         {
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
                         }
 
-                        GridViewItem element = _masterView.ContainerFromItem(StoredItem) as GridViewItem;
-                        element.Opacity = 1.0d;
-
                         _masterView.ScrollIntoView(StoredItem, ScrollIntoViewAlignment.Default);
                         _masterView.UpdateLayout();
                         await _masterView.TryStartConnectedAnimationAsync(animation, StoredItem, "connectedElement");
                     });
                 }
-                return _backToMasterCommand;
+                return _backCommand;
             }
         }
 
@@ -167,6 +176,7 @@ namespace HENG.App.ViewModels
                     _showSearchCommand = new RelayCommand(() =>
                     {
                         _searchView.Visibility = Visibility.Visible;
+                        //_searchView.Scale(scaleX: 2, scaleY: 2, centerX: 0, centerY: 0, duration: 2500, delay: 250, easingType: EasingType.Default).Start();
                     });
                 }
                 return _showSearchCommand;
@@ -220,7 +230,7 @@ namespace HENG.App.ViewModels
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
         protected GridView _masterView;
-        protected Grid _detailView;
+        protected UserControl _detailView;
         protected UserControl _searchView;
 
         private IType _storedItem;
@@ -258,7 +268,7 @@ namespace HENG.App.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        public virtual void Initialize(GridView masterView, Grid detailView,UserControl searchControl)
+        public virtual void Initialize(GridView masterView, UserControl detailView, UserControl searchControl)
         {
             _masterView = masterView ?? throw new Exception("Master View Not Find");
             _detailView = detailView ?? throw new Exception("Detail View Not Find");
@@ -354,7 +364,7 @@ namespace HENG.App.ViewModels
             }
         }
 
-        protected ICommand _backToMasterCommand;
-        public virtual ICommand BackToMasterCommand => _backToMasterCommand;
+        protected ICommand _backCommand;
+        public virtual ICommand BackCommand => _backCommand;
     }
 }

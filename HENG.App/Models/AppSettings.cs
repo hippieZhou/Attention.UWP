@@ -112,7 +112,7 @@ namespace HENG.App.Models
 
         private async Task UpdateDownloadPath()
         {
-            StorageFolder folder = await KnownFolders.PicturesLibrary.GetFolderAsync("HENG");
+            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("HENG", CreationCollisionOption.OpenIfExists);
             DownloadPath = folder.Path;
         }
 

@@ -150,6 +150,11 @@
                     </Path>
                 </Viewbox>
             </HyperlinkButton>
+            <HyperlinkButton VerticalAlignment="Center">
+                <HyperlinkButton.Content>
+                    <SymbolIcon Symbol="CellPhone" />
+                </HyperlinkButton.Content>
+            </HyperlinkButton>
         </StackPanel>
         <StackPanel
             Grid.Row="3"

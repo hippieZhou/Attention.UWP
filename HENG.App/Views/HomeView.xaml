@@ -22,8 +22,12 @@
                 To="1.0"
                 Duration="0:0:1" />
         </animations:Implicit.ShowAnimations>
-        <uc:PhotoGridControl x:Name="masterView" ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
-        <uc:PhotoDetailControl x:Name="detailView" ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
+        <uc:PhotoMasterControl x:Name="masterView" ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
+        <uc:PhotoDetailControl
+            x:Name="detailView"
+            x:DeferLoadStrategy="Lazy"
+            ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}"
+            Visibility="Collapsed" />
         <uc:SearchControl
             x:Name="searchView"
             Margin="0,-62,0,0"

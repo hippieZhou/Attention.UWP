@@ -14,9 +14,9 @@ using Windows.UI.Xaml.Media;
 
 namespace HENG.App.UserControls
 {
-    public sealed partial class PhotoGridControl : UserControl
+    public sealed partial class PhotoMasterControl : UserControl
     {
-        public PhotoGridControl()
+        public PhotoMasterControl()
         {
             this.InitializeComponent();
         }
@@ -80,7 +80,7 @@ namespace HENG.App.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridControl), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoMasterControl), new PropertyMetadata(null));
 
         private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {

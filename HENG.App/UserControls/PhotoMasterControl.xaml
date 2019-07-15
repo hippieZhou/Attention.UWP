@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="HENG.App.UserControls.PhotoGridControl"
+    x:Class="HENG.App.UserControls.PhotoMasterControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
@@ -143,25 +143,20 @@
             </controls:AdaptiveGridView.ItemContainerTransitions>
             <controls:AdaptiveGridView.Header>
                 <controls:ScrollHeader Mode="Fade">
-                    <Grid
-                        x:Name="headerGrid"
-                        Margin="4,0,8,0"
-                        Padding="6"
-                        Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal"
-                            Spacing="12">
-                            <Button
-                                Command="{x:Bind ViewModel.ShowSearchCommand, Mode=OneWay}"
-                                Content="&#xE71E;"
-                                Style="{StaticResource RoutePrimaryButtonStyle}" />
-                            <Button
-                                Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
-                                Content="&#xE8EE;"
-                                Style="{StaticResource RoutePrimaryButtonStyle}" />
-                        </StackPanel>
-                    </Grid>
+                    <StackPanel
+                        Margin="0,0,4,0"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="12">
+                        <Button
+                            Command="{x:Bind ViewModel.ShowSearchCommand, Mode=OneWay}"
+                            Content="&#xE71E;"
+                            Style="{StaticResource RoutePrimaryButtonStyle}" />
+                        <Button
+                            Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                            Content="&#xE8EE;"
+                            Style="{StaticResource RoutePrimaryButtonStyle}" />
+                    </StackPanel>
                 </controls:ScrollHeader>
             </controls:AdaptiveGridView.Header>
             <controls:AdaptiveGridView.Footer>
@@ -240,8 +235,6 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="420" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="260" />
-                        <!--<Setter Target="headerGrid.Padding" Value="0,12,36,24" />-->
-                        <!--<Setter Target="autoSuggestBox.Width" Value="480" />-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -251,8 +244,6 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="400" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="280" />
-                        <!--<Setter Target="headerGrid.Padding" Value="0,12,0,24" />-->
-                        <!--<Setter Target="autoSuggestBox.Width" Value="480" />-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -262,8 +253,6 @@
                     <VisualState.Setters>
                         <Setter Target="adaptiveGridViewControl.DesiredWidth" Value="380" />
                         <Setter Target="adaptiveGridViewControl.ItemHeight" Value="260" />
-                        <!--<Setter Target="headerGrid.Padding" Value="0,6,0,12" />-->
-                        <!--<Setter Target="autoSuggestBox.Width" Value="420" />-->
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

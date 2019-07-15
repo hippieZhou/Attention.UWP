@@ -30,6 +30,9 @@
     </i:Interaction.Behaviors>
 
     <Grid>
+        <Grid.BackgroundTransition>
+            <BrushTransition Duration="0:0:0.4" />
+        </Grid.BackgroundTransition>
         <SplitView IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
             <SplitView.Pane>
                 <view:MoreView />

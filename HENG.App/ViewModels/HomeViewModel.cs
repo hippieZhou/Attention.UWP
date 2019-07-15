@@ -36,7 +36,7 @@ namespace HENG.App.ViewModels
             }
         }
 
-        public void Initialize(GridView masterView, Grid detailView,UserControl searchControl)
+        public void Initialize(GridView masterView, UserControl detailView, UserControl searchControl)
         {
             PhotoGridViewModel = new PhotoGridViewModel(_dbContext, _downloadService);
             PhotoGridViewModel.Initialize(masterView, detailView, searchControl);
