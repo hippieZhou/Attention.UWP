@@ -39,7 +39,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <controls:ImageEx
                     Grid.Row="0"
@@ -49,10 +48,25 @@
                     Source="{x:Bind ViewModel.StoredItem.LargeImageURL, Mode=OneWay}"
                     Stretch="UniformToFill" />
                 <Grid
-                    x:Name="infoGrid"
-                    Grid.Row="1"
-                    Height="0"
+                    Grid.Row="0"
+                    VerticalAlignment="Bottom"
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:Fade
+                            x:Name="GridFadeUp"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseOut"
+                            EasingType="Linear"
+                            Value="1" />
+                        <behaviors:Fade
+                            x:Name="GridFadeDown"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseOut"
+                            EasingType="Linear"
+                            Value="0" />
+                    </i:Interaction.Behaviors>
                     <TextBlock
                         Margin="12,0"
                         VerticalAlignment="Center"
@@ -85,7 +99,7 @@
                             Style="{StaticResource PrimaryAppBarButtonStyle}" />
                     </CommandBar>
                 </Grid>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="1">
                     <StackPanel
                         Margin="0,0,12,0"
                         HorizontalAlignment="Right"
@@ -103,14 +117,25 @@
                             Color="Gray">
                             <Button Style="{StaticResource DownloadButtonStyle}" />
                         </controls:DropShadowPanel>
-                        <Button
+
+                        <ToggleButton
+                            Width="32"
+                            Height="32"
                             extensions:Mouse.Cursor="Hand"
+                            Click="ToggleButton_Click"
                             Content="&#xE10C;"
+                            CornerRadius="16"
                             FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                            FontWeight="Black"
-                            PointerEntered="Grid_PointerEntered"
-                            PointerExited="Grid_PointerExited"
-                            Style="{ThemeResource TextBlockButtonStyle}" />
+                            FontSize="10">
+                            <i:Interaction.Behaviors>
+                                <ic:EventTriggerBehavior EventName="Checked">
+                                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=GridFadeUp}" />
+                                </ic:EventTriggerBehavior>
+                                <ic:EventTriggerBehavior EventName="Unchecked">
+                                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=GridFadeDown}" />
+                                </ic:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </ToggleButton>
                     </StackPanel>
                 </Grid>
             </Grid>

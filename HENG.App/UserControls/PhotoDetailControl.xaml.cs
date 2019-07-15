@@ -6,6 +6,7 @@ using Windows.Foundation;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
@@ -57,24 +58,19 @@ namespace HENG.App.UserControls
             root.PointerExited += (_, args) => rootVisual.StartAnimation("Scale", pointerExitedAnimation);
         }
 
-        private void Grid_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            infoGrid.Offset(
-                offsetX: 0f,
-                offsetY: 20f,
-                duration: 250,
-                delay: 75,
-                easingMode: EasingMode.EaseInOut).Start();
-        }
-
-        private void Grid_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            infoGrid.Offset(
-                offsetX: 0f,
-                offsetY: 0f,
-                duration: 250,
-                delay: 75,
-                easingMode: EasingMode.EaseInOut).Start();
+            //if (sender is ToggleButton btn)
+            //{
+            //    if (btn.IsChecked == true)
+            //    {
+            //        infoGrid.Fade(value: 1.0f).Start();
+            //    }
+            //    else
+            //    {
+            //        infoGrid.Fade(value: 0.0f).Start();
+            //    }
+            //}
         }
     }
 }
