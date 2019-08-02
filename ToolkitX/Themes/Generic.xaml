@@ -70,10 +70,17 @@
                         d:DesignWidth="903">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                        <Rectangle x:Name="HeadersBackgroundVisual" Fill="{TemplateBinding HeadersPanelBackground}" />
+                        <Rectangle
+                            x:Name="HeadersBackgroundVisual"
+                            Grid.ColumnSpan="2"
+                            Fill="{TemplateBinding HeadersPanelBackground}" />
 
                         <Rectangle
                             x:Name="BackgroundVisual"
@@ -88,6 +95,12 @@
                                 Fill="{TemplateBinding SelectedHeaderIndicatorBackground}"
                                 UseLayoutRounding="False" />
                         </Border>
+
+                        <ContentControl
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Content="{TemplateBinding PaneFooter}" />
 
                         <ScrollViewer
                             x:Name="HeadersPanelHost"
@@ -107,6 +120,7 @@
                         <ScrollViewer
                             x:Name="ScrollViewer"
                             Grid.Row="1"
+                            Grid.ColumnSpan="2"
                             Padding="{TemplateBinding Padding}"
                             AutomationProperties.AccessibilityView="Raw"
                             BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"

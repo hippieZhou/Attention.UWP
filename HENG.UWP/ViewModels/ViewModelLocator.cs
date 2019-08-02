@@ -20,6 +20,7 @@ namespace HENG.UWP.ViewModels
             SimpleIoc.Default.Register(() => new DownloadService());
 
             SimpleIoc.Default.Register<ShellViewModel>();
+            SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<DownloadViewModel>();
             SimpleIoc.Default.Register<SettingViewModel>();
@@ -32,6 +33,7 @@ namespace HENG.UWP.ViewModels
         public PixabayService Pix => ServiceLocator.Current.GetInstance<PixabayService>();
 
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public DownloadViewModel Download => ServiceLocator.Current.GetInstance<DownloadViewModel>();
         public SettingViewModel Setting => ServiceLocator.Current.GetInstance<SettingViewModel>();

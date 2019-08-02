@@ -217,6 +217,16 @@ namespace ToolkitX.Controls
             DependencyProperty.Register("UseLineSelectionVisual", typeof(bool), typeof(Tab),
                 new PropertyMetadata(false));
 
+        public UIElement PaneFooter
+        {
+            get { return (UIElement)GetValue(PaneFooterProperty); }
+            set { SetValue(PaneFooterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PaneFooter.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PaneFooterProperty =
+            DependencyProperty.Register("PaneFooter", typeof(UIElement), typeof(Tab), new PropertyMetadata(null));
+
         #endregion
 
         #region Overrides
@@ -231,7 +241,7 @@ namespace ToolkitX.Controls
             _selectedHeaderIndicatorHost = GetTemplateChild<Border>(PART_SelectedHeaderIndicatorHost);
             _selectedHeaderIndicator = GetTemplateChild<Rectangle>(PART_SelectedHeaderIndicator);
 
-            _selectedHeaderIndicatorHost.Margin = UseLineSelectionVisual ? new Thickness() : new Thickness(0, 8, 0, 0);
+            _selectedHeaderIndicatorHost.Margin = UseLineSelectionVisual ? new Thickness(0, 0, 0, 2) : new Thickness(0, 8, 0, 0);
             _selectedHeaderIndicatorHost.VerticalAlignment = UseLineSelectionVisual ? VerticalAlignment.Bottom : VerticalAlignment.Stretch;
             _selectedHeaderIndicator.Height = UseLineSelectionVisual ? 4.0d : double.NaN;
 

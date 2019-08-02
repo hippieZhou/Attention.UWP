@@ -41,7 +41,9 @@ namespace HENG.UWP
             {
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(BlankPage1), e.Arguments);
+                    //rootFrame.Navigate(typeof(BlankPage1), e.Arguments);
+                    ExtendedSplashScreen extendedSplash = new ExtendedSplashScreen(e.SplashScreen);
+                    rootFrame.Content = extendedSplash;
                 }
                 Window.Current.Activate();
             }
