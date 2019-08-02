@@ -233,7 +233,7 @@ namespace ToolkitX.Controls
 
             _selectedHeaderIndicatorHost.Margin = UseLineSelectionVisual ? new Thickness() : new Thickness(0, 8, 0, 0);
             _selectedHeaderIndicatorHost.VerticalAlignment = UseLineSelectionVisual ? VerticalAlignment.Bottom : VerticalAlignment.Stretch;
-            _selectedHeaderIndicator.Height = UseLineSelectionVisual ? 3.0d : double.NaN;
+            _selectedHeaderIndicator.Height = UseLineSelectionVisual ? 4.0d : double.NaN;
 
             InitializeCompositionObjects();
 
