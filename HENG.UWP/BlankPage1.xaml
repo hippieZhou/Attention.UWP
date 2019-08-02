@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="HENG.UWP.BlankPage1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:HENG.UWP"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:ToolkitX.Controls"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <NavigationViewItem Icon="Accept" />
+        <toolkit:Tab>
+            <toolkit:TabItem>
+                <toolkit:TabItem.Header>
+                    <Grid Height="120">
+                        <TextBlock Text="AAA" />
+                    </Grid>
+                </toolkit:TabItem.Header>
+            </toolkit:TabItem>
+            <toolkit:TabItem Header="AAA" />
+            <toolkit:TabItem Header="AAA" />
+            <toolkit:TabItem Header="AAA" />
+        </toolkit:Tab>
+    </Grid>
+</Page>

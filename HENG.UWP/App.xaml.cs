@@ -41,7 +41,7 @@ namespace HENG.UWP
             {
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
+                    rootFrame.Navigate(typeof(BlankPage1), e.Arguments);
                 }
                 Window.Current.Activate();
             }
