@@ -124,7 +124,6 @@
     <Compile Include="Controls\Tab\TabHeaderItem.cs" />
     <Compile Include="Controls\Tab\TabItem.cs" />
     <Compile Include="Controls\Tab\TabSelectionChangedEventArgs.cs" />
-    <Compile Include="Controls\Tab\TabSelectionChangedEventHandler.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Extensions\AnimationExtensions.cs" />
     <Compile Include="Extensions\CompositionExtension.cs" />
@@ -142,6 +141,18 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Tab\Tab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tab\TabHeaderItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Tab\TabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToolkitX.Controls
 {
@@ -17,4 +13,6 @@ namespace ToolkitX.Controls
         public int OldSelectedIndex { get; }
         public int SelectedIndex { get; }
     }
+
+    public delegate void TabSelectionChangedEventHandler(object sender, TabSelectionChangedEventArgs args);
 }

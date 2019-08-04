@@ -3,13 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:HENG.UWP.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:HENG.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:ToolkitX.Controls"
     xmlns:views="using:HENG.UWP.Views"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    xmlns:vm="using:HENG.UWP.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
@@ -20,47 +23,47 @@
 
     <Grid x:Name="GalleryUI">
         <Grid.RowDefinitions>
-            <RowDefinition Height="28" />
+            <RowDefinition Height="31" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}" />
+        <Grid Grid.Row="0" Background="{ThemeResource SystemControlAcrylicElementBrush}" />
         <toolkit:Tab
             Grid.Row="1"
             Background="{ThemeResource SystemControlAcrylicWindowBrush}"
-            HeadersPanelBackground="{ThemeResource SystemControlAcrylicElementMediumHighBrush}"
-            ItemsSource="{Binding Items}"
-            SelectedHeaderIndicatorBackground="{ThemeResource SystemControlAccentAcrylicWindowAccentMediumHighBrush}"
+            HeadersPanelBackground="{ThemeResource SystemControlAcrylicElementBrush}"
+            ItemsSource="{x:Bind ViewModel.NavItems, Mode=OneWay}"
             UseLineSelectionVisual="True">
-            <toolkit:Tab.Items>
-                <toolkit:TabItem Header="Home">
-                    <toolkit:TabItem.Content>
-                        <views:PhotoView HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
-                    </toolkit:TabItem.Content>
-                </toolkit:TabItem>
-                <toolkit:TabItem Header="Horizontal" />
-                <toolkit:TabItem Header="Vertical" />
-            </toolkit:Tab.Items>
-
-            <toolkit:Tab.PaneFooter>
-                <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                        <Button.Content>
-                            <FontIcon
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="16"
-                                Glyph="&#xE896;" />
-                        </Button.Content>
-                    </Button>
-                    <Button Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                        <Button.Content>
-                            <FontIcon
-                                FontFamily="Segoe MDL2 Assets"
-                                FontSize="16"
-                                Glyph="&#xE10C;" />
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
-            </toolkit:Tab.PaneFooter>
+            <toolkit:Tab.ItemTemplate>
+                <DataTemplate x:DataType="vm:NavItem">
+                    <toolkit:TabItem
+                        Content="{x:Bind ViewModel}"
+                        Header="{x:Bind Header}"
+                        Icon="Home" />
+                </DataTemplate>
+            </toolkit:Tab.ItemTemplate>
         </toolkit:Tab>
     </Grid>
 </Page>
+
+<!--
+       <local:NavControl
+            ItemInvokedCommand="{x:Bind ViewModel.ItemInvokedCommand}"
+            NavItems="{x:Bind ViewModel.Items, Mode=OneWay}"
+            SelectedItem="{Binding Selected, Mode=TwoWay}">
+            <local:NavControl.PaneFooter>
+                <muxc:NavigationViewList>
+                    <muxc:NavigationViewList.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </muxc:NavigationViewList.ItemsPanel>
+                    <muxc:NavigationViewItem>
+                        <muxc:NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE71E;" />
+                        </muxc:NavigationViewItem.Icon>
+                    </muxc:NavigationViewItem>
+                    <muxc:NavigationViewItem Icon="Download" />
+                    <muxc:NavigationViewItem Icon="More" />
+                </muxc:NavigationViewList>
+            </local:NavControl.PaneFooter>
+        </local:NavControl>-->

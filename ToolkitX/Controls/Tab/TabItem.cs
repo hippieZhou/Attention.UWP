@@ -13,6 +13,16 @@ namespace ToolkitX.Controls
 
         #region Properties
 
+        public IconElement Icon
+        {
+            get { return (IconElement)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IconProperty =
+            DependencyProperty.Register("Icon", typeof(IconElement), typeof(TabItem), new PropertyMetadata(null));
+
         public object Header
         {
             get { return GetValue(HeaderProperty); }
@@ -20,26 +30,9 @@ namespace ToolkitX.Controls
         }
 
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(object), typeof(TabItem), new PropertyMetadata(null, (s, dp) =>
-            {
-                var value = dp.NewValue;
+            DependencyProperty.Register("Header", typeof(object), typeof(TabItem), new PropertyMetadata(null));
 
-                if (!(value is string)) return;
-
-                var self = (TabItem)s;
-                self.Header = self.Header.ToString().ToUpperInvariant();
-            }));
-
-        public Style HeaderIconStyle
-        {
-            get { return (Style)GetValue(HeaderIconStyleProperty); }
-            set { SetValue(HeaderIconStyleProperty, value); }
-        }
-
-        public static readonly DependencyProperty HeaderIconStyleProperty =
-            DependencyProperty.Register("HeaderIconStyle", typeof(Style), typeof(TabItem), new PropertyMetadata(null));
-
-        #endregion
+        #endregion Properties
 
         protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
         {

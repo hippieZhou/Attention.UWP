@@ -7,6 +7,8 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 
 namespace HENG.UWP
 {
@@ -16,8 +18,21 @@ namespace HENG.UWP
         public MainPage(Rect imageBounds)
         {
             this.InitializeComponent();
+            this.ViewModel.Initialize();
+            this.DataContext = ViewModel;
 
             ShowCustomSplashScreen(imageBounds);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            //todo
+            //if (navView.FindName("SelectionIndicator") is Rectangle indicator)
+            //{
+            //    indicator.Height = 4.0d;
+            //}
+
+            HideCustomSplashScreen();
         }
 
         private void ShowCustomSplashScreen(Rect imageBounds)
@@ -34,11 +49,6 @@ namespace HENG.UWP
             backgroundSprite.Size = windowSize;
             backgroundSprite.Brush = compositor.CreateColorBrush(Color.FromArgb(255, 0, 188, 242));
             container.Children.InsertAtBottom(backgroundSprite);
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            HideCustomSplashScreen();
         }
 
         private void HideCustomSplashScreen()
@@ -73,7 +83,6 @@ namespace HENG.UWP
             Visual gridVisual = ElementCompositionPreview.GetElementVisual(GalleryUI);
             gridVisual.Size = new Vector2((float)GalleryUI.ActualWidth, (float)GalleryUI.ActualHeight);
             gridVisual.CenterPoint = new Vector3(gridVisual.Size.X, gridVisual.Size.Y, 0) * .5f;
-
 
             CompositionScopedBatch batch = compositor.CreateScopedBatch(CompositionBatchTypes.Animation);
 

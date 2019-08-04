@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using ToolkitX.Extensions;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using ToolkitX.Extensions;
+using Windows.UI.Xaml.Shapes;
 
 namespace ToolkitX.Controls
 {
@@ -55,7 +56,7 @@ namespace ToolkitX.Controls
 
         private bool _isLoaded;
 
-        #endregion
+        #endregion Fields
 
         public Tab()
         {
@@ -66,7 +67,7 @@ namespace ToolkitX.Controls
 
         public event TabSelectionChangedEventHandler SelectionChanged;
 
-        #endregion
+        #endregion Events
 
         #region Properties
 
@@ -123,6 +124,7 @@ namespace ToolkitX.Controls
             get => (DataTemplate)GetValue(HeaderTemplateProperty);
             set => SetValue(HeaderTemplateProperty, value);
         }
+
         public static readonly DependencyProperty HeaderTemplateProperty =
             DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(Tab),
                 new PropertyMetadata(null, (s, dp) =>
@@ -142,6 +144,7 @@ namespace ToolkitX.Controls
             get => (int)GetValue(SelectedIndexProperty);
             set => SetValue(SelectedIndexProperty, value);
         }
+
         public static readonly DependencyProperty SelectedIndexProperty =
             DependencyProperty.Register("SelectedIndex", typeof(int), typeof(Tab),
                 new PropertyMetadata(0, (s, dp) =>
@@ -162,6 +165,7 @@ namespace ToolkitX.Controls
             get => GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
         }
+
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register("SelectedItem", typeof(object), typeof(Tab),
                 new PropertyMetadata(null, (s, dp) =>
@@ -177,6 +181,7 @@ namespace ToolkitX.Controls
             get => (Thickness)GetValue(HeadersPanelMarginProperty);
             set => SetValue(HeadersPanelMarginProperty, value);
         }
+
         public static readonly DependencyProperty HeadersPanelMarginProperty =
             DependencyProperty.Register("HeadersPanelMargin", typeof(Thickness), typeof(Tab),
                 new PropertyMetadata(new Thickness()));
@@ -186,6 +191,7 @@ namespace ToolkitX.Controls
             get => (HorizontalAlignment)GetValue(HeadersPanelHorizontalAlignmentProperty);
             set => SetValue(HeadersPanelHorizontalAlignmentProperty, value);
         }
+
         public static readonly DependencyProperty HeadersPanelHorizontalAlignmentProperty =
             DependencyProperty.Register("HeadersPanelHorizontalAlignment", typeof(HorizontalAlignment), typeof(Tab),
                 new PropertyMetadata(HorizontalAlignment.Left));
@@ -195,6 +201,7 @@ namespace ToolkitX.Controls
             get => (Brush)GetValue(SelectedHeaderIndicatorBackgroundProperty);
             set => SetValue(SelectedHeaderIndicatorBackgroundProperty, value);
         }
+
         public static readonly DependencyProperty SelectedHeaderIndicatorBackgroundProperty =
             DependencyProperty.Register("SelectedHeaderIndicatorBackground", typeof(Brush), typeof(Tab),
                 new PropertyMetadata(default(Brush)));
@@ -204,6 +211,7 @@ namespace ToolkitX.Controls
             get => (Brush)GetValue(HeadersPanelBackgroundProperty);
             set => SetValue(HeadersPanelBackgroundProperty, value);
         }
+
         public static readonly DependencyProperty HeadersPanelBackgroundProperty =
             DependencyProperty.Register("HeadersPanelBackground", typeof(Brush), typeof(Tab),
                 new PropertyMetadata(default(Brush)));
@@ -213,21 +221,12 @@ namespace ToolkitX.Controls
             get => (bool)GetValue(UseLineSelectionVisualProperty);
             set => SetValue(UseLineSelectionVisualProperty, value);
         }
+
         public static readonly DependencyProperty UseLineSelectionVisualProperty =
             DependencyProperty.Register("UseLineSelectionVisual", typeof(bool), typeof(Tab),
                 new PropertyMetadata(false));
 
-        public UIElement PaneFooter
-        {
-            get { return (UIElement)GetValue(PaneFooterProperty); }
-            set { SetValue(PaneFooterProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for PaneFooter.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PaneFooterProperty =
-            DependencyProperty.Register("PaneFooter", typeof(UIElement), typeof(Tab), new PropertyMetadata(null));
-
-        #endregion
+        #endregion Properties
 
         #region Overrides
 
@@ -241,7 +240,7 @@ namespace ToolkitX.Controls
             _selectedHeaderIndicatorHost = GetTemplateChild<Border>(PART_SelectedHeaderIndicatorHost);
             _selectedHeaderIndicator = GetTemplateChild<Rectangle>(PART_SelectedHeaderIndicator);
 
-            _selectedHeaderIndicatorHost.Margin = UseLineSelectionVisual ? new Thickness(0, 0, 0, 2) : new Thickness(0, 8, 0, 0);
+            _selectedHeaderIndicatorHost.Margin = UseLineSelectionVisual ? new Thickness() : new Thickness(0, 8, 0, 0);
             _selectedHeaderIndicatorHost.VerticalAlignment = UseLineSelectionVisual ? VerticalAlignment.Bottom : VerticalAlignment.Stretch;
             _selectedHeaderIndicator.Height = UseLineSelectionVisual ? 4.0d : double.NaN;
 
@@ -251,10 +250,22 @@ namespace ToolkitX.Controls
             SizeChanged += OnSizeChanged;
         }
 
-        protected override DependencyObject GetContainerForItemOverride() =>
-            new TabItem();
+        protected override DependencyObject GetContainerForItemOverride() => new TabItem();
 
-        #endregion
+        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            base.PrepareContainerForItemOverride(element, item);
+
+            if (element is TabItem self)
+            {
+                var binding = new Binding { Mode = BindingMode.TwoWay, Source = item, Path = new PropertyPath(nameof(self.Header)) };
+                self.SetBinding(TabItem.HeaderProperty, binding);
+
+                self.DataContext = item;
+            }
+        }
+
+        #endregion Overrides
 
         #region Handlers
 
@@ -267,8 +278,7 @@ namespace ToolkitX.Controls
 
             foreach (var item in Items)
             {
-                var tabItem = ContainerFromItem(item) as TabItem;
-                if (tabItem == null) continue;
+                if (!(ContainerFromItem(item) is TabItem tabItem)) continue;
 
                 tabItem.Width = ActualWidth;
             }
@@ -286,20 +296,17 @@ namespace ToolkitX.Controls
 
             for (var i = 0; i < Items.Count; i++)
             {
-                var tabItem = ContainerFromIndex(i) as TabItem;
-
-                if (tabItem == null) continue;
+                if (!(ContainerFromIndex(i) is TabItem tabItem)) continue;
 
                 var header = new TabHeaderItem
                 {
                     DataContext = Items[i],
                     Content = tabItem.Header,
-                    HeaderIconStyle = tabItem.HeaderIconStyle,
                     ContentTemplate = HeaderTemplate,
                     IsChecked = i == 0
                 };
 
-                // Have to do this to avoid a bug where RadioButton's GroupName 
+                // Have to do this to avoid a bug where RadioButton's GroupName
                 // doesn't function properly after Reloaded.
                 header.Loaded += async (s, args) =>
                 {
@@ -448,7 +455,7 @@ namespace ToolkitX.Controls
             SyncSelectedHeaderIndicatorVisual();
         }
 
-        #endregion
+        #endregion Handlers
 
         #region Methods
 
@@ -559,6 +566,6 @@ namespace ToolkitX.Controls
             throw new NullReferenceException(message);
         }
 
-        #endregion
+        #endregion Methods
     }
 }

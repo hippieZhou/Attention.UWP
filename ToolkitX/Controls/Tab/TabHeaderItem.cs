@@ -1,5 +1,6 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
+
+// The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
 namespace ToolkitX.Controls
 {
@@ -9,18 +10,5 @@ namespace ToolkitX.Controls
         {
             DefaultStyleKey = typeof(TabHeaderItem);
         }
-
-        #region Properties
-
-        public Style HeaderIconStyle
-        {
-            get { return (Style)GetValue(HeaderIconStyleProperty); }
-            set { SetValue(HeaderIconStyleProperty, value); }
-        }
-
-        public static readonly DependencyProperty HeaderIconStyleProperty =
-            DependencyProperty.Register("HeaderIconStyle", typeof(Style), typeof(TabHeaderItem), new PropertyMetadata(null));
-
-        #endregion
     }
 }
