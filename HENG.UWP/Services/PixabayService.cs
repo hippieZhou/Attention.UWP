@@ -59,5 +59,17 @@ namespace HENG.UWP.Services
             var result = await _client.QueryImagesAsync(qb);
             return result;
         }
+
+        public async Task<ImageResult> QueryImagesAsync(Orientation orientation = Orientation.All, int page = 1, int per_page = 20)
+        {
+            ImageQueryBuilder qb = new ImageQueryBuilder()
+            {
+                Orientation = orientation,
+                Page = page,
+                PerPage = per_page
+            };
+            var result = await _client.QueryImagesAsync(qb);
+            return result;
+        }
     }
 }

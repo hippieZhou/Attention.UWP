@@ -3,10 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helper="using:HENG.UWP.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:HENG.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:ToolkitX.Controls"
@@ -31,39 +29,29 @@
             Grid.Row="1"
             Background="{ThemeResource SystemControlAcrylicWindowBrush}"
             HeadersPanelBackground="{ThemeResource SystemControlAcrylicElementBrush}"
+            HeadersPanelHorizontalAlignment="Left"
             ItemsSource="{x:Bind ViewModel.NavItems, Mode=OneWay}"
             UseLineSelectionVisual="True">
             <toolkit:Tab.ItemTemplate>
                 <DataTemplate x:DataType="vm:NavItem">
-                    <toolkit:TabItem
-                        Content="{x:Bind ViewModel}"
-                        Header="{x:Bind Header}"
-                        Icon="Home" />
+                    <toolkit:TabItem Header="{x:Bind Header}">
+                        <toolkit:TabItem.Content>
+                            <Grid>
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{x:Bind Color}" />
+                                </Grid.Background>
+                            </Grid>
+                        </toolkit:TabItem.Content>
+                    </toolkit:TabItem>
                 </DataTemplate>
             </toolkit:Tab.ItemTemplate>
+            <toolkit:Tab.SubPane>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="&#xE71E;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                    <Button Content="&#xE118;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                    <Button Content="&#xE10C;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                </StackPanel>
+            </toolkit:Tab.SubPane>
         </toolkit:Tab>
     </Grid>
 </Page>
-
-<!--
-       <local:NavControl
-            ItemInvokedCommand="{x:Bind ViewModel.ItemInvokedCommand}"
-            NavItems="{x:Bind ViewModel.Items, Mode=OneWay}"
-            SelectedItem="{Binding Selected, Mode=TwoWay}">
-            <local:NavControl.PaneFooter>
-                <muxc:NavigationViewList>
-                    <muxc:NavigationViewList.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsStackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </muxc:NavigationViewList.ItemsPanel>
-                    <muxc:NavigationViewItem>
-                        <muxc:NavigationViewItem.Icon>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE71E;" />
-                        </muxc:NavigationViewItem.Icon>
-                    </muxc:NavigationViewItem>
-                    <muxc:NavigationViewItem Icon="Download" />
-                    <muxc:NavigationViewItem Icon="More" />
-                </muxc:NavigationViewList>
-            </local:NavControl.PaneFooter>
-        </local:NavControl>-->

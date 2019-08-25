@@ -1,0 +1,79 @@
+﻿<UserControl
+    x:Class="Attention.UserControls.SettingControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:Attention.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Attention.Models"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="controls:HeaderedItemsControl">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <controls:WrapPanel />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style BasedOn="{StaticResource ThemeRadioButtonStyle}" TargetType="RadioButton">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand, Mode=OneWay}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid>
+        <StackPanel>
+            <controls:HeaderedItemsControl x:Uid="setting_theme" ItemsSource="{x:Bind ViewModel.Themes, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="model:AppTheme">
+                        <RadioButton
+                            Click="ThemeRadioButton_Click"
+                            Content="{x:Bind Description}"
+                            GroupName="Themes"
+                            IsChecked="{Binding Checked, Mode=TwoWay}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </controls:HeaderedItemsControl>
+
+            <controls:HeaderedItemsControl x:Uid="setting_language" ItemsSource="{x:Bind ViewModel.Languages, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="model:AppLanguage">
+                        <RadioButton
+                            Click="LanguageRadioButton_Click"
+                            GroupName="Languages"
+                            IsChecked="{Binding Checked, Mode=TwoWay}">
+                            <RadioButton.Content>
+                                <Image Source="{x:Bind Logo}" Stretch="None" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </controls:HeaderedItemsControl>
+
+            <ToggleSwitch
+                x:Uid="setting_livetitle"
+                FontSize="20"
+                IsOn="{x:Bind ViewModel.LiveTitleIsOn, Mode=OneWay}">
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="Toggled">
+                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchLiveTitleCommand}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </ToggleSwitch>
+        </StackPanel>
+    </Grid>
+</UserControl>

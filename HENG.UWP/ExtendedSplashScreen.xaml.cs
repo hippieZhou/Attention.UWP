@@ -21,7 +21,7 @@ namespace HENG.UWP
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            MainPage page = new MainPage(_splashImageBounds);
+            BlankPage1 page = new BlankPage1(_splashImageBounds);
 
             if (!(Window.Current.Content is Frame rootFrame))
             {

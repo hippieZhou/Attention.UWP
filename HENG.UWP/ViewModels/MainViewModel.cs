@@ -1,33 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI;
 
 namespace HENG.UWP.ViewModels
 {
-
-    public class NavItem: ViewModelBase
-    {
-        private string _header;
-        public string Header
-        {
-            get { return _header; }
-            set { _header = value; }
-        }
-
-        private object _viewModel;
-        public object ViewModel
-        {
-            get { return _viewModel; }
-            set { Set(ref _viewModel, value); }
-        }
-    }
-
     public class MainViewModel : ViewModelBase
     {
-
         private ObservableCollection<NavItem> _navItems;
         public ObservableCollection<NavItem> NavItems
         {
@@ -38,9 +19,9 @@ namespace HENG.UWP.ViewModels
         public void Initialize()
         {
             NavItems.Clear();
-            NavItems.Add(new NavItem { Header = "Home", ViewModel = "Home" });
-            NavItems.Add(new NavItem { Header = "Find", ViewModel = "Find" });
-            NavItems.Add(new NavItem { Header = "Library", ViewModel = "Library" });
+            NavItems.Add(new AllViewModel());
+            NavItems.Add(new HorizontalViewModel());
+            NavItems.Add(new VerticalViewModel());
         }
 
         private ICommand _loadedCommand;
@@ -57,6 +38,40 @@ namespace HENG.UWP.ViewModels
                 }
                 return _loadedCommand;
             }
+        }
+    }
+
+    public class NavItem : ViewModelBase
+    {
+        public string Header { get; protected set; }
+        public ViewModelBase ViewModel { get; set; }
+        public Color Color { get; set; }
+    }
+
+    public class AllViewModel : NavItem
+    {
+        public AllViewModel()
+        {
+            Header = "HOME";
+            Color = Colors.Red;
+        }
+    }
+
+    public class HorizontalViewModel : NavItem
+    {
+        public HorizontalViewModel()
+        {
+            Header = "HORIZONTAL";
+            Color = Colors.Yellow;
+        }
+    }
+
+    public class VerticalViewModel : NavItem
+    {
+        public VerticalViewModel()
+        {
+            Header = "VERTICAL";
+            Color = Colors.Green;
         }
     }
 }
