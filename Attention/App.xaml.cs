@@ -1,4 +1,5 @@
 ﻿using Attention.Commons;
+using Attention.ViewModels;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -10,7 +11,7 @@ namespace Attention
 {
     sealed partial class App : Application
     {
-        public static string Get_API_KEY() => Current.Resources["API-KEY"] as string;
+        public static string API_KEY => Current.Resources["API-KEY"] as string;
         public App()
         {
             this.InitializeComponent();
@@ -42,8 +43,6 @@ namespace Attention
                 }
                 Window.Current.Activate();
             }
-
-            TitleBarHelper.Instance.RefreshTitleBar();
         }
 
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)

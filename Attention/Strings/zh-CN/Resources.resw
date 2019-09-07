@@ -180,13 +180,13 @@
   <data name="setting_theme.Header" xml:space="preserve">
     <value>主题</value>
   </data>
-  <data name="theme_dark" xml:space="preserve">
+  <data name="theme_dark.Content" xml:space="preserve">
     <value>深色</value>
   </data>
-  <data name="theme_default" xml:space="preserve">
+  <data name="theme_default.Content" xml:space="preserve">
     <value>默认</value>
   </data>
-  <data name="theme_light" xml:space="preserve">
+  <data name="theme_light.Content" xml:space="preserve">
     <value>浅色</value>
   </data>
   <data name="theme_notification" xml:space="preserve">

@@ -1,10 +1,8 @@
 ﻿using Attention.Extensions;
 using Attention.Models;
-using Attention.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.System;
@@ -15,6 +13,7 @@ using Microsoft.Toolkit.Extensions;
 using Windows.ApplicationModel.Email;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Attention.ViewModels
 {
@@ -50,32 +49,43 @@ namespace Attention.ViewModels
 
     public class FilterViewModel : BaseMoreViewModel
     {
-        private Filter _orders;
-        public Filter Orders
-        {
-            get { return _orders ?? (_orders = new Filter()); }
-            set { Set(ref _orders, value); }
-        }
+        public Filters Orders { get; private set; } = new Filters();
 
-        private Filter _orientations;
-        public Filter Orientations
-        {
-            get { return _orientations ?? (_orientations = new Filter()); }
-            set { Set(ref _orientations, value); }
-        }
+        public Filters Orientations { get; private set; } = new Filters();
 
-        private Filter _imageTypes;
-        public Filter ImageTypes
-        {
-            get { return _imageTypes ?? (_imageTypes = new Filter()); }
-            set { Set(ref _imageTypes, value); }
-        }
+        public Filters ImageTypes { get; private set; } = new Filters();
 
-        private Filter _categories;
-        public Filter Categories
+        public Filters Categories { get; private set; } = new Filters();
+
+        protected override void OnLoaded()
         {
-            get { return _categories ?? (_categories = new Filter()); }
-            set { Set(ref _categories, value); }
+            var appSettings = ViewModelLocator.Current.AppSettings;
+            var (orders, orientations, imageTypes, categories) = ViewModelLocator.Current.Pixabay.GetEnumFilters();
+
+            Orders.Clear();
+
+            Orientations.Clear();
+
+            ImageTypes.Clear();
+
+            Categories.Clear();
+
+            void Refresh(IEnumerable<FilterItem> items, FilterItem checkedItem, Filters filter)
+            {
+                filter.Clear();
+
+                var enumerator = items.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    enumerator.Current.Checked = enumerator.Current.Name == checkedItem?.Name;
+                    filter.Add(enumerator.Current);
+                }
+            }
+
+            Refresh(orders, appSettings.Filters.Order, Orders);
+            Refresh(orientations, appSettings.Filters.Orientation, Orientations);
+            Refresh(imageTypes, appSettings.Filters.ImageType, ImageTypes);
+            Refresh(categories, appSettings.Filters.Category, Categories);
         }
 
         private ICommand _saveCommand;
@@ -87,6 +97,7 @@ namespace Attention.ViewModels
                 {
                     _saveCommand = new RelayCommand(async () =>
                     {
+                        //ViewModelLocator.Current.AppSettings.Filters;
                         //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
                         //await appSettings.UpdateFiletersAsync(
                         //    Orders.FirstOrDefault(p => p.Checked),
@@ -96,139 +107,98 @@ namespace Attention.ViewModels
                         await Task.CompletedTask;
 
                         Messenger.Default.Send(new NotificationMessage(this, "filer_notification".GetLocalized()), NotificationToken.ToastToken);
-                        ViewModelLocator.Current.Shell.PhotoGridViewModel.RefreshCommand.Execute(null);
+                        //ViewModelLocator.Current.Shell.PhotoGridViewModel.RefreshCommand.Execute(null);
                     });
                 }
                 return _saveCommand;
             }
         }
-
-        protected override void OnLoaded()
-        {
-            //var service = ViewModelLocator.Current.GetRequiredService<PixabayService>();
-            //var (orders, orientations, imageTypes, categories) = service.GetEnumFilters();
-
-            //void Refresh(IEnumerable<FilterItem> items, FilterItem checkedItem, Filter filter)
-            //{
-            //    filter.Clear();
-
-            //    var enumerator = items.GetEnumerator();
-            //    while (enumerator.MoveNext())
-            //    {
-            //        enumerator.Current.Checked = enumerator.Current.Name == checkedItem?.Name;
-            //        filter.Add(enumerator.Current);
-            //    }
-            //}
-
-            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
-
-            //Refresh(orders, appSettings.Filter.Order, Orders);
-            //Refresh(orientations, appSettings.Filter.Orientation, Orientations);
-            //Refresh(imageTypes, appSettings.Filter.ImageType, ImageTypes);
-            //Refresh(categories, appSettings.Filter.Category, Categories);
-        }
     }
 
     public class SettingViewMode : BaseMoreViewModel
     {
-        private ObservableCollection<AppTheme> _themes;
-        public ObservableCollection<AppTheme> Themes
+        private ElementTheme _theme;
+        public ElementTheme Theme
         {
-            get { return _themes ?? (_themes = new ObservableCollection<AppTheme>()); }
-            set { _themes = value; }
+            get { return _theme; }
+            set { Set(ref _theme, value); }
         }
 
-        private ObservableCollection<AppLanguage> _languages;
-        public ObservableCollection<AppLanguage> Languages
+        private string _language;
+        public string Language
         {
-            get { return _languages ?? (_languages = new ObservableCollection<AppLanguage>()); }
-            set { _languages = value; }
+            get { return _language; }
+            set { Set(ref _language, value); }
         }
 
-        private bool _liveTitleIsOn;
-        public bool LiveTitleIsOn
+        private bool _liveTitle;
+        public bool LiveTitle
         {
-            get { return _liveTitleIsOn; }
-            set { Set(ref _liveTitleIsOn, value); }
-        }
-
-        private ICommand _changedThemeCommand;
-        public ICommand ChangedThemeCommand
-        {
-            get
-            {
-                if (_changedThemeCommand == null)
-                {
-                    _changedThemeCommand = new RelayCommand<AppTheme>(async theme =>
-                    {
-                        var appSettings = ViewModelLocator.Current.GetService<AppSettingService>();
-                        await appSettings.UpdateThemeAsync(theme);
-                    });
-                }
-                return _changedThemeCommand;
-            }
-        }
-
-        private ICommand _changedLanguageCommand;
-        public ICommand ChangedLanguageCommand
-        {
-            get
-            {
-                if (_changedLanguageCommand == null)
-                {
-                    _changedLanguageCommand = new RelayCommand<AppLanguage>(async language =>
-                    {
-                        var appSettings = ViewModelLocator.Current.GetService<AppSettingService>();
-                        await appSettings.UpdateLanguageAsync(language);
-                        
-                        Messenger.Default.Send(new NotificationMessage(this, "theme_notification".GetLocalized()), NotificationToken.ToastToken);
-                    });
-                }
-                return _changedLanguageCommand;
-            }
-        }
-
-        private ICommand _switchLiveTitleCommand;
-        public ICommand SwitchLiveTitleCommand
-        {
-            get
-            {
-                if (_switchLiveTitleCommand == null)
-                {
-                    _switchLiveTitleCommand = new RelayCommand<RoutedEventArgs>(args =>
-                    {
-                        if (args.OriginalSource is ToggleSwitch ts)
-                        {
-                            LiveTitleIsOn = ts.IsOn;
-
-                            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
-                            //appSettings.UpdateLiveTitleState(LiveTitleIsOn);
-                        }
-                    });
-                }
-                return _switchLiveTitleCommand; }
+            get { return _liveTitle; }
+            set { Set(ref _liveTitle, value); }
         }
 
         protected override void OnLoaded()
         {
-            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+            var appSettings = ViewModelLocator.Current.AppSettings;
+            Theme = appSettings.AppTheme;
+            Language = appSettings.AppLanguage;
+            LiveTitle = appSettings.AppLiveTitleIsOn;
+        }
 
-            //Themes.Clear();
-            //var themes = appSettings.GetThemes();
-            //foreach (var theme in themes)
-            //{
-            //    Themes.Add(theme);
-            //}
+        private ICommand _themeCommand;
+        public ICommand ThemeCommand
+        {
+            get
+            {
+                if (_themeCommand == null)
+                {
+                    _themeCommand = new RelayCommand<ElementTheme>(async theme =>
+                    {
+                        Theme = theme;
+                        await ViewModelLocator.Current.AppSettings.UpdateThemeAsync(Theme);
+                    });
+                }
+                return _themeCommand;
+            }
+        }
 
+        private ICommand _languageCommand;
+        public ICommand LanguageCommand
+        {
+            get
+            {
+                if (_languageCommand == null)
+                {
+                    _languageCommand = new RelayCommand<string>(async language =>
+                    {
+                        Language = language;
+                        await ViewModelLocator.Current.AppSettings.UpdateLanguageAsync(Language);
+                        Messenger.Default.Send(new NotificationMessage(this, "theme_notification".GetLocalized()), NotificationToken.ToastToken);
+                    });
+                }
+                return _languageCommand;
+            }
+        }
 
-            //Languages.Clear();
-            //var languages = appSettings.GetLanguages();
-            //foreach (var language in languages)
-            //{
-            //    Languages.Add(language);
-            //}
-
-            //LiveTitleIsOn = appSettings.GetLiveTitleState();
+        private ICommand _liveTitleCommand;
+        public ICommand LiveTitleCommand
+        {
+            get
+            {
+                if (_liveTitleCommand == null)
+                {
+                    _liveTitleCommand = new RelayCommand<RoutedEventArgs>(args =>
+                    {
+                        if (args.OriginalSource is ToggleSwitch ts)
+                        {
+                            LiveTitle = ts.IsOn;
+                            ViewModelLocator.Current.AppSettings.UpdateLiveTitle(LiveTitle);
+                        }
+                    });
+                }
+                return _liveTitleCommand;
+            }
         }
     }
 

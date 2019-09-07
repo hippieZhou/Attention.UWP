@@ -127,21 +127,17 @@
     <Compile Include="Commons\LiveTileHelper.cs" />
     <Compile Include="Commons\TitleBarHelper.cs" />
     <Compile Include="Controls\DownloadControl\DownloadControl.cs" />
+    <Compile Include="Converters\IsCheckedValueConverter.cs" />
     <Compile Include="Converters\RandomColorConverter.cs" />
     <Compile Include="ExtendedSplashScreen.xaml.cs">
       <DependentUpon>ExtendedSplashScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\AnimationExtension.cs" />
-    <Compile Include="Extensions\FrameworkElementExtension.cs" />
     <Compile Include="Extensions\ResourceExtension.cs" />
-    <Compile Include="Models\AppLanguage.cs" />
-    <Compile Include="Models\NotificationToken.cs" />
-    <Compile Include="Models\Defined.cs" />
+    <Compile Include="Models\Conf.cs" />
     <Compile Include="Models\DownloadItem.cs" />
-    <Compile Include="Models\Filter.cs" />
-    <Compile Include="Models\AppTheme.cs" />
     <Compile Include="Models\FilterItem.cs" />
-    <Compile Include="Services\AppSettingService.cs" />
+    <Compile Include="Services\AppSettings.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
@@ -173,7 +169,6 @@
     <Compile Include="UserControls\ToastControl.xaml.cs">
       <DependentUpon>ToastControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ExtendedSplashScreenViewModel.cs" />
     <Compile Include="ViewModels\MoreViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DownloadViewModel.cs" />

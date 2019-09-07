@@ -9,22 +9,13 @@
     xmlns:local="using:Attention.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Attention.Models"
+    xmlns:xaml="using:Windows.UI.Xaml"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="controls:HeaderedItemsControl">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <controls:WrapPanel />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style BasedOn="{StaticResource ThemeRadioButtonStyle}" TargetType="RadioButton">
-            <Setter Property="Margin" Value="4" />
+            <Setter Property="Margin" Value="0,4,4,4" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
@@ -37,40 +28,76 @@
 
     <Grid>
         <StackPanel>
-            <controls:HeaderedItemsControl x:Uid="setting_theme" ItemsSource="{x:Bind ViewModel.Themes, Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="model:AppTheme">
-                        <RadioButton
-                            Click="ThemeRadioButton_Click"
-                            Content="{x:Bind Description}"
-                            GroupName="Themes"
-                            IsChecked="{Binding Checked, Mode=TwoWay}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </controls:HeaderedItemsControl>
+            <controls:HeaderedContentControl x:Uid="setting_theme">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton
+                        x:Uid="theme_default"
+                        Command="{x:Bind ViewModel.ThemeCommand, Mode=OneWay}"
+                        GroupName="Themes"
+                        IsChecked="{x:Bind ViewModel.Theme, Mode=OneWay, Converter={StaticResource IsCheckedValueConverter}, ConverterParameter=Default}">
+                        <RadioButton.CommandParameter>
+                            <xaml:ElementTheme>Default</xaml:ElementTheme>
+                        </RadioButton.CommandParameter>
+                        <RadioButton.DataContext>
+                            <xaml:ElementTheme>Default</xaml:ElementTheme>
+                        </RadioButton.DataContext>
+                    </RadioButton>
+                    <RadioButton
+                        x:Uid="theme_light"
+                        Command="{x:Bind ViewModel.ThemeCommand, Mode=OneWay}"
+                        GroupName="Themes"
+                        IsChecked="{x:Bind ViewModel.Theme, Mode=OneWay, Converter={StaticResource IsCheckedValueConverter}, ConverterParameter=Light}">
+                        <RadioButton.CommandParameter>
+                            <xaml:ElementTheme>Light</xaml:ElementTheme>
+                        </RadioButton.CommandParameter>
+                        <RadioButton.DataContext>
+                            <xaml:ElementTheme>Light</xaml:ElementTheme>
+                        </RadioButton.DataContext>
+                    </RadioButton>
+                    <RadioButton
+                        x:Uid="theme_dark"
+                        Command="{x:Bind ViewModel.ThemeCommand, Mode=OneWay}"
+                        GroupName="Themes"
+                        IsChecked="{x:Bind ViewModel.Theme, Mode=OneWay, Converter={StaticResource IsCheckedValueConverter}, ConverterParameter=Dark}">
+                        <RadioButton.CommandParameter>
+                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                        </RadioButton.CommandParameter>
+                        <RadioButton.DataContext>
+                            <xaml:ElementTheme>Dark</xaml:ElementTheme>
+                        </RadioButton.DataContext>
+                    </RadioButton>
+                </StackPanel>
+            </controls:HeaderedContentControl>
 
-            <controls:HeaderedItemsControl x:Uid="setting_language" ItemsSource="{x:Bind ViewModel.Languages, Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="model:AppLanguage">
-                        <RadioButton
-                            Click="LanguageRadioButton_Click"
-                            GroupName="Languages"
-                            IsChecked="{Binding Checked, Mode=TwoWay}">
-                            <RadioButton.Content>
-                                <Image Source="{x:Bind Logo}" Stretch="None" />
-                            </RadioButton.Content>
-                        </RadioButton>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </controls:HeaderedItemsControl>
+            <controls:HeaderedContentControl x:Uid="setting_language">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton
+                        Command="{x:Bind ViewModel.LanguageCommand, Mode=OneWay}"
+                        CommandParameter="zh-Hans-CN"
+                        DataContext="zh-Hans-CN"
+                        GroupName="Languages"
+                        IsChecked="{x:Bind ViewModel.Language, Mode=OneWay, Converter={StaticResource IsCheckedValueConverter}, ConverterParameter=zh-Hans-CN}">
+                        <RadioButton.Content>
+                            <Image Source="ms-appx:///Assets/flag-cn.png" Stretch="None" />
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton
+                        Command="{x:Bind ViewModel.LanguageCommand, Mode=OneWay}"
+                        CommandParameter="en-US"
+                        DataContext="en-US"
+                        GroupName="Languages"
+                        IsChecked="{x:Bind ViewModel.Language, Mode=OneWay, Converter={StaticResource IsCheckedValueConverter}, ConverterParameter=en-US}">
+                        <RadioButton.Content>
+                            <Image Source="ms-appx:///Assets/flag-us.png" Stretch="None" />
+                        </RadioButton.Content>
+                    </RadioButton>
+                </StackPanel>
+            </controls:HeaderedContentControl>
 
-            <ToggleSwitch
-                x:Uid="setting_livetitle"
-                FontSize="20"
-                IsOn="{x:Bind ViewModel.LiveTitleIsOn, Mode=OneWay}">
+            <ToggleSwitch x:Uid="setting_livetitle" IsOn="{x:Bind ViewModel.LiveTitle, Mode=OneWay}">
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="Toggled">
-                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SwitchLiveTitleCommand}" />
+                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.LiveTitleCommand, Mode=OneWay}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
             </ToggleSwitch>

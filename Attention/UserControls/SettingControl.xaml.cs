@@ -27,7 +27,7 @@ namespace Attention.UserControls
         {
             if (sender is RadioButton btn)
             {
-                ViewModel.ChangedThemeCommand.Execute(btn.DataContext);
+                ViewModel.ThemeCommand.Execute(btn.DataContext);
             }
         }
 
@@ -35,7 +35,7 @@ namespace Attention.UserControls
         {
             if (sender is RadioButton btn)
             {
-                ViewModel.ChangedLanguageCommand.Execute(btn.DataContext);
+                ViewModel.LanguageCommand.Execute(btn.DataContext);
             }
         }
     }

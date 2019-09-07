@@ -14,7 +14,6 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="controls:HeaderedItemsControl">
-            <Setter Property="FontSize" Value="20" />
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>

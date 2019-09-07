@@ -1,5 +1,4 @@
 ﻿using Attention.Commons;
-using Attention.Extensions;
 using Attention.Models;
 using Microsoft.Toolkit.Uwp.UI.Helpers;
 using System;
@@ -14,18 +13,18 @@ using Windows.UI.Xaml;
 
 namespace Attention.Services
 {
-    public class AppSettingService
+    public class AppSettings
     {
         private ApplicationDataContainer LocalSettings => ApplicationData.Current.LocalSettings;
+
+        public (FilterItem Order, FilterItem Orientation, FilterItem ImageType, FilterItem Category) Filters;
+
+        public ElementTheme AppTheme { get; private set; } = ElementTheme.Default;
+        public string AppLanguage { get; private set; } = GlobalizationPreferences.Languages[0];
+        public bool AppLiveTitleIsOn { get; private set; } = true;
         public string DownloadPath { get; private set; }
 
-        public (FilterItem Order, FilterItem Orientation, FilterItem ImageType, FilterItem Category) Filter;
-
-        private static AppTheme AppTheme;
-        private static AppLanguage AppLanguage;
-        private static bool AppLiveTitleIsOn;
-
-        static AppSettingService()
+        static AppSettings()
         {
             ThemeListener themeListener = new ThemeListener();
             themeListener.ThemeChanged += (sender) =>
@@ -37,20 +36,15 @@ namespace Attention.Services
         public async Task InitializeAsync()
         {
             object themeName = GetSettingsValue(nameof(AppTheme), ElementTheme.Default);
-            Enum.TryParse(themeName?.ToString(), out ElementTheme cacheTheme);
-            AppTheme = new AppTheme
+            if (Enum.TryParse(themeName?.ToString(), out ElementTheme cacheTheme))
             {
-                Theme = cacheTheme,
-                Checked = true
-            };
+                AppTheme = cacheTheme;
+            }
             await RefreshUIThemeAsync();
 
-            AppLanguage = new AppLanguage
-            {
-                Code = GetSettingsValue(nameof(AppLanguage), GlobalizationPreferences.Languages[0]).ToString(),
-                Checked = true
-            };
-            ApplicationLanguages.PrimaryLanguageOverride = AppLanguage.Code;
+            object languageName = GetSettingsValue(nameof(AppLanguage), GlobalizationPreferences.Languages[0]);
+            AppLanguage = languageName?.ToString();
+            ApplicationLanguages.PrimaryLanguageOverride = AppLanguage;
 
             object liveTitleState = GetSettingsValue(nameof(AppLiveTitleIsOn), false);
             bool.TryParse(liveTitleState?.ToString(), out bool cacheState);
@@ -63,36 +57,14 @@ namespace Attention.Services
         }
 
         #region Themes
-        public IEnumerable<AppTheme> GetThemes()
-        {
-            var list = new List<AppTheme>();
-            //var enumerator = Enum.GetValues(typeof(ElementTheme)).Cast<ElementTheme>().GetEnumerator();
-            //while (enumerator.MoveNext())
-            //{
-            //    var theme = new AppTheme
-            //    {
-            //        Theme = enumerator.Current,
-            //        Checked = AppTheme.Theme == enumerator.Current
-            //    };
-            //    list.Add(theme);
-            //}
-
-            list.AddRange(new[]
-            {
-                new AppTheme{ Theme = ElementTheme.Default, Description = "theme_default".GetLocalized() ,Checked = AppTheme.Theme == ElementTheme.Default },
-                new AppTheme{ Theme = ElementTheme.Light, Description = "theme_light".GetLocalized() ,Checked = AppTheme.Theme == ElementTheme.Light },
-                new AppTheme{ Theme = ElementTheme.Dark, Description = "theme_dark".GetLocalized() ,Checked = AppTheme.Theme == ElementTheme.Dark },
-            });
-
-            return list;
-        }
-
-        public async Task UpdateThemeAsync(AppTheme theme)
+        public async Task UpdateThemeAsync(ElementTheme theme)
         {
             AppTheme = theme;
+
             await RefreshUIThemeAsync();
             TitleBarHelper.Instance.RefreshTitleBar();
-            SetSettingsValue(nameof(AppTheme), AppTheme.Theme.ToString());
+
+            SetSettingsValue(nameof(AppTheme), AppTheme.ToString());
         }
          
         private async Task RefreshUIThemeAsync()
@@ -103,7 +75,7 @@ namespace Attention.Services
                 {
                     if (Window.Current.Content is FrameworkElement frameworkElement)
                     {
-                        frameworkElement.RequestedTheme = AppTheme.Theme;
+                        frameworkElement.RequestedTheme = AppTheme;
                     }
                 });
             }
@@ -111,40 +83,17 @@ namespace Attention.Services
         #endregion
 
         #region Language
-        public IEnumerable<AppLanguage> GetLanguages()
-        {
-            var list = new List<AppLanguage>();
-
-            list.AddRange(new[]
-            {
-                new AppLanguage
-                {
-                    Logo = "ms-appx:///Assets/flag-cn.png",
-                    Code = "zh-Hans-CN",
-                    Checked = string.Equals(AppLanguage.Code, "zh-Hans-CN", StringComparison.OrdinalIgnoreCase),
-                },
-                new AppLanguage
-                {
-                    Logo = "ms-appx:///Assets/flag-us.png",
-                    Code = "en-US" ,
-                    Checked =string.Equals(AppLanguage.Code, "en-US", StringComparison.OrdinalIgnoreCase)
-                }
-            });
-
-            return list;
-        }
-
-        public async Task UpdateLanguageAsync(AppLanguage language)
+        public async Task UpdateLanguageAsync(string language)
         {
             AppLanguage = language;
-            SetSettingsValue(nameof(AppLanguage), AppLanguage.Code.ToString());
+            SetSettingsValue(nameof(AppLanguage), AppLanguage);
             await Task.CompletedTask;
         }
         #endregion
 
         #region LiveTitle
         public bool GetLiveTitleState() => AppLiveTitleIsOn;
-        public void UpdateLiveTitleState(bool isOn)
+        public void UpdateLiveTitle(bool isOn)
         {
             AppLiveTitleIsOn = isOn;
             if (AppLiveTitleIsOn)
@@ -169,22 +118,22 @@ namespace Attention.Services
                 return await JsonHelper.ToObjectAsync<FilterItem>(str);
             }
 
-            FilterItem order = await ParseActionAsync(nameof(Filter.Order), string.Empty);
-            FilterItem orientation = await ParseActionAsync(nameof(Filter.Orientation), string.Empty);
-            FilterItem imageType = await ParseActionAsync(nameof(Filter.ImageType), string.Empty);
-            FilterItem categorie = await ParseActionAsync(nameof(Filter.Category), string.Empty);
+            FilterItem order = await ParseActionAsync(nameof(Filters.Order), string.Empty);
+            FilterItem orientation = await ParseActionAsync(nameof(Filters.Orientation), string.Empty);
+            FilterItem imageType = await ParseActionAsync(nameof(Filters.ImageType), string.Empty);
+            FilterItem categorie = await ParseActionAsync(nameof(Filters.Category), string.Empty);
 
-            Filter = (order, orientation, imageType, categorie);
+            Filters = (order, orientation, imageType, categorie);
         }
 
         public async Task UpdateFiletersAsync(FilterItem order, FilterItem orientation, FilterItem imageType, FilterItem category)
         {
-            Filter = (order, orientation, imageType, category);
+            Filters = (order, orientation, imageType, category);
 
-            SetSettingsValue(nameof(Filter.Order), await JsonHelper.StringifyAsync(Filter.Order));
-            SetSettingsValue(nameof(Filter.Orientation), await JsonHelper.StringifyAsync(Filter.Orientation));
-            SetSettingsValue(nameof(Filter.ImageType), await JsonHelper.StringifyAsync(Filter.ImageType));
-            SetSettingsValue(nameof(Filter.Category), await JsonHelper.StringifyAsync(Filter.Category));
+            SetSettingsValue(nameof(Filters.Order), await JsonHelper.StringifyAsync(Filters.Order));
+            SetSettingsValue(nameof(Filters.Orientation), await JsonHelper.StringifyAsync(Filters.Orientation));
+            SetSettingsValue(nameof(Filters.ImageType), await JsonHelper.StringifyAsync(Filters.ImageType));
+            SetSettingsValue(nameof(Filters.Category), await JsonHelper.StringifyAsync(Filters.Category));
         }
 
         public (IEnumerable<FilterItem> orders, IEnumerable<FilterItem> orientations, IEnumerable<FilterItem> imageTypes, IEnumerable<FilterItem> categories) GetCheckedFilters()
