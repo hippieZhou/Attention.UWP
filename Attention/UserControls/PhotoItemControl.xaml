@@ -50,13 +50,13 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <muxc:AnimatedVisualPlayer
+            <!--<muxc:AnimatedVisualPlayer
                 Grid.Row="0"
                 Width="240"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <lottie:LottieVisualSource UriSource="ms-appx:///Assets/loading-animation.json" />
-            </muxc:AnimatedVisualPlayer>
+            </muxc:AnimatedVisualPlayer>-->
             <controls:ImageEx
                 x:Name="imageEx"
                 Grid.Row="0"
@@ -80,11 +80,11 @@
                         </Style>
                     </StackPanel.Resources>
                     <PersonPicture
-                        Width="40"
-                        Height="40"
+                        Width="38"
+                        Height="38"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        ProfilePicture="{x:Bind ViewModel.Model.Item.UserImageURL, Mode=OneWay}" />
+                        ProfilePicture="{x:Bind ViewModel.Model.Item.UserImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/user.png}" />
                     <TextBlock
                         Margin="12,0,8,0"
                         VerticalAlignment="Center"

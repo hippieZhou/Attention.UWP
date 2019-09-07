@@ -148,6 +148,9 @@
     <Compile Include="UserControls\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CommandControl.xaml.cs">
+      <DependentUpon>CommandControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SettingControl.xaml.cs">
       <DependentUpon>SettingControl.xaml</DependentUpon>
     </Compile>
@@ -198,6 +201,7 @@
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\user.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -256,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\AboutControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CommandControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

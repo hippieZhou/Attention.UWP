@@ -14,6 +14,7 @@ using Windows.ApplicationModel.Email;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Attention.ViewModels
 {
@@ -97,17 +98,16 @@ namespace Attention.ViewModels
                 {
                     _saveCommand = new RelayCommand(async () =>
                     {
-                        //ViewModelLocator.Current.AppSettings.Filters;
-                        //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
-                        //await appSettings.UpdateFiletersAsync(
-                        //    Orders.FirstOrDefault(p => p.Checked),
-                        //    Orientations.FirstOrDefault(p => p.Checked),
-                        //    ImageTypes.FirstOrDefault(p => p.Checked),
-                        //    Categories.FirstOrDefault(p => p.Checked));
+                         var appSettings = ViewModelLocator.Current.AppSettings;
+                        await appSettings.UpdateFiletersAsync(
+                            Orders.FirstOrDefault(p => p.Checked),
+                            Orientations.FirstOrDefault(p => p.Checked),
+                            ImageTypes.FirstOrDefault(p => p.Checked),
+                            Categories.FirstOrDefault(p => p.Checked));
                         await Task.CompletedTask;
 
                         Messenger.Default.Send(new NotificationMessage(this, "filer_notification".GetLocalized()), NotificationToken.ToastToken);
-                        //ViewModelLocator.Current.Shell.PhotoGridViewModel.RefreshCommand.Execute(null);
+                        ViewModelLocator.Current.Shell.PhotoGridViewModel.RefreshCommand.Execute(null);
                     });
                 }
                 return _saveCommand;

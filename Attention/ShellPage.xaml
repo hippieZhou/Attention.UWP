@@ -62,92 +62,14 @@
                     </DataTemplate>
                 </control:TabHeader.ItemTemplate>
             </control:TabHeader>
-            <StackPanel
+            <uc:CommandControl
                 Grid.Column="1"
                 Margin="0,0,10,4"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Orientation="Horizontal">
-                <Button
-                    x:Name="btnSearch"
-                    Margin="2,0"
-                    Command="{x:Bind ViewModel.SearchCommand, Mode=OneWay}"
-                    Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="16"
-                        Glyph="&#xE71E;" />
-                </Button>
-                <Button
-                    x:Name="btnDownload"
-                    Margin="2,0"
-                    Command="{x:Bind ViewModel.DownloadCommand, Mode=OneWay}"
-                    Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="16"
-                        Glyph="&#xE896;" />
-                </Button>
-                <Button
-                    x:Name="btnAbout"
-                    Margin="2,0,0,0"
-                    Command="{x:Bind ViewModel.MoreCommand, Mode=OneWay}"
-                    Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="16"
-                        Glyph="&#xE10C;" />
-                </Button>
-                <Button x:Name="btnMore" Style="{StaticResource ButtonRevealWithoutBackgroundStyle}">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="16"
-                        Glyph="&#xEA55;" />
-                    <Button.Flyout>
-                        <CommandBarFlyout Placement="BottomEdgeAlignedRight">
-                            <AppBarButton Command="{x:Bind ViewModel.SearchCommand, Mode=OneWay}">
-                                <i:Interaction.Behaviors>
-                                    <ic:EventTriggerBehavior EventName="Click">
-                                        <be:CloseFlyoutAction />
-                                    </ic:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
-                                <AppBarButton.Icon>
-                                    <FontIcon
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="16"
-                                        Glyph="&#xE71E;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton Command="{x:Bind ViewModel.DownloadCommand, Mode=OneWay}">
-                                <i:Interaction.Behaviors>
-                                    <ic:EventTriggerBehavior EventName="Click">
-                                        <be:CloseFlyoutAction />
-                                    </ic:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
-                                <AppBarButton.Icon>
-                                    <FontIcon
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="16"
-                                        Glyph="&#xE896;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton Command="{x:Bind ViewModel.MoreCommand, Mode=OneWay}">
-                                <i:Interaction.Behaviors>
-                                    <ic:EventTriggerBehavior EventName="Click">
-                                        <be:CloseFlyoutAction />
-                                    </ic:EventTriggerBehavior>
-                                </i:Interaction.Behaviors>
-                                <AppBarButton.Icon>
-                                    <FontIcon
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="16"
-                                        Glyph="&#xE10C;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBarFlyout>
-                    </Button.Flyout>
-                </Button>
-            </StackPanel>
+                DownloadCommand="{x:Bind ViewModel.DownloadCommand, Mode=OneWay}"
+                MoreCommand="{x:Bind ViewModel.MoreCommand, Mode=OneWay}"
+                SearchCommand="{x:Bind ViewModel.SearchCommand, Mode=OneWay}" />
         </Grid>
 
         <uc:PhotoGridView Grid.Row="1" ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
@@ -178,43 +100,5 @@
             VerticalAlignment="Bottom"
             Toast="{x:Bind ViewModel.Toast, Mode=OneWay}"
             Visibility="{x:Bind ViewModel.ToastVisibility, Mode=OneWay}" />
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="btnSearch.Visibility" Value="Visible" />
-                        <Setter Target="btnDownload.Visibility" Value="Visible" />
-                        <Setter Target="btnAbout.Visibility" Value="Visible" />
-                        <Setter Target="btnMore.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="btnSearch.Visibility" Value="Visible" />
-                        <Setter Target="btnDownload.Visibility" Value="Visible" />
-                        <Setter Target="btnAbout.Visibility" Value="Visible" />
-                        <Setter Target="btnMore.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="btnSearch.Visibility" Value="Collapsed" />
-                        <Setter Target="btnDownload.Visibility" Value="Collapsed" />
-                        <Setter Target="btnAbout.Visibility" Value="Collapsed" />
-                        <Setter Target="btnMore.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

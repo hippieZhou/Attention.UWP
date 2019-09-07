@@ -13,6 +13,7 @@
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
 
             <converters:IsCheckedValueConverter x:Key="IsCheckedValueConverter" />
+            <converters:RandomColorConverter x:Key="RandomColorConverter" />
 
             <animations:AnimationCollection x:Key="DefaultShowAnimations">
                 <animations:TranslationAnimation
