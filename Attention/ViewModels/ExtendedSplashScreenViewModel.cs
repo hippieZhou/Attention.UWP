@@ -5,17 +5,17 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Attention.ViewModels
 {
     public class ExtendedSplashScreenViewModel
     {
-        private readonly AppSettings _settings;
         private readonly AppSettingService _appSettingService;
 
-        public ExtendedSplashScreenViewModel(AppSettings settings, AppSettingService appSettingService)
+        public ExtendedSplashScreenViewModel(AppSettingService appSettingService)
         {
-            _settings = settings;
             _appSettingService = appSettingService;
         }
 
@@ -26,19 +26,21 @@ namespace Attention.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand<Action>(async action =>
+                    _loadedCommand = new RelayCommand(async () =>
                     {
                         await Task.Delay(TimeSpan.FromSeconds(2));
 
-                        if (string.IsNullOrWhiteSpace(_settings.DownloadPath))
-                        {
-                            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
-                            _settings.DownloadPath = folder.Path;
-                        }
+                        //if (string.IsNullOrWhiteSpace(_settings.DownloadPath))
+                        //{
+                        //    StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
+                        //    _settings.DownloadPath = folder.Path;
+                        //}
 
                         await _appSettingService.InitializeAsync();
 
-                        action?.Invoke();
+                        Frame rootFrame = new Frame();
+                        rootFrame.Navigate(typeof(ShellPage));
+                        Window.Current.Content = rootFrame;
                     });
                 }
                 return _loadedCommand;

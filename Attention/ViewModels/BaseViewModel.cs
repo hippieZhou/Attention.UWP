@@ -13,7 +13,7 @@ namespace Attention.ViewModels
             get { return _header; }
             private set { Set(ref _header, value); }
         }
-
+ 
         private Visibility _visibility = Visibility.Collapsed;
         public Visibility Visibility
         {

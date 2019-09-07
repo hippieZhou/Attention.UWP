@@ -1,4 +1,5 @@
 ﻿using Attention.Extensions;
+using Attention.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -18,16 +19,13 @@ namespace Attention.ViewModels
     {
         public PhotoGridViewModel PhotoGridViewModel { get; private set; } = new PhotoGridViewModel();
         public PhotoItemViewModel PhotoItemViewModel { get; private set; } = new PhotoItemViewModel();
-        public SearchViewModel SearchViewModel { get; private set; }
-        public DownloadViewModel DownloadViewModel { get; private set; }
-        public MoreViewModel MoreViewModel { get; private set; }
+        public SearchViewModel SearchViewModel { get; private set; } = new SearchViewModel("search".GetLocalized());
+        public DownloadViewModel DownloadViewModel { get; private set; } = new DownloadViewModel("download".GetLocalized());
+        public MoreViewModel MoreViewModel { get; private set; } = new MoreViewModel("more".GetLocalized());
+
         public ShellViewModel()
         {
-            SearchViewModel = new SearchViewModel("search".GetLocalized());
-            DownloadViewModel = new DownloadViewModel("download".GetLocalized());
-            MoreViewModel = new MoreViewModel("more".GetLocalized());
-
-            Messenger.Default.Register<NotificationMessage>(this, ViewModelLocator.Current.ToastToken, async p =>
+            Messenger.Default.Register<NotificationMessage>(this, NotificationToken.ToastToken, async p =>
              {
                  ToastVisibility = Visibility.Visible;
 
@@ -78,7 +76,7 @@ namespace Attention.ViewModels
                         Tabs.Clear();
                         Tabs.Add(new TabItem { Header = "ATTENTION" });
                         SelectedIndex = 0;
-                        await Task.Yield();
+                        await Task.CompletedTask;
                     });
                 }
                 return _loadedCommand;

@@ -1,5 +1,4 @@
 ﻿using Attention.Models;
-using Microsoft.Extensions.Options;
 using PixabaySharp;
 using PixabaySharp.Enums;
 using PixabaySharp.Models;
@@ -17,9 +16,9 @@ namespace Attention.Services
     public class PixabayService
     {
         private readonly PixabaySharpClient _client;
-        public PixabayService(AppSettings settings)
+        public PixabayService(string api_key)
         {
-            _client = new PixabaySharpClient(settings.API_KEY);
+            _client = new PixabaySharpClient(api_key);
         }
 
         public (IEnumerable<FilterItem> orders, IEnumerable<FilterItem> orientations, IEnumerable<FilterItem> imageTypes, IEnumerable<FilterItem> categories) GetEnumFilters()

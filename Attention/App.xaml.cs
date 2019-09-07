@@ -1,5 +1,4 @@
 ﻿using Attention.Commons;
-using Attention.Services;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -16,6 +15,7 @@ namespace Attention
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            //new BackgroundProxy().Register();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
@@ -30,8 +30,6 @@ namespace Attention
                 {
                     //TODO: Load state from previously suspended application
                 }
-
-                // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
@@ -42,7 +40,6 @@ namespace Attention
                     bool loadState = e.PreviousExecutionState == ApplicationExecutionState.Terminated;
                     rootFrame.Content = new ExtendedSplashScreen(e.SplashScreen, loadState); ;
                 }
-                // Ensure the current window is active
                 Window.Current.Activate();
             }
 

@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="HENG.App.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:HENG.App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:HENG.App.UserControls"
+    xmlns:view="using:HENG.App.Views"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    mc:Ignorable="d">
+    <!--
+    BUG:if use this,to first deploy, the ImplicitAnimation doesn't work
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>-->
+
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand, Mode=OneWay}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid>
+        <Grid.BackgroundTransition>
+            <BrushTransition Duration="0:0:0.4" />
+        </Grid.BackgroundTransition>
+        <SplitView IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
+            <SplitView.Pane>
+                <view:MoreView />
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <uc:TitleBarControl
+                        x:Name="titleBar"
+                        Grid.Row="0"
+                        Height="62"
+                        NavToDownloadCommand="{x:Bind ViewModel.NavToDownloadCommand, Mode=OneWay}"
+                        NavToMoreCommand="{x:Bind ViewModel.NavToMoreCommand, Mode=OneWay}" />
+                    <view:HomeView x:Name="homeView" Grid.Row="1" />
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+        <view:LocalView
+            x:Name="localView"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            x:DeferLoadStrategy="Lazy"
+            NavToBackCommand="{x:Bind ViewModel.NavToBackCommand, Mode=OneWay}" />
+    </Grid>
+</Page>

@@ -7,24 +7,20 @@ namespace Attention.Services
 {
     public class DownloadService
     {
-        private readonly AppSettings _settings;
+        private readonly string _downloadPath;
 
-        public DownloadService(AppSettings settings)
+        public DownloadService(string downloadPath)
         {
-            _settings = settings;
-        }
-        public async Task DownloadAsync(DownloadItem model)
-        {
-            if (string.IsNullOrWhiteSpace(_settings.DownloadPath))
+            if (string.IsNullOrWhiteSpace(downloadPath))
             {
-                _settings.DownloadPath = await GetDefaultDownloadPathAsync();
+                throw new ArgumentNullException();
             }
+            _downloadPath = downloadPath;
         }
 
-        private async Task<string> GetDefaultDownloadPathAsync()
+        public async Task Download(DownloadItem model)
         {
-            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
-            return folder.Path;
+            await Task.CompletedTask;
         }
     }
 }

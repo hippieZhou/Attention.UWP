@@ -51,8 +51,10 @@ namespace Attention.ViewModels
     {
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            var service = ViewModelLocator.Current.GetRequiredService<PixabayService>();
-            var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+            var service = ViewModelLocator.Current.GetService<PixabayService>();
+
+            var appSettings = ViewModelLocator.Current.GetService<AppSettingService>();
+
             ImageResult result = await service?.QueryImagesAsync(appSettings.Filter, page: ++pageIndex, per_page: pageSize);
             return result != null ? result.Images : new List<ImageItem>();
         }

@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="HENG.App.UserControls.TitleBarControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:behaviors="using:HENG.App.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:local="using:HENG.App.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="62"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid>
+        <animations:Implicit.ShowAnimations>
+            <animations:TranslationAnimation
+                From="0, -100, 0"
+                To="0"
+                Duration="0:0:1" />
+            <animations:OpacityAnimation
+                From="0"
+                To="1.0"
+                Duration="0:0:1" />
+        </animations:Implicit.ShowAnimations>
+        <StackPanel
+            Grid.Row="0"
+            Margin="32,0,0,0"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button
+                x:Name="menuButton"
+                x:FieldModifier="public"
+                Content="&#xEA37;"
+                FontWeight="Bold"
+                Style="{StaticResource RoutePrimaryButtonStyle}">
+                <Button.Flyout>
+                    <Flyout FlyoutPresenterStyle="{StaticResource PrimaryFlyoutPresenterStyle}" Placement="BottomEdgeAlignedLeft">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                Grid.Column="0"
+                                Margin="6,0"
+                                extensions:Mouse.Cursor="Hand"
+                                Command="{x:Bind NavToDownloadCommand}"
+                                Content="&#xE118;"
+                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontWeight="ExtraBold"
+                                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                                <i:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="Click">
+                                        <behaviors:CloseFlyoutAction />
+                                    </ic:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Button>
+                            <Button
+                                Grid.Column="1"
+                                Margin="6,0"
+                                extensions:Mouse.Cursor="Hand"
+                                Command="{x:Bind NavToMoreCommand}"
+                                Content="&#xE712;"
+                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                FontWeight="ExtraBold"
+                                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                                <i:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="Click">
+                                        <behaviors:CloseFlyoutAction />
+                                    </ic:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </Button>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <TextBlock
+                Margin="12,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource BaseTextBlockStyle}"
+                Text="HENG" />
+        </StackPanel>
+    </Grid>
+</UserControl>

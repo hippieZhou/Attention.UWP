@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Media.Animation;
 using System;
 using Attention.Models;
 using Attention.Services;
+using System.Threading.Tasks;
 
 namespace Attention.ViewModels
 {
@@ -97,8 +98,9 @@ namespace Attention.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        var service = ViewModelLocator.Current.GetRequiredService<DownloadService>();
-                        await service.DownloadAsync(Model);
+                        //var service = ViewModelLocator.Current.GetRequiredService<DownloadService>();
+                        //await service.DownloadAsync(Model);
+                        await Task.CompletedTask;
                     });
                 }
                 return _downloadCommand; }

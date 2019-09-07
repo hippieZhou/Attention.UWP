@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Attention.Models
 {
-    public class AppSettings
+    public class NotificationToken
     {
-        public string API_KEY { get; set; }
-        public string DownloadPath { get; set; }
+        public const string ToastToken = "ToastNotification";
     }
 }

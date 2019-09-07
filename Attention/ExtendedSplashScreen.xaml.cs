@@ -16,13 +16,13 @@ namespace Attention
         private readonly double ScaleFactor;
 
         private Rect splashImageRect;
-        private bool dismissed = false;
 
-        public ExtendedSplashScreenViewModel ViewModel => ViewModelLocator.Current.GetRequiredService<ExtendedSplashScreenViewModel>();
+        public ExtendedSplashScreenViewModel ViewModel => ViewModelLocator.Current.ExtendedSplashScreen;
 
         public ExtendedSplashScreen(SplashScreen splashscreen, bool loadState)
         {
             InitializeComponent();
+
             ScaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
 
             _splash = splashscreen;
@@ -35,12 +35,10 @@ namespace Attention
             _loadState = loadState;
 
             Window.Current.SizeChanged += OnWindowSizeChanged;
-            Loaded += OnLoaded;
         }
 
         private void OnSplashDismissed(SplashScreen sender, object args)
         {
-            dismissed = true;
         }
 
         private void OnWindowSizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
@@ -50,17 +48,6 @@ namespace Attention
                 splashImageRect = _splash.ImageLocation;
                 PositionImage();
             }
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            ViewModel.LoadedCommand.Execute(new Action(() =>
-            {
-                Frame rootFrame = new Frame();
-                rootFrame.Navigate(typeof(ShellPage));
-                ((ShellPage)rootFrame.Content).SetExtendedSplashInfo(splashImageRect, dismissed);
-                Window.Current.Content = rootFrame;
-            }));
         }
 
         private void PositionImage()

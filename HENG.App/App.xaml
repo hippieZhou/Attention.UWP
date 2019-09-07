@@ -1,0 +1,33 @@
+﻿<Application
+    x:Class="HENG.App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="using:HENG.App.Converters"
+    xmlns:local="using:HENG.App"
+    xmlns:model="using:HENG.App.Models">
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
+            <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
+
+            <converter:ImplicitDataTemplateConverter x:Key="ImplicitDataTemplateConverter" />
+            <converter:RandomColorBrushConverter x:Key="RandomColorBrushConverter" />
+            <converter:PathToLocalStorageFileConverter x:Key="PathToLocalStorageFileConverter" />
+
+            <model:AppSettings x:Key="AppSettings" />
+
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="DataTemplates.xaml" />
+
+                <ResourceDictionary Source="/Themes/AppBarButton.xaml" />
+                <ResourceDictionary Source="/Themes/AutoSuggestBox.xaml" />
+                <ResourceDictionary Source="/Themes/Button.xaml" />
+                <ResourceDictionary Source="/Themes/ComboBox.xaml" />
+                <ResourceDictionary Source="/Themes/FlyoutPresenter.xaml" />
+                <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
+                <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

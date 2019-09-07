@@ -14,8 +14,7 @@ using System;
 using Microsoft.Toolkit.Extensions;
 using Windows.ApplicationModel.Email;
 using System.Text.RegularExpressions;
-using System.Linq;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Attention.ViewModels
 {
@@ -88,14 +87,15 @@ namespace Attention.ViewModels
                 {
                     _saveCommand = new RelayCommand(async () =>
                     {
-                        var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
-                        await appSettings.UpdateFiletersAsync(
-                            Orders.FirstOrDefault(p => p.Checked),
-                            Orientations.FirstOrDefault(p => p.Checked),
-                            ImageTypes.FirstOrDefault(p => p.Checked),
-                            Categories.FirstOrDefault(p => p.Checked));
+                        //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+                        //await appSettings.UpdateFiletersAsync(
+                        //    Orders.FirstOrDefault(p => p.Checked),
+                        //    Orientations.FirstOrDefault(p => p.Checked),
+                        //    ImageTypes.FirstOrDefault(p => p.Checked),
+                        //    Categories.FirstOrDefault(p => p.Checked));
+                        await Task.CompletedTask;
 
-                        Messenger.Default.Send(new NotificationMessage(this, "filer_notification".GetLocalized()), ViewModelLocator.Current.ToastToken);
+                        Messenger.Default.Send(new NotificationMessage(this, "filer_notification".GetLocalized()), NotificationToken.ToastToken);
                         ViewModelLocator.Current.Shell.PhotoGridViewModel.RefreshCommand.Execute(null);
                     });
                 }
@@ -105,27 +105,27 @@ namespace Attention.ViewModels
 
         protected override void OnLoaded()
         {
-            var service = ViewModelLocator.Current.GetRequiredService<PixabayService>();
-            var (orders, orientations, imageTypes, categories) = service.GetEnumFilters();
+            //var service = ViewModelLocator.Current.GetRequiredService<PixabayService>();
+            //var (orders, orientations, imageTypes, categories) = service.GetEnumFilters();
 
-            void Refresh(IEnumerable<FilterItem> items, FilterItem checkedItem, Filter filter)
-            {
-                filter.Clear();
+            //void Refresh(IEnumerable<FilterItem> items, FilterItem checkedItem, Filter filter)
+            //{
+            //    filter.Clear();
 
-                var enumerator = items.GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    enumerator.Current.Checked = enumerator.Current.Name == checkedItem?.Name;
-                    filter.Add(enumerator.Current);
-                }
-            }
+            //    var enumerator = items.GetEnumerator();
+            //    while (enumerator.MoveNext())
+            //    {
+            //        enumerator.Current.Checked = enumerator.Current.Name == checkedItem?.Name;
+            //        filter.Add(enumerator.Current);
+            //    }
+            //}
 
-            var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
 
-            Refresh(orders, appSettings.Filter.Order, Orders);
-            Refresh(orientations, appSettings.Filter.Orientation, Orientations);
-            Refresh(imageTypes, appSettings.Filter.ImageType, ImageTypes);
-            Refresh(categories, appSettings.Filter.Category, Categories);
+            //Refresh(orders, appSettings.Filter.Order, Orders);
+            //Refresh(orientations, appSettings.Filter.Orientation, Orientations);
+            //Refresh(imageTypes, appSettings.Filter.ImageType, ImageTypes);
+            //Refresh(categories, appSettings.Filter.Category, Categories);
         }
     }
 
@@ -161,7 +161,7 @@ namespace Attention.ViewModels
                 {
                     _changedThemeCommand = new RelayCommand<AppTheme>(async theme =>
                     {
-                        var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+                        var appSettings = ViewModelLocator.Current.GetService<AppSettingService>();
                         await appSettings.UpdateThemeAsync(theme);
                     });
                 }
@@ -178,10 +178,10 @@ namespace Attention.ViewModels
                 {
                     _changedLanguageCommand = new RelayCommand<AppLanguage>(async language =>
                     {
-                        var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+                        var appSettings = ViewModelLocator.Current.GetService<AppSettingService>();
                         await appSettings.UpdateLanguageAsync(language);
-
-                        Messenger.Default.Send(new NotificationMessage(this, "theme_notification".GetLocalized()), ViewModelLocator.Current.ToastToken);
+                        
+                        Messenger.Default.Send(new NotificationMessage(this, "theme_notification".GetLocalized()), NotificationToken.ToastToken);
                     });
                 }
                 return _changedLanguageCommand;
@@ -201,8 +201,8 @@ namespace Attention.ViewModels
                         {
                             LiveTitleIsOn = ts.IsOn;
 
-                            var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
-                            appSettings.UpdateLiveTitleState(LiveTitleIsOn);
+                            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+                            //appSettings.UpdateLiveTitleState(LiveTitleIsOn);
                         }
                     });
                 }
@@ -211,24 +211,24 @@ namespace Attention.ViewModels
 
         protected override void OnLoaded()
         {
-            var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
+            //var appSettings = ViewModelLocator.Current.GetRequiredService<AppSettingService>();
 
-            Themes.Clear();
-            var themes = appSettings.GetThemes();
-            foreach (var theme in themes)
-            {
-                Themes.Add(theme);
-            }
+            //Themes.Clear();
+            //var themes = appSettings.GetThemes();
+            //foreach (var theme in themes)
+            //{
+            //    Themes.Add(theme);
+            //}
 
 
-            Languages.Clear();
-            var languages = appSettings.GetLanguages();
-            foreach (var language in languages)
-            {
-                Languages.Add(language);
-            }
+            //Languages.Clear();
+            //var languages = appSettings.GetLanguages();
+            //foreach (var language in languages)
+            //{
+            //    Languages.Add(language);
+            //}
 
-            LiveTitleIsOn = appSettings.GetLiveTitleState();
+            //LiveTitleIsOn = appSettings.GetLiveTitleState();
         }
     }
 
