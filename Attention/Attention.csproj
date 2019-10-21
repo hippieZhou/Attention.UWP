@@ -355,12 +355,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Attention.BackgroundTask\Attention.BackgroundTask.csproj">
-      <Project>{edb09b16-2aca-42c3-b4cf-d30ccf63ab56}</Project>
-      <Name>Attention.BackgroundTask</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

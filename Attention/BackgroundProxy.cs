@@ -1,5 +1,4 @@
-﻿using Attention.BackgroundTask;
-using Microsoft.Toolkit.Uwp.Helpers;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Diagnostics;
 using Windows.ApplicationModel.Background;
@@ -26,17 +25,17 @@ namespace Attention
         /// </summary>
         private void RegisterLiveTitleBackgroundTask()
         {
-            BackgroundTaskRegistration registered =
-                BackgroundTaskHelper.Register(typeof(BackgroundExecution),
-                new TimeTrigger(15, true),
-                false, true,
-                new SystemCondition(SystemConditionType.InternetAvailable),
-                new SystemCondition(SystemConditionType.UserPresent));
+            //BackgroundTaskRegistration registered =
+            //    BackgroundTaskHelper.Register(typeof(BackgroundExecution),
+            //    new TimeTrigger(15, true),
+            //    false, true,
+            //    new SystemCondition(SystemConditionType.InternetAvailable),
+            //    new SystemCondition(SystemConditionType.UserPresent));
 
-            if (registered != null)
-            {
-                Trace.WriteLine($"Task {typeof(BackgroundExecution)} registered successfully.");
-            }
+            //if (registered != null)
+            //{
+            //    Trace.WriteLine($"Task {typeof(BackgroundExecution)} registered successfully.");
+            //}
         }
     }
 }
