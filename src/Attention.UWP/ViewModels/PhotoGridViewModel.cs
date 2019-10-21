@@ -123,15 +123,15 @@ namespace Attention.UWP.ViewModels
                         {
                             Selected = item;
 
-                            //ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
-                            //ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
-                            //animation.IsScaleAnimationEnabled = true;
-                            //animation.Configuration = new BasicConnectedAnimationConfiguration();
-                            //var done = ViewModelLocator.Current.Shell.PhotoItemViewModel.TryStart(Selected, animation);
-                            //if (done)
-                            //{
-                            //    container.Opacity = 0.0d;
-                            //}
+                            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
+                            ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
+                            animation.IsScaleAnimationEnabled = true;
+                            animation.Configuration = new BasicConnectedAnimationConfiguration();
+                            var done = ViewModelLocator.Current.Main.PhotoItemViewModel.TryStart(Selected, animation);
+                            if (done)
+                            {
+                                container.Opacity = 0.0d;
+                            }
                         }
                     });
                 }

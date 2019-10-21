@@ -1,7 +1,5 @@
 ﻿using Attention.UWP.ViewModels;
-using PixabaySharp.Models;
-using System.Collections.Generic;
-using System.Windows.Input;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -43,5 +41,13 @@ namespace Attention.UWP.UserControls
         // Using a DependencyProperty as the backing store for Footer.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FooterProperty =
             DependencyProperty.Register("Footer", typeof(object), typeof(PhotoGridView), new PropertyMetadata(null));
+
+        private void PhotoGridView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is AdaptiveGridView gridView && gridView.SelectedItem != null)
+            {
+                gridView.ScrollIntoView(gridView.SelectedItem);
+            }
+        }
     }
 }

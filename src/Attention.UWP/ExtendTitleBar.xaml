@@ -54,7 +54,7 @@
                 FontSize="12"
                 Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
                 IsHitTestVisible="False"
-                Text="{x:Bind Title}"
+                Text="{x:Bind Title, Mode=OneWay}"
                 TextAlignment="Left"
                 TextTrimming="CharacterEllipsis" />
         </StackPanel>

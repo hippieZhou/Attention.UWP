@@ -4,8 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -14,18 +17,132 @@
         x:Name="OverlayPopup"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
-        Visibility="Collapsed">
+        Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
         <Grid.Background>
-            <AcrylicBrush
-                BackgroundSource="Backdrop"
-                FallbackColor="#FF484848"
-                TintColor="#88484848"
-                TintOpacity="0.4" />
+            <SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />
+            <!--<media:BackdropBlurBrush
+                xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+                Amount="4"
+                FallbackColor="{ThemeResource SystemChromeAltHighColor}" />-->
         </Grid.Background>
+        <i:Interaction.Behaviors>
+            <ic:EventTriggerBehavior EventName="Tapped">
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.BackCommand, Mode=OneWay}" />
+            </ic:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
 
         <Grid
             x:Name="destinationElement"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Center"
+            ManipulationCompleted="DestinationElement_ManipulationCompleted"
+            ManipulationDelta="DestinationElement_ManipulationDelta"
+            ManipulationMode="TranslateX, TranslateY, Scale"
+            ManipulationStarted="DestinationElement_ManipulationStarted">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="Loaded">
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=destinationElement}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="destinationElement_Transform" />
+            </Grid.RenderTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <mtui:ImageEx
+                x:Name="imageEx"
+                Grid.Row="0"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                CacheMode="BitmapCache"
+                IsCacheEnabled="True"
+                Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay}"
+                Stretch="UniformToFill" />
+            <Grid
+                Grid.Row="1"
+                Height="60"
+                Padding="12,0"
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <animations:Implicit.ShowAnimations>
+                    <animations:TranslationAnimation
+                        From="0, 80, 0"
+                        To="0"
+                        Duration="0:0:0.450" />
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.450" />
+                </animations:Implicit.ShowAnimations>
+                <StackPanel
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <PersonPicture
+                        Width="38"
+                        Height="38"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        ProfilePicture="{x:Bind ViewModel.Item.UserImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/User.png}" />
+                    <TextBlock
+                        Margin="12,0,8,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Style="{ThemeResource BaseTextBlockStyle}"
+                        Text="{x:Bind ViewModel.Item.User, Mode=OneWay}" />
+                    <TextBlock Foreground="#696464" Text="[" />
+                    <TextBlock Foreground="#696464" Text="{x:Bind ViewModel.Item.ImageWidth, Mode=OneWay}" />
+                    <TextBlock Foreground="#696464" Text="x" />
+                    <TextBlock Foreground="#696464" Text="{x:Bind ViewModel.Item.ImageHeight, Mode=OneWay}" />
+                    <TextBlock Foreground="#696464" Text="]" />
+                </StackPanel>
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="12">
+                    <Button Content="DOWNLOAD" />
+                    <Button Content="INFO" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="900" />
+                        <Setter Target="imageEx.Height" Value="520" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="600" />
+                        <Setter Target="imageEx.Height" Value="320" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="440" />
+                        <Setter Target="imageEx.Height" Value="240" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>
