@@ -32,16 +32,6 @@ namespace Attention.UWP.UserControls
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(object), typeof(PhotoGridView), new PropertyMetadata(null));
 
-        public object Footer
-        {
-            get { return (object)GetValue(FooterProperty); }
-            set { SetValue(FooterProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Footer.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FooterProperty =
-            DependencyProperty.Register("Footer", typeof(object), typeof(PhotoGridView), new PropertyMetadata(null));
-
         private void PhotoGridView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (sender is AdaptiveGridView gridView && gridView.SelectedItem != null)

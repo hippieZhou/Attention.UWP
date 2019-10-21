@@ -4,8 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:Attention.UWP.UserControls"
     xmlns:v="using:Attention.UWP.Views"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
@@ -20,13 +23,32 @@
     </Page.Transitions>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <local:ExtendTitleBar Grid.Row="0" />
-        <Grid Grid.Row="1">
-            <v:MainView />
-        </Grid>
+        <SplitView DisplayMode="Overlay" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
+            <SplitView.Pane>
+                <uc:PhotoFilterView
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    ViewModel="{x:Bind ViewModel.PhotoFilterViewModel, Mode=OneWay}" />
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <local:ExtendTitleBar Grid.Row="0" />
+                    <v:MainView x:Name="mainView" Grid.Row="1">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="Loaded">
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=mainView}" />
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </v:MainView>
+                    <v:MoreView Grid.Row="1" />
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>

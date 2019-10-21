@@ -200,6 +200,7 @@
             Padding="12,0,6,0"
             animations:ReorderGridAnimation.Duration="250"
             DataFetchSize="1"
+            Header="{x:Bind Header}"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
@@ -223,9 +224,6 @@
                 </TransitionCollection>
             </mtui:AdaptiveGridView.ItemContainerTransitions>
 
-            <mtui:AdaptiveGridView.Header>
-                <local:PhotoGridViewHeader />
-            </mtui:AdaptiveGridView.Header>
             <mtui:AdaptiveGridView.Footer>
                 <Grid Padding="0,12,0,32" VerticalAlignment="Bottom">
                     <Grid Visibility="{x:Bind ViewModel.LoadingVisibility, Mode=OneWay}">

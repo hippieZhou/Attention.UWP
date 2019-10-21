@@ -15,7 +15,11 @@
     mc:Ignorable="d">
 
     <Grid>
-        <uc:PhotoGridView ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}" />
+        <uc:PhotoGridView ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}">
+            <uc:PhotoGridView.Header>
+                <uc:PhotoGridHeader ViewModel="{x:Bind ViewModel.PhotoGridHeaderViewModel, Mode=OneWay}" />
+            </uc:PhotoGridView.Header>
+        </uc:PhotoGridView>
         <uc:PhotoItemView ViewModel="{x:Bind ViewModel.PhotoItemViewModel, Mode=OneWay}" />
     </Grid>
 </UserControl>
