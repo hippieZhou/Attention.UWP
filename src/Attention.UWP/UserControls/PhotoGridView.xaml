@@ -200,11 +200,13 @@
             Padding="12,0,6,0"
             animations:ReorderGridAnimation.Duration="250"
             DataFetchSize="1"
+            DesiredWidth="420"
             Header="{x:Bind Header}"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
             ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}"
+            ItemHeight="260"
             ItemTemplate="{StaticResource ImageItemTemplate}"
             ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
             OneRowModeEnabled="False"
@@ -250,18 +252,53 @@
                             FontWeight="Bold"
                             Foreground="{ThemeResource SystemBaseHighColor}"
                             Text="THERE HAVE SOMETHING WRONG" />
-                        <Button
-                            Width="120"
-                            HorizontalAlignment="Center"
-                            Command="{x:Bind ViewModel.RefreshCommand}"
-                            Content="RETRY"
-                            FontWeight="SemiBold" />
                     </StackPanel>
                 </Grid>
             </mtui:AdaptiveGridView.Footer>
         </mtui:AdaptiveGridView>
 
-        <VisualStateManager.VisualStateGroups>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{x:Bind ViewModel.NotFoundVisibility, Mode=OneWay}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    From="0, 200, 0"
+                    To="0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:ScalarAnimation
+                    Target="Opacity"
+                    To="0.0"
+                    Duration="0:0:1" />
+                <animations:ScalarAnimation
+                    Target="Translation.Y"
+                    To="200"
+                    Duration="0:0:1">
+                    <animations:ScalarKeyFrame Key="0.1" Value="30" />
+                    <animations:ScalarKeyFrame Key="0.5" Value="0.0" />
+                </animations:ScalarAnimation>
+            </animations:Implicit.HideAnimations>
+
+            <muxc:AnimatedVisualPlayer Width="240">
+                <lottie:LottieVisualSource UriSource="ms-appx:///Assets/404-animation.json" />
+            </muxc:AnimatedVisualPlayer>
+            <Button
+                Width="140"
+                Height="40"
+                Margin="12"
+                HorizontalAlignment="Center"
+                Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                Content="RETRY"
+                FontSize="20" />
+        </StackPanel>
+
+        <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
@@ -291,6 +328,6 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </UserControl>

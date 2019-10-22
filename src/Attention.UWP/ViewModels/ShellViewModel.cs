@@ -1,23 +1,18 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Attention.UWP.Services;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Toolkit.Uwp.UI.Animations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Composition;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Hosting;
 
 namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        public PhotoFilterViewModel PhotoFilterViewModel { get; } = new PhotoFilterViewModel();
+        public PhotoFilterViewModel PhotoFilterViewModel { get; } 
+        public ShellViewModel(PixabayService service)
+        {
+            PhotoFilterViewModel = new PhotoFilterViewModel(service);
+        }
         /// <summary>
         /// https://www.cnblogs.com/shaomeng/p/8678641.html
         /// https://github.com/r2d2rigo/WinCompositionTiltEffect

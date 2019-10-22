@@ -30,7 +30,8 @@
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Center"
                 Header="SEARCH"
-                QueryIcon="Find">
+                QueryIcon="Find"
+                Text="{Binding Filter.Query, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="QuerySubmitted">
                         <ic:InvokeCommandAction Command="{x:Bind ViewModel.SearchCommand}" />
@@ -57,7 +58,8 @@
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.Orientations, Mode=OneWay}"
-                SelectedItem="{Binding Filter.Orientation, Mode=TwoWay}">
+                SelectedItem="{Binding Filter.Orientation, Mode=TwoWay}"
+                SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
                     <NavigationViewItemHeader Content="Orientation" />
                 </ComboBox.Header>

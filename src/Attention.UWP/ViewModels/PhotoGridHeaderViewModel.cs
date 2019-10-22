@@ -34,6 +34,7 @@ namespace Attention.UWP.ViewModels
                     _downloadCommand = new RelayCommand(() =>
                     {
                         ViewModelLocator.Current.Shell.IsPaneOpen = false;
+                        ViewModelLocator.Current.Download.Visibility = Visibility.Visible;
                     });
                 }
                 return _downloadCommand;

@@ -20,8 +20,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="12">
                 <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Text="MORE" />
             </StackPanel>
         </Grid>
     </Grid>

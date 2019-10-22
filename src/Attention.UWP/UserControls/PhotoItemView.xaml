@@ -111,11 +111,11 @@
         VerticalAlignment="Stretch"
         Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
         <Grid.Background>
-            <SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />
-            <!--<media:BackdropBlurBrush
+            <!--<SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />-->
+            <media:BackdropBlurBrush
                 xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-                Amount="4"
-                FallbackColor="{ThemeResource SystemChromeAltHighColor}" />-->
+                Amount="8"
+                FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
         <i:Interaction.Behaviors>
             <ic:EventTriggerBehavior EventName="Tapped">

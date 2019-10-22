@@ -24,17 +24,17 @@ namespace Attention.UWP.ViewModels
                  {
                      LoadingVisibility = Visibility.Visible;
                      ErrorVisibility = Visibility.Collapsed;
-                     RetryVisibility = Visibility.Collapsed;
+                     NotFoundVisibility = Visibility.Collapsed;
                  }, () =>
                  {
-                     RetryVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                     NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                      LoadingVisibility = Visibility.Collapsed;
                      ErrorVisibility = Visibility.Collapsed;
                  }, ex =>
                  {
                      ErrorVisibility = Visibility.Visible;
                      LoadingVisibility = Visibility.Collapsed;
-                     RetryVisibility = Visibility.Collapsed;
+                     NotFoundVisibility = Visibility.Collapsed;
                  });
         }
     }
@@ -70,7 +70,7 @@ namespace Attention.UWP.ViewModels
         public IncrementalLoadingCollection<TSource, IType> Items
         {
             get { return _items; }
-            set { Set(ref _items, value); }
+            protected set { Set(ref _items, value); }
         }
 
         private Visibility _loadingVisibility = Visibility.Visible;
@@ -87,11 +87,11 @@ namespace Attention.UWP.ViewModels
             set { Set(ref _errorVisibility, value); }
         }
 
-        private Visibility _retryVisibility = Visibility.Collapsed;
-        public Visibility RetryVisibility
+        private Visibility _notFoundVisibility = Visibility.Collapsed;
+        public Visibility NotFoundVisibility
         {
-            get { return _retryVisibility; }
-            set { Set(ref _retryVisibility, value); }
+            get { return _notFoundVisibility; }
+            set { Set(ref _notFoundVisibility, value); }
         }
 
         protected ICommand _loadedCommand;
@@ -117,7 +117,7 @@ namespace Attention.UWP.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(item =>
+                    _itemClickCommand = new RelayCommand<IType>(async item =>
                     {
                         if (View.ContainerFromItem(item) is GridViewItem container)
                         {
@@ -133,6 +133,7 @@ namespace Attention.UWP.ViewModels
                                 container.Opacity = 0.0d;
                             }
                         }
+                        await Task.CompletedTask;
                     });
                 }
                 return _itemClickCommand;

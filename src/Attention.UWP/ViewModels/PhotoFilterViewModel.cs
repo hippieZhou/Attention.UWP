@@ -1,4 +1,5 @@
 ﻿using Attention.UWP.Models;
+using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PixabaySharp.Enums;
@@ -13,13 +14,21 @@ namespace Attention.UWP.ViewModels
 {
     public class PhotoFilterViewModel : ViewModelBase
     {
+        private readonly PixabayService _service;
+
         public IEnumerable<Order> Orders => Enum.GetValues(typeof(Order)).Cast<Order>();
         public IEnumerable<Orientation> Orientations => Enum.GetValues(typeof(Orientation)).Cast<Orientation>();
         public IEnumerable<ImageType> ImageTypes => Enum.GetValues(typeof(ImageType)).Cast<ImageType>();
         public IEnumerable<Category> Categories => Enum.GetValues(typeof(Category)).Cast<Category>();
         public IEnumerable<Language> Languages => Enum.GetValues(typeof(Language)).Cast<Language>();
 
-        public Filter Filter { get; } = new Filter();
+        public Filter Filter { get; private set; } 
+
+        public PhotoFilterViewModel(PixabayService service)
+        {
+            _service = service;
+            Filter = _service.DefaultFiler;
+        }
 
         private ICommand _backCommand;
         public ICommand BackCommand
@@ -46,6 +55,8 @@ namespace Attention.UWP.ViewModels
                 {
                     _searchCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(async args =>
                     {
+                        Filter.Query = args.QueryText;
+                        _service.RefreshFilter(Filter);
                         await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
                     });
                 }
@@ -62,6 +73,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _selectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(async args =>
                     {
+                        _service.RefreshFilter(Filter);
                         await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
                     });
                 }

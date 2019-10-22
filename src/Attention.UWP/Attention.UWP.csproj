@@ -146,6 +146,7 @@
       <DependentUpon>PhotoItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\DownloadViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MoreViewModel.cs" />
     <Compile Include="ViewModels\PhotoFilterViewModel.cs" />

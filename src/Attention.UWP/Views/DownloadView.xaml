@@ -2,6 +2,7 @@
     x:Class="Attention.UWP.Views.DownloadView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,5 +10,23 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}" />
+    <Grid
+        animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
+        animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+        Background="{ThemeResource SystemControlAcrylicElementBrush}"
+        Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Style="{ThemeResource TitleTextBlockStyle}"
+                    Text="DOWNLOAD" />
+            </StackPanel>
+        </Grid>
+    </Grid>
 </UserControl>

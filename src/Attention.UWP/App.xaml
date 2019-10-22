@@ -15,7 +15,7 @@
 
             <animations:AnimationCollection x:Key="DefaultShowAnimations">
                 <animations:TranslationAnimation
-                    From="0, 100, 0"
+                    From="0, 200, 0"
                     To="0"
                     Duration="0:0:0.600" />
                 <animations:OpacityAnimation
@@ -28,11 +28,15 @@
                 <animations:ScalarAnimation
                     Target="Opacity"
                     To="0.0"
-                    Duration="0:0:0.200" />
-                <animations:ScalarAnimation
-                    Target="Translation.Y"
-                    To="100"
                     Duration="0:0:0.600" />
+                <animations:TranslationAnimation
+                    From="0"
+                    To="0, 200, 0"
+                    Duration="0:0:0.600" />
+                <!--<animations:ScalarAnimation
+                    Target="Translation.Y"
+                    To="200"
+                    Duration="0:0:0.600" />-->
             </animations:AnimationCollection>
 
             <ResourceDictionary.MergedDictionaries>

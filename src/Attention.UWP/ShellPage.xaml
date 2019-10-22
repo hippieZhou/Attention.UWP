@@ -46,6 +46,7 @@
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </v:MainView>
+                    <v:DownloadView Grid.Row="1" />
                     <v:MoreView Grid.Row="1" />
                 </Grid>
             </SplitView.Content>

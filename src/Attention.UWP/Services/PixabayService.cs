@@ -15,16 +15,35 @@ namespace Attention.UWP.Services
     {
         private readonly PixabaySharpClient _client;
         private readonly Filter _filter;
-        public PixabayService(string api_key, Filter filter)
+        public Filter DefaultFiler => _filter;
+
+        public PixabayService(string api_key, Filter filter = default)
         {
             if (string.IsNullOrWhiteSpace(api_key))
                 throw new KeyNotFoundException();
 
             _client = new PixabaySharpClient(api_key);
-            _filter = filter;
+            _filter = filter ?? new Filter() { Category = Category.Animals, Order= Order.Popular };
         }
 
-        public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20)
+
+        public bool RefreshFilter(Filter filter)
+        {
+            bool ans = _filter != filter;
+            if (ans)
+            {
+                _filter.Order = filter.Order;
+                _filter.Orientation = filter.Orientation;
+                _filter.ImageType = filter.ImageType;
+                _filter.Category = filter.Category;
+                _filter.Language = filter.Language;
+                _filter.Query = filter.Query;
+            }
+            return ans;
+        }
+
+
+        public async Task<ImageResult> QueryImagesAsync( int page = 1, int per_page = 20)
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
@@ -38,19 +57,6 @@ namespace Attention.UWP.Services
                 Query = _filter.Query
             };
             return await _client.QueryImagesAsync(qb);
-        }
-
-        public void ChangeFiler(
-            Order order = default, Orientation orientation = default,
-            ImageType imageType = default, Category category = default,
-            Language language = default, string query = default)
-        {
-            _filter.Order = order;
-            _filter.Orientation = orientation;
-            _filter.ImageType = imageType;
-            _filter.Category = category;
-            _filter.Language = language;
-            _filter.Query = query;
         }
     }
 }
