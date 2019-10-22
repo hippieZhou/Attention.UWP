@@ -1,6 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Uwp.UI.Animations;
+using System.Numerics;
 using System.Windows.Input;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 
 namespace Attention.UWP.ViewModels
@@ -33,8 +36,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(() =>
                     {
-                        ViewModelLocator.Current.Shell.IsPaneOpen = false;
-                        ViewModelLocator.Current.Download.Visibility = Visibility.Visible;
+                        BackToView(ViewModelLocator.Current.Download);
                     });
                 }
                 return _downloadCommand;
@@ -50,12 +52,25 @@ namespace Attention.UWP.ViewModels
                 {
                     _moreCommand = new RelayCommand(() =>
                     {
-                        ViewModelLocator.Current.Shell.IsPaneOpen = false;
-                        ViewModelLocator.Current.More.Visibility = Visibility.Visible;
+                        BackToView(ViewModelLocator.Current.More);
                     });
                 }
                 return _moreCommand;
             }
+        }
+
+        private void BackToView(BaseViewModel view)
+        {
+            ViewModelLocator.Current.Shell.IsPaneOpen = false;
+            
+            SpringVector3NaturalMotionAnimation springAnimation = Window.Current.Compositor.CreateSpringVector3Animation();
+            springAnimation.Target = "Scale";
+            springAnimation.FinalValue = new Vector3(0.8f);
+            FrameworkElement root = ViewModelLocator.Current.Shell.UiElement;
+            ViewModelLocator.Current.Shell.UiElement.CenterPoint = new Vector3((float)(root.ActualSize.X / 2.0), (float)(root.ActualSize.Y / 2.0), 1.0f);
+            root.StartAnimation(springAnimation);
+
+            view.Visibility = Visibility.Visible;
         }
     }
 }

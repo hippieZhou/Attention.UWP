@@ -11,5 +11,10 @@ namespace Attention.UWP.Views
         {
             this.InitializeComponent();
         }
+
+        private void StackPanel_PreviewKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+
+        }
     }
 }

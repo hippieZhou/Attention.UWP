@@ -13,20 +13,31 @@
     <Grid
         animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
         animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
-        Background="{ThemeResource SystemControlAcrylicElementBrush}"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        CornerRadius="24,24,0,0"
         Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="72" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" Spacing="12">
-                <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="DOWNLOAD" />
-            </StackPanel>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="DOWNLOAD" />
+            <Button
+                Margin="0,0,16,0"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                Command="{x:Bind ViewModel.BackCommand}">
+                <FontIcon
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="16"
+                    Glyph="&#xE894;" />
+            </Button>
+            <NavigationViewItemSeparator VerticalAlignment="Bottom" />
         </Grid>
     </Grid>
 </UserControl>
