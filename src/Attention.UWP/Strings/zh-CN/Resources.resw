@@ -123,4 +123,10 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>Attention.UWP</value>
   </data>
+  <data name="download_Header.Text" xml:space="preserve">
+    <value>下载中心</value>
+  </data>
+  <data name="more_Header.Text" xml:space="preserve">
+    <value>更多</value>
+  </data>
 </root>

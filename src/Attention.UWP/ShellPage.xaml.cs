@@ -1,4 +1,5 @@
 ﻿using Attention.UWP.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP
@@ -10,6 +11,10 @@ namespace Attention.UWP
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
+            Messenger.Default.Register<string>(this, nameof(InAppNotification), str =>
+            {
+                InAppNotification.Show(str, 2000);
+            });
         }
     }
 }

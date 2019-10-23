@@ -132,10 +132,10 @@
     <Compile Include="Extensions\ResourceExtension.cs" />
     <Compile Include="Extensions\SettingsStorageExtension.cs" />
     <Compile Include="Helpers\Json.cs" />
+    <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Services\AppSettingsService.cs" />
+    <Compile Include="Models\Language.cs" />
     <Compile Include="Services\PixabayService.cs" />
-    <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>

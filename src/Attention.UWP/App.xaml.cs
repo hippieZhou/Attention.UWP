@@ -1,4 +1,4 @@
-﻿using Attention.UWP.Services;
+﻿using Attention.UWP.Models;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -10,16 +10,16 @@ namespace Attention.UWP
 {
     sealed partial class App : Application
     {
+        public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            await ThemeSelectorService.InitializeAsync();
-
             if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
@@ -50,7 +50,6 @@ namespace Attention.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            await ThemeSelectorService.SetRequestedThemeAsync();
         }
 
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)

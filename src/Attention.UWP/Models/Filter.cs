@@ -57,19 +57,6 @@ namespace Attention.UWP.Models
             }
         }
 
-        private Language _language;
-        public Language Language
-        {
-            get { return _language; }
-            set
-            {
-                if (value != _language)
-                {
-                    Set(ref _language, value);
-                }
-            }
-        }
-
         private string _query;
         public string Query
         {

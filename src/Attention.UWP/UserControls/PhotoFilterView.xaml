@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" VerticalAlignment="Bottom">
             <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
-            <ToggleSwitch
+            <!--<ToggleSwitch
                 HorizontalAlignment="Center"
                 IsOn="{Binding IsOn, Mode=TwoWay}"
                 Style="{StaticResource ThemeToggleSwitchStyle}">
@@ -37,7 +37,7 @@
                 <ToggleSwitch.OnContent>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE708;" />
                 </ToggleSwitch.OnContent>
-            </ToggleSwitch>
+            </ToggleSwitch>-->
         </Grid>
         <Grid Grid.Row="1" Margin="12">
             <AutoSuggestBox
@@ -59,7 +59,8 @@
                 Grid.Row="3"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}"
-                SelectedItem="{Binding Filter.Order, Mode=TwoWay}">
+                SelectedItem="{Binding Filter.Order, Mode=TwoWay}"
+                SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
                     <NavigationViewItemHeader Content="Orders" />
                 </ComboBox.Header>
@@ -86,7 +87,8 @@
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.ImageTypes, Mode=OneWay}"
-                SelectedItem="{Binding Filter.ImageType, Mode=TwoWay}">
+                SelectedItem="{Binding Filter.ImageType, Mode=TwoWay}"
+                SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
                     <NavigationViewItemHeader Content="ImageType" />
                 </ComboBox.Header>
@@ -99,22 +101,10 @@
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
-                SelectedItem="{Binding Filter.Category, Mode=TwoWay}">
+                SelectedItem="{Binding Filter.Category, Mode=TwoWay}"
+                SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
                     <NavigationViewItemHeader Content="Category" />
-                </ComboBox.Header>
-                <i:Interaction.Behaviors>
-                    <ic:EventTriggerBehavior EventName="SelectionChanged">
-                        <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectionChangedCommand}" />
-                    </ic:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </ComboBox>
-            <ComboBox
-                HorizontalAlignment="Stretch"
-                ItemsSource="{x:Bind ViewModel.Languages, Mode=OneWay}"
-                SelectedItem="{Binding Filter.Language, Mode=TwoWay}">
-                <ComboBox.Header>
-                    <NavigationViewItemHeader Content="Language" />
                 </ComboBox.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">

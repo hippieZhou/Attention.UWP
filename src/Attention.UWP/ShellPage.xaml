@@ -7,6 +7,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:uc="using:Attention.UWP.UserControls"
     xmlns:v="using:Attention.UWP.Views"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
@@ -50,5 +51,9 @@
                 </Grid>
             </SplitView.Content>
         </SplitView>
+        <mtui:InAppNotification
+            x:Name="InAppNotification"
+            Background="{ThemeResource SystemControlAcrylicElementBrush}"
+            CornerRadius="4" />
     </Grid>
 </Page>

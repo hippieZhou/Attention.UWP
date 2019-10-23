@@ -1,13 +1,9 @@
-﻿using Attention.UWP.Extensions;
+﻿using Attention.UWP.Services;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Extensions;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Email;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -16,8 +12,6 @@ namespace Attention.UWP.ViewModels
 {
     public class MoreViewModel : BaseViewModel
     {
-        public IEnumerable<ElementTheme> Themes => Enum.GetValues(typeof(ElementTheme)).Cast<ElementTheme>();
-
         public string Markdown
         {
             get
@@ -50,36 +44,41 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        public string AppName => "AppDisplayName".GetLocalized();
-        public string Version 
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
         {
             get
             {
-                PackageVersion packageVersion = Package.Current.Id.Version;
-                return $"{packageVersion.Major}.{packageVersion.Minor}.{packageVersion.Build}";
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(() =>
+                    {
+                    });
+                }
+                return _loadedCommand;
             }
         }
 
-        private ElementTheme _theme;
-        public ElementTheme Theme
+        private ICommand _openSavingFolderCommand;
+        public ICommand OpenSavingFolderCommand
         {
-            get { return _theme; }
-            set { Set(ref _theme, value); }
+            get
+            {
+                if (_openSavingFolderCommand == null)
+                {
+                    _openSavingFolderCommand = new RelayCommand(async () =>
+                    {
+                        var folder = await App.Settings.GetSavingFolderAsync();
+                        if (folder != null)
+                        {
+                            await Launcher.LaunchFolderAsync(folder);
+                        }
+                    });
+                }
+                return _openSavingFolderCommand;
+            }
         }
 
-        private string _language;
-        public string Language
-        {
-            get { return _language; }
-            set { Set(ref _language, value); }
-        }
-
-        private ScrollHeaderMode _headerMode;
-        public ScrollHeaderMode HeaderMode
-        {
-            get { return _headerMode; }
-            set { Set(ref _headerMode, value); }
-        }
 
         private ICommand _feedbackCommand;
         public ICommand FeedbackCommand
@@ -105,22 +104,6 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _feedbackCommand;
-            }
-        }
-
-        private ICommand _loadedCommand;
-        public ICommand LoadedCommand
-        {
-            get
-            {
-                if (_loadedCommand == null)
-                {
-                    _loadedCommand = new RelayCommand(() =>
-                    {
-                        Theme = ElementTheme.Default;
-                    });
-                }
-                return _loadedCommand;
             }
         }
     }

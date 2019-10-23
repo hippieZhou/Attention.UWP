@@ -22,11 +22,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <TextBlock
+                x:Uid="download_Header"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
-                Style="{ThemeResource TitleTextBlockStyle}"
-                Text="DOWNLOAD" />
+                Style="{ThemeResource TitleTextBlockStyle}" />
             <Button
                 Margin="0,0,16,0"
                 HorizontalAlignment="Right"

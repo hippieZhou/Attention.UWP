@@ -36,7 +36,6 @@ namespace Attention.UWP.Services
                 _filter.Orientation = filter.Orientation;
                 _filter.ImageType = filter.ImageType;
                 _filter.Category = filter.Category;
-                _filter.Language = filter.Language;
                 _filter.Query = filter.Query;
             }
             return ans;
@@ -53,7 +52,6 @@ namespace Attention.UWP.Services
                 Orientation = _filter.Orientation,
                 ImageType = _filter.ImageType,
                 Category = _filter.Category,
-                Language = _filter.Language,
                 Query = _filter.Query
             };
             return await _client.QueryImagesAsync(qb);

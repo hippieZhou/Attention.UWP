@@ -21,21 +21,6 @@ namespace Attention.UWP.ViewModels
         public IEnumerable<Orientation> Orientations => Enum.GetValues(typeof(Orientation)).Cast<Orientation>();
         public IEnumerable<ImageType> ImageTypes => Enum.GetValues(typeof(ImageType)).Cast<ImageType>();
         public IEnumerable<Category> Categories => Enum.GetValues(typeof(Category)).Cast<Category>();
-        public IEnumerable<Language> Languages => Enum.GetValues(typeof(Language)).Cast<Language>();
-
-        private bool _isOn = ThemeSelectorService.Theme == ElementTheme.Dark;
-        public bool IsOn
-        {
-            get { return _isOn; }
-            set
-            {
-                if (value != _isOn)
-                {
-                    Set(ref _isOn, value);
-                    SwitchThemeCommand.Execute(_isOn ? ElementTheme.Dark : ElementTheme.Light);
-                }
-            }
-        }
 
         public Filter Filter { get; private set; } 
 
@@ -58,24 +43,6 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _backCommand;
-            }
-        }
-
-        private ICommand _switchThemeCommand;
-        public ICommand SwitchThemeCommand
-        {
-            get
-            {
-                if (_switchThemeCommand == null)
-                {
-                    _switchThemeCommand = new RelayCommand<ElementTheme>(
-                        async (param) =>
-                        {
-                            await ThemeSelectorService.SetThemeAsync(param);
-                        });
-                }
-
-                return _switchThemeCommand;
             }
         }
 

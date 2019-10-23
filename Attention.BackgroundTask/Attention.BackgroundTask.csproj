@@ -129,12 +129,6 @@
       <Version>6.2.9</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Attention.Core\Attention.Core.csproj">
-      <Project>{b1e222fe-f2e1-4b04-9b2e-9d4fc1451f64}</Project>
-      <Name>Attention.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

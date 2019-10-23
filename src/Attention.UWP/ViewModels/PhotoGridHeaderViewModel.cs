@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Toolkit.Uwp.UI.Animations;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using System;
 using System.Numerics;
 using System.Windows.Input;
 using Windows.UI.Composition;
@@ -10,6 +12,23 @@ namespace Attention.UWP.ViewModels
 {
     public class PhotoGridHeaderViewModel : ViewModelBase
     {
+        public PhotoGridHeaderViewModel()
+        {
+            var SwitchHeaderMode = new Action<int>((model) =>
+            {
+                HeaderModel = (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), model);
+            });
+
+            SwitchHeaderMode(App.Settings.HeaderMode);
+            Messenger.Default.Register<int>(this, nameof(ScrollHeaderMode), mode => SwitchHeaderMode(mode));
+        }
+        private ScrollHeaderMode _headerMode;
+        public ScrollHeaderMode HeaderModel
+        {
+            get { return _headerMode; }
+            set { Set(ref _headerMode, value); }
+        }
+
         private ICommand _paneOpenCommand;
         public ICommand PaneOpenCommand
         {

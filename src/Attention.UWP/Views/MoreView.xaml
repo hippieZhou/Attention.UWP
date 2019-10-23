@@ -4,11 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:converrter="using:Attention.UWP.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Attention.UWP.Models"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:xaml="using:Windows.UI.Xaml"
     d:DesignHeight="768"
@@ -32,11 +34,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <TextBlock
+                x:Uid="more_Header"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
-                Style="{ThemeResource TitleTextBlockStyle}"
-                Text="MORE" />
+                Style="{ThemeResource TitleTextBlockStyle}" />
             <Button
                 Margin="0,0,16,0"
                 HorizontalAlignment="Right"
@@ -60,8 +62,12 @@
                     <ComboBox
                         HorizontalAlignment="Stretch"
                         Header="主题"
-                        SelectedItem="{Binding Theme, Mode=TwoWay}"
-                        SelectionChangedTrigger="Committed">
+                        SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Theme, Mode=TwoWay}">
+                        <ComboBoxItem Content="Default">
+                            <ComboBoxItem.DataContext>
+                                <xaml:ElementTheme>Default</xaml:ElementTheme>
+                            </ComboBoxItem.DataContext>
+                        </ComboBoxItem>
                         <ComboBoxItem Content="Light">
                             <ComboBoxItem.DataContext>
                                 <xaml:ElementTheme>Light</xaml:ElementTheme>
@@ -72,44 +78,31 @@
                                 <xaml:ElementTheme>Dark</xaml:ElementTheme>
                             </ComboBoxItem.DataContext>
                         </ComboBoxItem>
-                        <ComboBoxItem Content="Default">
-                            <ComboBoxItem.DataContext>
-                                <xaml:ElementTheme>Default</xaml:ElementTheme>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
                     </ComboBox>
                     <ComboBox
                         HorizontalAlignment="Stretch"
                         Header="语言"
-                        SelectedItem="{Binding Language, Mode=TwoWay}">
+                        SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}">
                         <ComboBoxItem Content="Chinese" />
                         <ComboBoxItem Content="English" />
                     </ComboBox>
                     <ComboBox
                         HorizontalAlignment="Stretch"
-                        Header="菜单风格"
-                        SelectedItem="{Binding HeaderMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="None">
-                            <ComboBoxItem.DataContext>
-                                <mtui:ScrollHeaderMode>None</mtui:ScrollHeaderMode>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="QuickReturn">
-                            <ComboBoxItem.DataContext>
-                                <mtui:ScrollHeaderMode>QuickReturn</mtui:ScrollHeaderMode>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="Sticky">
-                            <ComboBoxItem.DataContext>
-                                <mtui:ScrollHeaderMode>Sticky</mtui:ScrollHeaderMode>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="Fade">
-                            <ComboBoxItem.DataContext>
-                                <mtui:ScrollHeaderMode>Fade</mtui:ScrollHeaderMode>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
+                        Header="标头风格"
+                        SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=HeaderMode, Mode=TwoWay}">
+                        <ComboBoxItem Content="None" />
+                        <ComboBoxItem Content="QuickReturn" />
+                        <ComboBoxItem Content="Sticky" />
+                        <ComboBoxItem Content="Fade" />
                     </ComboBox>
+                    <mtui:HeaderedContentControl HorizontalContentAlignment="Stretch" Header="下载路径">
+                        <Button
+                            Height="32"
+                            Margin="0,4"
+                            HorizontalAlignment="Stretch"
+                            Command="{x:Bind ViewModel.OpenSavingFolderCommand}"
+                            Content="GET IT" />
+                    </mtui:HeaderedContentControl>
                 </StackPanel>
             </PivotItem>
             <PivotItem Header="Thanks">
@@ -130,11 +123,11 @@
                         Margin="0,48,0,0"
                         HorizontalAlignment="Center"
                         Style="{ThemeResource HeaderTextBlockStyle}"
-                        Text="{x:Bind ViewModel.AppName, Mode=OneWay}" />
+                        Text="{Binding Source={StaticResource AppSettings}, Path=Name, Mode=OneWay}" />
                     <TextBlock
                         Grid.Row="1"
                         HorizontalAlignment="Center"
-                        Text="{x:Bind ViewModel.Version, Mode=OneWay}" />
+                        Text="{Binding Source={StaticResource AppSettings}, Path=Version, Mode=OneWay}" />
                     <StackPanel Grid.Row="2">
                         <Border
                             Width="80"

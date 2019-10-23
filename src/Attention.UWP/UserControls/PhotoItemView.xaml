@@ -150,7 +150,7 @@
                 Background="{ThemeResource SystemControlAcrylicElementBrush}"
                 CacheMode="BitmapCache"
                 IsCacheEnabled="True"
-                Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/User.png}"
+                Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/Image.png}"
                 Stretch="UniformToFill" />
             <Grid
                 Grid.Row="1"
@@ -181,7 +181,7 @@
                         Height="38"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        ProfilePicture="{x:Bind ViewModel.Item.UserImageURL, Mode=OneWay, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/Image.png}" />
+                        ProfilePicture="{x:Bind ViewModel.Item.UserImageURL, Mode=OneWay, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/User.png}" />
                     <TextBlock
                         Margin="12,0,8,0"
                         VerticalAlignment="Center"

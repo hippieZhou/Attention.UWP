@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
@@ -38,6 +39,11 @@ namespace Attention.UWP
                     ItemsPanel.Children.Add(button);
                 }
             };
+
+            Messenger.Default.Register<ElementTheme>(this, nameof(ExtendedTitleBar), theme => 
+            {
+                SetTitleBarControlColors();
+            });
         }
 
         public string Title

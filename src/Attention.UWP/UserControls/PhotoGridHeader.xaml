@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.UserControls"
     xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,7 +26,7 @@
         </Style>
     </UserControl.Resources>
 
-    <mtui:ScrollHeader Mode="QuickReturn">
+    <mtui:ScrollHeader Mode="{x:Bind ViewModel.HeaderModel, Mode=OneWay}">
         <Grid
             x:Name="MyHeaderGrid"
             MinHeight="48"
