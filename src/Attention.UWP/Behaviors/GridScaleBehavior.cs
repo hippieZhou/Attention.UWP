@@ -25,10 +25,15 @@ namespace Attention.UWP.Behaviors
                 throw new InvalidOperationException("ImageExScaleBehavior can only be attached to types inheriting UIElement");
             }
 
+            //todo
+            //tide animation
+            //https://docs.microsoft.com/zh-cn/windows/uwp/design/input/touch-interactions#gesture-events
             this.uiContainer.PointerEntered += UiElement_PointerEntered;
             this.uiContainer.PointerExited += UiElement_PointerExited;
+            this.uiContainer.PointerReleased += UiContainer_PointerReleased;
             this.uiContainer.SizeChanged += UiContainer_SizeChanged;
         }
+
         protected override void OnDetaching()
         {
             base.OnDetaching();
@@ -37,7 +42,8 @@ namespace Attention.UWP.Behaviors
             {
                 this.uiContainer.PointerEntered -= UiElement_PointerEntered;
                 this.uiContainer.PointerExited -= UiElement_PointerExited;
-                this.uiContainer.SizeChanged += UiContainer_SizeChanged;
+                this.uiContainer.PointerReleased -= UiContainer_PointerReleased;
+                this.uiContainer.SizeChanged -= UiContainer_SizeChanged;
             }
         }
 
@@ -54,6 +60,14 @@ namespace Attention.UWP.Behaviors
             if (this.uiContainer.FindName("imageEx") is ImageEx imageEx)
             {
                 this.uiContainer.PlayScaleAnimation(imageEx, AnimationExtension.CreateScaleAnimation(true));
+            }
+        }
+
+        private void UiContainer_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (this.uiContainer.FindName("imageEx") is ImageEx imageEx)
+            {
+                this.uiContainer.PlayScaleAnimation(imageEx, AnimationExtension.CreateScaleAnimation(false));
             }
         }
 
