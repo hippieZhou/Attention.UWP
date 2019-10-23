@@ -120,7 +120,7 @@
                     x:Name="imageEx"
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"
-                    Source="{x:Bind LargeImageURL}"
+                    Source="{x:Bind LargeImageURL, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/User.png}"
                     Stretch="UniformToFill" />
                 <Grid
                     x:Name="SmokeGrid"

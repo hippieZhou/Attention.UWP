@@ -1,6 +1,7 @@
 ﻿using Attention.UWP.Extensions;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,26 @@ namespace Attention.UWP.ViewModels
             }
         }
 
+        private ElementTheme _theme;
+        public ElementTheme Theme
+        {
+            get { return _theme; }
+            set { Set(ref _theme, value); }
+        }
+
+        private string _language;
+        public string Language
+        {
+            get { return _language; }
+            set { Set(ref _language, value); }
+        }
+
+        private ScrollHeaderMode _headerMode;
+        public ScrollHeaderMode HeaderMode
+        {
+            get { return _headerMode; }
+            set { Set(ref _headerMode, value); }
+        }
 
         private ICommand _feedbackCommand;
         public ICommand FeedbackCommand
@@ -84,6 +105,22 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _feedbackCommand;
+            }
+        }
+
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
+        {
+            get
+            {
+                if (_loadedCommand == null)
+                {
+                    _loadedCommand = new RelayCommand(() =>
+                    {
+                        Theme = ElementTheme.Default;
+                    });
+                }
+                return _loadedCommand;
             }
         }
     }

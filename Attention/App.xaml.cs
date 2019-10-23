@@ -19,7 +19,7 @@ namespace Attention
             //new BackgroundProxy().Register();
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunchedAsync(LaunchActivatedEventArgs e)
         {
             if (!(Window.Current.Content is Frame rootFrame))
             {

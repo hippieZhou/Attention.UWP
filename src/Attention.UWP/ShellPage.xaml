@@ -2,7 +2,6 @@
     x:Class="Attention.UWP.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
@@ -38,7 +37,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <local:ExtendTitleBar Grid.Row="0" />
+                    <local:ExtendedTitleBar Grid.Row="0" />
                     <v:MainView x:Name="mainView" Grid.Row="1">
                         <i:Interaction.Behaviors>
                             <ic:EventTriggerBehavior EventName="Loaded">

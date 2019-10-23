@@ -9,7 +9,6 @@ namespace Attention.UWP.UserControls
         public PhotoFilterView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModel;
         }
 
         public PhotoFilterViewModel ViewModel

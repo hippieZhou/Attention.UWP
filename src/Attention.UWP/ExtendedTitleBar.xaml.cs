@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Attention.UWP
 {
-    public sealed partial class ExtendTitleBar : UserControl
+    public sealed partial class ExtendedTitleBar : UserControl
     {
         private readonly UISettings _uiSettings;
         private readonly AccessibilitySettings _accessibilitySettings;
@@ -19,7 +19,7 @@ namespace Attention.UWP
 
         public ObservableCollection<Button> Buttons { get; } = new ObservableCollection<Button>();
 
-        public ExtendTitleBar()
+        public ExtendedTitleBar()
         {
             this.InitializeComponent();
 
@@ -48,7 +48,7 @@ namespace Attention.UWP
 
         // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(ExtendTitleBar), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("Title", typeof(string), typeof(ExtendedTitleBar), new PropertyMetadata(string.Empty));
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

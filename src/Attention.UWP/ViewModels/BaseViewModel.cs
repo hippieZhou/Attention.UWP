@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Toolkit.Uwp.UI.Animations;
 using System.Numerics;
 using System.Windows.Input;
 using Windows.UI.Composition;

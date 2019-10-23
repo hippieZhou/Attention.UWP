@@ -5,6 +5,8 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -12,6 +14,11 @@
     d:DesignHeight="768"
     d:DesignWidth="1024"
     mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid
         animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
@@ -49,8 +56,12 @@
                 </Style>
             </Pivot.Resources>
             <PivotItem Header="个性化">
-                <StackPanel Spacing="12">
-                    <ComboBox HorizontalAlignment="Stretch" Header="主题">
+                <StackPanel MaxWidth="600" Spacing="12">
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        Header="主题"
+                        SelectedItem="{Binding Theme, Mode=TwoWay}"
+                        SelectionChangedTrigger="Committed">
                         <ComboBoxItem Content="Light">
                             <ComboBoxItem.DataContext>
                                 <xaml:ElementTheme>Light</xaml:ElementTheme>
@@ -67,11 +78,17 @@
                             </ComboBoxItem.DataContext>
                         </ComboBoxItem>
                     </ComboBox>
-                    <ComboBox HorizontalAlignment="Stretch" Header="语言">
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        Header="语言"
+                        SelectedItem="{Binding Language, Mode=TwoWay}">
                         <ComboBoxItem Content="Chinese" />
                         <ComboBoxItem Content="English" />
                     </ComboBox>
-                    <ComboBox HorizontalAlignment="Stretch" Header="菜单风格">
+                    <ComboBox
+                        HorizontalAlignment="Stretch"
+                        Header="菜单风格"
+                        SelectedItem="{Binding HeaderMode, Mode=TwoWay}">
                         <ComboBoxItem Content="None">
                             <ComboBoxItem.DataContext>
                                 <mtui:ScrollHeaderMode>None</mtui:ScrollHeaderMode>
@@ -97,14 +114,13 @@
             </PivotItem>
             <PivotItem Header="Thanks">
                 <mtui:MarkdownTextBlock
-                    Margin="0,12,0,0"
                     Background="Transparent"
                     SchemeList="companyportal,randomscheme"
                     Text="{x:Bind ViewModel.Markdown, Mode=OneWay}"
                     UriPrefix="ms-appx://" />
             </PivotItem>
             <PivotItem Header="About">
-                <Grid HorizontalAlignment="Center">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

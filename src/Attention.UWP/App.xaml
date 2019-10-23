@@ -12,6 +12,7 @@
             <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
             <converter:ImageItemColorConverter x:Key="ImageItemColorConverter" />
+            <converter:ImageSourceNullValueConverter x:Key="ImageSourceNullValueConverter" />
 
             <animations:AnimationCollection x:Key="DefaultShowAnimations">
                 <animations:TranslationAnimation
@@ -21,7 +22,7 @@
                 <animations:OpacityAnimation
                     From="0"
                     To="1.0"
-                    Duration="0:0:0.200" />
+                    Duration="0:0:0.600" />
             </animations:AnimationCollection>
 
             <animations:AnimationCollection x:Key="DefaultHideAnimations">
@@ -33,16 +34,13 @@
                     From="0"
                     To="0, 200, 0"
                     Duration="0:0:0.600" />
-                <!--<animations:ScalarAnimation
-                    Target="Translation.Y"
-                    To="200"
-                    Duration="0:0:0.600" />-->
             </animations:AnimationCollection>
 
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!--  Other merged dictionaries here  -->
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
+                <ResourceDictionary Source="/Themes/ToggleSwitch.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!--  Other app resources here  -->
         </ResourceDictionary>

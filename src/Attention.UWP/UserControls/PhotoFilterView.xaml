@@ -7,6 +7,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tc="using:Attention.UWP"
     d:DesignHeight="720"
     d:DesignWidth="320"
     mc:Ignorable="d">
@@ -24,11 +25,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Button
-                VerticalAlignment="Bottom"
-                Command="{x:Bind ViewModel.BackCommand}"
-                Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+        <Grid Grid.Row="0" VerticalAlignment="Bottom">
+            <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+            <ToggleSwitch
+                HorizontalAlignment="Center"
+                IsOn="{Binding IsOn, Mode=TwoWay}"
+                Style="{StaticResource ThemeToggleSwitchStyle}">
+                <ToggleSwitch.OffContent>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE706;" />
+                </ToggleSwitch.OffContent>
+                <ToggleSwitch.OnContent>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE708;" />
+                </ToggleSwitch.OnContent>
+            </ToggleSwitch>
         </Grid>
         <Grid Grid.Row="1" Margin="12">
             <AutoSuggestBox

@@ -121,15 +121,21 @@
     </Compile>
     <Compile Include="Behaviors\GridScalarAction.cs" />
     <Compile Include="Behaviors\GridScaleBehavior.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ImageItemColorConverter.cs" />
-    <Compile Include="ExtendTitleBar.xaml.cs">
-      <DependentUpon>ExtendTitleBar.xaml</DependentUpon>
+    <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
+    <Compile Include="ExtendedTitleBar.xaml.cs">
+      <DependentUpon>ExtendedTitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\AnimationExtension.cs" />
     <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Extensions\ResourceExtension.cs" />
+    <Compile Include="Extensions\SettingsStorageExtension.cs" />
+    <Compile Include="Helpers\Json.cs" />
     <Compile Include="Models\Filter.cs" />
+    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Services\PixabayService.cs" />
+    <Compile Include="Services\ThemeSelectorService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
@@ -172,6 +178,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Image.png" />
     <Content Include="Assets\User.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -187,7 +194,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ExtendTitleBar.xaml">
+    <Page Include="ExtendedTitleBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\ScrollViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ToggleSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +260,9 @@
     </PackageReference>
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="PixabaySharp">
       <Version>1.1.0</Version>
