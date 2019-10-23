@@ -23,7 +23,7 @@ namespace Attention.UWP.Services
                 throw new KeyNotFoundException();
 
             _client = new PixabaySharpClient(api_key);
-            _filter = filter ?? new Filter() { Category = Category.Animals, Order= Order.Popular };
+            _filter = filter ?? new Filter();
         }
 
 

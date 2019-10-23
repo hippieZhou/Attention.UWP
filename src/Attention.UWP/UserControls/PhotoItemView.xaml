@@ -199,8 +199,8 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal"
                     Spacing="12">
-                    <Button Content="DOWNLOAD" />
-                    <Button Style="{StaticResource InfoButtonStyle}" />
+                    <Button Command="{x:Bind ViewModel.DownloadCommand}" Content="DOWNLOAD" />
+                    <Button Command="{x:Bind ViewModel.InfoCommand}" Style="{StaticResource InfoButtonStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -38,7 +38,8 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontWeight="Bold"
-                Style="{ThemeResource TitleTextBlockStyle}" />
+                Style="{ThemeResource TitleTextBlockStyle}"
+                Text="MORE" />
             <Button
                 Margin="0,0,16,0"
                 HorizontalAlignment="Right"
@@ -57,62 +58,57 @@
                     <Setter Property="Padding" Value="12" />
                 </Style>
             </Pivot.Resources>
-            <PivotItem Header="个性化">
+            <PivotItem x:Uid="more_Personalized" Header="Personalized">
                 <StackPanel MaxWidth="600" Spacing="12">
                     <ComboBox
+                        x:Uid="more_Personalized_Theme"
                         HorizontalAlignment="Stretch"
-                        Header="主题"
+                        Header="Theme"
                         SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Theme, Mode=TwoWay}">
-                        <ComboBoxItem Content="Default">
-                            <ComboBoxItem.DataContext>
-                                <xaml:ElementTheme>Default</xaml:ElementTheme>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="Light">
-                            <ComboBoxItem.DataContext>
-                                <xaml:ElementTheme>Light</xaml:ElementTheme>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="Dark">
-                            <ComboBoxItem.DataContext>
-                                <xaml:ElementTheme>Dark</xaml:ElementTheme>
-                            </ComboBoxItem.DataContext>
-                        </ComboBoxItem>
+                        <ComboBoxItem x:Uid="more_Personalized_Theme_Default" Content="Default" />
+                        <ComboBoxItem x:Uid="more_Personalized_Theme_Light" Content="Light" />
+                        <ComboBoxItem x:Uid="more_Personalized_Theme_Dark" Content="Dark" />
                     </ComboBox>
                     <ComboBox
+                        x:Uid="more_Personalized_Language"
                         HorizontalAlignment="Stretch"
-                        Header="语言"
+                        Header="Language"
                         SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=Language, Mode=TwoWay}">
-                        <ComboBoxItem Content="Chinese" />
-                        <ComboBoxItem Content="English" />
+                        <ComboBoxItem x:Uid="more_Personalized_Language_Zh" Content="Chinese" />
+                        <ComboBoxItem x:Uid="more_Personalized_Language_En" Content="English" />
                     </ComboBox>
                     <ComboBox
+                        x:Uid="more_Personalized_Header"
                         HorizontalAlignment="Stretch"
-                        Header="标头风格"
+                        Header="Header Mode"
                         SelectedIndex="{Binding Source={StaticResource AppSettings}, Path=HeaderMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="None" />
-                        <ComboBoxItem Content="QuickReturn" />
-                        <ComboBoxItem Content="Sticky" />
-                        <ComboBoxItem Content="Fade" />
+                        <ComboBoxItem x:Uid="more_Personalized_Header_None" Content="None" />
+                        <ComboBoxItem x:Uid="more_Personalized_Header_QuickReturn" Content="QuickReturn" />
+                        <ComboBoxItem x:Uid="more_Personalized_Header_Sticky" Content="Sticky" />
+                        <ComboBoxItem x:Uid="more_Personalized_Header_Fade" Content="Fade" />
                     </ComboBox>
-                    <mtui:HeaderedContentControl HorizontalContentAlignment="Stretch" Header="下载路径">
+                    <mtui:HeaderedContentControl
+                        x:Uid="more_Personalized_Download"
+                        HorizontalContentAlignment="Stretch"
+                        Header="Download Path">
                         <Button
+                            x:Uid="more_Personalized_Download_Open"
                             Height="32"
                             Margin="0,4"
                             HorizontalAlignment="Stretch"
                             Command="{x:Bind ViewModel.OpenSavingFolderCommand}"
-                            Content="GET IT" />
+                            Content="Get It" />
                     </mtui:HeaderedContentControl>
                 </StackPanel>
             </PivotItem>
-            <PivotItem Header="Thanks">
+            <PivotItem x:Uid="more_Thanks" Header="Thanks">
                 <mtui:MarkdownTextBlock
                     Background="Transparent"
                     SchemeList="companyportal,randomscheme"
                     Text="{x:Bind ViewModel.Markdown, Mode=OneWay}"
                     UriPrefix="ms-appx://" />
             </PivotItem>
-            <PivotItem Header="About">
+            <PivotItem x:Uid="more_About" Header="About">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

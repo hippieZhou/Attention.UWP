@@ -61,7 +61,7 @@ namespace Attention.UWP.Models
                 RaisePropertyChanged(() => Language);
 
                 ApplicationLanguages.PrimaryLanguageOverride = value == LANGUAGE_ZH ? "zh-CN" : "en-US";
-                Messenger.Default.Send("重启生效", nameof(InAppNotification));
+                Messenger.Default.Send("more_Personalized_Language_restart".GetLocalized(), nameof(InAppNotification));
             }
         }
 

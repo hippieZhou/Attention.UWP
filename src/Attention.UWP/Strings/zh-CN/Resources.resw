@@ -126,7 +126,76 @@
   <data name="download_Header.Text" xml:space="preserve">
     <value>下载中心</value>
   </data>
+  <data name="more_About.Header" xml:space="preserve">
+    <value>关于</value>
+  </data>
   <data name="more_Header.Text" xml:space="preserve">
     <value>更多</value>
+  </data>
+  <data name="more_Personalized.Header" xml:space="preserve">
+    <value>个性化</value>
+  </data>
+  <data name="more_Personalized_Download.Header" xml:space="preserve">
+    <value>下载路径</value>
+  </data>
+  <data name="more_Personalized_Download_Open.Content" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="more_Personalized_Header.Header" xml:space="preserve">
+    <value>标头风格</value>
+  </data>
+  <data name="more_Personalized_Header_Fade.Content" xml:space="preserve">
+    <value>渐变</value>
+  </data>
+  <data name="more_Personalized_Header_None.Content" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="more_Personalized_Header_QuickReturn.Content" xml:space="preserve">
+    <value>快速返回</value>
+  </data>
+  <data name="more_Personalized_Header_Sticky.Content" xml:space="preserve">
+    <value>固定</value>
+  </data>
+  <data name="more_Personalized_Language.Header" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="more_Personalized_Language_En.Content" xml:space="preserve">
+    <value>英语</value>
+  </data>
+  <data name="more_Personalized_Language_restart" xml:space="preserve">
+    <value>请重启客户端已启用当前修改</value>
+  </data>
+  <data name="more_Personalized_Language_Zh.Content" xml:space="preserve">
+    <value>中文（简体）</value>
+  </data>
+  <data name="more_Personalized_Theme.Header" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="more_Personalized_Theme_Dark.Content" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="more_Personalized_Theme_Default.Content" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="more_Personalized_Theme_Light.Content" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="more_Thanks.Header" xml:space="preserve">
+    <value>感谢</value>
+  </data>
+  <data name="photo_Category.Content" xml:space="preserve">
+    <value>风格</value>
+  </data>
+  <data name="photo_Find.Header" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="photo_ImageType.Content" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="photo_Orders.Content" xml:space="preserve">
+    <value>排序方式</value>
+  </data>
+  <data name="photo_Orientation.Content" xml:space="preserve">
+    <value>方向</value>
   </data>
 </root>

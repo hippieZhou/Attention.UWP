@@ -1,7 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PixabaySharp.Models;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
@@ -69,6 +72,37 @@ namespace Attention.UWP.ViewModels
             }
         }
 
+        private ICommand _infoCommand;
+        public ICommand InfoCommand
+        {
+            get
+            {
+                if (_infoCommand == null)
+                {
+                    _infoCommand = new RelayCommand(async () =>
+                    {
+                        await Launcher.LaunchUriAsync(new Uri(Item.PageURL));
+                    });
+                }
+                return _infoCommand;
+            }
+        }
+
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new RelayCommand(async () =>
+                    {
+                        await Task.CompletedTask;
+                    });
+                }
+                return _downloadCommand;
+            }
+        }
 
         public bool TryStart(object selected, ConnectedAnimation animation)
         {

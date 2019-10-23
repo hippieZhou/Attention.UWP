@@ -25,8 +25,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" VerticalAlignment="Bottom">
-            <Button Command="{x:Bind ViewModel.BackCommand}" Style="{ThemeResource NavigationBackButtonNormalStyle}" />
+        <Grid Grid.Row="0">
+            <Button
+                Margin="12,0"
+                VerticalAlignment="Bottom"
+                Command="{x:Bind ViewModel.BackCommand}">
+                <Button.Content>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="16"
+                        Glyph="&#xE72B;" />
+                </Button.Content>
+            </Button>
             <!--<ToggleSwitch
                 HorizontalAlignment="Center"
                 IsOn="{Binding IsOn, Mode=TwoWay}"
@@ -41,9 +51,10 @@
         </Grid>
         <Grid Grid.Row="1" Margin="12">
             <AutoSuggestBox
+                x:Uid="photo_Find"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Center"
-                Header="SEARCH"
+                Header="Find"
                 QueryIcon="Find"
                 Text="{Binding Filter.Query, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
@@ -62,7 +73,7 @@
                 SelectedItem="{Binding Filter.Order, Mode=TwoWay}"
                 SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
-                    <NavigationViewItemHeader Content="Orders" />
+                    <NavigationViewItemHeader x:Uid="photo_Orders" Content="Orders" />
                 </ComboBox.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
@@ -76,7 +87,7 @@
                 SelectedItem="{Binding Filter.Orientation, Mode=TwoWay}"
                 SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
-                    <NavigationViewItemHeader Content="Orientation" />
+                    <NavigationViewItemHeader x:Uid="photo_Orientation" Content="Orientation" />
                 </ComboBox.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
@@ -90,7 +101,7 @@
                 SelectedItem="{Binding Filter.ImageType, Mode=TwoWay}"
                 SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
-                    <NavigationViewItemHeader Content="ImageType" />
+                    <NavigationViewItemHeader x:Uid="photo_ImageType" Content="Type" />
                 </ComboBox.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
@@ -104,7 +115,7 @@
                 SelectedItem="{Binding Filter.Category, Mode=TwoWay}"
                 SelectionChangedTrigger="Committed">
                 <ComboBox.Header>
-                    <NavigationViewItemHeader Content="Category" />
+                    <NavigationViewItemHeader x:Uid="photo_Category" Content="Category" />
                 </ComboBox.Header>
                 <i:Interaction.Behaviors>
                     <ic:EventTriggerBehavior EventName="SelectionChanged">
