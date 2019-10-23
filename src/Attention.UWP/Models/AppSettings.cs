@@ -77,8 +77,7 @@ namespace Attention.UWP.Models
 
                 SaveSettings(nameof(HeaderMode), value);
                 RaisePropertyChanged(() => HeaderMode);
-
-                Messenger.Default.Send(HeaderMode, nameof(ScrollHeaderMode));
+                ViewModelLocator.Current.Main.PhotoGridHeaderViewModel.SwitchHeaderMode(HeaderMode);
             }
         }
 

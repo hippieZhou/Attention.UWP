@@ -14,14 +14,9 @@ namespace Attention.UWP.ViewModels
     {
         public PhotoGridHeaderViewModel()
         {
-            var SwitchHeaderMode = new Action<int>((model) =>
-            {
-                HeaderModel = (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), model);
-            });
-
             SwitchHeaderMode(App.Settings.HeaderMode);
-            Messenger.Default.Register<int>(this, nameof(ScrollHeaderMode), mode => SwitchHeaderMode(mode));
         }
+
         private ScrollHeaderMode _headerMode;
         public ScrollHeaderMode HeaderModel
         {
@@ -78,7 +73,9 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        private void BackToView(BaseViewModel view)
+        public void SwitchHeaderMode(int mode) => HeaderModel = (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), mode);
+
+        private void BackToView(BaseViewModel uiElement)
         {
             ViewModelLocator.Current.Shell.IsPaneOpen = false;
             
@@ -89,7 +86,7 @@ namespace Attention.UWP.ViewModels
             ViewModelLocator.Current.Shell.UiElement.CenterPoint = new Vector3((float)(root.ActualSize.X / 2.0), (float)(root.ActualSize.Y / 2.0), 1.0f);
             root.StartAnimation(springAnimation);
 
-            view.Visibility = Visibility.Visible;
+            uiElement.Visibility = Visibility.Visible;
         }
     }
 }
