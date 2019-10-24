@@ -1,6 +1,8 @@
-﻿using Attention.UWP.Services;
+﻿using Attention.UWP.Models;
+using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
@@ -50,7 +52,7 @@ namespace Attention.UWP.ViewModels
 
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            var result = await _service.QueryImagesAsync(page: ++pageIndex, per_page: pageSize);
+            var result = await _service.QueryImagesAsync(page: ++pageIndex, per_page: pageSize, App.Settings.Filter);
             return result != null ? result.Images : new List<ImageItem>();
         }
     }

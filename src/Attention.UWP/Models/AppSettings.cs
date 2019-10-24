@@ -3,6 +3,7 @@ using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -78,6 +79,40 @@ namespace Attention.UWP.Models
                 SaveSettings(nameof(HeaderMode), value);
                 RaisePropertyChanged(() => HeaderMode);
                 ViewModelLocator.Current.Main.PhotoGridHeaderViewModel.SwitchHeaderMode(HeaderMode);
+            }
+        }
+
+        private const bool LIVETITLE_DEFAULT = false;
+        public bool LiveTitle
+        {
+            get { return ReadSettings(nameof(LiveTitle), LIVETITLE_DEFAULT); }
+            set
+            {
+                SaveSettings(nameof(LiveTitle), value);
+                RaisePropertyChanged(() => LiveTitle);
+            }
+        }
+
+        private readonly Filter defaultFilter = new Filter()
+        {
+            Query = string.Empty,
+            Order = PixabaySharp.Enums.Order.Latest,
+            ImageType = PixabaySharp.Enums.ImageType.All,
+            Orientation = PixabaySharp.Enums.Orientation.All,
+            Category = PixabaySharp.Enums.Category.Backgrounds
+        };
+
+        public Filter Filter
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<Filter>(
+                    ReadSettings(nameof(Filter), JsonConvert.SerializeObject(defaultFilter)));
+            }
+            set
+            {
+                SaveSettings(nameof(Filter), JsonConvert.SerializeObject(value));
+                RaisePropertyChanged(() => Filter);
             }
         }
 

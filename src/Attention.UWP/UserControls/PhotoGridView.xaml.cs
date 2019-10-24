@@ -1,5 +1,7 @@
 ﻿using Attention.UWP.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -10,6 +12,17 @@ namespace Attention.UWP.UserControls
         public PhotoGridView()
         {
             this.InitializeComponent();
+            refreshBtn.Translation += new Vector3(0, 0, 32);
+            refreshBtn.Click += async (sender, e) =>
+            {
+                var anim = refreshBtn.Rotate(value: 720.0f,
+                    centerX: refreshBtn.ActualSize.X / 2, centerY: refreshBtn.ActualSize.Y / 2,
+                    duration: 5000, delay: 400, easingType: EasingType.Back);
+                anim.Then().Rotate(value: 0,
+                    centerX: refreshBtn.ActualSize.X / 2, centerY: refreshBtn.ActualSize.Y / 2,
+                    duration: 2500);
+                await anim.StartAsync();
+            };
         }
 
         public PhotoGridViewModel ViewModel

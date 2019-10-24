@@ -41,6 +41,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!--  Other merged dictionaries here  -->
+                <ResourceDictionary Source="/Themes/Button.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
                 <ResourceDictionary Source="/Themes/ToggleSwitch.xaml" />
             </ResourceDictionary.MergedDictionaries>

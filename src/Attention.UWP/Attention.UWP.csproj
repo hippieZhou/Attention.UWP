@@ -132,9 +132,9 @@
     <Compile Include="Extensions\ResourceExtension.cs" />
     <Compile Include="Extensions\SettingsStorageExtension.cs" />
     <Compile Include="Helpers\Json.cs" />
+    <Compile Include="Helpers\LiveTileHelper.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Models\Language.cs" />
     <Compile Include="Services\PixabayService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
@@ -202,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\ScrollViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -242,6 +246,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
       <Version>5.1.1</Version>

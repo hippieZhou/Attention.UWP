@@ -15,10 +15,11 @@
     <UserControl.Resources>
         <Style x:Key="InfoButtonStyle" TargetType="Button">
             <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="RequestedTheme" Value="Dark" />
             <Setter Property="Width" Value="32" />
             <Setter Property="Height" Value="32" />
             <Setter Property="Content" Value="&#xEA1F;" />
-            <Setter Property="Background" Value="{ThemeResource ButtonBackground}" />
+            <Setter Property="Background" Value="#40e0d0" />
             <Setter Property="BackgroundSizing" Value="OuterBorderEdge" />
             <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
             <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}" />
@@ -58,7 +59,7 @@
                                     <VisualState x:Name="PointerOver">
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPointerOver}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3be2ab" />
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPointerOver}" />
@@ -72,7 +73,7 @@
                                     <VisualState x:Name="Pressed">
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPressed}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#3be2ab" />
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPressed}" />
@@ -199,7 +200,11 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal"
                     Spacing="12">
-                    <Button Command="{x:Bind ViewModel.DownloadCommand}" Content="DOWNLOAD" />
+                    <Button
+                        Background="#3db1ff"
+                        Command="{x:Bind ViewModel.DownloadCommand}"
+                        Content="DOWNLOAD"
+                        RequestedTheme="Dark" />
                     <Button Command="{x:Bind ViewModel.InfoCommand}" Style="{StaticResource InfoButtonStyle}" />
                 </StackPanel>
             </Grid>

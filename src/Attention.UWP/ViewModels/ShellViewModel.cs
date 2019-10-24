@@ -8,11 +8,7 @@ namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        public PhotoFilterViewModel PhotoFilterViewModel { get; } 
-        public ShellViewModel(PixabayService service)
-        {
-            PhotoFilterViewModel = new PhotoFilterViewModel(service);
-        }
+        public PhotoFilterViewModel PhotoFilterViewModel { get; } = new PhotoFilterViewModel();
         /// <summary>
         /// https://www.cnblogs.com/shaomeng/p/8678641.html
         /// https://github.com/r2d2rigo/WinCompositionTiltEffect

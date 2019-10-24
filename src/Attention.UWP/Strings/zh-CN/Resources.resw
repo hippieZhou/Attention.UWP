@@ -168,6 +168,9 @@
   <data name="more_Personalized_Language_Zh.Content" xml:space="preserve">
     <value>中文（简体）</value>
   </data>
+  <data name="more_Personalized_LiveTitle.Header" xml:space="preserve">
+    <value>动态磁贴</value>
+  </data>
   <data name="more_Personalized_Theme.Header" xml:space="preserve">
     <value>主题</value>
   </data>

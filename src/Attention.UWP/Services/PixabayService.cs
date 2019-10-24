@@ -14,45 +14,38 @@ namespace Attention.UWP.Services
     public class PixabayService
     {
         private readonly PixabaySharpClient _client;
-        private readonly Filter _filter;
-        public Filter DefaultFiler => _filter;
+        private Filter _cacheFilter = new Filter()
+        {
+            Query = string.Empty,
+            Order = Order.Latest,
+            Orientation = Orientation.All,
+            ImageType = ImageType.All,
+            Category = Category.Backgrounds
+        };
 
-        public PixabayService(string api_key, Filter filter = default)
+        public PixabayService(string api_key)
         {
             if (string.IsNullOrWhiteSpace(api_key))
                 throw new KeyNotFoundException();
 
             _client = new PixabaySharpClient(api_key);
-            _filter = filter ?? new Filter();
         }
 
-
-        public bool RefreshFilter(Filter filter)
+        public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20, Filter filter = default)
         {
-            bool ans = _filter != filter;
-            if (ans)
+            if (filter != null)
             {
-                _filter.Order = filter.Order;
-                _filter.Orientation = filter.Orientation;
-                _filter.ImageType = filter.ImageType;
-                _filter.Category = filter.Category;
-                _filter.Query = filter.Query;
+                _cacheFilter = filter;
             }
-            return ans;
-        }
-
-
-        public async Task<ImageResult> QueryImagesAsync( int page = 1, int per_page = 20)
-        {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
                 Page = page,
                 PerPage = per_page,
-                Order = _filter.Order,
-                Orientation = _filter.Orientation,
-                ImageType = _filter.ImageType,
-                Category = _filter.Category,
-                Query = _filter.Query
+                Order = _cacheFilter.Order,
+                Orientation = _cacheFilter.Orientation,
+                ImageType = _cacheFilter.ImageType,
+                Category = _cacheFilter.Category,
+                Query = _cacheFilter.Query
             };
             return await _client.QueryImagesAsync(qb);
         }

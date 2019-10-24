@@ -1,13 +1,12 @@
 ﻿using Attention.UWP.Models;
-using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PixabaySharp.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Orientation = PixabaySharp.Enums.Orientation;
 
@@ -15,19 +14,16 @@ namespace Attention.UWP.ViewModels
 {
     public class PhotoFilterViewModel : ViewModelBase
     {
-        private readonly PixabayService _service;
-
         public IEnumerable<Order> Orders => Enum.GetValues(typeof(Order)).Cast<Order>();
         public IEnumerable<Orientation> Orientations => Enum.GetValues(typeof(Orientation)).Cast<Orientation>();
         public IEnumerable<ImageType> ImageTypes => Enum.GetValues(typeof(ImageType)).Cast<ImageType>();
         public IEnumerable<Category> Categories => Enum.GetValues(typeof(Category)).Cast<Category>();
 
-        public Filter Filter { get; private set; } 
+        public Filter Filter { get; private set; }
 
-        public PhotoFilterViewModel(PixabayService service)
+        public PhotoFilterViewModel()
         {
-            _service = service;
-            Filter = _service.DefaultFiler;
+            Filter = App.Settings.Filter;
         }
 
         private ICommand _backCommand;
@@ -56,8 +52,7 @@ namespace Attention.UWP.ViewModels
                     _searchCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(async args =>
                     {
                         Filter.Query = args.QueryText;
-                        _service.RefreshFilter(Filter);
-                        await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
+                        await RefreshWallPapersAsync();
                     });
                 }
                 return _searchCommand;
@@ -73,12 +68,17 @@ namespace Attention.UWP.ViewModels
                 {
                     _selectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(async args =>
                     {
-                        _service.RefreshFilter(Filter);
-                        await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
+                       await RefreshWallPapersAsync();
                     });
                 }
                 return _selectionChangedCommand;
             }
+        }
+
+        private async Task RefreshWallPapersAsync()
+        {
+            App.Settings.Filter = Filter;
+            await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
         }
     }
 }

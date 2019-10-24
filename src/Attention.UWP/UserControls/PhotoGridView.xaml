@@ -178,7 +178,7 @@
                         </i:Interaction.Behaviors>
                     </TextBlock>
                 </Grid>
-                
+
                 <i:Interaction.Behaviors>
                     <!--  鼠标相关操作  -->
                     <ic:EventTriggerBehavior EventName="PointerEntered">
@@ -316,6 +316,22 @@
                 Content="RETRY"
                 FontSize="20" />
         </StackPanel>
+
+        <Button
+            x:Name="refreshBtn"
+            Margin="0,0,24,24"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Canvas.ZIndex="99"
+            Style="{StaticResource RefreshButtonStyle}">
+            <Button.Shadow>
+                <ThemeShadow />
+            </Button.Shadow>
+            <FontIcon
+                FontFamily="Segoe MDL2 Assets"
+                FontSize="14"
+                Glyph="&#xE117;" />
+        </Button>
 
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
