@@ -50,7 +50,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(() =>
                     {
-                        BackToView(ViewModelLocator.Current.Download);
+                        BackToView(ViewModelLocator.Current.Local);
                     });
                 }
                 return _downloadCommand;

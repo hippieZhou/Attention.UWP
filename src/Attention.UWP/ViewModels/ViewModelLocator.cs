@@ -16,12 +16,12 @@ namespace Attention.UWP.ViewModels
             SimpleIoc.Default.Register(() => new PixabayService("3153915-c1b347f3736d73ef2cd6a0e79"), false);
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<DownloadViewModel>();
+            SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<MoreViewModel>();
         }
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-        public DownloadViewModel Download => ServiceLocator.Current.GetInstance<DownloadViewModel>();
+        public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public MoreViewModel More => ServiceLocator.Current.GetInstance<MoreViewModel>();
     }
 }

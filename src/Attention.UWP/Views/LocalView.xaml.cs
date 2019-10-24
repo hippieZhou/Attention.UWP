@@ -3,10 +3,10 @@ using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP.Views
 {
-    public sealed partial class DownloadView : UserControl
+    public sealed partial class LocalView : UserControl
     {
-        public DownloadViewModel ViewModel => ViewModelLocator.Current.Download;
-        public DownloadView()
+        public LocalViewModel ViewModel => ViewModelLocator.Current.Local;
+        public LocalView()
         {
             this.InitializeComponent();
         }

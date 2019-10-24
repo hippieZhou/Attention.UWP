@@ -27,9 +27,7 @@ namespace Attention.UWP.ViewModels
 - [MvvmLightLibs](https://github.com/lbugnion/mvvmlight)
 - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
 - [PixabaySharp](https://github.com/ThomasPe/PixabaySharp)
-- [NLog](https://github.com/NLog/NLog)
-- [FreeLogo Design](https://www.freelogodesign.org/)
-- [Color Hunt](https://colorhunt.co/)
+- [sqlite-net-pcl](https://github.com/praeclarum/sqlite-net)
 
 ## Helpers
 
