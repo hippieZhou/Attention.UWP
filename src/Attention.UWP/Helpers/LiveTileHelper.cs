@@ -7,11 +7,6 @@ namespace Attention.UWP.Helpers
 {
     public static class LiveTileHelper
     {
-        public static void UpdateLiveTile()
-        {
-            //todo
-        }
-
         public static void UpdateLiveTile(IEnumerable<string> list)
         {
             var photosContent = new TileBindingContentPhotos();

@@ -82,7 +82,7 @@ namespace Attention.UWP.Models
             }
         }
 
-        private const bool LIVETITLE_DEFAULT = false;
+        private const bool LIVETITLE_DEFAULT = true;
         public bool LiveTitle
         {
             get { return ReadSettings(nameof(LiveTitle), LIVETITLE_DEFAULT); }
@@ -90,6 +90,8 @@ namespace Attention.UWP.Models
             {
                 SaveSettings(nameof(LiveTitle), value);
                 RaisePropertyChanged(() => LiveTitle);
+
+                Messenger.Default.Send(LiveTitle, nameof(LiveTitle));
             }
         }
 

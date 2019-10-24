@@ -1,4 +1,4 @@
-﻿using Attention.UWP.Models;
+﻿using Attention.UWP.Helpers;
 using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -8,6 +8,7 @@ using Microsoft.Toolkit.Uwp;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -48,6 +49,23 @@ namespace Attention.UWP.ViewModels
         public PhotoItemSource(PixabayService service)
         {
             _service = service;
+
+            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
+            {
+                if (enabled)
+                {
+                    var result = await _service.QueryImagesAsync(1, 5, App.Settings.Filter);
+                    if (result != null)
+                    {
+                        var items = result.Images.Select(p => p.ImageURL);
+                        LiveTileHelper.UpdateLiveTile(items);
+                    }
+                }
+                else
+                {
+                    LiveTileHelper.CleanUpTile();
+                }
+            });
         }
 
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
