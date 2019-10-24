@@ -101,6 +101,16 @@
                         <ComboBoxItem x:Uid="more_Personalized_Header_Fade" Content="Fade" />
                     </ComboBox>
                     <mtui:HeaderedContentControl
+                        x:Uid="more_Personalized_LiveTitle"
+                        HorizontalContentAlignment="Stretch"
+                        Header="LiveTitle">
+                        <ToggleButton
+                            Height="32" 
+                            Margin="0,4"
+                            HorizontalAlignment="Stretch"
+                            IsChecked="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=TwoWay}" />
+                    </mtui:HeaderedContentControl>
+                    <mtui:HeaderedContentControl
                         x:Uid="more_Personalized_Download"
                         HorizontalContentAlignment="Stretch"
                         Header="Download Path">
@@ -112,10 +122,6 @@
                             Command="{x:Bind ViewModel.OpenSavingFolderCommand}"
                             Content="Get It" />
                     </mtui:HeaderedContentControl>
-                    <ToggleSwitch
-                        x:Uid="more_Personalized_LiveTitle"
-                        Header="LiveTitle"
-                        IsOn="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=TwoWay}" />
                 </StackPanel>
             </PivotItem>
             <PivotItem x:Uid="more_Thanks" Header="Thanks">

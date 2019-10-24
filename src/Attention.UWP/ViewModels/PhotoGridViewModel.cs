@@ -150,7 +150,7 @@ namespace Attention.UWP.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(async item =>
+                    _itemClickCommand = new RelayCommand<IType>(item =>
                     {
                         if (View.ContainerFromItem(item) is GridViewItem container)
                         {
@@ -159,13 +159,12 @@ namespace Attention.UWP.ViewModels
                             ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
                             animation.IsScaleAnimationEnabled = true;
                             animation.Configuration = new BasicConnectedAnimationConfiguration();
-                            var done = await ViewModelLocator.Current.Main.PhotoItemViewModel.TryStartAsync(Selected, animation);
+                            var done = ViewModelLocator.Current.Main.PhotoItemViewModel.TryStart(Selected, animation);
                             if (done)
                             {
                                 container.Opacity = 0.0d;
                             }
                         }
-                        await Task.CompletedTask;
                     });
                 }
                 return _itemClickCommand;

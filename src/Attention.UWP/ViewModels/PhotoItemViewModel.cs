@@ -105,13 +105,12 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        public async Task<bool> TryStartAsync(object selected, ConnectedAnimation animation)
+        public bool TryStart(object selected, ConnectedAnimation animation)
         {
             if (selected is ImageItem item)
             {
                 Item = item;
                 Visibility = Visibility.Visible;
-                await ImageCache.Instance.PreCacheAsync(new Uri(Item.LargeImageURL), false, App.Settings.LoadInMemory);
                 return animation.TryStart(_destinationElement);
             }
             else
