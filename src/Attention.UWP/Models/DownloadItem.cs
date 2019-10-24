@@ -6,6 +6,7 @@ namespace Attention.UWP.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        public string FileName { get; set; }
         public string ImageUrl { get; set; }
         public string Json { get; set; }
         public double Progress { get; set; }
