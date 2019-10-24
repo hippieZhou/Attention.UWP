@@ -119,8 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Behaviors\GridScalarAction.cs" />
-    <Compile Include="Behaviors\GridScaleBehavior.cs" />
+    <Compile Include="Behaviors\ElementScalarAction.cs" />
+    <Compile Include="Behaviors\ElementTiltBehavior.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ImageItemColorConverter.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
