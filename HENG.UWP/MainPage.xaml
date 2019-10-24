@@ -1,0 +1,57 @@
+﻿<Page
+    x:Class="HENG.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:ToolkitX.Controls"
+    xmlns:views="using:HENG.UWP.Views"
+    xmlns:vm="using:HENG.UWP.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid x:Name="GalleryUI">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="31" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{ThemeResource SystemControlAcrylicElementBrush}" />
+        <toolkit:Tab
+            Grid.Row="1"
+            Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+            HeadersPanelBackground="{ThemeResource SystemControlAcrylicElementBrush}"
+            HeadersPanelHorizontalAlignment="Left"
+            ItemsSource="{x:Bind ViewModel.NavItems, Mode=OneWay}"
+            UseLineSelectionVisual="True">
+            <toolkit:Tab.ItemTemplate>
+                <DataTemplate x:DataType="vm:NavItem">
+                    <toolkit:TabItem Header="{x:Bind Header}">
+                        <toolkit:TabItem.Content>
+                            <Grid>
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{x:Bind Color}" />
+                                </Grid.Background>
+                            </Grid>
+                        </toolkit:TabItem.Content>
+                    </toolkit:TabItem>
+                </DataTemplate>
+            </toolkit:Tab.ItemTemplate>
+            <toolkit:Tab.SubPane>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="&#xE71E;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                    <Button Content="&#xE118;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                    <Button Content="&#xE10C;" Style="{StaticResource IconOnlyWithoutBackgroundButton}" />
+                </StackPanel>
+            </toolkit:Tab.SubPane>
+        </toolkit:Tab>
+    </Grid>
+</Page>

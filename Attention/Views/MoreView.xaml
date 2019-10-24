@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="Attention.Views.MoreView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Attention.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:Attention.UserControls"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <Grid
+        animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
+        animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+        Background="{ThemeResource SystemControlAcrylicElementBrush}"
+        Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <uc:HeaderControl Header="{x:Bind ViewModel.Header, Mode=OneWay}" NavBackCommand="{x:Bind ViewModel.NavBackCommand, Mode=OneWay}" />
+        <Grid Grid.Row="1" Padding="12">
+            <ScrollViewer>
+                <Pivot HorizontalAlignment="Left">
+                    <Pivot.Resources>
+                        <Style TargetType="PivotItem">
+                            <Setter Property="Padding" Value="0,12" />
+                        </Style>
+                    </Pivot.Resources>
+
+                    <PivotItem x:Uid="more_filter">
+                        <uc:FilterControl ViewModel="{x:Bind ViewModel.FilterViewModel, Mode=OneWay}" />
+                    </PivotItem>
+                    <PivotItem x:Uid="more_personalized">
+                        <uc:SettingControl ViewModel="{x:Bind ViewModel.SettingViewMode, Mode=OneWay}" />
+                    </PivotItem>
+                    <PivotItem x:Uid="more_thanks">
+                        <uc:ThanksControl ViewModel="{x:Bind ViewModel.ThanksViewModel, Mode=OneWay}" />
+                    </PivotItem>
+                    <PivotItem x:Uid="more_about">
+                        <uc:AboutControl ViewModel="{x:Bind ViewModel.AboutViewModel, Mode=OneWay}" />
+                    </PivotItem>
+                </Pivot>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>
