@@ -2,6 +2,7 @@
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
@@ -103,7 +104,6 @@ namespace Attention.UWP.Models
             Orientation = PixabaySharp.Enums.Orientation.All,
             Category = PixabaySharp.Enums.Category.Backgrounds
         };
-
         public Filter Filter
         {
             get
@@ -118,6 +118,19 @@ namespace Attention.UWP.Models
             }
         }
 
+        public bool LoadInMemory
+        {
+            get
+            {
+                return ReadSettings(nameof(LoadInMemory), false);
+            }
+            set
+            {
+                SaveSettings(nameof(LoadInMemory), value);
+                RaisePropertyChanged(() => LoadInMemory);
+            }
+        }
+
         public AppSettings()
         {
             localSettings = ApplicationData.Current.LocalSettings;
@@ -128,6 +141,9 @@ namespace Attention.UWP.Models
                 var primary = ApplicationLanguages.Languages[0];
                 SaveSettings(nameof(Language), primary.StartsWith("zh") ? LANGUAGE_ZH : LANGUAGE_EN);
             }
+
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
+            ImageCache.Instance.MaxMemoryCacheCount = LoadInMemory ? 200 : 0;
         }
 
         public async Task<StorageFolder> GetSavingFolderAsync()
@@ -138,7 +154,7 @@ namespace Attention.UWP.Models
 
         public async Task<StorageFolder> GetTemporaryFolderAsync()
         {
-            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("AttentionTemp", CreationCollisionOption.OpenIfExists);
+            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("ImageCache", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 

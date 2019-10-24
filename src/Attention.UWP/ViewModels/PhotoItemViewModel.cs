@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Toolkit.Uwp.UI;
 using PixabaySharp.Models;
 using System;
 using System.Threading.Tasks;
@@ -104,12 +105,13 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        public bool TryStart(object selected, ConnectedAnimation animation)
+        public async Task<bool> TryStartAsync(object selected, ConnectedAnimation animation)
         {
             if (selected is ImageItem item)
             {
                 Item = item;
                 Visibility = Visibility.Visible;
+                await ImageCache.Instance.PreCacheAsync(new Uri(Item.LargeImageURL), false, App.Settings.LoadInMemory);
                 return animation.TryStart(_destinationElement);
             }
             else
