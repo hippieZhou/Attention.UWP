@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Behaviors\ElementScalarAction.cs" />
     <Compile Include="Behaviors\ElementTiltBehavior.cs" />
+    <Compile Include="Converters\BooleanToVisibilityValueConverter.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ImageItemColorConverter.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />

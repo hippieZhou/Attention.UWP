@@ -2,58 +2,88 @@
     x:Class="Attention.UWP.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP"
+    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Attention.UWP.UserControls"
     xmlns:v="using:Attention.UWP.Views"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
-    <Page.Transitions>
-        <TransitionCollection>
-            <NavigationThemeTransition>
-                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <DrillInNavigationTransitionInfo />
-                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
-            </NavigationThemeTransition>
-        </TransitionCollection>
-    </Page.Transitions>
 
-    <Grid>
-        <SplitView DisplayMode="Overlay" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
-            <SplitView.Pane>
-                <uc:PhotoFilterView
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Stretch"
-                    ViewModel="{x:Bind ViewModel.PhotoFilterViewModel, Mode=OneWay}" />
-            </SplitView.Pane>
-            <SplitView.Content>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <local:ExtendedTitleBar Grid.Row="0" />
-                    <v:MainView x:Name="mainView" Grid.Row="1">
-                        <i:Interaction.Behaviors>
-                            <ic:EventTriggerBehavior EventName="Loaded">
-                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=mainView}" />
-                            </ic:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </v:MainView>
-                    <v:LocalView Grid.Row="1" />
-                    <v:MoreView Grid.Row="1" />
-                </Grid>
-            </SplitView.Content>
-        </SplitView>
-        <mtui:InAppNotification
-            x:Name="InAppNotification"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            CornerRadius="4" />
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+        <Grid.BackgroundTransition>
+            <BrushTransition Duration="0:0:0.4" />
+        </Grid.BackgroundTransition>
+
+        <Rectangle x:Name="Gradient">
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation
+                    Delay="0:0:2"
+                    SetInitialValueBeforeDelay="True"
+                    From="0,0,0"
+                    To="-40,-120,0"
+                    Duration="0:0:0.6" />
+                <animations:OpacityAnimation
+                    Delay="0:0:2"
+                    SetInitialValueBeforeDelay="True"
+                    From="1"
+                    To="0"
+                    Duration="0:0:0.6" />
+            </animations:Implicit.HideAnimations>
+        </Rectangle>
+
+        <Grid x:Name="MainGrid">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    Delay="0:0:2.2"
+                    SetInitialValueBeforeDelay="True"
+                    From="0,40,0"
+                    To="0,0,0"
+                    Duration="0:0:0.6" />
+                <animations:OpacityAnimation
+                    Delay="0:0:2.2"
+                    SetInitialValueBeforeDelay="True"
+                    From="0"
+                    To="1"
+                    Duration="0:0:0.6" />
+            </animations:Implicit.ShowAnimations>
+            <SplitView DisplayMode="Overlay" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
+                <SplitView.Pane>
+                    <uc:PhotoFilterView
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        ViewModel="{x:Bind ViewModel.PhotoFilterViewModel, Mode=OneWay}" />
+                </SplitView.Pane>
+                <SplitView.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <local:ExtendedTitleBar Grid.Row="0" />
+                        <v:MainView x:Name="mainView" Grid.Row="1">
+                            <i:Interaction.Behaviors>
+                                <ic:EventTriggerBehavior EventName="Loaded">
+                                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=mainView}" />
+                                </ic:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                        </v:MainView>
+                        <v:LocalView Grid.Row="1" />
+                        <v:MoreView Grid.Row="1" />
+                    </Grid>
+                </SplitView.Content>
+            </SplitView>
+            <mtui:InAppNotification
+                x:Name="InAppNotification"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                CornerRadius="4" />
+        </Grid>
     </Grid>
 </Page>

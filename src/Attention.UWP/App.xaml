@@ -15,6 +15,7 @@
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
             <converter:ImageItemColorConverter x:Key="ImageItemColorConverter" />
             <converter:ImageSourceNullValueConverter x:Key="ImageSourceNullValueConverter" />
+            <converter:BooleanToVisibilityValueConverter x:Key="BooleanToVisibilityValueConverter" />
 
             <animations:AnimationCollection x:Key="DefaultShowAnimations">
                 <animations:TranslationAnimation

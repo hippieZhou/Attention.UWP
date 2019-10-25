@@ -105,10 +105,25 @@
                         HorizontalContentAlignment="Stretch"
                         Header="LiveTitle">
                         <ToggleButton
-                            Height="32" 
+                            Height="32"
                             Margin="0,4"
                             HorizontalAlignment="Stretch"
-                            IsChecked="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=TwoWay}" />
+                            IsChecked="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=TwoWay}">
+                            <Grid>
+                                <TextBlock
+                                    x:Uid="more_Personalized_LiveTitle_On"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="On"
+                                    Visibility="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=OneWay, Converter={StaticResource BooleanToVisibilityValueConverter}, ConverterParameter=true}" />
+                                <TextBlock
+                                    x:Uid="more_Personalized_LiveTitle_Off"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="Off"
+                                    Visibility="{Binding Source={StaticResource AppSettings}, Path=LiveTitle, Mode=OneWay, Converter={StaticResource BooleanToVisibilityValueConverter}, ConverterParameter=false}" />
+                            </Grid>
+                        </ToggleButton>
                     </mtui:HeaderedContentControl>
                     <mtui:HeaderedContentControl
                         x:Uid="more_Personalized_Download"
