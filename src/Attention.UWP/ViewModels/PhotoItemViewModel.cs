@@ -1,10 +1,15 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Attention.UWP.Extensions;
+using Attention.UWP.Helpers;
+using Attention.UWP.Models;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Uwp.UI;
 using PixabaySharp.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
@@ -73,21 +78,7 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        private ICommand _infoCommand;
-        public ICommand InfoCommand
-        {
-            get
-            {
-                if (_infoCommand == null)
-                {
-                    _infoCommand = new RelayCommand(async () =>
-                    {
-                        await Launcher.LaunchUriAsync(new Uri(Item.PageURL));
-                    });
-                }
-                return _infoCommand;
-            }
-        }
+
 
         private ICommand _downloadCommand;
         public ICommand DownloadCommand
@@ -102,6 +93,38 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _downloadCommand;
+            }
+        }
+
+        private ICommand _shareCommand;
+        public ICommand ShareCommand
+        {
+            get
+            {
+                if (_shareCommand == null)
+                {
+                    _shareCommand = new RelayCommand(() =>
+                    {
+                        ShareHelper.ShareData(Item);
+                    });
+                }
+                return _shareCommand;
+            }
+        }
+
+        private ICommand _browseCommand;
+        public ICommand BrowseCommand
+        {
+            get
+            {
+                if (_browseCommand == null)
+                {
+                    _browseCommand = new RelayCommand(async () =>
+                    {
+                        await Launcher.LaunchUriAsync(new Uri(Item.PageURL));
+                    });
+                }
+                return _browseCommand;
             }
         }
 

@@ -13,6 +13,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -45,11 +48,16 @@ namespace Attention.UWP.ViewModels
             {
                 if (enabled)
                 {
-                    var result = await service.QueryImagesAsync(1, 5, App.Settings.Filter);
-                    if (result != null)
+                    AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
+                    bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
+                    if (isPinned)
                     {
-                        var items = result.Images.Select(p => p.ImageURL);
-                        LiveTileHelper.UpdateLiveTile(items);
+                        var result = await service.QueryImagesAsync(1, 5, App.Settings.Filter);
+                        if (result != null)
+                        {
+                            var items = result.Images.Select(p => p.PreviewURL);
+                            LiveTileHelper.UpdateLiveTile(items);
+                        }
                     }
                 }
                 else

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value />
+    <value>BBBBBB</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>Attention.UWP</value>
@@ -192,6 +192,15 @@
   <data name="more_Thanks.Header" xml:space="preserve">
     <value>感谢</value>
   </data>
+  <data name="photoItemView_Browse.Text" xml:space="preserve">
+    <value>片源查看</value>
+  </data>
+  <data name="photoItemView_Download.Text" xml:space="preserve">
+    <value>免费下载</value>
+  </data>
+  <data name="photoItemView_Share.Text" xml:space="preserve">
+    <value>快速分享</value>
+  </data>
   <data name="photo_Category.Content" xml:space="preserve">
     <value>风格</value>
   </data>
@@ -202,7 +211,7 @@
     <value>类型</value>
   </data>
   <data name="photo_Orders.Content" xml:space="preserve">
-    <value>排序方式</value>
+    <value>排序</value>
   </data>
   <data name="photo_Orientation.Content" xml:space="preserve">
     <value>方向</value>

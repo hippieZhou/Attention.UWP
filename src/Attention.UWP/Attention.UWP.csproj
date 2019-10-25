@@ -130,12 +130,14 @@
     </Compile>
     <Compile Include="Extensions\AnimationExtension.cs" />
     <Compile Include="Extensions\ByteArrayBitmapExtension.cs" />
-    <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
+    <Compile Include="Extensions\DataRequestExtensions.cs" />
     <Compile Include="Extensions\ResourceExtension.cs" />
-    <Compile Include="Extensions\SettingsStorageExtension.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\LiveTileHelper.cs" />
+    <Compile Include="Helpers\ShareHelper.cs" />
     <Compile Include="Models\AppSettings.cs" />
+    <Compile Include="Models\ShareSourceData.cs" />
+    <Compile Include="Models\ShareSourceItem.cs" />
     <Compile Include="Services\DAL.cs" />
     <Compile Include="Models\DownloadItem.cs" />
     <Compile Include="Models\Filter.cs" />

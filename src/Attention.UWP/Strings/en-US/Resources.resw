@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value />
+    <value>AAAAA</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>Attention.UWP</value>
@@ -191,6 +191,15 @@
   </data>
   <data name="more_Thanks.Header" xml:space="preserve">
     <value>Thanks</value>
+  </data>
+  <data name="photoItemView_Browse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="photoItemView_Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="photoItemView_Share.Text" xml:space="preserve">
+    <value>Share</value>
   </data>
   <data name="photo_Category.Content" xml:space="preserve">
     <value>Category</value>
