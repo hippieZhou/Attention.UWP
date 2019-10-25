@@ -36,6 +36,7 @@
             x:Name="destinationElement"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Background="{ThemeResource SystemControlAcrylicElementBrush}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
@@ -50,9 +51,6 @@
             </i:Interaction.Behaviors>
             <mtui:ImageEx
                 x:Name="imageEx"
-                Width="{Binding ElementName=destinationElement, Path=Width}"
-                Height="{Binding ElementName=destinationElement, Path=Height}"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}"
                 CacheMode="BitmapCache"
                 IsCacheEnabled="True"
                 Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/Image.png}"
