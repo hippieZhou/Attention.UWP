@@ -60,6 +60,7 @@ namespace Attention.UWP.Services
             catch (Exception ex)
             {
                 _logger.Error("QueryImagesAsync:", ex);
+                return default(ImageResult);
             }
         }
 
