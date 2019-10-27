@@ -1,15 +1,37 @@
-﻿using SQLite;
+﻿using System.Threading.Tasks;
+using Attention.UWP.Models.Core;
+using Attention.UWP.Services;
+using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
+using PixabaySharp.Models;
 
 namespace Attention.UWP.Models
 {
-    public class DownloadItem
+    public enum DownloadItemResult
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        public string FileName { get; set; }
-        public string ImageUrl { get; set; }
-        public string Json { get; set; }
-        public double Progress { get; set; }
-        public byte[] Thumbnail { get; set; }
+        Started,
+        Error,
+        AllreadyDownloaded,
+    }
+
+    public class DownloadItem : ObservableObject
+    {
+        public Download Entity { get; private set; }
+        public DownloadItem(ImageItem item)
+        {
+            Entity = new Download()
+            {
+                FileName = $"{item.IdHash}.png",
+                Json = JsonConvert.SerializeObject(item),
+                ImageUrl = item.FullHDImageURL ?? item.LargeImageURL,
+                Progress = 0.0
+            };
+        }
+
+        public async Task<DownloadItemResult> StartAsync()
+        {
+            var item = await DAL.GetByIdAsync(Entity.Id);
+            return DownloadItemResult.Started;
+        }
     }
 }

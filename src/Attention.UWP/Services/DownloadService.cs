@@ -1,8 +1,5 @@
 ﻿using Attention.UWP.Models;
-using System;
 using System.Threading.Tasks;
-using Windows.Networking.BackgroundTransfer;
-using Windows.Storage;
 
 namespace Attention.UWP.Services
 {
@@ -11,8 +8,11 @@ namespace Attention.UWP.Services
     /// https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples/BackgroundTransfer
     /// https://github.com/jQuery2DotNet/UWP-Samples
     /// </summary>
-    public static class DownloadService
+    public class DownloadService
     {
-
+        public async Task Download(DownloadItem download)
+        {
+            await Task.CompletedTask;
+        }
     }
 }

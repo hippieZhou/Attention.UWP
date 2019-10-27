@@ -1,15 +1,10 @@
-﻿using Attention.UWP.Extensions;
-using Attention.UWP.Helpers;
+﻿using Attention.UWP.Helpers;
 using Attention.UWP.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Toolkit.Uwp.UI;
 using PixabaySharp.Models;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
@@ -78,8 +73,6 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-
-
         private ICommand _downloadCommand;
         public ICommand DownloadCommand
         {
@@ -89,7 +82,8 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        await Task.CompletedTask;
+                        var download = new DownloadItem(Item);
+                        await download.StartAsync();
                     });
                 }
                 return _downloadCommand;

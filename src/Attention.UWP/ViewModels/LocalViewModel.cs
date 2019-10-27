@@ -1,7 +1,7 @@
 ﻿using Attention.UWP.Models;
-using Attention.UWP.Services;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Attention.UWP.ViewModels
@@ -25,12 +25,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand(async () =>
                     {
-                        var items = await DAL.GetAllDownloadsAsync();
-                        Items.Clear();
-                        foreach (var item in items)
-                        {
-                            Items.Add(item);
-                        }
+                        await Task.CompletedTask;
                     });
                 }
                 return _loadedCommand;

@@ -9,10 +9,10 @@ namespace Attention.UWP.ViewModels
         public PhotoGridViewModel PhotoGridViewModel { get; }
         public PhotoItemViewModel PhotoItemViewModel { get; }
 
-        public MainViewModel(PixabayService service)
+        public MainViewModel(PixabayService pixabay)
         {
             PhotoGridHeaderViewModel = new PhotoGridHeaderViewModel();
-            PhotoGridViewModel = new PhotoGridViewModel(service);
+            PhotoGridViewModel = new PhotoGridViewModel(pixabay);
             PhotoItemViewModel = new PhotoItemViewModel();
         }
     }

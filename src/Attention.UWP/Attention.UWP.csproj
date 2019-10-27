@@ -136,6 +136,8 @@
     <Compile Include="Helpers\LiveTileHelper.cs" />
     <Compile Include="Helpers\ShareHelper.cs" />
     <Compile Include="Models\AppSettings.cs" />
+    <Compile Include="Models\Core\Download.cs" />
+    <Compile Include="Models\Core\Entity.cs" />
     <Compile Include="Models\ShareSourceData.cs" />
     <Compile Include="Models\ShareSourceItem.cs" />
     <Compile Include="Services\DAL.cs" />

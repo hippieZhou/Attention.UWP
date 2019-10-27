@@ -1,4 +1,4 @@
-﻿using Attention.UWP.Models;
+﻿using Attention.UWP.Models.Core;
 using SQLite;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,31 +49,38 @@ namespace Attention.UWP.Services
                 db.Tracer = str => Debug.WriteLine(str);
 
                 // Create the table if it does not exist
-                var c = db.CreateTable<DownloadItem>();
-                var info = db.GetMapping(typeof(DownloadItem));
+                var c = db.CreateTable<Download>();
+                var info = db.GetMapping(typeof(Download));
             }
         }
 
-        public static async Task DeleteDownloadAsync(DownloadItem download)
-        {
-            await AsyncDbConnection.ExecuteAsync($"DELETE FROM {nameof(DownloadItem)} WHERE Id = ?", download.Id);
-        }
+        public static async Task<int> DeleteAsync(Download item) => await DeleteAsync<Download>(item);
 
-        public static async Task<IEnumerable<DownloadItem>> GetAllDownloadsAsync()
-        {
-            return await AsyncDbConnection.Table<DownloadItem>().ToListAsync();
-        }
+        public static async Task<IEnumerable<Download>> GetAllAsync() => await GetAllAsync<Download>();
 
-        public static async Task<DownloadItem> GetDownloadByIdAsync(int Id)
-        {
-            return await AsyncDbConnection.Table<DownloadItem>().FirstOrDefaultAsync(p => p.Id == Id);
-        }
+        public static async Task<Download> GetByIdAsync(int Id) => await GetByIdAsync<Download>(Id);
 
-        public static async Task<int> SaveDownloadAsync(DownloadItem download)
+        public static async Task<int> SaveOrUpdateAsync(Download item) => await SaveOrUpdateAsync<Download>(item);
+
+        #region Inner Methods
+        private static async Task<int> SaveOrUpdateAsync<T>(T item) where T : Entity
         {
-            return download.Id == 0 ?
-                await AsyncDbConnection.InsertAsync(download) :
-                await AsyncDbConnection.UpdateAsync(download);
+            return item.Id == 0 ?
+                await AsyncDbConnection.InsertAsync(item) :
+                await AsyncDbConnection.UpdateAsync(item);
         }
+        private static async Task<int> DeleteAsync<T>(T item) where T : Entity
+        {
+            return await AsyncDbConnection.ExecuteAsync($"DELETE FROM {nameof(T)} WHERE Id = ?", item.Id);
+        }
+        private static async Task<T> GetByIdAsync<T>(int Id) where T : Entity, new()
+        {
+            return await AsyncDbConnection.Table<T>().FirstOrDefaultAsync(p => p.Id == Id);
+        }
+        private static async Task<IEnumerable<T>> GetAllAsync<T>() where T : Entity, new()
+        {
+            return await AsyncDbConnection.Table<T>().ToListAsync();
+        }
+        #endregion
     }
 }
