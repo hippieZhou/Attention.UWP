@@ -25,8 +25,13 @@ namespace Attention.UWP.Helpers
                 };
 
                 ShareSourceData config = new ShareSourceData($"{App.Settings.Name}", "AppDescription".GetLocalized());
-                config.SetWebLink(new Uri(item.FullHDImageURL ?? item.ImageURL));
-                config.SetText($"User:{item.User};Type:{item.Type};Tags:{item.Tags}");
+                config.SetWebLink(new Uri(item.FullHDImageURL ?? item.LargeImageURL));
+                config.SetText($@"
+User:{item.User};
+Type:{item.Type};
+Tags:{item.Tags};
+ImageURL:{item.FullHDImageURL ?? item.LargeImageURL}");
+
                 config.SetDeferredContent(StandardDataFormats.Bitmap, async () =>
                 {
                     var cacheImage = await ImageCache.Instance.GetFileFromCacheAsync(new Uri(item.LargeImageURL));

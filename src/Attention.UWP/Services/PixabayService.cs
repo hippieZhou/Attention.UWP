@@ -1,8 +1,10 @@
 ﻿using Attention.UWP.Models;
+using MetroLog;
 using PixabaySharp;
 using PixabaySharp.Enums;
 using PixabaySharp.Models;
 using PixabaySharp.Utility;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +15,8 @@ namespace Attention.UWP.Services
     /// </summary>
     public class PixabayService
     {
+        private readonly ILogger _logger;
+
         private readonly PixabaySharpClient _client;
         private Filter _cacheFilter = new Filter()
         {
@@ -25,18 +29,20 @@ namespace Attention.UWP.Services
 
         public PixabayService(string api_key)
         {
+            _logger = ViewModels.ViewModelLocator.Current.LogManager.GetLogger<PixabayService>();
+
             if (string.IsNullOrWhiteSpace(api_key))
-                throw new KeyNotFoundException();
+            {
+                var ex = new KeyNotFoundException();
+                _logger.Error("The API-KEY is missing", ex);
+                throw ex;
+            }
 
             _client = new PixabaySharpClient(api_key);
         }
 
-        public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20, Filter filter = default)
+        private async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20)
         {
-            if (filter != null)
-            {
-                _cacheFilter = filter;
-            }
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
                 Page = page,
@@ -47,7 +53,21 @@ namespace Attention.UWP.Services
                 Category = _cacheFilter.Category,
                 Query = _cacheFilter.Query
             };
-            return await _client.QueryImagesAsync(qb);
+            try
+            {
+                return await _client.QueryImagesAsync(qb);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("QueryImagesAsync:", ex);
+            }
+        }
+
+        public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20, Filter filter = default)
+        {
+            if (filter != null)
+                _cacheFilter = filter;
+            return await QueryImagesAsync(page, per_page);
         }
     }
 }

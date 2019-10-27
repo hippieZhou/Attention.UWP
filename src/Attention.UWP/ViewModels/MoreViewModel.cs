@@ -2,9 +2,15 @@
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Extensions;
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Email;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Xaml;
 
@@ -89,10 +95,23 @@ namespace Attention.UWP.ViewModels
                     {
                         if (args.IsEmail())
                         {
+                            //https://talkitbr.com/2015/06/11/adicionando-logs-em-universal-apps/
+                            Stream compressedLogsStream = await ViewModelLocator.Current.LogManager.GetCompressedLogs();
+                            FileInfo fileInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs_" + DateTime.UtcNow.ToString("yyyyMMdd_hhmmss") + ".zip"));
+
+                            Debug.WriteLine("My compressed logs file will be located at: " + fileInfo.FullName);
+
+                            using (FileStream fileStream = fileInfo.Create())
+                            {
+                                await compressedLogsStream.CopyToAsync(fileStream);
+                            }
+
+                            var logFile = await StorageFile.GetFileFromPathAsync(fileInfo.FullName);
                             EmailMessage email = new EmailMessage();
                             email.To.Add(new EmailRecipient(args));
-                            email.Subject = "FeedBack For Attention";
-                            email.Body = "Hello world";
+                            email.Subject = $"FeedBack For {App.Settings.Name}";
+                            email.Body = $"version:{App.Settings.Version}";
+                            email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
                             await EmailManager.ShowComposeNewEmailAsync(email);
                         }
                         else if (Regex.IsMatch(args, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$"))

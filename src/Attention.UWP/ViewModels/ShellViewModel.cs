@@ -1,6 +1,7 @@
 ﻿using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MetroLog;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 
@@ -8,6 +9,8 @@ namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
+        private readonly ILogger _logger;
+
         public PhotoFilterViewModel PhotoFilterViewModel { get; } = new PhotoFilterViewModel();
         /// <summary>
         /// https://www.cnblogs.com/shaomeng/p/8678641.html
@@ -23,6 +26,11 @@ namespace Attention.UWP.ViewModels
             set { Set(ref _isPaneOpen, value); }
         }
 
+        public ShellViewModel(ILogManager logManager)
+        {
+            _logger = logManager.GetLogger<ShellViewModel>();
+        }
+
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -33,6 +41,7 @@ namespace Attention.UWP.ViewModels
                     _loadedCommand = new RelayCommand<FrameworkElement>(uiElement =>
                     {
                         UiElement = uiElement;
+                        _logger.Info(App.Settings.AppSummary);
                     });
                 }
                 return _loadedCommand;

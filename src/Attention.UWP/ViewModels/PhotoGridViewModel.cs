@@ -34,15 +34,18 @@ namespace Attention.UWP.ViewModels
                      NotFoundVisibility = Visibility.Collapsed;
                  }, () =>
                  {
-                     NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                      LoadingVisibility = Visibility.Collapsed;
                      ErrorVisibility = Visibility.Collapsed;
                  }, ex =>
                  {
                      ErrorVisibility = Visibility.Visible;
-                     LoadingVisibility = Visibility.Collapsed;
                      NotFoundVisibility = Visibility.Collapsed;
+                     LoadingVisibility = Visibility.Collapsed;
                  });
+            Items.CollectionChanged += (sender, e) =>
+            {
+                NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            };
 
             Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
             {

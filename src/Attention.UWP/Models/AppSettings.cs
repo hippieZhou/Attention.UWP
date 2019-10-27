@@ -2,10 +2,12 @@
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -83,7 +85,7 @@ namespace Attention.UWP.Models
             }
         }
 
-        private const bool LIVETITLE_DEFAULT = true;
+        private const bool LIVETITLE_DEFAULT = false;
         public bool LiveTitle
         {
             get { return ReadSettings(nameof(LiveTitle), LIVETITLE_DEFAULT); }
@@ -131,6 +133,41 @@ namespace Attention.UWP.Models
             }
         }
 
+        public string AppSummary
+        {
+            get
+            {
+                var first = SystemInformation.IsFirstRun;
+                string info = string.Empty;
+                if (first)
+                {
+                    info = $@"
+ApplicationName:{SystemInformation.ApplicationName};
+ApplicationVersion:{Version};
+Culture:{SystemInformation.Culture};
+OperatingSystem:{SystemInformation.OperatingSystem};
+OperatingSystemArchitecture:{SystemInformation.OperatingSystemArchitecture};
+OperatingSystemVersion:{SystemInformation.OperatingSystemVersion};
+DeviceFamily:{SystemInformation.DeviceFamily};
+DeviceModel:{SystemInformation.DeviceModel};
+DeviceManufacturer:{SystemInformation.DeviceManufacturer};
+AvailableMemory:{SystemInformation.AvailableMemory};
+FirstVersionInstalled:{ SystemInformation.FirstVersionInstalled};
+FirstUseTime:{SystemInformation.FirstUseTime};";
+                }
+                info += $@"
+IsAppUpdated:{ SystemInformation.IsAppUpdated};
+LaunchTime:{SystemInformation.LaunchTime}
+LastLaunchTime:{SystemInformation.LastLaunchTime};
+LastResetTime:{SystemInformation.LastResetTime};
+LaunchCount:{SystemInformation.LaunchCount};
+TotalLaunchCount:{SystemInformation.TotalLaunchCount};
+AppUptime:{SystemInformation.AppUptime};";
+
+                return info;
+            }
+        }
+
         public AppSettings()
         {
             localSettings = ApplicationData.Current.LocalSettings;
@@ -148,13 +185,19 @@ namespace Attention.UWP.Models
 
         public async Task<StorageFolder> GetSavingFolderAsync()
         {
-            var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
+            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 
         public async Task<StorageFolder> GetTemporaryFolderAsync()
         {
-            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("ImageCache", CreationCollisionOption.OpenIfExists);
+            StorageFolder folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("ImageCache", CreationCollisionOption.OpenIfExists);
+            return folder;
+        }
+
+        public async Task<StorageFolder> GetLogFolderAsync()
+        {
+            StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 
