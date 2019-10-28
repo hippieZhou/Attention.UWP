@@ -25,7 +25,6 @@
                 Amount="8"
                 FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
-
         <i:Interaction.Behaviors>
             <ic:EventTriggerBehavior EventName="Tapped">
                 <ic:InvokeCommandAction Command="{x:Bind ViewModel.BackCommand, Mode=OneWay}" />

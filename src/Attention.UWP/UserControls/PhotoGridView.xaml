@@ -184,29 +184,29 @@
                     <ic:EventTriggerBehavior EventName="PointerEntered">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                        <be:ElementScalarAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
+                        <be:ElementScaleAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                        <be:ElementScalarAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                        <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
 
                     <!--  单指相关操作  -->
                     <ic:EventTriggerBehavior EventName="PointerPressed">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridUp}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                        <be:ElementScalarAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
+                        <be:ElementScaleAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerReleased">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                        <be:ElementScalarAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                        <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerCanceled">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeGridDowm}" />
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                        <be:ElementScalarAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                        <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
             </Grid>
@@ -316,22 +316,6 @@
                 Content="RETRY"
                 FontSize="20" />
         </StackPanel>
-
-        <Button
-            x:Name="refreshBtn"
-            Margin="0,0,24,24"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Canvas.ZIndex="99"
-            Style="{StaticResource RefreshButtonStyle}">
-            <Button.Shadow>
-                <ThemeShadow />
-            </Button.Shadow>
-            <FontIcon
-                FontFamily="Segoe MDL2 Assets"
-                FontSize="14"
-                Glyph="&#xE117;" />
-        </Button>
 
         <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>

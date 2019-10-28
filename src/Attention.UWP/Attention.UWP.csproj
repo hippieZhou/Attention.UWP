@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Behaviors\ElementScalarAction.cs" />
+    <Compile Include="Behaviors\ElementScaleAction.cs" />
     <Compile Include="Behaviors\ElementTiltBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityValueConverter.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />

@@ -1,23 +1,18 @@
-﻿using Attention.UWP.Services;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MetroLog;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
         private readonly ILogger _logger;
+        public FrameworkElement UiElement { get; private set; }
 
         public PhotoFilterViewModel PhotoFilterViewModel { get; } = new PhotoFilterViewModel();
-        /// <summary>
-        /// https://www.cnblogs.com/shaomeng/p/8678641.html
-        /// https://github.com/r2d2rigo/WinCompositionTiltEffect
-        /// https://docs.microsoft.com/en-us/windows/communitytoolkit/animations/scale
-        /// </summary>
-        public FrameworkElement UiElement { get; private set; }
 
         private bool _isPaneOpen = false;
         public bool IsPaneOpen
@@ -31,6 +26,8 @@ namespace Attention.UWP.ViewModels
             _logger = logManager.GetLogger<ShellViewModel>();
         }
 
+        public void Initialize(FrameworkElement uiElement) => UiElement = uiElement;
+
         private ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -38,9 +35,8 @@ namespace Attention.UWP.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand<FrameworkElement>(uiElement =>
+                    _loadedCommand = new RelayCommand<RoutedEventArgs>(args =>
                     {
-                        UiElement = uiElement;
                         _logger.Info(App.Settings.AppSummary);
                     });
                 }

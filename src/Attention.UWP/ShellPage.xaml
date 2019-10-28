@@ -14,44 +14,18 @@
     xmlns:uc="using:Attention.UWP.UserControls"
     xmlns:v="using:Attention.UWP.Views"
     mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.BackgroundTransition>
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
 
-        <Rectangle x:Name="Gradient">
-            <animations:Implicit.HideAnimations>
-                <animations:TranslationAnimation
-                    Delay="0:0:2"
-                    SetInitialValueBeforeDelay="True"
-                    From="0,0,0"
-                    To="-40,-120,0"
-                    Duration="0:0:0.6" />
-                <animations:OpacityAnimation
-                    Delay="0:0:2"
-                    SetInitialValueBeforeDelay="True"
-                    From="1"
-                    To="0"
-                    Duration="0:0:0.6" />
-            </animations:Implicit.HideAnimations>
-        </Rectangle>
-
-        <Grid x:Name="MainGrid">
-            <animations:Implicit.ShowAnimations>
-                <animations:TranslationAnimation
-                    Delay="0:0:2.2"
-                    SetInitialValueBeforeDelay="True"
-                    From="0,40,0"
-                    To="0,0,0"
-                    Duration="0:0:0.6" />
-                <animations:OpacityAnimation
-                    Delay="0:0:2.2"
-                    SetInitialValueBeforeDelay="True"
-                    From="0"
-                    To="1"
-                    Duration="0:0:0.6" />
-            </animations:Implicit.ShowAnimations>
+        <Grid>
             <SplitView DisplayMode="Overlay" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
                 <SplitView.Pane>
                     <uc:PhotoFilterView
@@ -68,13 +42,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <local:ExtendedTitleBar Grid.Row="0" />
-                        <v:MainView x:Name="mainView" Grid.Row="1">
-                            <i:Interaction.Behaviors>
-                                <ic:EventTriggerBehavior EventName="Loaded">
-                                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=mainView}" />
-                                </ic:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
-                        </v:MainView>
+                        <v:MainView x:Name="mainView" Grid.Row="1" />
                         <v:LocalView Grid.Row="1" />
                         <v:MoreView Grid.Row="1" />
                     </Grid>

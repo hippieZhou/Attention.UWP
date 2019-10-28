@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Attention.UWP.Behaviors
 {
-    public class ElementScalarAction : DependencyObject, IAction
+    public class ElementScaleAction : DependencyObject, IAction
     {
         public object Execute(object sender, object parameter)
         {
@@ -44,7 +44,7 @@ namespace Attention.UWP.Behaviors
 
         // Using a DependencyProperty as the backing store for Enable.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EnableProperty =
-            DependencyProperty.Register("Enable", typeof(bool), typeof(ElementScalarAction), new PropertyMetadata(false));
+            DependencyProperty.Register("Enable", typeof(bool), typeof(ElementScaleAction), new PropertyMetadata(false));
 
         public FrameworkElement TargetObject
         {
@@ -54,6 +54,6 @@ namespace Attention.UWP.Behaviors
 
         // Using a DependencyProperty as the backing store for TargetObject.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TargetObjectProperty =
-            DependencyProperty.Register("TargetObject", typeof(FrameworkElement), typeof(ElementScalarAction), new PropertyMetadata(null));
+            DependencyProperty.Register("TargetObject", typeof(FrameworkElement), typeof(ElementScaleAction), new PropertyMetadata(null));
     }
 }

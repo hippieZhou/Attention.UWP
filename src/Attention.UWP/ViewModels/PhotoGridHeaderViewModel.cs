@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Attention.UWP.Extensions;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -77,15 +78,7 @@ namespace Attention.UWP.ViewModels
 
         private void BackToView(BaseViewModel uiElement)
         {
-            ViewModelLocator.Current.Shell.IsPaneOpen = false;
-            
-            SpringVector3NaturalMotionAnimation springAnimation = Window.Current.Compositor.CreateSpringVector3Animation();
-            springAnimation.Target = "Scale";
-            springAnimation.FinalValue = new Vector3(0.8f);
-            FrameworkElement root = ViewModelLocator.Current.Shell.UiElement;
-            ViewModelLocator.Current.Shell.UiElement.CenterPoint = new Vector3((float)(root.ActualSize.X / 2.0), (float)(root.ActualSize.Y / 2.0), 1.0f);
-            root.StartAnimation(springAnimation);
-
+            ViewModelLocator.Current.Shell.UiElement.PlayScaleSpringAnimation(true);
             uiElement.Visibility = Visibility.Visible;
         }
     }

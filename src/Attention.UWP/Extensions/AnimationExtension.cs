@@ -31,5 +31,14 @@ namespace Attention.UWP.Extensions
             imgVisual.StartAnimation("Scale.X", scaleAnimation);
             imgVisual.StartAnimation("Scale.Y", scaleAnimation);
         }
+
+        public static void PlayScaleSpringAnimation(this FrameworkElement element, bool back = false)
+        {
+            SpringVector3NaturalMotionAnimation springAnimation = Window.Current.Compositor.CreateSpringVector3Animation();
+            springAnimation.Target = "Scale";
+            springAnimation.FinalValue = back ? new Vector3(0.8f) : new Vector3(1.0f);
+            element.CenterPoint = new Vector3((float)(element.ActualSize.X / 2.0), (float)(element.ActualSize.Y / 2.0), 1.0f);
+            element.StartAnimation(springAnimation);
+        }
     }
 }
