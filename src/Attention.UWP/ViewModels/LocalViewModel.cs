@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows.Input;
 using Windows.System;
 using System;
-using Windows.Storage;
 
 namespace Attention.UWP.ViewModels
 {

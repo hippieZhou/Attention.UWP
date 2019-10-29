@@ -1,18 +1,14 @@
-﻿using Attention.UWP.Services;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using Microsoft.Toolkit.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Email;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
-using Windows.UI.Xaml;
 
 namespace Attention.UWP.ViewModels
 {

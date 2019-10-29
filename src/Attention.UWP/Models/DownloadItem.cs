@@ -50,7 +50,7 @@ namespace Attention.UWP.Models
             _entity = new Download()
             {
                 Json = JsonConvert.SerializeObject(item),
-                ImageUrl = string.IsNullOrWhiteSpace(item.FullHDImageURL) ? item.LargeImageURL : item.FullHDImageURL,
+                ImageUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL,
             };
         }
 
