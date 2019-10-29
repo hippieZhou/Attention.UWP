@@ -1,4 +1,5 @@
 ﻿using Attention.UWP.Models;
+using GalaSoft.MvvmLight.Threading;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;

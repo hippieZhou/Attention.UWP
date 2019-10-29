@@ -201,19 +201,28 @@
   <data name="photoItemView_Share.Text" xml:space="preserve">
     <value>快速分享</value>
   </data>
-  <data name="photo_Category.Content" xml:space="preserve">
+  <data name="search_Category.Header" xml:space="preserve">
     <value>风格</value>
   </data>
-  <data name="photo_Find.Header" xml:space="preserve">
+  <data name="search_Dialog.PrimaryButtonText" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="search_Dialog.SecondaryButtonText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="search_Dialog.Title" xml:space="preserve">
     <value>查找</value>
   </data>
-  <data name="photo_ImageType.Content" xml:space="preserve">
+  <data name="search_ImageType.Header" xml:space="preserve">
     <value>类型</value>
   </data>
-  <data name="photo_Orders.Content" xml:space="preserve">
+  <data name="search_Keywords.Header" xml:space="preserve">
+    <value>关键字</value>
+  </data>
+  <data name="search_Orders.Header" xml:space="preserve">
     <value>排序</value>
   </data>
-  <data name="photo_Orientation.Content" xml:space="preserve">
+  <data name="search_Orientation.Header" xml:space="preserve">
     <value>方向</value>
   </data>
 </root>

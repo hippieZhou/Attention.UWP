@@ -82,7 +82,8 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        var download = new DownloadItem(Item);
+                        var folder = await App.Settings.GetSavingFolderAsync();
+                        var download = new DownloadItem(Item, folder);
                         await download.StartAsync();
                     });
                 }

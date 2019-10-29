@@ -12,7 +12,7 @@ namespace Attention.UWP
         {
             this.InitializeComponent();
             ViewModel.Initialize(mainView);
-            this.DataContext = ViewModel;
+            DataContext = ViewModel;
             Messenger.Default.Register<string>(this, nameof(InAppNotification), str =>
             {
                 InAppNotification.Show(str, 2000);

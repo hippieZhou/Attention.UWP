@@ -5,14 +5,12 @@ using PixabaySharp.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml.Controls;
 using Orientation = PixabaySharp.Enums.Orientation;
 
 namespace Attention.UWP.ViewModels
 {
-    public class PhotoFilterViewModel : ViewModelBase
+    public class SearchViewModel : ViewModelBase
     {
         public IEnumerable<Order> Orders => Enum.GetValues(typeof(Order)).Cast<Order>();
         public IEnumerable<Orientation> Orientations => Enum.GetValues(typeof(Orientation)).Cast<Orientation>();
@@ -21,7 +19,7 @@ namespace Attention.UWP.ViewModels
 
         public Filter Filter { get; private set; }
 
-        public PhotoFilterViewModel()
+        public SearchViewModel()
         {
             Filter = App.Settings.Filter;
         }
@@ -35,50 +33,43 @@ namespace Attention.UWP.ViewModels
                 {
                     _backCommand = new RelayCommand(() =>
                     {
-                        ViewModelLocator.Current.Shell.IsPaneOpen = false;
                     });
                 }
                 return _backCommand;
             }
         }
 
-        private ICommand _searchCommand;
-        public ICommand SearchCommand
+        private ICommand _primaryButtonCommand;
+        public ICommand PrimaryButtonCommand
         {
             get
             {
-                if (_searchCommand == null)
+                if (_primaryButtonCommand == null)
                 {
-                    _searchCommand = new RelayCommand<AutoSuggestBoxQuerySubmittedEventArgs>(async args =>
+                    _primaryButtonCommand = new RelayCommand(() =>
                     {
-                        Filter.Query = args.QueryText;
-                        await RefreshWallPapersAsync();
+                        App.Settings.Filter = Filter;
+                        ViewModelLocator.Current.Main.PhotoGridViewModel.RefreshCommand.Execute(null);
                     });
                 }
-                return _searchCommand;
+                return _primaryButtonCommand;
             }
         }
 
-        private ICommand _selectionChangedCommand;
-        public ICommand SelectionChangedCommand
+        private ICommand _closeButtonCommand;
+        public ICommand CloseButtonCommand
         {
             get
             {
-                if (_selectionChangedCommand == null)
+                if (_closeButtonCommand == null)
                 {
-                    _selectionChangedCommand = new RelayCommand<SelectionChangedEventArgs>(async args =>
+                    _closeButtonCommand = new RelayCommand(() =>
                     {
-                       await RefreshWallPapersAsync();
+
                     });
                 }
-                return _selectionChangedCommand;
+                return _closeButtonCommand;
             }
-        }
-
-        private async Task RefreshWallPapersAsync()
-        {
-            App.Settings.Filter = Filter;
-            await ViewModelLocator.Current.Main.PhotoGridViewModel.Items.RefreshAsync();
         }
     }
 }

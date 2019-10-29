@@ -7,7 +7,6 @@ namespace Attention.UWP.Models.Core
         public string FileName { get; set; }
         public string ImageUrl { get; set; }
         public string Json { get; set; }
-        public double Progress { get; set; }
         public byte[] Thumbnail { get; set; }
     }
 }

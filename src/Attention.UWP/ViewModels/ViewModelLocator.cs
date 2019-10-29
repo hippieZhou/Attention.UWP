@@ -1,6 +1,7 @@
 ﻿using Attention.UWP.Services;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using MetroLog;
 using MetroLog.Targets;
 
@@ -30,6 +31,7 @@ namespace Attention.UWP.ViewModels
             SimpleIoc.Default.Register(() => new PixabayService("3153915-c1b347f3736d73ef2cd6a0e79"), false);
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<MoreViewModel>();
         }
@@ -37,6 +39,7 @@ namespace Attention.UWP.ViewModels
         public ILogManager LogManager => ServiceLocator.Current.GetInstance<ILogManager>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public SearchViewModel Search => ServiceLocator.Current.GetInstance<SearchViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public MoreViewModel More => ServiceLocator.Current.GetInstance<MoreViewModel>();
     }

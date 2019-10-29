@@ -201,19 +201,28 @@
   <data name="photoItemView_Share.Text" xml:space="preserve">
     <value>Share</value>
   </data>
-  <data name="photo_Category.Content" xml:space="preserve">
+  <data name="search_Category.Header" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="photo_Find.Header" xml:space="preserve">
+  <data name="search_Dialog.PrimaryButtonText" xml:space="preserve">
     <value>Find</value>
   </data>
-  <data name="photo_ImageType.Content" xml:space="preserve">
+  <data name="search_Dialog.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="search_Dialog.Title" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="search_ImageType.Header" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="photo_Orders.Content" xml:space="preserve">
+  <data name="search_Keywords.Header" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="search_Orders.Header" xml:space="preserve">
     <value>Orders</value>
   </data>
-  <data name="photo_Orientation.Content" xml:space="preserve">
+  <data name="search_Orientation.Header" xml:space="preserve">
     <value>Orientation</value>
   </data>
 </root>

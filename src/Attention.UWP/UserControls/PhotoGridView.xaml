@@ -312,7 +312,7 @@
                 Height="40"
                 Margin="12"
                 HorizontalAlignment="Center"
-                Command="{x:Bind ViewModel.RefreshCommand, Mode=OneWay}"
+                Command="{x:Bind ViewModel.RefreshCommand}"
                 Content="RETRY"
                 FontSize="20" />
         </StackPanel>

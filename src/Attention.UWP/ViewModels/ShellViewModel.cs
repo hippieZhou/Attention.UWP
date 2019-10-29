@@ -12,15 +12,6 @@ namespace Attention.UWP.ViewModels
         private readonly ILogger _logger;
         public FrameworkElement UiElement { get; private set; }
 
-        public PhotoFilterViewModel PhotoFilterViewModel { get; } = new PhotoFilterViewModel();
-
-        private bool _isPaneOpen = false;
-        public bool IsPaneOpen
-        {
-            get { return _isPaneOpen; }
-            set { Set(ref _isPaneOpen, value); }
-        }
-
         public ShellViewModel(ILogManager logManager)
         {
             _logger = logManager.GetLogger<ShellViewModel>();

@@ -1,12 +1,11 @@
 ﻿using Attention.UWP.Extensions;
+using Attention.UWP.Helpers;
+using Attention.UWP.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Numerics;
 using System.Windows.Input;
-using Windows.UI.Composition;
 using Windows.UI.Xaml;
 
 namespace Attention.UWP.ViewModels
@@ -32,10 +31,9 @@ namespace Attention.UWP.ViewModels
             {
                 if (_paneOpenCommand == null)
                 {
-                    _paneOpenCommand = new RelayCommand(() =>
+                    _paneOpenCommand = new RelayCommand(async () =>
                     {
-                        ViewModelLocator.Current.Shell.IsPaneOpen = 
-                        !ViewModelLocator.Current.Shell.IsPaneOpen;
+                        await Singleton<SearchView>.Instance.ShowAsync();
                     });
                 }
                 return _paneOpenCommand;
