@@ -60,7 +60,7 @@
                 Padding="12"
                 VerticalAlignment="Bottom"
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                CornerRadius="4">
+                CornerRadius="{StaticResource DefaultCornerRadius}">
                 <Grid.Shadow>
                     <ThemeShadow />
                 </Grid.Shadow>

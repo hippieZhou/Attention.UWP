@@ -132,6 +132,7 @@
     <Compile Include="Extensions\ByteArrayBitmapExtension.cs" />
     <Compile Include="Extensions\DataRequestExtensions.cs" />
     <Compile Include="Extensions\ResourceExtension.cs" />
+    <Compile Include="FlipPanel.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\LiveTileHelper.cs" />
     <Compile Include="Helpers\ShareHelper.cs" />
@@ -213,6 +214,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\GridViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

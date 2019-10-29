@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -18,6 +19,8 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Attention.UWP.Models
 {
@@ -31,23 +34,36 @@ namespace Attention.UWP.Models
     public partial class DownloadItem : ObservableObject
     {
         private readonly ILogger _logger;
-
-        public Download Entity { get; private set; }
-        public StorageFolder Folder { get; private set; }
+        private readonly StorageFolder _folder;
+        private readonly Download _entity;
 
         public DownloadItem(StorageFolder folder)
         {
-            Folder = folder;
+            _folder = folder;
             _logger = ViewModelLocator.Current.LogManager.GetLogger<DownloadItem>();
         }
-        public DownloadItem(Download entity, StorageFolder folder) : this(folder) => Entity = entity;
+        public DownloadItem(Download entity, StorageFolder folder) : this(folder) => _entity = entity;
         public DownloadItem(ImageItem item, StorageFolder folder) : this(folder)
         {
-            Entity = new Download()
+            _entity = new Download()
             {
                 Json = JsonConvert.SerializeObject(item),
                 ImageUrl = string.IsNullOrWhiteSpace(item.FullHDImageURL) ? item.LargeImageURL : item.FullHDImageURL,
             };
+        }
+
+        private ImageSource _imageSource;
+        public ImageSource ImageSource
+        {
+            get
+            {
+                if (_imageSource == null)
+                {
+                    _imageSource = new BitmapImage(new Uri(_entity.ImageUrl));
+                }
+                return _imageSource;
+            }
+            set { Set(ref _imageSource, value); }
         }
 
         /// <summary>
@@ -56,18 +72,24 @@ namespace Attention.UWP.Models
         /// <returns></returns>
         public async Task<DownloadItemResult> StartAsync()
         {
-            var sourceUri = new Uri(Entity.ImageUrl);
-            var file = await CheckLocalFileExistsFromUriHash(sourceUri, Folder);
+            async Task<bool> IsDownloading(Uri uri)
+            {
+                var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+                return downloads.Any(dl => dl.RequestedUri == uri);
+            }
+
+            var sourceUri = new Uri(_entity.ImageUrl);
+            var file = await CheckLocalFileExistsFromUriHash(sourceUri, _folder);
             var downloadingAlready = await IsDownloading(sourceUri);
 
             if (file == null && !downloadingAlready)
-            { 
-                Entity.FileName = SafeHashUri(sourceUri);
-                await DAL.SaveOrUpdateAsync(Entity);
+            {
+                _entity.FileName = SafeHashUri(sourceUri);
+                await DAL.SaveOrUpdateAsync(_entity);
 
                 await Task.Run(() =>
                 {
-                    var task = StartDownload(sourceUri, BackgroundTransferPriority.High, Entity.FileName);
+                    var task = StartDownload(sourceUri, BackgroundTransferPriority.High, _entity.FileName);
                     task.ContinueWith((state) =>
                       {
                           if (state.Exception != null)
@@ -93,23 +115,17 @@ namespace Attention.UWP.Models
             }
         }
 
-        private async Task<bool> IsDownloading(Uri sourceUri)
-        {
-            var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-            return downloads.Any(dl => dl.RequestedUri == sourceUri);
-        }
-
         private async Task StartDownload(Uri target, BackgroundTransferPriority priority, string localFilename)
         {
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
-            StorageFile destinationFile = await GetLocalFileFromName(Folder, localFilename);
+            StorageFile destinationFile = await GetLocalFileFromName(_folder, localFilename);
 
             BackgroundDownloader downloader = new BackgroundDownloader();
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
-            Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj => 
+            Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
             {
                 Debug.WriteLine(obj.Progress.ToString());
 

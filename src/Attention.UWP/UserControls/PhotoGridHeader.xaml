@@ -38,11 +38,21 @@
                     Content="&#xE81E;"
                     FontSize="20"
                     Style="{StaticResource MenuButtonStyle}" />
-                <TextBlock
+                <mtui:DropShadowPanel
+                    x:Name="MiddleText"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    Text="ATTENTION" />
+                    BlurRadius="8"
+                    OffsetY="2"
+                    Opacity="0.7"
+                    ShadowOpacity="0.2">
+                    <TextBlock
+                        FontWeight="Bold"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        Text="ATTENTION" />
+                </mtui:DropShadowPanel>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button

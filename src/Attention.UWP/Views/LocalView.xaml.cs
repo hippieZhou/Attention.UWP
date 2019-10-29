@@ -10,5 +10,13 @@ namespace Attention.UWP.Views
         {
             this.InitializeComponent();
         }
+
+        private void FlipPanel_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            if (sender is FlipPanel handler)
+            {
+                handler.IsFlipped = !handler.IsFlipped;
+            }
+        }
     }
 }

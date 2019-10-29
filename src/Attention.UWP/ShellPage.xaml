@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <local:ExtendedTitleBar Grid.Row="0" />
-        
+
         <Grid Grid.Row="1">
             <v:MainView x:Name="mainView" />
             <v:LocalView />
@@ -36,7 +36,7 @@
             <mtui:InAppNotification
                 x:Name="InAppNotification"
                 Background="{ThemeResource SystemControlAcrylicElementBrush}"
-                CornerRadius="4" />
+                CornerRadius="{StaticResource DefaultCornerRadius}" />
         </Grid>
     </Grid>
 </Page>
