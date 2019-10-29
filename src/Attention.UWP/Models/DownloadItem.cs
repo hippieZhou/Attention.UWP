@@ -5,12 +5,14 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using Attention.UWP.Extensions;
 using Attention.UWP.Models.Core;
 using Attention.UWP.Services;
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using MetroLog;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Newtonsoft.Json;
 using PixabaySharp.Models;
 using Windows.ApplicationModel.Background;
@@ -90,7 +92,7 @@ namespace Attention.UWP.Models
                 await Task.Run(() =>
                 {
                     var task = StartDownload(sourceUri, BackgroundTransferPriority.High, _entity.FileName);
-                    task.ContinueWith((state) =>
+                    task.ContinueWith(async (state) =>
                       {
                           if (state.Exception != null)
                           {
@@ -99,6 +101,10 @@ namespace Attention.UWP.Models
                           else
                           {
                               Debug.WriteLine("Download Completed");
+                              await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
+                               {
+                                   ImageSource = await LocalFileToImage(_folder, _entity.FileName);
+                               });
                           }
                       });
                 });
@@ -112,6 +118,15 @@ namespace Attention.UWP.Models
             else
             {
                 return DownloadItemResult.Error;
+            }
+        }
+
+        public async Task DeleteAsync()
+        {
+            await DAL.DeleteAsync(_entity);
+            if (await _folder.TryGetItemAsync(_entity.FileName) is IStorageFile file)
+            {
+                await file.DeleteAsync();
             }
         }
 
@@ -178,6 +193,18 @@ namespace Attention.UWP.Models
                 }
             }
             return file;
+        }
+        private static async Task<BitmapImage> LocalFileToImage(StorageFolder folder, string filename)
+        {
+            if (await folder.TryGetItemAsync(filename) is IStorageFile file)
+            {
+                var bytes = await file.AsByteArray();
+                return bytes.AsBitmapImage();
+            }
+            else
+            {
+                return default;
+            }
         }
         private static string Hash(string input)
         {

@@ -16,6 +16,10 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <XamlUICommand x:Name="OpenXamlUICommand" Command="{x:Bind ViewModel.OpenCommand}" />
+        <XamlUICommand x:Name="DeleteXamlUICommand" Command="{x:Bind ViewModel.DeleteCommand}" />
+    </UserControl.Resources>
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
             <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -99,8 +103,14 @@
                                         <Setter Property="Height" Value="48" />
                                     </Style>
                                 </StackPanel.Resources>
-                                <Button Content="&#xEC50;" />
-                                <Button Content="&#xE74D;" />
+                                <Button
+                                    Command="{StaticResource OpenXamlUICommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="&#xEC50;" />
+                                <Button
+                                    Command="{StaticResource DeleteXamlUICommand}"
+                                    CommandParameter="{Binding}"
+                                    Content="&#xE74D;" />
                                 <i:Interaction.Behaviors>
                                     <behaviors:Fade
                                         x:Name="ButtonsUp"

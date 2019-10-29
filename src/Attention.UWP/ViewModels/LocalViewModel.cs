@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Windows.System;
+using System;
+using Windows.Storage;
 
 namespace Attention.UWP.ViewModels
 {
@@ -46,6 +49,47 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _loadedCommand;
+            }
+        }
+
+        private ICommand _openCommand;
+        public ICommand OpenCommand
+        {
+            get
+            {
+                if (_openCommand == null)
+                {
+                    _openCommand = new RelayCommand<DownloadItem>(async args =>
+                    {
+                        if (args != null)
+                        {
+                            var folder = await App.Settings.GetSavingFolderAsync();
+                            await Launcher.LaunchFolderAsync(folder);
+                        }
+                    });
+                }
+                return _openCommand;
+            }
+        }
+
+        private ICommand _deleteCommand;
+
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_deleteCommand == null)
+                {
+                    _deleteCommand = new RelayCommand<DownloadItem>(async args =>
+                    {
+                        if (args != null)
+                        {
+                            await args.DeleteAsync();
+                            Items.Remove(args);
+                        }
+                    });
+                }
+                return _deleteCommand;
             }
         }
     }

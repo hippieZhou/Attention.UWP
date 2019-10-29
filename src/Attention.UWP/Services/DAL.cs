@@ -71,7 +71,7 @@ namespace Attention.UWP.Services
         }
         private static async Task<int> DeleteAsync<T>(T item) where T : Entity
         {
-            return await AsyncDbConnection.ExecuteAsync($"DELETE FROM {nameof(T)} WHERE Id = ?", item.Id);
+            return await AsyncDbConnection.ExecuteAsync($"DELETE FROM {typeof(T).Name} WHERE Id = ?", item.Id);
         }
         private static async Task<T> GetByIdAsync<T>(int Id) where T : Entity, new()
         {
