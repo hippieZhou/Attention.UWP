@@ -24,19 +24,19 @@ namespace Attention.UWP.ViewModels
             set { Set(ref _headerMode, value); }
         }
 
-        private ICommand _paneOpenCommand;
-        public ICommand PaneOpenCommand
+        private ICommand _searchCommand;
+        public ICommand SearchCommand
         {
             get
             {
-                if (_paneOpenCommand == null)
+                if (_searchCommand == null)
                 {
-                    _paneOpenCommand = new RelayCommand(async () =>
+                    _searchCommand = new RelayCommand(async () =>
                     {
                         await Singleton<SearchView>.Instance.ShowAsync();
                     });
                 }
-                return _paneOpenCommand;
+                return _searchCommand;
             }
         }
 

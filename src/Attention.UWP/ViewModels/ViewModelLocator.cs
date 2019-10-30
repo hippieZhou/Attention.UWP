@@ -1,9 +1,10 @@
 ﻿using Attention.UWP.Services;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Views;
 using MetroLog;
 using MetroLog.Targets;
+using System.IO;
+using Windows.Storage;
 
 namespace Attention.UWP.ViewModels
 {
@@ -16,6 +17,8 @@ namespace Attention.UWP.ViewModels
         private ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+
+            #region Services
             SimpleIoc.Default.Register(() =>
             {
 #if DEBUG
@@ -27,16 +30,21 @@ namespace Attention.UWP.ViewModels
 
                 return LogManagerFactory.DefaultLogManager;
             });
+            SimpleIoc.Default.Register(() => new DAL(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite")));
+            SimpleIoc.Default.Register(() => new PixabayService("3153915-c1b347f3736d73ef2cd6a0e79"));
+            #endregion
 
-            SimpleIoc.Default.Register(() => new PixabayService("3153915-c1b347f3736d73ef2cd6a0e79"), false);
+            #region ViewModels
             SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<LocalViewModel>();
             SimpleIoc.Default.Register<MoreViewModel>();
+            #endregion
         }
 
         public ILogManager LogManager => ServiceLocator.Current.GetInstance<ILogManager>();
+        public DAL DAL => ServiceLocator.Current.GetInstance<DAL>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public SearchViewModel Search => ServiceLocator.Current.GetInstance<SearchViewModel>();

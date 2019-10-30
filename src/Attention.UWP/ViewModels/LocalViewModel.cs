@@ -9,11 +9,14 @@ using System.Linq;
 using System.Windows.Input;
 using Windows.System;
 using System;
+using Attention.UWP.Models.Repositories;
 
 namespace Attention.UWP.ViewModels
 {
     public class LocalViewModel : BaseViewModel
     {
+        private readonly DAL _dal;
+
         private ObservableCollection<DownloadItem> _items;
         public ObservableCollection<DownloadItem> Items
         {
@@ -21,8 +24,9 @@ namespace Attention.UWP.ViewModels
             set { Set(ref _items, value); }
         }
 
-        public LocalViewModel()
+        public LocalViewModel(DAL dal)
         {
+            _dal = dal;
             Messenger.Default.Register<DownloadItem>(this, nameof(DownloadItem), item =>
             {
                 Items.Add(item);
@@ -39,10 +43,11 @@ namespace Attention.UWP.ViewModels
                     _loadedCommand = new RelayCommand(async () =>
                     {
                         var folder = await App.Settings.GetSavingFolderAsync();
-                        IEnumerable<Download> entities = await DAL.GetAllAsync();
+                        IEnumerable<Download> entities = await _dal.DownloadRepo.GetAllAsync();
                         IEnumerable<DownloadItem> downloads = from p in entities select new DownloadItem(p, folder);
                         foreach (var item in downloads)
                         {
+                            await item.ReLoadImageSource();
                             Items.Add(item);
                         }
                     });
@@ -72,7 +77,6 @@ namespace Attention.UWP.ViewModels
         }
 
         private ICommand _deleteCommand;
-
         public ICommand DeleteCommand
         {
             get

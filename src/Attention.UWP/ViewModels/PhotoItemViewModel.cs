@@ -1,10 +1,15 @@
 ﻿using Attention.UWP.Helpers;
 using Attention.UWP.Models;
+using Attention.UWP.Models.Repositories;
+using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MetroLog;
 using PixabaySharp.Models;
 using System;
+using System.Diagnostics;
 using System.Windows.Input;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
@@ -82,9 +87,9 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(async () =>
                     {
-                        var folder = await App.Settings.GetSavingFolderAsync();
-                        var download = new DownloadItem(Item, folder);
-                        await download.StartAsync();
+                        StorageFolder folder = await App.Settings.GetSavingFolderAsync();
+                        DownloadItemResult state = await new DownloadItem(Item, folder).DownloadAsync();
+                        Debug.WriteLine(state);
                     });
                 }
                 return _downloadCommand;

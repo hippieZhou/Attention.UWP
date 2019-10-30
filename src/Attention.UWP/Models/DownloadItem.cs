@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Attention.UWP.Extensions;
 using Attention.UWP.Models.Core;
-using Attention.UWP.Services;
+using Attention.UWP.Models.Repositories;
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -36,23 +36,10 @@ namespace Attention.UWP.Models
     public partial class DownloadItem : ObservableObject
     {
         private readonly ILogger _logger;
+        private readonly IRepository<Download> _repository;
         private readonly StorageFolder _folder;
         private readonly Download _entity;
-
-        public DownloadItem(StorageFolder folder)
-        {
-            _folder = folder;
-            _logger = ViewModelLocator.Current.LogManager.GetLogger<DownloadItem>();
-        }
-        public DownloadItem(Download entity, StorageFolder folder) : this(folder) => _entity = entity;
-        public DownloadItem(ImageItem item, StorageFolder folder) : this(folder)
-        {
-            _entity = new Download()
-            {
-                Json = JsonConvert.SerializeObject(item),
-                ImageUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL,
-            };
-        }
+        private CancellationTokenSource cancellationToken;
 
         private ImageSource _imageSource;
         public ImageSource ImageSource
@@ -68,18 +55,28 @@ namespace Attention.UWP.Models
             set { Set(ref _imageSource, value); }
         }
 
+        private DownloadItem(StorageFolder folder)
+        {
+            _logger = ViewModelLocator.Current.LogManager.GetLogger<DownloadItem>();
+            _repository = ViewModelLocator.Current.DAL.DownloadRepo;
+            _folder = folder;
+        }
+        public DownloadItem(Download entity, StorageFolder folder) : this(folder) => _entity = entity;
+        public DownloadItem(ImageItem item, StorageFolder folder) : this(folder)
+        {
+            _entity = new Download()
+            {
+                Json = JsonConvert.SerializeObject(item),
+                ImageUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL
+            };
+        }
+
         /// <summary>
         /// https://github.com/jQuery2DotNet/UWP-Samples/blob/master/BackgroundDownloader/BackgroundDownloader/MainPage.xaml.cs
         /// </summary>
         /// <returns></returns>
-        public async Task<DownloadItemResult> StartAsync()
+        public async Task<DownloadItemResult> DownloadAsync()
         {
-            async Task<bool> IsDownloading(Uri uri)
-            {
-                var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
-                return downloads.Any(dl => dl.RequestedUri == uri);
-            }
-
             var sourceUri = new Uri(_entity.ImageUrl);
             var file = await CheckLocalFileExistsFromUriHash(sourceUri, _folder);
             var downloadingAlready = await IsDownloading(sourceUri);
@@ -87,7 +84,7 @@ namespace Attention.UWP.Models
             if (file == null && !downloadingAlready)
             {
                 _entity.FileName = SafeHashUri(sourceUri);
-                await DAL.SaveOrUpdateAsync(_entity);
+                _entity.Id = await SaveItemDownloaded(_repository, _entity);
 
                 await Task.Run(() =>
                 {
@@ -101,16 +98,17 @@ namespace Attention.UWP.Models
                           else
                           {
                               Debug.WriteLine("Download Completed");
-                              await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
-                               {
-                                   ImageSource = await LocalFileToImage(_folder, _entity.FileName);
-                               });
+
+                              await SetItemDownloaded(_repository, _folder, _entity);
+
+                              await ReLoadImageSource();
                           }
                       });
                 });
+
                 Messenger.Default.Send(this, nameof(DownloadItem));
                 return DownloadItemResult.Started;
-            }
+            } 
             else if (file != null)
             {
                 return DownloadItemResult.AllreadyDownloaded;
@@ -121,32 +119,38 @@ namespace Attention.UWP.Models
             }
         }
 
-        public async Task DeleteAsync()
+        public async Task ReLoadImageSource()
         {
-            await DAL.DeleteAsync(_entity);
-            if (await _folder.TryGetItemAsync(_entity.FileName) is IStorageFile file)
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
-                await file.DeleteAsync();
-            }
+                ImageSource = await LocalFileToImage(_folder, _entity.FileName);
+            });
         }
 
+        public void Cancel()
+        {
+            cancellationToken?.Cancel();
+            cancellationToken?.Dispose();
+        }
+        public async Task DeleteAsync() => await DeleteItemDownloaded(_repository, _entity, _folder);
         private async Task StartDownload(Uri target, BackgroundTransferPriority priority, string localFilename)
         {
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
             StorageFile destinationFile = await GetLocalFileFromName(_folder, localFilename);
 
-            BackgroundDownloader downloader = new BackgroundDownloader();
-            DownloadOperation download = downloader.CreateDownload(target, destinationFile);
+            //BackgroundDownloader downloader = new BackgroundDownloader();
+            DownloadOperation download = Downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
+            cancellationToken = new CancellationTokenSource();
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
             {
-                Debug.WriteLine(obj.Progress.ToString());
+                Debug.WriteLine($"{obj.Progress.Status}:{obj.Progress.ToString()}");
 
                 var progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
             });
-            var downloadTask = download.StartAsync().AsTask(progressCallback);
+            var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
 
             try
             {
@@ -164,6 +168,12 @@ namespace Attention.UWP.Models
 
     public partial class DownloadItem : ObservableObject
     {
+        private static BackgroundDownloader Downloader => new BackgroundDownloader();
+        private static async Task<bool> IsDownloading(Uri uri)
+        {
+            var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            return downloads.Any(dl => dl.RequestedUri == uri);
+        }
         private static string SafeHashUri(Uri sourceUri)
         {
             string safeUri = sourceUri.ToString().ToLower();
@@ -218,6 +228,36 @@ namespace Attention.UWP.Models
             }
 
             return sb.ToString();
+        }
+
+        private static async Task<int> SaveItemDownloaded(IRepository<Download> _repository, Download download)
+        {
+            await _repository.InsertAsync(download);
+            var id = await _repository.GetAllAsync().ContinueWith(async task =>
+            {
+                var items = await task;
+                return items.FirstOrDefault(p => p.FileName == download.FileName).Id;
+            });
+            return await id;
+        }
+
+        private static async Task SetItemDownloaded(IRepository<Download> repository, StorageFolder folder, Download download)
+        {
+            StorageFile file = await GetLocalFileFromName(folder, download.FileName);
+            if (file != null)
+            {
+                download.Thumbnail = await file.AsByteArray();
+                await repository.UpdateAsync(download);
+            }
+        }
+
+        private static async Task DeleteItemDownloaded(IRepository<Download> repository, Download download, StorageFolder folder)
+        {
+            await repository.DeleteAsync(download);
+            if (await folder.TryGetItemAsync(download.FileName) is IStorageFile file)
+            {
+                await file.DeleteAsync();
+            }
         }
     }
 }
