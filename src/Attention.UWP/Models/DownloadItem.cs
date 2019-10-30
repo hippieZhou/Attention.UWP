@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -21,6 +22,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -138,9 +140,10 @@ namespace Attention.UWP.Models
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
             StorageFile destinationFile = await GetLocalFileFromName(_folder, localFilename);
-
-            //BackgroundDownloader downloader = new BackgroundDownloader();
-            DownloadOperation download = Downloader.CreateDownload(target, destinationFile);
+            
+            BackgroundDownloader downloader = new BackgroundDownloader();
+            CreateNotifications(downloader);
+            DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
             cancellationToken = new CancellationTokenSource();
@@ -149,6 +152,8 @@ namespace Attention.UWP.Models
                 Debug.WriteLine($"{obj.Progress.Status}:{obj.Progress.ToString()}");
 
                 var progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
+
+                UpdateToast(obj.ResultFile.Name, progress);
             });
             var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
 
@@ -168,7 +173,7 @@ namespace Attention.UWP.Models
 
     public partial class DownloadItem : ObservableObject
     {
-        private static BackgroundDownloader Downloader => new BackgroundDownloader();
+        private static ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
         private static async Task<bool> IsDownloading(Uri uri)
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
@@ -229,7 +234,37 @@ namespace Attention.UWP.Models
 
             return sb.ToString();
         }
+        private static void CreateNotifications(BackgroundDownloader downloader)
+        {
+            var successToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            successToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "Downloads completed successfully.";
+            ToastNotification successToast = new ToastNotification(successToastXml);
+            downloader.SuccessToastNotification = successToast;
 
+            var failureToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            failureToastXml.GetElementsByTagName("text").Item(0).InnerText =
+                "At least one download completed with failure.";
+            ToastNotification failureToast = new ToastNotification(failureToastXml);
+            downloader.FailureToastNotification = failureToast;
+        }
+        private static void UpdateToast(string toastTag, double progressValue)
+        {
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", progressValue.ToString() },
+                { "p", $"cool" }, // TODO: better than cool
+            };
+
+            try
+            {
+                _notifier.Update(new NotificationData(data), toastTag);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
         private static async Task<int> SaveItemDownloaded(IRepository<Download> _repository, Download download)
         {
             await _repository.InsertAsync(download);
@@ -240,7 +275,6 @@ namespace Attention.UWP.Models
             });
             return await id;
         }
-
         private static async Task SetItemDownloaded(IRepository<Download> repository, StorageFolder folder, Download download)
         {
             StorageFile file = await GetLocalFileFromName(folder, download.FileName);
@@ -250,7 +284,6 @@ namespace Attention.UWP.Models
                 await repository.UpdateAsync(download);
             }
         }
-
         private static async Task DeleteItemDownloaded(IRepository<Download> repository, Download download, StorageFolder folder)
         {
             await repository.DeleteAsync(download);
