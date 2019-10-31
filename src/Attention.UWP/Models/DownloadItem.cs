@@ -43,7 +43,7 @@ namespace Attention.UWP.Models
         private readonly IRepository<Download> _repository;
         private readonly StorageFolder _folder;
         private readonly Download _entity;
-        private CancellationTokenSource cancellationToken;
+        private CancellationTokenSource cts;
 
         private ImageSource _imageSource;
         public ImageSource ImageSource
@@ -52,35 +52,41 @@ namespace Attention.UWP.Models
             {
                 if (_imageSource == null)
                 {
-                    _imageSource = new BitmapImage(new Uri(_entity.ImageUrl));
+                    _imageSource = new BitmapImage(new Uri(_entity.ImageURL));
                 }
                 return _imageSource;
             }
             set { Set(ref _imageSource, value); }
         }
 
+        #region Ctors
         private DownloadItem(StorageFolder folder)
         {
             _logger = ViewModelLocator.Current.LogManager.GetLogger<DownloadItem>();
             _repository = ViewModelLocator.Current.DAL.DownloadRepo;
             _folder = folder;
         }
-        public DownloadItem(Download entity, StorageFolder folder) : this(folder) => _entity = entity;
         public DownloadItem(ImageItem item, StorageFolder folder) : this(folder)
         {
             var imgUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL;
             _entity = new Download()
             {
-                IdHash = item.IdHash,
+                Model = item,
                 Json = JsonConvert.SerializeObject(item),
-                ImageUrl = imgUrl,
+                ImageURL = imgUrl,
                 FileName = GetFileNameFromUri(new Uri(imgUrl))
             };
         }
+        public DownloadItem(Download entity, StorageFolder folder) : this(folder)
+        {
+            _entity = entity;
+            _entity.Model = JsonConvert.DeserializeObject<ImageItem>(_entity.Json);
+        }
+        #endregion
 
         public async Task<DownloadItemResult> DownloadAsync()
         {
-            Uri sourceUri = new Uri(_entity.ImageUrl);
+            Uri sourceUri = new Uri(_entity.ImageURL);
             StorageFile file = await CheckLocalFileExists(_folder, _entity.FileName);
             bool downloadingAlready = await IsDownloading(sourceUri);
             if (file == null && !downloadingAlready)
@@ -89,7 +95,7 @@ namespace Attention.UWP.Models
 
                 await Task.Run(() =>
                 {
-                    var task = StartDownload(sourceUri, BackgroundTransferPriority.High, _entity.FileName);
+                    Task task = StartDownload(sourceUri, BackgroundTransferPriority.High);
                     task.ContinueWith(async (state) =>
                       {
                           if (state.Exception != null)
@@ -99,20 +105,14 @@ namespace Attention.UWP.Models
                           else
                           {
                               Debug.WriteLine("Download Completed");
-                              await SetItemDownloaded(_repository, _folder, _entity).ContinueWith(async subState =>
-                              {
-                                  if (subState.Exception == null)
-                                  {
-                                      await RefreshImageSource();
-                                  }
-                              });
+                              await RefreshImageSource();
                           }
                       });
                 });
 
                 Messenger.Default.Send(this, nameof(DownloadItem));
                 return DownloadItemResult.Started;
-            } 
+            }
             else if (file != null)
             {
                 return DownloadItemResult.AllreadyDownloaded;
@@ -137,33 +137,38 @@ namespace Attention.UWP.Models
 
         public void Cancel()
         {
-            cancellationToken?.Cancel();
-            cancellationToken?.Dispose();
+            cts?.Cancel();
+            cts?.Dispose();
         }
+
         public async Task DeleteAsync() => await DeleteItemDownloaded(_repository, _entity, _folder);
-        private async Task StartDownload(Uri target, BackgroundTransferPriority priority, string localFilename)
+
+        private async Task StartDownload(Uri target, BackgroundTransferPriority priority)
         {
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
-            StorageFile destinationFile = await GetLocalFileFromName(_folder, localFilename);
-            
             BackgroundDownloader downloader = new BackgroundDownloader();
+
             CreateNotifications(downloader);
+            StorageFile destinationFile = await GetLocalFileFromName(_folder, _entity.FileName);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
-            cancellationToken = new CancellationTokenSource();
             Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
             {
                 Debug.WriteLine($"{obj.Progress.Status}:{obj.Progress.ToString()}");
 
                 var progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
-
-                UpdateToast(obj.ResultFile.Name, progress);
+                UpdateToast(progress, obj.ResultFile.Name);
             });
-            var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
 
-            CreateToast(_entity.FileName, _entity.FileName);
+            if (cts == default)
+            {
+                cts = new CancellationTokenSource();
+            }
+            var downloadTask = download.StartAsync().AsTask(cts.Token, progressCallback);
+
+            CreateToast(_folder.Path, _entity.Model.UserImageURL, _entity.Model.User, _entity.Model.PreviewURL, _entity.FileName);
             try
             {
                 await downloadTask;
@@ -186,9 +191,9 @@ namespace Attention.UWP.Models
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
             return downloads.Any(dl => dl.RequestedUri == uri);
         }
-        private static async Task<StorageFile> GetLocalFileFromName(StorageFolder folder, string filename)
+        private static async Task<StorageFile> GetLocalFileFromName(StorageFolder folder, string fileName)
         {
-            return await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            return await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
         }
         private static string GetFileNameFromUri(Uri sourceUri)
         {
@@ -223,9 +228,9 @@ namespace Attention.UWP.Models
             }
             return file;
         }
-        private static async Task<BitmapImage> LocalFileToImage(StorageFolder folder, string filename)
+        private static async Task<BitmapImage> LocalFileToImage(StorageFolder folder, string fileName)
         {
-            if (await folder.TryGetItemAsync(filename) is IStorageFile file)
+            if (await folder.TryGetItemAsync(fileName) is IStorageFile file)
             {
                 var bytes = await file.AsByteArray();
                 return bytes.AsBitmapImage();
@@ -249,7 +254,7 @@ namespace Attention.UWP.Models
             ToastNotification failureToast = new ToastNotification(failureToastXml);
             downloader.FailureToastNotification = failureToast;
         }
-        private static void CreateToast(string title, string tag)
+        private static void CreateToast(string title,string userLogo,string userName, string heroImage, string tag)
         {
             ToastContent toastContent = new ToastContent()
             {
@@ -257,18 +262,27 @@ namespace Attention.UWP.Models
                 {
                     BindingGeneric = new ToastBindingGeneric()
                     {
+                        Attribution = new ToastGenericAttributionText()
+                        {
+                            Text = "Via pixabay",
+                        },
+                        AppLogoOverride = new ToastGenericAppLogo()
+                        {
+                            AddImageQuery = true,
+                            Source = userLogo,
+                            AlternateText = userName,
+                            HintCrop = ToastGenericAppLogoCrop.Circle,
+                        },
+                        HeroImage = new ToastGenericHeroImage()
+                        {
+                            Source = heroImage,
+                        },
                         Children =
                         {
-                            new AdaptiveText()
-                            {
-                                Text = "File downloading...",
-                            },
-
                             new AdaptiveProgressBar()
                             {
                                 Title = title,
                                 Value = new BindableProgressBarValue("progressValue"),
-                                //ValueStringOverride = new BindableString("p"),
                                 Status = "Downloading...",
                             },
                         },
@@ -279,7 +293,6 @@ namespace Attention.UWP.Models
             var data = new Dictionary<string, string>
             {
                 { "progressValue", "0" },
-                //{ "p", $"cool" }, // TODO: better than cool
             };
 
             // And create the toast notification
@@ -292,12 +305,11 @@ namespace Attention.UWP.Models
             // And then send the toast
             ToastNotificationManager.CreateToastNotifier().Show(notification);
         }
-        private static void UpdateToast(string toastTag, double progressValue)
+        private static void UpdateToast(double progressValue, string toastTag)
         {
             var data = new Dictionary<string, string>
             {
                 { "progressValue", progressValue.ToString() },
-                { "p", $"cool" }, // TODO: better than cool
             };
 
             try
@@ -320,15 +332,6 @@ namespace Attention.UWP.Models
                 }))
             {
                 return await idTask;
-            }
-        }
-        private static async Task SetItemDownloaded(IRepository<Download> repository, StorageFolder folder, Download download)
-        {
-            StorageFile file = await CheckLocalFileExists(folder, download.FileName);
-            if (file != null)
-            {
-                download.Thumbnail = await file.AsByteArray();
-                await repository.UpdateAsync(download);
             }
         }
         private static async Task DeleteItemDownloaded(IRepository<Download> repository, Download download, StorageFolder folder)

@@ -7,7 +7,6 @@ using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -137,11 +136,9 @@ namespace Attention.UWP.Models
         {
             get
             {
-                var first = SystemInformation.IsFirstRun;
-                string info = string.Empty;
-                if (first)
-                {
-                    info = $@"
+                string info = $@"
+------------------------------------------------------------------------
+IsFirstRun:{SystemInformation.IsFirstRun};
 ApplicationName:{SystemInformation.ApplicationName};
 ApplicationVersion:{Version};
 Culture:{SystemInformation.Culture};
@@ -152,18 +149,8 @@ DeviceFamily:{SystemInformation.DeviceFamily};
 DeviceModel:{SystemInformation.DeviceModel};
 DeviceManufacturer:{SystemInformation.DeviceManufacturer};
 AvailableMemory:{SystemInformation.AvailableMemory};
-FirstVersionInstalled:{ SystemInformation.FirstVersionInstalled};
-FirstUseTime:{SystemInformation.FirstUseTime};";
-                }
-                info += $@"
-IsAppUpdated:{ SystemInformation.IsAppUpdated};
-LaunchTime:{SystemInformation.LaunchTime}
-LastLaunchTime:{SystemInformation.LastLaunchTime};
-LastResetTime:{SystemInformation.LastResetTime};
-LaunchCount:{SystemInformation.LaunchCount};
-TotalLaunchCount:{SystemInformation.TotalLaunchCount};
-AppUptime:{SystemInformation.AppUptime};";
-
+VersionInstalled:{Version};
+------------------------------------------------------------------------";
                 return info;
             }
         }

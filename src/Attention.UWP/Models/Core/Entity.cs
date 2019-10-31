@@ -7,7 +7,7 @@ namespace Attention.UWP.Models.Core
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-
+        
         public override bool Equals(object obj)
         {
             var compareTo = obj as Entity;

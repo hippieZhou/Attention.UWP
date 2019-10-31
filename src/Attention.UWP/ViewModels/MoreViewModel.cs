@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using MetroLog;
 using Microsoft.Toolkit.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Email;
 using Windows.Storage;
@@ -14,6 +16,12 @@ namespace Attention.UWP.ViewModels
 {
     public class MoreViewModel : BaseViewModel
     {
+        private readonly ILogger _logger;
+        public MoreViewModel(ILogManager logManager)
+        {
+            _logger = logManager.GetLogger<MoreViewModel>();
+        }
+
         public string Markdown
         {
             get
@@ -79,7 +87,6 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-
         private ICommand _feedbackCommand;
         public ICommand FeedbackCommand
         {
@@ -91,24 +98,7 @@ namespace Attention.UWP.ViewModels
                     {
                         if (args.IsEmail())
                         {
-                            //https://talkitbr.com/2015/06/11/adicionando-logs-em-universal-apps/
-                            Stream compressedLogsStream = await ViewModelLocator.Current.LogManager.GetCompressedLogs();
-                            FileInfo fileInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs_" + DateTime.UtcNow.ToString("yyyyMMdd_hhmmss") + ".zip"));
-
-                            Debug.WriteLine("My compressed logs file will be located at: " + fileInfo.FullName);
-
-                            using (FileStream fileStream = fileInfo.Create())
-                            {
-                                await compressedLogsStream.CopyToAsync(fileStream);
-                            }
-
-                            var logFile = await StorageFile.GetFileFromPathAsync(fileInfo.FullName);
-                            EmailMessage email = new EmailMessage();
-                            email.To.Add(new EmailRecipient(args));
-                            email.Subject = $"FeedBack For {App.Settings.Name}";
-                            email.Body = $"version:{App.Settings.Version}";
-                            email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
-                            await EmailManager.ShowComposeNewEmailAsync(email);
+                            await SendEmailAsync(args);
                         }
                         else if (Regex.IsMatch(args, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$"))
                         {
@@ -118,6 +108,31 @@ namespace Attention.UWP.ViewModels
                 }
                 return _feedbackCommand;
             }
+        }
+
+        private async Task SendEmailAsync(string sender)
+        {
+            _logger.Info(App.Settings.AppSummary);
+
+            //https://talkitbr.com/2015/06/11/adicionando-logs-em-universal-apps/
+            Stream compressedLogsStream = await ViewModelLocator.Current.LogManager.GetCompressedLogs();
+            FileInfo fileInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path,
+                $"logs_{DateTime.UtcNow.ToString("yyyyMMdd_hhmmss")}.zip"));
+
+            Debug.WriteLine("My compressed logs file will be located at: " + fileInfo.FullName);
+
+            using (FileStream fileStream = fileInfo.Create())
+            {
+                await compressedLogsStream.CopyToAsync(fileStream);
+            }
+
+            var logFile = await StorageFile.GetFileFromPathAsync(fileInfo.FullName);
+            EmailMessage email = new EmailMessage();
+            email.To.Add(new EmailRecipient(sender));
+            email.Subject = $"FeedBack For {App.Settings.Name}";
+            email.Body = $"version:{App.Settings.Version}";
+            email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
+            await EmailManager.ShowComposeNewEmailAsync(email);
         }
     }
 }

@@ -146,7 +146,6 @@
     <Compile Include="Services\DAL.cs" />
     <Compile Include="Models\DownloadItem.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\PixabayService.cs" />
     <Compile Include="ShellPage.xaml.cs">
       <DependentUpon>ShellPage.xaml</DependentUpon>
