@@ -45,7 +45,7 @@
             <RowDefinition Height="72" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Padding="0,0,16,0">
             <TextBlock
                 x:Uid="more_Header"
                 HorizontalAlignment="Center"
@@ -54,17 +54,14 @@
                 Style="{ThemeResource TitleTextBlockStyle}"
                 Text="MORE" />
             <Button
-                Margin="0,0,16,0"
                 HorizontalAlignment="Right"
-                Background="Transparent"
-                Command="{x:Bind ViewModel.BackCommand}">
-                <FontIcon
-                    FontFamily="Segoe MDL2 Assets"
-                    FontSize="16"
-                    Glyph="&#xE894;" />
-            </Button>
-            <NavigationViewItemSeparator VerticalAlignment="Bottom" />
+                Command="{x:Bind ViewModel.BackCommand}"
+                Content="&#xE894;"
+                CornerRadius="{StaticResource DefaultCornerRadius}"
+                FontSize="14"
+                Style="{StaticResource NavigationBackButtonSmallStyle}" />
         </Grid>
+        <NavigationViewItemSeparator Grid.Row="0" VerticalAlignment="Bottom" />
         <Pivot Grid.Row="1">
             <Pivot.Resources>
                 <Style TargetType="PivotItem">

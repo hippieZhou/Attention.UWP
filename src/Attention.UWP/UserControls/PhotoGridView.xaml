@@ -20,7 +20,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="ImageItemTemplate" x:DataType="pix:ImageItem">
-            <Grid x:Name="connectedElement" CornerRadius="4">
+            <Grid x:Name="connectedElement" CornerRadius="{StaticResource DefaultCornerRadius}">
                 <Grid.Background>
                     <AcrylicBrush
                         BackgroundSource="Backdrop"

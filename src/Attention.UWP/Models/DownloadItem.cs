@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -14,6 +15,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using MetroLog;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Newtonsoft.Json;
 using PixabaySharp.Models;
 using Windows.ApplicationModel.Background;
@@ -66,26 +68,23 @@ namespace Attention.UWP.Models
         public DownloadItem(Download entity, StorageFolder folder) : this(folder) => _entity = entity;
         public DownloadItem(ImageItem item, StorageFolder folder) : this(folder)
         {
+            var imgUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL;
             _entity = new Download()
             {
+                IdHash = item.IdHash,
                 Json = JsonConvert.SerializeObject(item),
-                ImageUrl = string.IsNullOrEmpty(item.FullHDImageURL?.Trim()) ? item.LargeImageURL : item.FullHDImageURL
+                ImageUrl = imgUrl,
+                FileName = GetFileNameFromUri(new Uri(imgUrl))
             };
         }
 
-        /// <summary>
-        /// https://github.com/jQuery2DotNet/UWP-Samples/blob/master/BackgroundDownloader/BackgroundDownloader/MainPage.xaml.cs
-        /// </summary>
-        /// <returns></returns>
         public async Task<DownloadItemResult> DownloadAsync()
         {
-            var sourceUri = new Uri(_entity.ImageUrl);
-            var file = await CheckLocalFileExistsFromUriHash(sourceUri, _folder);
-            var downloadingAlready = await IsDownloading(sourceUri);
-
+            Uri sourceUri = new Uri(_entity.ImageUrl);
+            StorageFile file = await CheckLocalFileExists(_folder, _entity.FileName);
+            bool downloadingAlready = await IsDownloading(sourceUri);
             if (file == null && !downloadingAlready)
             {
-                _entity.FileName = SafeHashUri(sourceUri);
                 _entity.Id = await SaveItemDownloaded(_repository, _entity);
 
                 await Task.Run(() =>
@@ -100,10 +99,13 @@ namespace Attention.UWP.Models
                           else
                           {
                               Debug.WriteLine("Download Completed");
-
-                              await SetItemDownloaded(_repository, _folder, _entity);
-
-                              await ReLoadImageSource();
+                              await SetItemDownloaded(_repository, _folder, _entity).ContinueWith(async subState =>
+                              {
+                                  if (subState.Exception == null)
+                                  {
+                                      await RefreshImageSource();
+                                  }
+                              });
                           }
                       });
                 });
@@ -121,11 +123,15 @@ namespace Attention.UWP.Models
             }
         }
 
-        public async Task ReLoadImageSource()
+        public async Task RefreshImageSource()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
-                ImageSource = await LocalFileToImage(_folder, _entity.FileName);
+                var source = await LocalFileToImage(_folder, _entity.FileName);
+                if (source != default)
+                {
+                    ImageSource = source;
+                }
             });
         }
 
@@ -157,6 +163,7 @@ namespace Attention.UWP.Models
             });
             var downloadTask = download.StartAsync().AsTask(cancellationToken.Token, progressCallback);
 
+            CreateToast(_entity.FileName, _entity.FileName);
             try
             {
                 await downloadTask;
@@ -173,27 +180,34 @@ namespace Attention.UWP.Models
 
     public partial class DownloadItem : ObservableObject
     {
-        private static ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+        private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
         private static async Task<bool> IsDownloading(Uri uri)
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
             return downloads.Any(dl => dl.RequestedUri == uri);
         }
-        private static string SafeHashUri(Uri sourceUri)
-        {
-            string safeUri = sourceUri.ToString().ToLower();
-            var hash = Hash(safeUri);
-            string suffix = sourceUri.Segments.LastOrDefault()?.Split(".").LastOrDefault() ?? ".jpg";
-            return $"{hash}.{suffix}";
-        }
-        private static async Task<StorageFile> CheckLocalFileExistsFromUriHash(Uri sourceUri, StorageFolder folder)
-        {
-            string hash = SafeHashUri(sourceUri);
-            return await CheckLocalFileExists(folder, hash);
-        }
         private static async Task<StorageFile> GetLocalFileFromName(StorageFolder folder, string filename)
         {
             return await folder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+        }
+        private static string GetFileNameFromUri(Uri sourceUri)
+        {
+            string Hash(string input)
+            {
+                IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
+                HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
+                var hashByte = hashAlgorithm.HashData(buffer).ToArray();
+                var sb = new StringBuilder(hashByte.Length * 2);
+                foreach (byte b in hashByte)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+
+                return sb.ToString();
+            }
+
+            var fi = new FileInfo(Path.GetFileName(sourceUri.PathAndQuery));
+            return Hash(fi.Name) + fi.Extension;
         }
         private static async Task<StorageFile> CheckLocalFileExists(StorageFolder folder, string fileName)
         {
@@ -221,19 +235,6 @@ namespace Attention.UWP.Models
                 return default;
             }
         }
-        private static string Hash(string input)
-        {
-            IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(input, BinaryStringEncoding.Utf8);
-            HashAlgorithmProvider hashAlgorithm = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-            var hashByte = hashAlgorithm.HashData(buffer).ToArray();
-            var sb = new StringBuilder(hashByte.Length * 2);
-            foreach (byte b in hashByte)
-            {
-                sb.Append(b.ToString("x2"));
-            }
-
-            return sb.ToString();
-        }
         private static void CreateNotifications(BackgroundDownloader downloader)
         {
             var successToastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
@@ -247,6 +248,49 @@ namespace Attention.UWP.Models
                 "At least one download completed with failure.";
             ToastNotification failureToast = new ToastNotification(failureToastXml);
             downloader.FailureToastNotification = failureToast;
+        }
+        private static void CreateToast(string title, string tag)
+        {
+            ToastContent toastContent = new ToastContent()
+            {
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        Children =
+                        {
+                            new AdaptiveText()
+                            {
+                                Text = "File downloading...",
+                            },
+
+                            new AdaptiveProgressBar()
+                            {
+                                Title = title,
+                                Value = new BindableProgressBarValue("progressValue"),
+                                //ValueStringOverride = new BindableString("p"),
+                                Status = "Downloading...",
+                            },
+                        },
+                    },
+                },
+            };
+
+            var data = new Dictionary<string, string>
+            {
+                { "progressValue", "0" },
+                //{ "p", $"cool" }, // TODO: better than cool
+            };
+
+            // And create the toast notification
+            ToastNotification notification = new ToastNotification(toastContent.GetXml())
+            {
+                Tag = tag,
+                Data = new NotificationData(data),
+            };
+
+            // And then send the toast
+            ToastNotificationManager.CreateToastNotifier().Show(notification);
         }
         private static void UpdateToast(string toastTag, double progressValue)
         {
@@ -268,16 +312,19 @@ namespace Attention.UWP.Models
         private static async Task<int> SaveItemDownloaded(IRepository<Download> _repository, Download download)
         {
             await _repository.InsertAsync(download);
-            var id = await _repository.GetAllAsync().ContinueWith(async task =>
+            using (Task<int> idTask = await _repository.GetAllAsync().ContinueWith(
+                async task =>
+                {
+                    var items = await task;
+                    return items.FirstOrDefault(p => p.FileName == download.FileName).Id;
+                }))
             {
-                var items = await task;
-                return items.FirstOrDefault(p => p.FileName == download.FileName).Id;
-            });
-            return await id;
+                return await idTask;
+            }
         }
         private static async Task SetItemDownloaded(IRepository<Download> repository, StorageFolder folder, Download download)
         {
-            StorageFile file = await GetLocalFileFromName(folder, download.FileName);
+            StorageFile file = await CheckLocalFileExists(folder, download.FileName);
             if (file != null)
             {
                 download.Thumbnail = await file.AsByteArray();

@@ -123,8 +123,14 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>Attention.UWP</value>
   </data>
+  <data name="download_Delete.Label" xml:space="preserve">
+    <value>删除</value>
+  </data>
   <data name="download_Header.Text" xml:space="preserve">
     <value>下载中心</value>
+  </data>
+  <data name="download_Open.Label" xml:space="preserve">
+    <value>打开</value>
   </data>
   <data name="more_About.Header" xml:space="preserve">
     <value>关于</value>

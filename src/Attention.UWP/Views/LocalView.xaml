@@ -17,8 +17,26 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <XamlUICommand x:Name="OpenXamlUICommand" Command="{x:Bind ViewModel.OpenCommand}" />
-        <XamlUICommand x:Name="DeleteXamlUICommand" Command="{x:Bind ViewModel.DeleteCommand}" />
+        <XamlUICommand
+            x:Name="OpenXamlUICommand"
+            x:Uid="download_Open"
+            Command="{x:Bind ViewModel.OpenCommand}"
+            Description="This is a OpenLocal command"
+            Label="Open">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="OpenLocal" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+        <XamlUICommand
+            x:Name="DeleteXamlUICommand"
+            x:Uid="download_Delete"
+            Command="{x:Bind ViewModel.DeleteCommand}"
+            Description="This is a Delete command"
+            Label="Delete">
+            <XamlUICommand.IconSource>
+                <SymbolIconSource Symbol="Delete" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
     </UserControl.Resources>
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
@@ -35,7 +53,7 @@
             <RowDefinition Height="72" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Padding="0,0,16,0">
             <TextBlock
                 x:Uid="download_Header"
                 HorizontalAlignment="Center"
@@ -43,17 +61,14 @@
                 FontWeight="Bold"
                 Style="{ThemeResource TitleTextBlockStyle}" />
             <Button
-                Margin="0,0,16,0"
                 HorizontalAlignment="Right"
-                Background="Transparent"
-                Command="{x:Bind ViewModel.BackCommand}">
-                <FontIcon
-                    FontFamily="Segoe MDL2 Assets"
-                    FontSize="16"
-                    Glyph="&#xE894;" />
-            </Button>
-            <NavigationViewItemSeparator VerticalAlignment="Bottom" />
+                Command="{x:Bind ViewModel.BackCommand}"
+                Content="&#xE894;"
+                CornerRadius="{StaticResource DefaultCornerRadius}"
+                FontSize="14"
+                Style="{StaticResource NavigationBackButtonSmallStyle}" />
         </Grid>
+        <NavigationViewItemSeparator Grid.Row="0" VerticalAlignment="Bottom" />
         <Grid Grid.Row="1">
             <GridView
                 IsItemClickEnabled="True"
@@ -87,30 +102,7 @@
                                 </i:Interaction.Behaviors>
                             </mtui:ImageEx>
 
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal"
-                                Spacing="12">
-                                <StackPanel.Resources>
-                                    <Style TargetType="Button">
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                        <Setter Property="FontSize" Value="18" />
-                                        <Setter Property="FontFamily" Value="{StaticResource SymbolThemeFontFamily}" />
-                                        <Setter Property="RequestedTheme" Value="Dark" />
-                                        <Setter Property="CornerRadius" Value="{StaticResource DefaultCornerRadius}" />
-                                        <Setter Property="Width" Value="48" />
-                                        <Setter Property="Height" Value="48" />
-                                    </Style>
-                                </StackPanel.Resources>
-                                <Button
-                                    Command="{StaticResource OpenXamlUICommand}"
-                                    CommandParameter="{Binding}"
-                                    Content="&#xEC50;" />
-                                <Button
-                                    Command="{StaticResource DeleteXamlUICommand}"
-                                    CommandParameter="{Binding}"
-                                    Content="&#xE74D;" />
+                            <CommandBar VerticalAlignment="Bottom" Background="{ThemeResource SystemControlAcrylicElementBrush}">
                                 <i:Interaction.Behaviors>
                                     <behaviors:Fade
                                         x:Name="ButtonsUp"
@@ -129,7 +121,9 @@
                                         Value="0"
                                         Duration="400" />
                                 </i:Interaction.Behaviors>
-                            </StackPanel>
+                                <AppBarButton Command="{StaticResource OpenXamlUICommand}" CommandParameter="{Binding}" />
+                                <AppBarButton Command="{StaticResource DeleteXamlUICommand}" CommandParameter="{Binding}" />
+                            </CommandBar>
 
                             <i:Interaction.Behaviors>
 
@@ -165,7 +159,7 @@
                         <mtui:StaggeredPanel
                             Margin="12,0,6,0"
                             HorizontalAlignment="Stretch"
-                            DesiredColumnWidth="260" />
+                            DesiredColumnWidth="320" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>

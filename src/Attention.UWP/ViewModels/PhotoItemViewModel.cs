@@ -8,6 +8,7 @@ using MetroLog;
 using PixabaySharp.Models;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.System;

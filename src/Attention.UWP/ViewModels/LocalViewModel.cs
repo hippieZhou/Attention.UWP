@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows.Input;
 using Windows.System;
 using System;
-using Attention.UWP.Models.Repositories;
 
 namespace Attention.UWP.ViewModels
 {
@@ -23,7 +22,7 @@ namespace Attention.UWP.ViewModels
             get { return _items ?? (_items = new ObservableCollection<DownloadItem>()); }
             set { Set(ref _items, value); }
         }
-
+        
         public LocalViewModel(DAL dal)
         {
             _dal = dal;
@@ -47,7 +46,7 @@ namespace Attention.UWP.ViewModels
                         IEnumerable<DownloadItem> downloads = from p in entities select new DownloadItem(p, folder);
                         foreach (var item in downloads)
                         {
-                            await item.ReLoadImageSource();
+                            await item.RefreshImageSource();
                             Items.Add(item);
                         }
                     });

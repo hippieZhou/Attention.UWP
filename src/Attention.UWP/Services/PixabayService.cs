@@ -47,6 +47,11 @@ namespace Attention.UWP.Services
             {
                 Page = page,
                 PerPage = per_page,
+             
+                IsEditorsChoice = true,
+                IsSafeSearch = true,
+                ResponseGroup = ResponseGroup.HighResolution,
+
                 Order = _cacheFilter.Order,
                 Orientation = _cacheFilter.Orientation,
                 ImageType = _cacheFilter.ImageType,
