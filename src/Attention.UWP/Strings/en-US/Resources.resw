@@ -118,13 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value />
+    <value>What are you doing to me?</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>Attention.UWP</value>
   </data>
+  <data name="download_Delete.Label" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="download_Header.Text" xml:space="preserve">
     <value>DOWNLOAD</value>
+  </data>
+  <data name="download_Open.Label" xml:space="preserve">
+    <value>Open</value>
   </data>
   <data name="more_About.Header" xml:space="preserve">
     <value>About</value>
@@ -171,6 +177,12 @@
   <data name="more_Personalized_LiveTitle.Header" xml:space="preserve">
     <value>LiveTitle</value>
   </data>
+  <data name="more_Personalized_LiveTitle_Off.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="more_Personalized_LiveTitle_On.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
   <data name="more_Personalized_Theme.Header" xml:space="preserve">
     <value>Theme</value>
   </data>
@@ -186,19 +198,37 @@
   <data name="more_Thanks.Header" xml:space="preserve">
     <value>Thanks</value>
   </data>
-  <data name="photo_Category.Content" xml:space="preserve">
+  <data name="photoItemView_Browse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="photoItemView_Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="photoItemView_Share.Text" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="search_Category.Header" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="photo_Find.Header" xml:space="preserve">
+  <data name="search_Dialog.PrimaryButtonText" xml:space="preserve">
     <value>Find</value>
   </data>
-  <data name="photo_ImageType.Content" xml:space="preserve">
+  <data name="search_Dialog.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="search_Dialog.Title" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="search_ImageType.Header" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="photo_Orders.Content" xml:space="preserve">
+  <data name="search_Keywords.Header" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="search_Orders.Header" xml:space="preserve">
     <value>Orders</value>
   </data>
-  <data name="photo_Orientation.Content" xml:space="preserve">
+  <data name="search_Orientation.Header" xml:space="preserve">
     <value>Orientation</value>
   </data>
 </root>

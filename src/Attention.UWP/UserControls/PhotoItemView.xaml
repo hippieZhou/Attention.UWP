@@ -35,84 +35,96 @@
             x:Name="destinationElement"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Background="{ThemeResource SystemControlAcrylicElementBrush}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
             ManipulationStarted="DestinationElement_ManipulationStarted">
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="destinationElement_Transform" />
+            </Grid.RenderTransform>
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="Loaded">
                     <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=destinationElement}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <Grid.RenderTransform>
-                <CompositeTransform x:Name="destinationElement_Transform" />
-            </Grid.RenderTransform>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
             <mtui:ImageEx
                 x:Name="imageEx"
-                Grid.Row="0"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}"
                 CacheMode="BitmapCache"
                 IsCacheEnabled="True"
                 Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/Image.png}"
                 Stretch="UniformToFill" />
+
             <Grid
-                Grid.Row="1"
-                Height="60"
-                Padding="12,0"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <animations:Implicit.ShowAnimations>
-                    <animations:TranslationAnimation
-                        From="0, 80, 0"
-                        To="0"
-                        Duration="0:0:0.450" />
-                    <animations:OpacityAnimation
-                        From="0"
-                        To="1.0"
-                        Duration="0:0:0.450" />
-                </animations:Implicit.ShowAnimations>
+                x:Name="destinationFooterElement"
+                Padding="12"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                CornerRadius="{StaticResource DefaultCornerRadius}">
+                <Grid.Shadow>
+                    <ThemeShadow />
+                </Grid.Shadow>
                 <StackPanel
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <PersonPicture
-                        Width="38"
-                        Height="38"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        ProfilePicture="{x:Bind ViewModel.Item.UserImageURL, Mode=OneWay, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/User.png}" />
-                    <TextBlock
-                        Margin="12,0,8,0"
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        Style="{ThemeResource BaseTextBlockStyle}"
-                        Text="{x:Bind ViewModel.Item.User, Mode=OneWay}" />
-                    <TextBlock Foreground="#696464" Text="[" />
-                    <TextBlock Foreground="#696464" Text="{x:Bind ViewModel.Item.ImageWidth, Mode=OneWay}" />
-                    <TextBlock Foreground="#696464" Text="x" />
-                    <TextBlock Foreground="#696464" Text="{x:Bind ViewModel.Item.ImageHeight, Mode=OneWay}" />
-                    <TextBlock Foreground="#696464" Text="]" />
-                </StackPanel>
-                <StackPanel
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Horizontal"
                     Spacing="12">
+                    <animations:Implicit.ShowAnimations>
+                        <animations:TranslationAnimation
+                            Delay="0:0:1.0"
+                            SetInitialValueBeforeDelay="True"
+                            From="0, -80, 0"
+                            To="0"
+                            Duration="0:0:0.6" />
+                        <animations:OpacityAnimation
+                            Delay="0:0:1.0"
+                            SetInitialValueBeforeDelay="True"
+                            From="0"
+                            To="1.0"
+                            Duration="0:0:0.6" />
+                    </animations:Implicit.ShowAnimations>
                     <Button
-                        Background="#3db1ff"
+                        Background="#2bff88"
                         Command="{x:Bind ViewModel.DownloadCommand}"
-                        Content="DOWNLOAD"
-                        RequestedTheme="Dark" />
-                    <Button Command="{x:Bind ViewModel.InfoCommand}" Style="{StaticResource InfoButtonStyle}" />
+                        Style="{StaticResource PureButtonStyle}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    Glyph="&#xE896;" />
+                                <TextBlock x:Uid="photoItemView_Download" Text="免费下载" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Background="#2bd2ff"
+                        Command="{x:Bind ViewModel.ShareCommand}"
+                        Style="{StaticResource PureButtonStyle}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    Glyph="&#xE72D;" />
+                                <TextBlock x:Uid="photoItemView_Share" Text="快速分享" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Background="#24a9b9"
+                        Command="{x:Bind ViewModel.BrowseCommand}"
+                        Style="{StaticResource PureButtonStyle}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    Glyph="&#xEC27;" />
+                                <TextBlock x:Uid="photoItemView_Browse" Text="片源查看" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -125,7 +137,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="destinationElement.Width" Value="900" />
-                        <Setter Target="imageEx.Height" Value="520" />
+                        <Setter Target="destinationElement.Height" Value="520" />
+                        <Setter Target="destinationFooterElement.Margin" Value="48,0,48,-38" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -134,7 +147,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="destinationElement.Width" Value="600" />
-                        <Setter Target="imageEx.Height" Value="320" />
+                        <Setter Target="destinationElement.Height" Value="320" />
+                        <Setter Target="destinationFooterElement.Margin" Value="48,0,48,-38" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -143,10 +157,21 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="destinationElement.Width" Value="440" />
-                        <Setter Target="imageEx.Height" Value="240" />
+                        <Setter Target="destinationElement.Height" Value="240" />
+                        <Setter Target="destinationFooterElement.Margin" Value="32,0,32,-32" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>
+
+<!--<PersonPicture
+      Width="40"
+      Height="40"
+      HorizontalAlignment="Left"
+      VerticalAlignment="Bottom"
+      ProfilePicture="{x:Bind ViewModel.Item.UserImageURL,
+                    Mode=OneWay,
+                    Converter={StaticResource ImageSourceNullValueConverter},
+                    ConverterParameter=ms-appx:///Assets/User.png}" />-->

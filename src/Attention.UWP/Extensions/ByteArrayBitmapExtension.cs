@@ -11,7 +11,7 @@ namespace Attention.UWP.Extensions
 
     public static class ByteArrayBitmapExtension
     {
-        public static async Task<byte[]> AsByteArray(this StorageFile file)
+        public static async Task<byte[]> AsByteArray(this IStorageFile file)
         {
             IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read);
             var reader = new Windows.Storage.Streams.DataReader(fileStream.GetInputStreamAt(0));
@@ -56,7 +56,7 @@ namespace Attention.UWP.Extensions
             return null;
         }
 
-        private static async Task<BitmapImage> AsBitmapImage(this StorageFile file)
+        private static async Task<BitmapImage> AsBitmapImage(this IStorageFile file)
         {
             var stream = await file.OpenAsync(FileAccessMode.Read);
             var bitmapImage = new BitmapImage();

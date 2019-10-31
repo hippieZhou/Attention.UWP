@@ -2,6 +2,8 @@
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Toolkit.Uwp.Helpers;
+using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
@@ -82,7 +84,7 @@ namespace Attention.UWP.Models
             }
         }
 
-        private const bool LIVETITLE_DEFAULT = true;
+        private const bool LIVETITLE_DEFAULT = false;
         public bool LiveTitle
         {
             get { return ReadSettings(nameof(LiveTitle), LIVETITLE_DEFAULT); }
@@ -103,7 +105,6 @@ namespace Attention.UWP.Models
             Orientation = PixabaySharp.Enums.Orientation.All,
             Category = PixabaySharp.Enums.Category.Backgrounds
         };
-
         public Filter Filter
         {
             get
@@ -118,6 +119,42 @@ namespace Attention.UWP.Models
             }
         }
 
+        public bool LoadInMemory
+        {
+            get
+            {
+                return ReadSettings(nameof(LoadInMemory), false);
+            }
+            set
+            {
+                SaveSettings(nameof(LoadInMemory), value);
+                RaisePropertyChanged(() => LoadInMemory);
+            }
+        }
+
+        public string AppSummary
+        {
+            get
+            {
+                string info = $@"
+------------------------------------------------------------------------
+IsFirstRun:{SystemInformation.IsFirstRun};
+ApplicationName:{SystemInformation.ApplicationName};
+ApplicationVersion:{Version};
+Culture:{SystemInformation.Culture};
+OperatingSystem:{SystemInformation.OperatingSystem};
+OperatingSystemArchitecture:{SystemInformation.OperatingSystemArchitecture};
+OperatingSystemVersion:{SystemInformation.OperatingSystemVersion};
+DeviceFamily:{SystemInformation.DeviceFamily};
+DeviceModel:{SystemInformation.DeviceModel};
+DeviceManufacturer:{SystemInformation.DeviceManufacturer};
+AvailableMemory:{SystemInformation.AvailableMemory};
+VersionInstalled:{Version};
+------------------------------------------------------------------------";
+                return info;
+            }
+        }
+
         public AppSettings()
         {
             localSettings = ApplicationData.Current.LocalSettings;
@@ -128,17 +165,26 @@ namespace Attention.UWP.Models
                 var primary = ApplicationLanguages.Languages[0];
                 SaveSettings(nameof(Language), primary.StartsWith("zh") ? LANGUAGE_ZH : LANGUAGE_EN);
             }
+
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
+            ImageCache.Instance.MaxMemoryCacheCount = LoadInMemory ? 200 : 0;
         }
 
         public async Task<StorageFolder> GetSavingFolderAsync()
         {
-            var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
+            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 
         public async Task<StorageFolder> GetTemporaryFolderAsync()
         {
-            var folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("AttentionTemp", CreationCollisionOption.OpenIfExists);
+            StorageFolder folder = await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("ImageCache", CreationCollisionOption.OpenIfExists);
+            return folder;
+        }
+
+        public async Task<StorageFolder> GetLogFolderAsync()
+        {
+            StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 

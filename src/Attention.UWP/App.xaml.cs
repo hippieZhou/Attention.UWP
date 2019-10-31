@@ -1,5 +1,5 @@
 ﻿using Attention.UWP.Models;
-using Attention.UWP.Services;
+using GalaSoft.MvvmLight.Threading;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -17,7 +17,6 @@ namespace Attention.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)

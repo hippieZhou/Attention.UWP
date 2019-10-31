@@ -1,4 +1,6 @@
 ﻿using Attention.UWP.ViewModels;
+using Microsoft.Toolkit.Uwp.UI.Animations;
+using System.Numerics;
 using Windows.UI.Xaml.Controls;
 
 

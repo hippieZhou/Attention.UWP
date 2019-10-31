@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.UI;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.UWP.ViewModels
 {
-    public class PhotoGridViewModel: PixViewModel<PhotoItemSource, ImageItem>
+    public class PhotoGridViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
         public PhotoGridViewModel(PixabayService service)
         {
@@ -30,15 +34,40 @@ namespace Attention.UWP.ViewModels
                      NotFoundVisibility = Visibility.Collapsed;
                  }, () =>
                  {
-                     NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                      LoadingVisibility = Visibility.Collapsed;
                      ErrorVisibility = Visibility.Collapsed;
                  }, ex =>
                  {
                      ErrorVisibility = Visibility.Visible;
-                     LoadingVisibility = Visibility.Collapsed;
                      NotFoundVisibility = Visibility.Collapsed;
+                     LoadingVisibility = Visibility.Collapsed;
                  });
+            Items.CollectionChanged += (sender, e) =>
+            {
+                NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            };
+
+            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
+            {
+                if (enabled)
+                {
+                    AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
+                    bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
+                    if (isPinned)
+                    {
+                        var result = await service.QueryImagesAsync(1, 5, App.Settings.Filter);
+                        if (result != null)
+                        {
+                            var items = result.Images.Select(p => p.PreviewURL);
+                            LiveTileHelper.UpdateLiveTile(items);
+                        }
+                    }
+                }
+                else
+                {
+                    LiveTileHelper.CleanUpTile();
+                }
+            });
         }
     }
 
@@ -49,29 +78,24 @@ namespace Attention.UWP.ViewModels
         public PhotoItemSource(PixabayService service)
         {
             _service = service;
-
-            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
-            {
-                if (enabled)
-                {
-                    var result = await _service.QueryImagesAsync(1, 5, App.Settings.Filter);
-                    if (result != null)
-                    {
-                        var items = result.Images.Select(p => p.ImageURL);
-                        LiveTileHelper.UpdateLiveTile(items);
-                    }
-                }
-                else
-                {
-                    LiveTileHelper.CleanUpTile();
-                }
-            });
         }
 
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             var result = await _service.QueryImagesAsync(page: ++pageIndex, per_page: pageSize, App.Settings.Filter);
-            return result != null ? result.Images : new List<ImageItem>();
+            if (result?.Images != null)
+            {
+                var loadInMemory = App.Settings.LoadInMemory;
+                Parallel.ForEach(result.Images, async p =>
+                {
+                    await ImageCache.Instance.PreCacheAsync(new Uri(p.LargeImageURL), false, loadInMemory);
+                });
+                return result.Images;
+            }
+            else
+            {
+                return new List<ImageItem>();
+            }
         }
     }
 
@@ -137,12 +161,11 @@ namespace Attention.UWP.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new RelayCommand<IType>(async item =>
+                    _itemClickCommand = new RelayCommand<IType>(item =>
                     {
                         if (View.ContainerFromItem(item) is GridViewItem container)
                         {
                             Selected = item;
-
                             ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
                             ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
                             animation.IsScaleAnimationEnabled = true;
@@ -153,7 +176,6 @@ namespace Attention.UWP.ViewModels
                                 container.Opacity = 0.0d;
                             }
                         }
-                        await Task.CompletedTask;
                     });
                 }
                 return _itemClickCommand;

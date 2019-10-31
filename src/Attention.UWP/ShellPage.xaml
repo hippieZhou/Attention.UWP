@@ -8,52 +8,35 @@
     xmlns:local="using:Attention.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:uc="using:Attention.UWP.UserControls"
     xmlns:v="using:Attention.UWP.Views"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
-    <Page.Transitions>
-        <TransitionCollection>
-            <NavigationThemeTransition>
-                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <DrillInNavigationTransitionInfo />
-                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
-            </NavigationThemeTransition>
-        </TransitionCollection>
-    </Page.Transitions>
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
-    <Grid>
-        <SplitView DisplayMode="Overlay" IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
-            <SplitView.Pane>
-                <uc:PhotoFilterView
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Stretch"
-                    ViewModel="{x:Bind ViewModel.PhotoFilterViewModel, Mode=OneWay}" />
-            </SplitView.Pane>
-            <SplitView.Content>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <local:ExtendedTitleBar Grid.Row="0" />
-                    <v:MainView x:Name="mainView" Grid.Row="1">
-                        <i:Interaction.Behaviors>
-                            <ic:EventTriggerBehavior EventName="Loaded">
-                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=mainView}" />
-                            </ic:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </v:MainView>
-                    <v:LocalView Grid.Row="1" />
-                    <v:MoreView Grid.Row="1" />
-                </Grid>
-            </SplitView.Content>
-        </SplitView>
-        <mtui:InAppNotification
-            x:Name="InAppNotification"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            CornerRadius="4" />
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+        <Grid.BackgroundTransition>
+            <BrushTransition Duration="0:0:0.4" />
+        </Grid.BackgroundTransition>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <local:ExtendedTitleBar Grid.Row="0" />
+
+        <Grid Grid.Row="1">
+            <v:MainView x:Name="mainView" />
+            <v:LocalView />
+            <v:MoreView />
+
+            <mtui:InAppNotification
+                x:Name="InAppNotification"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                CornerRadius="{StaticResource DefaultCornerRadius}" />
+        </Grid>
     </Grid>
 </Page>

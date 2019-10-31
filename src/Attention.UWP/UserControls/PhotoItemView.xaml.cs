@@ -1,5 +1,6 @@
 ﻿using Attention.UWP.ViewModels;
 using System;
+using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -11,6 +12,7 @@ namespace Attention.UWP.UserControls
         public PhotoItemView()
         {
             this.InitializeComponent();
+            destinationFooterElement.Translation += new Vector3(0, 0, 32);
         }
 
         public PhotoItemViewModel ViewModel
