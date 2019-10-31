@@ -45,6 +45,7 @@ namespace Attention.UWP.ViewModels
 
         public ILogManager LogManager => ServiceLocator.Current.GetInstance<ILogManager>();
         public DAL DAL => ServiceLocator.Current.GetInstance<DAL>();
+        public PixabayService Pixabay => ServiceLocator.Current.GetInstance<PixabayService>();
         public ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public SearchViewModel Search => ServiceLocator.Current.GetInstance<SearchViewModel>();

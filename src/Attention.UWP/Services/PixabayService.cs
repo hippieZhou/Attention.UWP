@@ -1,10 +1,8 @@
 ﻿using Attention.UWP.Models;
-using MetroLog;
 using PixabaySharp;
 using PixabaySharp.Enums;
 using PixabaySharp.Models;
 using PixabaySharp.Utility;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,8 +13,6 @@ namespace Attention.UWP.Services
     /// </summary>
     public class PixabayService
     {
-        private readonly ILogger _logger;
-
         private readonly PixabaySharpClient _client;
         private Filter _cacheFilter = new Filter()
         {
@@ -29,12 +25,9 @@ namespace Attention.UWP.Services
 
         public PixabayService(string api_key)
         {
-            _logger = ViewModels.ViewModelLocator.Current.LogManager.GetLogger<PixabayService>();
-
             if (string.IsNullOrWhiteSpace(api_key))
             {
-                var ex = new KeyNotFoundException();
-                _logger.Error("The API-KEY is missing", ex);
+                var ex = new KeyNotFoundException("The API-KEY is missing");
                 throw ex;
             }
 
@@ -47,7 +40,7 @@ namespace Attention.UWP.Services
             {
                 Page = page,
                 PerPage = per_page,
-             
+
                 IsEditorsChoice = true,
                 IsSafeSearch = true,
                 ResponseGroup = ResponseGroup.HighResolution,
@@ -58,15 +51,7 @@ namespace Attention.UWP.Services
                 Category = _cacheFilter.Category,
                 Query = _cacheFilter.Query
             };
-            try
-            {
-                return await _client.QueryImagesAsync(qb);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("QueryImagesAsync:", ex);
-                return default(ImageResult);
-            }
+            return await _client.QueryImagesAsync(qb);
         }
 
         public async Task<ImageResult> QueryImagesAsync(int page = 1, int per_page = 20, Filter filter = default)

@@ -46,28 +46,6 @@ namespace Attention.UWP.ViewModels
             {
                 NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             };
-
-            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
-            {
-                if (enabled)
-                {
-                    AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
-                    bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
-                    if (isPinned)
-                    {
-                        var result = await service.QueryImagesAsync(1, 5, App.Settings.Filter);
-                        if (result != null)
-                        {
-                            var items = result.Images.Select(p => p.PreviewURL);
-                            LiveTileHelper.UpdateLiveTile(items);
-                        }
-                    }
-                }
-                else
-                {
-                    LiveTileHelper.CleanUpTile();
-                }
-            });
         }
     }
 

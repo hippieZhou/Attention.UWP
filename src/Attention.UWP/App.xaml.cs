@@ -1,5 +1,4 @@
 ﻿using Attention.UWP.Models;
-using GalaSoft.MvvmLight.Threading;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -51,6 +50,11 @@ namespace Attention.UWP
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
         }
 
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
