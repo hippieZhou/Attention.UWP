@@ -20,14 +20,10 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="ImageItemTemplate" x:DataType="pix:ImageItem">
-            <Grid x:Name="connectedElement" CornerRadius="{StaticResource DefaultCornerRadius}">
-                <Grid.Background>
-                    <AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        FallbackColor="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
-                        TintColor="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
-                        TintOpacity="0.4" />
-                </Grid.Background>
+            <Grid
+                x:Name="connectedElement"
+                Background="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
+                CornerRadius="{StaticResource DefaultCornerRadius}">
                 <mtui:ImageEx
                     x:Name="imageEx"
                     CacheMode="BitmapCache"
