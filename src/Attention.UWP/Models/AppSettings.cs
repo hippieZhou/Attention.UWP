@@ -4,7 +4,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -64,7 +63,7 @@ namespace Attention.UWP.Models
                 RaisePropertyChanged(() => Language);
 
                 ApplicationLanguages.PrimaryLanguageOverride = value == LANGUAGE_ZH ? "zh-CN" : "en-US";
-                Messenger.Default.Send("more_Personalized_Language_restart".GetLocalized(), nameof(InAppNotification));
+                Messenger.Default.Send("more_Personalized_Language_restart".GetLocalized(), nameof(AppNotification));
             }
         }
 

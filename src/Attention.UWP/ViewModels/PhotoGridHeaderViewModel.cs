@@ -76,7 +76,7 @@ namespace Attention.UWP.ViewModels
 
         private void BackToView(BaseViewModel uiElement)
         {
-            ViewModelLocator.Current.Shell.UiElement.PlayScaleSpringAnimation(true);
+            ViewModelLocator.Current.Shell.MainElement.PlayScaleSpringAnimation(true);
             uiElement.Visibility = Visibility.Visible;
         }
     }

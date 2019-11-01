@@ -26,7 +26,7 @@ namespace Attention.UWP.ViewModels
                     _backCommand = new RelayCommand(() =>
                     {
                         Visibility = Visibility.Collapsed;
-                        ViewModelLocator.Current.Shell.UiElement.PlayScaleSpringAnimation(false);
+                        ViewModelLocator.Current.Shell.MainElement.PlayScaleSpringAnimation(false);
                     });
                 }
                 return _backCommand;

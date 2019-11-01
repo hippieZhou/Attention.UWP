@@ -10,21 +10,29 @@ using System;
 using Attention.UWP.Helpers;
 using System.Linq;
 using System.Threading.Tasks;
+using Attention.UWP.Views;
 
 namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        public FrameworkElement UiElement { get; private set; }
-
-        public void Initialize(FrameworkElement uiElement) => UiElement = uiElement;
-
+        public FrameworkElement MainElement { get; private set; }
         public ShellViewModel()
         {
             Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
             {
                 await RefreshLiveTitleAsync(enabled);
             });
+
+            Messenger.Default.Register<string>(this, nameof(AppNotification), async str =>
+            {
+                await Singleton<AppNotification>.Instance.ShowAsync(str, TimeSpan.FromSeconds(2.0));
+            });
+        }
+
+        public void Initialize(MainView mainElement)
+        {
+            MainElement = mainElement;
         }
 
         private ICommand _loadedCommand;

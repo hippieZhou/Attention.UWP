@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppNotification.cs" />
     <Compile Include="BackgroundProxy.cs" />
     <Compile Include="Behaviors\ElementScaleAction.cs" />
     <Compile Include="Behaviors\ElementTiltBehavior.cs" />
@@ -217,6 +218,10 @@
     <Page Include="Themes\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\GridViewItem.xaml">
       <SubType>Designer</SubType>

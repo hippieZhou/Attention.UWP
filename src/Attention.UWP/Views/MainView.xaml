@@ -12,20 +12,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <animations:Implicit.ShowAnimations>
-            <animations:TranslationAnimation
-                Delay="0:0:0.4"
-                SetInitialValueBeforeDelay="True"
-                From="0,40,0"
-                To="0,0,0"
-                Duration="0:0:0.6" />
-            <animations:OpacityAnimation
-                Delay="0:0:0.4"
-                SetInitialValueBeforeDelay="True"
-                From="0"
-                To="1"
-                Duration="0:0:0.6" />
-        </animations:Implicit.ShowAnimations>
         <uc:PhotoGridView ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}">
             <uc:PhotoGridView.Header>
                 <uc:PhotoGridHeader ViewModel="{x:Bind ViewModel.PhotoGridHeaderViewModel, Mode=OneWay}" />

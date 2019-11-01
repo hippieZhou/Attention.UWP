@@ -7,9 +7,16 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:v="using:Attention.UWP.Views"
     mc:Ignorable="d">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <DrillInNavigationTransitionInfo />
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
             <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -32,11 +39,6 @@
             <v:MainView x:Name="mainView" />
             <v:LocalView />
             <v:MoreView />
-
-            <mtui:InAppNotification
-                x:Name="InAppNotification"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}"
-                CornerRadius="{StaticResource DefaultCornerRadius}" />
         </Grid>
     </Grid>
 </Page>
