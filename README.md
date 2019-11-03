@@ -6,7 +6,7 @@
 
 `The wallpaper client of Pixabay`
 
-![Light Model](images/wallpaper.png)
+![Attention For UWP](images/uwp.png)
 
 </div>
 
@@ -52,6 +52,8 @@ Maybe it's a joke.
 I named this app `Attention` only from [Charlie Puth](https://music.163.com/#/song?id=473817398)'s song of the same name, although it didn't start out as the name.
 
 If you like Bing's daily wallpapers, you can visit my website [hippiezhou.fun](https://hippiezhou.fun/) to view them.
+
+![Attention For Web](images/web.png)
 
 ## License 💡
 
