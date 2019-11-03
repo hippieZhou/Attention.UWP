@@ -20,14 +20,10 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="ImageItemTemplate" x:DataType="pix:ImageItem">
-            <Grid x:Name="connectedElement" CornerRadius="{StaticResource DefaultCornerRadius}">
-                <Grid.Background>
-                    <AcrylicBrush
-                        BackgroundSource="Backdrop"
-                        FallbackColor="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
-                        TintColor="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
-                        TintOpacity="0.4" />
-                </Grid.Background>
+            <Grid
+                x:Name="connectedElement"
+                Background="{x:Bind Id, Converter={StaticResource ImageItemColorConverter}}"
+                CornerRadius="{StaticResource DefaultCornerRadius}">
                 <mtui:ImageEx
                     x:Name="imageEx"
                     CacheMode="BitmapCache"
@@ -124,12 +120,19 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid>
         <mtui:AdaptiveGridView
             x:Name="photoGridView"
             Padding="12,0,6,0"
             animations:ReorderGridAnimation.Duration="250"
+            x:DeferLoadStrategy="Lazy"
+            x:FieldModifier="public"
             DataFetchSize="1"
             DesiredWidth="420"
             Header="{x:Bind Header}"
@@ -144,13 +147,8 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectionMode="Single"
             ShowsScrollingPlaceholders="False"
-            SizeChanged="PhotoGridView_SizeChanged">
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="Loaded">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=photoGridView}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-
+            SizeChanged="PhotoGridView_SizeChanged"
+            Visibility="Collapsed">
             <mtui:AdaptiveGridView.ItemContainerTransitions>
                 <TransitionCollection>
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
@@ -228,37 +226,5 @@
                 Content="RETRY"
                 FontSize="20" />
         </StackPanel>
-
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="photoGridView.DesiredWidth" Value="420" />
-                        <Setter Target="photoGridView.ItemHeight" Value="260" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="photoGridView.DesiredWidth" Value="400" />
-                        <Setter Target="photoGridView.ItemHeight" Value="280" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="photoGridView.DesiredWidth" Value="380" />
-                        <Setter Target="photoGridView.ItemHeight" Value="260" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </UserControl>

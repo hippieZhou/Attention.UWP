@@ -44,6 +44,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand<RoutedEventArgs>(async args =>
                     {
+                        MainElement.Visibility = Visibility.Visible;
                         await RefreshLiveTitleAsync(App.Settings.LiveTitle);
                     });
                 }

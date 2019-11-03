@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +21,15 @@ namespace Attention.UWP.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return colors.ElementAt(random.Next(colors.Count()));
+            var first = colors.ElementAt(random.Next(colors.Count()));
+            var brush = new AcrylicBrush
+            {
+                BackgroundSource = AcrylicBackgroundSource.Backdrop,
+                FallbackColor = first,
+                TintColor = first,
+                TintOpacity = 0.4,
+            };
+            return brush;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

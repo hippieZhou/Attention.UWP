@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -115,6 +116,7 @@ namespace Attention.UWP.ViewModels
             get { return _notFoundVisibility; }
             set { Set(ref _notFoundVisibility, value); }
         }
+        internal void Initialize(AdaptiveGridView view) => View = view;
 
         protected ICommand _loadedCommand;
         public virtual ICommand LoadedCommand
@@ -123,9 +125,9 @@ namespace Attention.UWP.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand<GridView>(view =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
-                        View = view;
+                        View.Visibility = Visibility.Visible;
                     });
                 }
                 return _loadedCommand;

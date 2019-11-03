@@ -2,7 +2,6 @@
     x:Class="Attention.UWP.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,7 +13,10 @@
     <Grid>
         <uc:PhotoGridView ViewModel="{x:Bind ViewModel.PhotoGridViewModel, Mode=OneWay}">
             <uc:PhotoGridView.Header>
-                <uc:PhotoGridHeader ViewModel="{x:Bind ViewModel.PhotoGridHeaderViewModel, Mode=OneWay}" />
+                <uc:PhotoGridHeader
+                    Margin="0"
+                    Padding="0"
+                    ViewModel="{x:Bind ViewModel.PhotoGridHeaderViewModel, Mode=OneWay}" />
             </uc:PhotoGridView.Header>
         </uc:PhotoGridView>
 

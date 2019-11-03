@@ -8,33 +8,36 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="768"
     d:DesignWidth="1024"
     mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <ic:EventTriggerBehavior EventName="Loaded">
+            <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </ic:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <Grid
-        x:Name="OverlayPopup"
+        x:Name="overlayPopup"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
         <Grid.Background>
-            <!--<SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />-->
-            <media:BackdropBlurBrush
-                xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-                Amount="8"
-                FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
+            <media:BackdropBlurBrush Amount="8" FallbackColor="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
         <i:Interaction.Behaviors>
             <ic:EventTriggerBehavior EventName="Tapped">
-                <ic:InvokeCommandAction Command="{x:Bind ViewModel.BackCommand, Mode=OneWay}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.BackCommand}" />
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
-
         <Grid
             x:Name="destinationElement"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            x:DeferLoadStrategy="Lazy"
+            x:FieldModifier="public"
             Background="{ThemeResource SystemControlAcrylicElementBrush}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
@@ -43,11 +46,7 @@
             <Grid.RenderTransform>
                 <CompositeTransform x:Name="destinationElement_Transform" />
             </Grid.RenderTransform>
-            <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="Loaded">
-                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" CommandParameter="{Binding ElementName=destinationElement}" />
-                </ic:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
+
             <mtui:ImageEx
                 x:Name="imageEx"
                 CacheMode="BitmapCache"

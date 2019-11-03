@@ -1,6 +1,4 @@
 ﻿using Attention.UWP.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP

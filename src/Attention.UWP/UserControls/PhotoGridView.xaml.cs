@@ -31,7 +31,13 @@ namespace Attention.UWP.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(PhotoGridViewModel), typeof(PhotoGridView), new PropertyMetadata(null, (d, e) => 
+            {
+                if (d is PhotoGridView handler && e.NewValue is PhotoGridViewModel viewmodel)
+                {
+                    viewmodel.Initialize(handler.photoGridView ?? handler.FindName("photoGridView") as AdaptiveGridView);
+                }
+            }));
 
         public object Header
         {
