@@ -30,9 +30,9 @@ namespace Attention.UWP.ViewModels
             });
         }
 
-        public void Initialize(MainView mainElement)
+        public void Initialize(object mainElement)
         {
-            MainElement = mainElement;
+            MainElement = mainElement as MainView;
         }
 
         private ICommand _loadedCommand;
@@ -44,6 +44,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand<RoutedEventArgs>(async args =>
                     {
+                        MainElement.Visibility = Visibility.Visible;
                         await RefreshLiveTitleAsync(App.Settings.LiveTitle);
                     });
                 }

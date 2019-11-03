@@ -1,6 +1,4 @@
 ﻿using Attention.UWP.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP
@@ -12,7 +10,7 @@ namespace Attention.UWP
         public ShellPage()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(mainView);
+            ViewModel.Initialize(mainView ?? FindName("mainView"));
             DataContext = ViewModel;
         }
     }
