@@ -51,10 +51,6 @@ Maybe it's a joke.
 
 I named this app `Attention` only from [Charlie Puth](https://music.163.com/#/song?id=473817398)'s song of the same name, although it didn't start out as the name.
 
-Can you give me a star if you like?
-
-Enjoy yourself. 🍻🍻🍻🍻
-
 Contact Me：[hippieZhou](htpps://hippiezhou.fun)
 
 ## License 💡
