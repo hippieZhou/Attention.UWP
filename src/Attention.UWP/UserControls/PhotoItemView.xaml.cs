@@ -23,7 +23,13 @@ namespace Attention.UWP.UserControls
 
         // Using a DependencyProperty as the backing store for ViewModel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(PhotoItemViewModel), typeof(PhotoItemView), new PropertyMetadata(null));
+            DependencyProperty.Register("ViewModel", typeof(PhotoItemViewModel), typeof(PhotoItemView), new PropertyMetadata(null,(d,e)=> 
+            {
+                if (d is PhotoItemView handler && e.NewValue is PhotoItemViewModel viewmodel)
+                {
+                    viewmodel.Initialize(handler.destinationElement ?? handler.FindName("destinationElement") as Grid);
+                }
+            }));
 
         private void DestinationElement_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e)
         {

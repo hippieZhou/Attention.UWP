@@ -26,7 +26,7 @@ namespace Attention.UWP
 
             BackgroundTaskHelper.Register(wallpaperBackgroundTaskName,
                 typeof(Background.LiveTitleBackgroundExecution).FullName,
-                new TimeTrigger(15, false),
+                new TimeTrigger(240, false),
                 false, true,
                 new SystemCondition(SystemConditionType.InternetAvailable));
         }

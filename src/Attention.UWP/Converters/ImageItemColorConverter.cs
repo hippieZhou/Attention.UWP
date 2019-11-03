@@ -27,7 +27,7 @@ namespace Attention.UWP.Converters
                 BackgroundSource = AcrylicBackgroundSource.Backdrop,
                 FallbackColor = first,
                 TintColor = first,
-                TintOpacity = 0.5,
+                TintOpacity = 0.4,
             };
             return brush;
         }

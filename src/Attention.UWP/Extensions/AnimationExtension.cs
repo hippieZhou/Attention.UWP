@@ -26,7 +26,7 @@ namespace Attention.UWP.Extensions
             var imgVisual = child.Visual();
             if (imgVisual.CenterPoint.X == 0 && imgVisual.CenterPoint.Y == 0)
             {
-                imgVisual.CenterPoint = new Vector3((float)parent.ActualWidth / 2, (float)parent.ActualHeight / 2, 0f);
+                imgVisual.CenterPoint = new Vector3((float)(parent.ActualWidth / 2.0), (float)(parent.ActualHeight / 2.0), 0f);
             }
             imgVisual.StartAnimation("Scale.X", scaleAnimation);
             imgVisual.StartAnimation("Scale.Y", scaleAnimation);

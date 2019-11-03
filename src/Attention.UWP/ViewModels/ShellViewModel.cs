@@ -30,9 +30,9 @@ namespace Attention.UWP.ViewModels
             });
         }
 
-        public void Initialize(object mainElement)
+        public void Initialize(MainView mainElement)
         {
-            MainElement = mainElement as MainView;
+            MainElement = mainElement;
         }
 
         private ICommand _loadedCommand;

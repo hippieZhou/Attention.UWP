@@ -36,10 +36,7 @@
         <local:ExtendedTitleBar Grid.Row="0" />
 
         <Grid Grid.Row="1">
-            <v:MainView
-                x:Name="mainView"
-                x:DeferLoadStrategy="Lazy"
-                Visibility="Collapsed" />
+            <v:MainView x:Name="mainView" />
             <v:LocalView />
             <v:MoreView />
         </Grid>

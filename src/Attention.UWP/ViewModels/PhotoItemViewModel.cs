@@ -1,19 +1,15 @@
 ﻿using Attention.UWP.Helpers;
 using Attention.UWP.Models;
-using Attention.UWP.Models.Repositories;
-using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using MetroLog;
 using PixabaySharp.Models;
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
@@ -37,6 +33,8 @@ namespace Attention.UWP.ViewModels
             set { Set(ref _item, value); }
         }
 
+        internal void Initialize(Grid destinationElement) => _destinationElement = destinationElement;
+
         protected ICommand _loadedCommand;
         public ICommand LoadedCommand
         {
@@ -44,10 +42,9 @@ namespace Attention.UWP.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new RelayCommand<UIElement>(destinationElement =>
+                    _loadedCommand = new RelayCommand(() =>
                     {
-                        _destinationElement = destinationElement;
-                        Visibility = Visibility.Collapsed;
+
                     });
                 }
                 return _loadedCommand;
@@ -63,7 +60,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _backCommand = new RelayCommand<TappedRoutedEventArgs>(async args =>
                     {
-                        if (args.OriginalSource is FrameworkElement root && root.Name == "OverlayPopup")
+                        if (args.OriginalSource is FrameworkElement root && root.Name == "overlayPopup")
                         {
                             ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _destinationElement);
                             animation.Configuration = new DirectConnectedAnimationConfiguration();
