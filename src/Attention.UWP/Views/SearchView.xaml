@@ -18,6 +18,7 @@
     CornerRadius="{StaticResource DefaultCornerRadius}"
     PrimaryButtonCommand="{x:Bind ViewModel.PrimaryButtonCommand}"
     PrimaryButtonText="Find"
+    RequestedTheme="{Binding Source={StaticResource AppSettings}, Path=Theme, Converter={StaticResource IntToThemeValueConverter}}"
     SecondaryButtonText="Cancel"
     mc:Ignorable="d">
     <Grid

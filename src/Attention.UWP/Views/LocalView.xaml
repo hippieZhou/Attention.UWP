@@ -4,13 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
-    xmlns:cc="using:Attention.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:model="using:Attention.UWP.Models"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="300"
@@ -46,7 +44,7 @@
     <Grid
         animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
         animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
-        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        Background="{ThemeResource SystemControlAcrylicElementBrush}"
         CornerRadius="24,24,0,0"
         Visibility="{x:Bind ViewModel.Visibility, Mode=OneWay}">
         <Grid.RowDefinitions>

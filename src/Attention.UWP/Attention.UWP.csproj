@@ -127,6 +127,7 @@
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\ImageItemColorConverter.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
+    <Compile Include="Converters\IntToThemeValueConverter.cs" />
     <Compile Include="ExtendedTitleBar.xaml.cs">
       <DependentUpon>ExtendedTitleBar.xaml</DependentUpon>
     </Compile>
