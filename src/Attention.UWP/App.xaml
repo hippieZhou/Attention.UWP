@@ -14,6 +14,7 @@
             <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
             <CornerRadius x:Key="DefaultCornerRadius">4</CornerRadius>
+            <converter:IntToThemeValueConverter x:Key="IntToThemeValueConverter" />
             <converter:ImageItemColorConverter x:Key="ImageItemColorConverter" />
             <converter:ImageSourceNullValueConverter x:Key="ImageSourceNullValueConverter" />
             <converter:BooleanToVisibilityValueConverter x:Key="BooleanToVisibilityValueConverter" />
@@ -40,10 +41,101 @@
                     Duration="0:0:0.600" />
             </animations:AnimationCollection>
 
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <ResourceDictionary.MergedDictionaries>
+                        <ColorPaletteResources
+                            Accent="#FF0073CF"
+                            AltHigh="#FF000000"
+                            AltLow="#FF000000"
+                            AltMedium="#FF000000"
+                            AltMediumHigh="#FF000000"
+                            AltMediumLow="#FF000000"
+                            BaseHigh="#FFFFFFFF"
+                            BaseLow="#FF343E47"
+                            BaseMedium="#FF92A1AD"
+                            BaseMediumHigh="#FFA9BAC6"
+                            BaseMediumLow="#FF63707A"
+                            ChromeAltLow="#FFA9BAC6"
+                            ChromeBlackHigh="#FF000000"
+                            ChromeBlackLow="#FFA9BAC6"
+                            ChromeBlackMedium="#FF000000"
+                            ChromeBlackMediumLow="#FF000000"
+                            ChromeDisabledHigh="#FF343E47"
+                            ChromeDisabledLow="#FF92A1AD"
+                            ChromeGray="#FF7A8893"
+                            ChromeHigh="#FF7A8893"
+                            ChromeLow="#FF0A1D33"
+                            ChromeMedium="#FF152538"
+                            ChromeMediumLow="#FF2A3642"
+                            ChromeWhite="#FFFFFFFF"
+                            ListLow="#FF152538"
+                            ListMedium="#FF343E47" />
+                        <ResourceDictionary>
+                            <Color x:Key="SystemChromeAltMediumHighColor">#CC272D31</Color>
+                            <Color x:Key="SystemChromeAltHighColor">#FF272D31</Color>
+                            <Color x:Key="SystemRevealListLowColor">#FF152538</Color>
+                            <Color x:Key="SystemRevealListMediumColor">#FF343E47</Color>
+                            <Color x:Key="RegionColor">#FF272D31</Color>
+                            <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <ResourceDictionary.MergedDictionaries>
+                        <ColorPaletteResources
+                            Accent="#FF0073CF"
+                            AltHigh="#FFFFFFFF"
+                            AltLow="#FFFFFFFF"
+                            AltMedium="#FFFFFFFF"
+                            AltMediumHigh="#FFFFFFFF"
+                            AltMediumLow="#FFFFFFFF"
+                            BaseHigh="#FF000000"
+                            BaseLow="#FFCCCCCC"
+                            BaseMedium="#FF898989"
+                            BaseMediumHigh="#FF5D5D5D"
+                            BaseMediumLow="#FF737373"
+                            ChromeAltLow="#FF5D5D5D"
+                            ChromeBlackHigh="#FF000000"
+                            ChromeBlackLow="#FFCCCCCC"
+                            ChromeBlackMedium="#FF5D5D5D"
+                            ChromeBlackMediumLow="#FF898989"
+                            ChromeDisabledHigh="#FFCCCCCC"
+                            ChromeDisabledLow="#FF898989"
+                            ChromeGray="#FF737373"
+                            ChromeHigh="#FFCCCCCC"
+                            ChromeLow="#FFECECEC"
+                            ChromeMedium="#FFE6E6E6"
+                            ChromeMediumLow="#FFECECEC"
+                            ChromeWhite="#FFFFFFFF"
+                            ListLow="#FFE6E6E6"
+                            ListMedium="#FFCCCCCC" />
+                        <ResourceDictionary>
+                            <Color x:Key="SystemChromeAltMediumHighColor">#CCFFFFFF</Color>
+                            <Color x:Key="SystemChromeAltHighColor">#FFFFFFFF</Color>
+                            <Color x:Key="SystemRevealListLowColor">#FFE6E6E6</Color>
+                            <Color x:Key="SystemRevealListMediumColor">#FFCCCCCC</Color>
+                            <RevealBackgroundBrush
+                                x:Key="SystemControlHighlightListLowRevealBackgroundBrush"
+                                FallbackColor="{StaticResource SystemListMediumColor}"
+                                TargetTheme="Light"
+                                Color="{ThemeResource SystemRevealListMediumColor}" />
+                            <Color x:Key="RegionColor">#FFFFFFFF</Color>
+                            <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="RegionColor" ResourceKey="SystemColorWindowColor" />
+                    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!--  Other merged dictionaries here  -->
                 <ResourceDictionary Source="/Themes/Button.xaml" />
+                <ResourceDictionary Source="/Themes/ContentDialog.xaml" />
                 <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
                 <ResourceDictionary Source="/Themes/ToggleSwitch.xaml" />

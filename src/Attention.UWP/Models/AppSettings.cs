@@ -6,6 +6,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
@@ -17,6 +18,8 @@ namespace Attention.UWP.Models
     public class AppSettings : ObservableObject
     {
         private readonly ApplicationDataContainer localSettings;
+        public string DbPath => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
+
         public string Name => "AppDisplayName".GetLocalized();
         public string Version
         {

@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 
 namespace Attention.UWP.Services
 {
-    /// <summary>
-    /// https://pixabay.com/api/docs/
-    /// My:12645414-59a5251905dfea7b916dd796f
-    /// </summary>
     public class PixabayService
     {
         private readonly PixabaySharpClient _client;

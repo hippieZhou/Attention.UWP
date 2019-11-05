@@ -3,8 +3,6 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using MetroLog;
 using MetroLog.Targets;
-using System.IO;
-using Windows.Storage;
 
 namespace Attention.UWP.ViewModels
 {
@@ -30,8 +28,8 @@ namespace Attention.UWP.ViewModels
 
                 return LogManagerFactory.DefaultLogManager;
             });
-            SimpleIoc.Default.Register(() => new DAL(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite")));
-            SimpleIoc.Default.Register(() => new PixabayService("3153915-c1b347f3736d73ef2cd6a0e79"));
+            SimpleIoc.Default.Register(() => new DAL(App.Settings.DbPath));
+            SimpleIoc.Default.Register(() => new PixabayService(App.API_KEY));
             #endregion
 
             #region ViewModels
