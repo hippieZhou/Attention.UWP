@@ -138,6 +138,7 @@
     <Compile Include="Helpers\LiveTileHelper.cs" />
     <Compile Include="Helpers\ShareHelper.cs" />
     <Compile Include="Helpers\Singleton.cs" />
+    <Compile Include="Models\API_KEY.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\Core\Download.cs" />
     <Compile Include="Models\Core\Entity.cs" />
@@ -216,6 +217,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -328,6 +333,9 @@
       <Project>{fa6d7aa2-6d11-4c8a-ae20-a933f16c339c}</Project>
       <Name>Attention.UWP.Background</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Secret.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

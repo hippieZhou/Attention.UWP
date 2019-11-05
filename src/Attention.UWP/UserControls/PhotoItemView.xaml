@@ -92,7 +92,7 @@
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="14"
                                     Glyph="&#xE896;" />
-                                <TextBlock x:Uid="photoItemView_Download" Text="免费下载" />
+                                <TextBlock x:Uid="photoItemView_Download" Text="Download" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -106,7 +106,7 @@
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="14"
                                     Glyph="&#xE72D;" />
-                                <TextBlock x:Uid="photoItemView_Share" Text="快速分享" />
+                                <TextBlock x:Uid="photoItemView_Share" Text="Share" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -120,7 +120,7 @@
                                     FontFamily="Segoe MDL2 Assets"
                                     FontSize="14"
                                     Glyph="&#xEC27;" />
-                                <TextBlock x:Uid="photoItemView_Browse" Text="片源查看" />
+                                <TextBlock x:Uid="photoItemView_Browse" Text="Browse" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
