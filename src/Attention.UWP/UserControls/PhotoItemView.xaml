@@ -13,6 +13,22 @@
     d:DesignHeight="768"
     d:DesignWidth="1024"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <animations:AnimationCollection x:Key="ButtonDefaultShowAnimations">
+            <animations:TranslationAnimation
+                Delay="0:0:1.0"
+                SetInitialValueBeforeDelay="True"
+                From="0, -80, 0"
+                To="0"
+                Duration="0:0:0.6" />
+            <animations:OpacityAnimation
+                Delay="0:0:1.0"
+                SetInitialValueBeforeDelay="True"
+                From="0"
+                To="1.0"
+                Duration="0:0:0.6" />
+        </animations:AnimationCollection>
+    </UserControl.Resources>
     <i:Interaction.Behaviors>
         <ic:EventTriggerBehavior EventName="Loaded">
             <ic:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -66,22 +82,9 @@
                 <StackPanel
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    animations:Implicit.ShowAnimations="{StaticResource ButtonDefaultShowAnimations}"
                     Orientation="Horizontal"
                     Spacing="12">
-                    <animations:Implicit.ShowAnimations>
-                        <animations:TranslationAnimation
-                            Delay="0:0:1.0"
-                            SetInitialValueBeforeDelay="True"
-                            From="0, -80, 0"
-                            To="0"
-                            Duration="0:0:0.6" />
-                        <animations:OpacityAnimation
-                            Delay="0:0:1.0"
-                            SetInitialValueBeforeDelay="True"
-                            From="0"
-                            To="1.0"
-                            Duration="0:0:0.6" />
-                    </animations:Implicit.ShowAnimations>
                     <Button
                         Background="#2bff88"
                         Command="{x:Bind ViewModel.DownloadCommand}"
