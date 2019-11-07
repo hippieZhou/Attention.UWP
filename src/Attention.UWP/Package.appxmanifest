@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="d8dfe733-a9c6-4e4d-8720-a5d4ee747af2"
-    Publisher="CN=hippie"
+    Name="49037hippieZhou.AttentionForUWP"
+    Publisher="CN=FB39366C-1F01-4867-BE1F-B5C0C7888AAA"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="d8dfe733-a9c6-4e4d-8720-a5d4ee747af2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="99b4445d-2baa-4be1-b965-2b99bd5ec41c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Attention.UWP</DisplayName>
-    <PublisherDisplayName>hippie</PublisherDisplayName>
+    <DisplayName>Attention For UWP</DisplayName>
+    <PublisherDisplayName>hippieZhou</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

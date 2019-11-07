@@ -65,8 +65,7 @@ namespace Attention.UWP
         {
             StorageFile secret = await StorageFile.GetFileFromPathAsync(Settings.SecretFile);
             string json = await FileIO.ReadTextAsync(secret);
-            JToken text = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)];
-            API_KEY key = JsonConvert.DeserializeObject<API_KEY>(text?.ToString());
+            API_KEY key = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)].ToObject<API_KEY>();
             API_KEY = release ? key?.Release : key?.Debug;
         }
 
