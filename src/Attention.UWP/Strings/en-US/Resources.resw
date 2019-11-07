@@ -121,7 +121,7 @@
     <value>What are you doing to me?</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>Attention.UWP</value>
+    <value>Attention For UWP</value>
   </data>
   <data name="download_Delete.Label" xml:space="preserve">
     <value>Delete</value>
