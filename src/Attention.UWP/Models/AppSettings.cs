@@ -18,7 +18,8 @@ namespace Attention.UWP.Models
     public class AppSettings : ObservableObject
     {
         private readonly ApplicationDataContainer localSettings;
-        public string DbPath => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
+        public string DbFile => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
+        public string SecretFile => Path.Combine(Package.Current.InstalledLocation.Path, "secret.json");
 
         public string Name => "AppDisplayName".GetLocalized();
         public string Version

@@ -3,6 +3,7 @@ using System;
 using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.UWP.UserControls
@@ -31,21 +32,18 @@ namespace Attention.UWP.UserControls
                 }
             }));
 
-        private void DestinationElement_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e)
+        private void DestinationElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            //if (sender is FrameworkElement element)
-            //{
-            //    Mouse.SetCursor(element, Windows.UI.Core.CoreCursorType.Hand);
-            //}
+
         }
 
-        private void DestinationElement_ManipulationDelta(object sender, Windows.UI.Xaml.Input.ManipulationDeltaRoutedEventArgs e)
+        private void DestinationElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             destinationElement_Transform.TranslateX += e.Delta.Translation.X;
             destinationElement_Transform.TranslateY += e.Delta.Translation.Y;
         }
 
-        private void DestinationElement_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e)
+        private void DestinationElement_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
             DoubleAnimation CreateTranslateAnimation(EasingFunctionBase easingFunction, double from, double to = 0, double duration = 600)
             {

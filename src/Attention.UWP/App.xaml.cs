@@ -3,7 +3,6 @@ using Attention.UWP.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -64,11 +63,9 @@ namespace Attention.UWP
 
         private async Task LoadSecretAsync(bool release = false)
         {
-            StorageFile secret = await StorageFile.GetFileFromPathAsync(
-                Path.Combine(Package.Current.InstalledLocation.Path, "Secret.json"));
+            StorageFile secret = await StorageFile.GetFileFromPathAsync(Settings.SecretFile);
             string json = await FileIO.ReadTextAsync(secret);
-            JToken text = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)];
-            API_KEY key = JsonConvert.DeserializeObject<API_KEY>(text?.ToString());
+            API_KEY key = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)].ToObject<API_KEY>();
             API_KEY = release ? key?.Release : key?.Debug;
         }
 

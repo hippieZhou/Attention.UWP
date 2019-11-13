@@ -20,6 +20,6 @@
             </uc:PhotoGridView.Header>
         </uc:PhotoGridView>
 
-        <uc:PhotoItemView ViewModel="{x:Bind ViewModel.PhotoItemViewModel, Mode=OneWay}" />
+        <uc:PhotoItemView Margin="0,-32,0,0" ViewModel="{x:Bind ViewModel.PhotoItemViewModel, Mode=OneWay}" />
     </Grid>
 </UserControl>

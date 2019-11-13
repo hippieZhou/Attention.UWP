@@ -28,7 +28,7 @@ namespace Attention.UWP.ViewModels
 
                 return LogManagerFactory.DefaultLogManager;
             });
-            SimpleIoc.Default.Register(() => new DAL(App.Settings.DbPath));
+            SimpleIoc.Default.Register(() => new DAL(App.Settings.DbFile));
             SimpleIoc.Default.Register(() => new PixabayService(App.API_KEY));
             #endregion
 
