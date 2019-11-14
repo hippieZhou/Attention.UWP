@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.UI;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Attention.UWP.Models
     {
         private readonly ApplicationDataContainer localSettings;
         public string DbFile => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
-        public string SecretFile => Path.Combine(Package.Current.InstalledLocation.Path, "secret.json");
+        public API_KEY API_KEY { get; private set; }
 
         public string Name => "AppDisplayName".GetLocalized();
         public string Version
@@ -158,9 +159,18 @@ VersionInstalled:{Version};
             }
         }
 
-        public AppSettings()
+        public AppSettings() => localSettings = ApplicationData.Current.LocalSettings;
+
+        public async Task InitializeAsync()
         {
-            localSettings = ApplicationData.Current.LocalSettings;
+            async Task LoadSecretAsync()
+            {
+                StorageFile secret = await StorageFile.GetFileFromPathAsync(Path.Combine(Package.Current.InstalledLocation.Path, "secret.json"));
+                string json = await FileIO.ReadTextAsync(secret);
+                API_KEY = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)].ToObject<API_KEY>();
+            }
+
+            await LoadSecretAsync();
 
             var language = ApplicationLanguages.PrimaryLanguageOverride?.Trim();
             if (string.IsNullOrEmpty(language))

@@ -1,87 +1,84 @@
 ﻿using Attention.UWP.Helpers;
 using Attention.UWP.Models;
-using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
-using Windows.Storage;
+using Windows.System.Profile;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace Attention.UWP
 {
     sealed partial class App : Application
     {
         public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
-        public static string API_KEY;
+        private Frame rootFrame;
 
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
 
             new BackgroundProxy().Register();
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            base.OnLaunched(e);
-            await InitializeContentAsync(e.Arguments);
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox")
+            {
+                ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                ApplicationViewScaling.TrySetDisableLayoutScaling(true);
+            }
+
+            await InitializeAsync();
+            InitWindow(skipWindowCreation: e.PrelaunchActivated);
+            //await StartupAsync();
         }
 
         protected override async void OnActivated(IActivatedEventArgs args)
         {
-            base.OnActivated(args);
-            await InitializeContentAsync(args);
+            await InitializeAsync();
+            InitWindow(skipWindowCreation: false);
 
             if (args.Kind == ActivationKind.ToastNotification)
             {
-                ViewModelLocator.Current.Main.PhotoGridHeaderViewModel.DownloadCommand.Execute(null);
+                Window.Current.Activate();
+                //await StartupAsync();
             }
         }
 
-        private async Task InitializeContentAsync(object args)
-        {
-            await LoadSecretAsync(true);
+        private async Task InitializeAsync() => await Settings.InitializeAsync();
 
-            if (!(Window.Current.Content is Frame rootFrame))
+        private void InitWindow(bool skipWindowCreation)
+        {
+            rootFrame = Window.Current.Content as Frame;
+            bool initApp = rootFrame == null && !skipWindowCreation;
+            if (initApp)
             {
                 rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                rootFrame.NavigationFailed += (sender, e) => 
+                {
+                    throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+                };
                 Window.Current.Content = rootFrame;
+
+                if (rootFrame.Content == null)
+                {
+                    rootFrame.Navigate(typeof(ShellPage));
+                }
+
+                SetupTitlebar();
+                // Ensure the current window is active
+                Window.Current.Activate();
             }
-            if (rootFrame.Content == null)
-            {
-                rootFrame.Navigate(typeof(ShellPage), args);
-            }
-
-            SetupTitlebar();
-            // Ensure the current window is active
-            Window.Current.Activate();
-        }
-
-        private async Task LoadSecretAsync(bool release = false)
-        {
-            StorageFile secret = await StorageFile.GetFileFromPathAsync(Settings.SecretFile);
-            string json = await FileIO.ReadTextAsync(secret);
-            API_KEY key = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)].ToObject<API_KEY>();
-            API_KEY = release ? key?.Release : key?.Debug;
-        }
-
-        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)

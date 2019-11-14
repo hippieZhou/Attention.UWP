@@ -29,7 +29,7 @@ namespace Attention.UWP.ViewModels
                 return LogManagerFactory.DefaultLogManager;
             });
             SimpleIoc.Default.Register(() => new DAL(App.Settings.DbFile));
-            SimpleIoc.Default.Register(() => new PixabayService(App.API_KEY));
+            SimpleIoc.Default.Register(() => new PixabayService(App.Settings.API_KEY.Release));
             #endregion
 
             #region ViewModels
