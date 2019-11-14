@@ -22,6 +22,8 @@ namespace Attention.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            new BackgroundProxy().Register();
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)

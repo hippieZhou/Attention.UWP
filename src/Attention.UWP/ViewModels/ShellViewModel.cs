@@ -56,7 +56,6 @@ namespace Attention.UWP.ViewModels
         {
             if (enabled)
             {
-                new BackgroundProxy().Register();
                 AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
                 bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
                 if (isPinned)

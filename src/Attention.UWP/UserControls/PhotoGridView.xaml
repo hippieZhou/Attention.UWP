@@ -9,7 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.UserControls"
-    xmlns:lottie="using:LottieUWP"
+    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -158,19 +158,20 @@
             <mtui:AdaptiveGridView.Footer>
                 <Grid Padding="0,12,0,32" VerticalAlignment="Bottom">
                     <Grid Visibility="{x:Bind ViewModel.LoadingVisibility, Mode=OneWay}">
-                        <lottie:LottieAnimationView
+                        <muxc:AnimatedVisualPlayer
                             Width="240"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            AutoPlay="True"
-                            FileName="Assets/loading-animation.json"
-                            RepeatCount="-1" />
+                            AutoPlay="True">
+                            <lottie:LottieVisualSource x:Name="LottieJsonSource" UriSource="ms-appx:///AnimatedVisuals/loading-animation.json" />
+                        </muxc:AnimatedVisualPlayer>
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             FontWeight="Bold"
                             Foreground="{ThemeResource SystemBaseHighColor}"
                             Text="LOADING..." />
+
                     </Grid>
 
                     <StackPanel
@@ -218,13 +219,13 @@
                 </animations:ScalarAnimation>
             </animations:Implicit.HideAnimations>
 
-            <lottie:LottieAnimationView
+            <muxc:AnimatedVisualPlayer
                 Width="240"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                AutoPlay="True"
-                FileName="Assets/404-animation.json"
-                RepeatCount="-1" />
+                AutoPlay="True">
+                <lottie:LottieVisualSource UriSource="ms-appx:///AnimatedVisuals/404-animation.json" />
+            </muxc:AnimatedVisualPlayer>
             <Button
                 Width="140"
                 Height="40"
