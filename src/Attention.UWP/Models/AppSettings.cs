@@ -96,7 +96,7 @@ namespace Attention.UWP.Models
             {
                 SaveSettings(nameof(LiveTitle), value);
                 RaisePropertyChanged(() => LiveTitle);
-
+               
                 Messenger.Default.Send(LiveTitle, nameof(LiveTitle));
             }
         }

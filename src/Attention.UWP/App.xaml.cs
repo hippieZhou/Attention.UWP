@@ -27,8 +27,6 @@ namespace Attention.UWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
-
-            //new BackgroundProxy().Register();
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
@@ -58,14 +56,11 @@ namespace Attention.UWP
             }
         }
 
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        private async Task InitializeAsync()
         {
-            var deferral = args.TaskInstance.GetDeferral();
-
-            deferral.Complete();
+            await Settings.InitializeAsync();
+            BackgroundProxy.Refresh(Settings.LiveTitle);
         }
-
-        private async Task InitializeAsync() => await Settings.InitializeAsync();
 
         private void InitWindow(bool skipWindowCreation)
         {
@@ -79,7 +74,7 @@ namespace Attention.UWP
 
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(ShellPage));
+                    rootFrame.Navigate(typeof(Shell));
                 }
 
                 SetupTitlebar();

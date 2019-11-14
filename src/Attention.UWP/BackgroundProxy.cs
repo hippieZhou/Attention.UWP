@@ -8,7 +8,19 @@ namespace Attention.UWP
 {
     public class BackgroundProxy
     {
-        public async void Register()
+        public static void Refresh(bool liveTitle)
+        {
+            if (liveTitle)
+            {
+                Register();
+            }
+            else
+            {
+                UnRegister();
+            }
+        }
+
+        private static async void Register()
         {
             if (BackgroundTaskHelper.IsBackgroundTaskRegistered(nameof(LiveTitleBackgroundExecution)))
             {
@@ -16,6 +28,7 @@ namespace Attention.UWP
             }
 
             var access = await BackgroundExecutionManager.RequestAccessAsync();
+
             if (access == BackgroundAccessStatus.DeniedBySystemPolicy
                || access == BackgroundAccessStatus.DeniedByUser)
             {
@@ -26,12 +39,12 @@ namespace Attention.UWP
             BackgroundTaskRegistration task = BackgroundTaskHelper.Register(
                 nameof(LiveTitleBackgroundExecution),
                 typeof(LiveTitleBackgroundExecution).FullName,
-                new TimeTrigger(60, true),
+                new TimeTrigger(60, false),
                 false, true,
                 new SystemCondition(SystemConditionType.InternetAvailable),
                 new SystemCondition(SystemConditionType.UserPresent));
         }
 
-        public void UnRegister() => BackgroundTaskHelper.Unregister(nameof(LiveTitleBackgroundExecution));
+        private static void UnRegister() => BackgroundTaskHelper.Unregister(nameof(LiveTitleBackgroundExecution));
     }
 }

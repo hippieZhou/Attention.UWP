@@ -3,11 +3,11 @@ using Windows.UI.Xaml.Controls;
 
 namespace Attention.UWP
 {
-    public sealed partial class ShellPage : Page
+    public sealed partial class Shell : Page
     {
         public ShellViewModel ViewModel => ViewModelLocator.Current.Shell;
 
-        public ShellPage()
+        public Shell()
         {
             this.InitializeComponent();
             ViewModel.Initialize(mainView);

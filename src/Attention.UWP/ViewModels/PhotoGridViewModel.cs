@@ -57,6 +57,25 @@ namespace Attention.UWP.ViewModels
         public PhotoItemSource(PixabayService service)
         {
             _service = service;
+
+            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
+            {
+                AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
+                bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
+                if (isPinned && enabled)
+                {
+                    IEnumerable<ImageItem> ans = await GetPagedItemsAsync(1, 5);
+                    if (ans != null)
+                    {
+                        IEnumerable<string> images = from p in ans select p.PreviewURL;
+                        LiveTileHelper.UpdateLiveTile(images);
+                    }
+                }
+                else
+                {
+                    LiveTileHelper.CleanUpTile();
+                }
+            });
         }
 
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
