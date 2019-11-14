@@ -23,22 +23,13 @@
         </ic:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    <Grid Padding="0,32,0,0" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.BackgroundTransition>
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <local:ExtendedTitleBar Grid.Row="0" />
-
-        <Grid Grid.Row="1">
-            <v:MainView x:Name="mainView" />
-            <v:LocalView />
-            <v:MoreView />
-        </Grid>
+        <v:MainView x:Name="mainView" />
+        <v:LocalView />
+        <v:MoreView />
     </Grid>
 </Page>

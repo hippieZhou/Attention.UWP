@@ -48,7 +48,7 @@ namespace Attention.UWP.Models
                 {
                     var theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), Theme);
                     rootElement.RequestedTheme = theme;
-                    Messenger.Default.Send(theme, nameof(ExtendedTitleBar));
+                    Messenger.Default.Send(theme, nameof(ElementTheme));
                 }
             }
         }
