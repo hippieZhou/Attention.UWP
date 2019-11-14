@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
+﻿using Attention.UWP.Background;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Popups;
@@ -7,11 +8,9 @@ namespace Attention.UWP
 {
     public class BackgroundProxy
     {
-        private const string wallpaperBackgroundTaskName = "WallpaperBackgroundTaskName";
-
         public async void Register()
         {
-            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(wallpaperBackgroundTaskName))
+            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(nameof(LiveTitleBackgroundExecution)))
             {
                 return;
             }
@@ -20,17 +19,19 @@ namespace Attention.UWP
             if (access == BackgroundAccessStatus.DeniedBySystemPolicy
                || access == BackgroundAccessStatus.DeniedByUser)
             {
-                await new MessageDialog("系统关闭了后台运行，请前往‘系统设置’进行设置").ShowAsync();
+                await new MessageDialog("The system is turned off in the background, please go to 'System Settings' to set up").ShowAsync();
                 return;
             }
 
-            BackgroundTaskHelper.Register(wallpaperBackgroundTaskName,
-                typeof(Background.LiveTitleBackgroundExecution).FullName,
-                new TimeTrigger(240, false),
+            BackgroundTaskRegistration task = BackgroundTaskHelper.Register(
+                nameof(LiveTitleBackgroundExecution),
+                typeof(LiveTitleBackgroundExecution).FullName,
+                new TimeTrigger(60, true),
                 false, true,
-                new SystemCondition(SystemConditionType.InternetAvailable));
+                new SystemCondition(SystemConditionType.InternetAvailable),
+                new SystemCondition(SystemConditionType.UserPresent));
         }
 
-        public void UnRegister() => BackgroundTaskHelper.Unregister(wallpaperBackgroundTaskName);
+        public void UnRegister() => BackgroundTaskHelper.Unregister(nameof(LiveTitleBackgroundExecution));
     }
 }

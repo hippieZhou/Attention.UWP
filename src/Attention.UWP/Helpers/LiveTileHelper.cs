@@ -37,7 +37,9 @@ namespace Attention.UWP.Helpers
             try
             {
                 CleanUpTile();
-                TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(tileContent.GetXml()));
+                var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+                updater.EnableNotificationQueue(true);
+                updater.Update(new TileNotification(tileContent.GetXml()));
             }
             catch (Exception)
             {

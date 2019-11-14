@@ -147,12 +147,21 @@ namespace Attention.UWP.Models
         {
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
-            BackgroundDownloader downloader = new BackgroundDownloader();
+            BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
+            RegisterBackgroundTask(completionGroup.Trigger);
+
+            BackgroundDownloader downloader = new BackgroundDownloader(completionGroup);
+
+            var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
+            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            downloader.TransferGroup = group;
 
             CreateNotifications(downloader);
             StorageFile destinationFile = await GetLocalFileFromName(_folder, _entity.FileName);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
+
+            completionGroup.Enable();
 
             if (cts == default)
             {
@@ -179,6 +188,8 @@ namespace Attention.UWP.Models
 
     public partial class DownloadItem : ObservableObject
     {
+        private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+
         public static async Task AttachToDownloads()
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
@@ -188,13 +199,23 @@ namespace Attention.UWP.Models
                 await download.AttachAsync().AsTask(progressCallback);
             }
         }
-
-        private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
         private static async Task<bool> IsDownloading(Uri uri)
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
             return downloads.Any(dl => dl.RequestedUri == uri);
         }
+
+        private static void RegisterBackgroundTask(IBackgroundTrigger trigger)
+        {
+            var builder = new BackgroundTaskBuilder
+            {
+                Name = "DownloadCompleteTrigger"
+            };
+            builder.SetTrigger(trigger);
+
+            BackgroundTaskRegistration task = builder.Register();
+        }
+
         private static async Task<StorageFile> GetLocalFileFromName(StorageFolder folder, string fileName)
         {
             return await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);

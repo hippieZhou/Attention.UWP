@@ -28,7 +28,7 @@ namespace Attention.UWP
             this.Suspending += OnSuspending;
             this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
 
-            new BackgroundProxy().Register();
+            //new BackgroundProxy().Register();
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
@@ -56,6 +56,13 @@ namespace Attention.UWP
                 Window.Current.Activate();
                 await StartupAsync();
             }
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            var deferral = args.TaskInstance.GetDeferral();
+
+            deferral.Complete();
         }
 
         private async Task InitializeAsync() => await Settings.InitializeAsync();
