@@ -13,6 +13,7 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace Attention.UWP
 {
@@ -39,19 +40,21 @@ namespace Attention.UWP
             }
 
             await InitializeAsync();
-            InitWindow(skipWindowCreation: e.PrelaunchActivated);
-            //await StartupAsync();
+            InitWindow(e.PrelaunchActivated);
+            await StartupAsync();
+
+            await Window.Current.Dispatcher.RunIdleAsync(async (s) => await DownloadItem.AttachToDownloads());
         }
 
         protected override async void OnActivated(IActivatedEventArgs args)
         {
             await InitializeAsync();
-            InitWindow(skipWindowCreation: false);
+            InitWindow(false);
 
             if (args.Kind == ActivationKind.ToastNotification)
             {
                 Window.Current.Activate();
-                //await StartupAsync();
+                await StartupAsync();
             }
         }
 
@@ -64,10 +67,7 @@ namespace Attention.UWP
             if (initApp)
             {
                 rootFrame = new Frame();
-                rootFrame.NavigationFailed += (sender, e) => 
-                {
-                    throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
-                };
+                rootFrame.NavigationFailed += OnNavigationFailed;
                 Window.Current.Content = rootFrame;
 
                 if (rootFrame.Content == null)
@@ -81,12 +81,7 @@ namespace Attention.UWP
             }
         }
 
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
-        }
+        private async Task StartupAsync() => await Task.CompletedTask;
 
         private void SetupTitlebar()
         {
@@ -136,6 +131,18 @@ namespace Attention.UWP
                     await DispatcherHelper.ExecuteOnUIThreadAsync(SetTitleBarColors);
                 };
             }
+        }
+
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        private void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: Save application state and stop any background activity
+            deferral.Complete();
         }
     }
 }
