@@ -29,8 +29,7 @@ namespace Attention.UWP
 
             var access = await BackgroundExecutionManager.RequestAccessAsync();
 
-            if (access == BackgroundAccessStatus.DeniedBySystemPolicy
-               || access == BackgroundAccessStatus.DeniedByUser)
+            if (access == BackgroundAccessStatus.DeniedBySystemPolicy || access == BackgroundAccessStatus.DeniedByUser)
             {
                 await new MessageDialog("The system is turned off in the background, please go to 'System Settings' to set up").ShowAsync();
                 return;

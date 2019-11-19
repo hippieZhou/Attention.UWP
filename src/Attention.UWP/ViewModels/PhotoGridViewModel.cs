@@ -1,20 +1,14 @@
-﻿using Attention.UWP.Helpers;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Core;
-using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -24,48 +18,29 @@ namespace Attention.UWP.ViewModels
     {
         public PhotoGridViewModel()
         {
-            Items = new IncrementalLoadingCollection<PhotoItemSource, ImageItem>(new PhotoItemSource(),
-                20, () =>
-                 {
-                     LoadingVisibility = Visibility.Visible;
-
-                     ErrorVisibility = Visibility.Collapsed;
-                     RefreshVisibility = Visibility.Collapsed;
-                     NotFoundVisibility = Visibility.Collapsed;
-                 }, () =>
-                 {
-                     RefreshVisibility = Visibility.Visible;
-
-                     LoadingVisibility = Visibility.Collapsed;
-                     ErrorVisibility = Visibility.Collapsed;
-                     NotFoundVisibility = Items == null || Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                 }, ex =>
-                 {
-                     ErrorVisibility = Visibility.Visible;
-                     LoadingVisibility = Visibility.Collapsed;
-                     RefreshVisibility = Visibility.Collapsed;
-                     NotFoundVisibility = Visibility.Collapsed;
-                 });
-
-            Items.CollectionChanged += (sender, e) =>
-            {
-                NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            };
-
-            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
-            {
-                AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
-                bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
-                if (isPinned && enabled)
+            Items = new IncrementalLoadingCollection<PhotoItemSource, ImageItem>(new PhotoItemSource(), 20,
+                () =>
                 {
-                    IEnumerable<string> images = from p in Items.Take(5) select p.PreviewURL;
-                    LiveTileHelper.UpdateLiveTile(images);
-                }
-                else
+                    LoadingVisibility = Visibility.Visible;
+
+                    ErrorVisibility = Visibility.Collapsed;
+                    RefreshVisibility = Visibility.Collapsed;
+                    NotFoundVisibility = Visibility.Collapsed;
+                }, () =>
                 {
-                    LiveTileHelper.CleanUpTile();
-                }
-            });
+                    NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                    RefreshVisibility = Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+                    LoadingVisibility = Visibility.Collapsed;
+                    ErrorVisibility = Visibility.Collapsed;
+                }, ex =>
+                {
+                    ErrorVisibility = Visibility.Visible;
+
+                    LoadingVisibility = Visibility.Collapsed;
+                    RefreshVisibility = Visibility.Collapsed;
+                    NotFoundVisibility = Visibility.Collapsed;
+                });
         }
     }
 
