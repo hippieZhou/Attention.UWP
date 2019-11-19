@@ -10,7 +10,6 @@ namespace Attention.UWP
         public Shell()
         {
             this.InitializeComponent();
-            ViewModel.Initialize(mainView);
             DataContext = ViewModel;
         }
     }

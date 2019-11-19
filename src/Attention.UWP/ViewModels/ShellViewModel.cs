@@ -5,13 +5,11 @@ using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
 using Attention.UWP.Helpers;
-using Attention.UWP.Views;
 
 namespace Attention.UWP.ViewModels
 {
     public class ShellViewModel : ViewModelBase
     {
-        public FrameworkElement MainElement { get; private set; }
         public ShellViewModel()
         {
             Messenger.Default.Register<string>(this, nameof(AppNotification), async str =>
@@ -20,9 +18,11 @@ namespace Attention.UWP.ViewModels
             });
         }
 
-        public void Initialize(MainView mainElement)
+        private bool _springVector3AnimationEnabled = false;
+        public bool SpringVector3AnimationEnabled
         {
-            MainElement = mainElement;
+            get => _springVector3AnimationEnabled;
+            set => Set(ref _springVector3AnimationEnabled, value);
         }
 
         private ICommand _loadedCommand;
@@ -34,7 +34,6 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand<RoutedEventArgs>(args =>
                     {
-                        MainElement.Visibility = Visibility.Visible;
                     });
                 }
                 return _loadedCommand;

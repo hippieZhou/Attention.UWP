@@ -1,5 +1,4 @@
-﻿using Attention.UWP.Extensions;
-using Attention.UWP.Helpers;
+﻿using Attention.UWP.Helpers;
 using Attention.UWP.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -15,8 +14,8 @@ namespace Attention.UWP.ViewModels
         private ScrollHeaderMode _headerMode;
         public ScrollHeaderMode HeaderModel
         {
-            get { return _headerMode; }
-            set { Set(ref _headerMode, value); }
+            get => _headerMode;
+            set => Set(ref _headerMode, value);
         }
 
         private ICommand _searchCommand;
@@ -67,10 +66,6 @@ namespace Attention.UWP.ViewModels
             }
         }
 
-        private void ShowViewWithAnimation(BaseViewModel uiElement)
-        {
-            ViewModelLocator.Current.Shell.MainElement.PlayScaleSpringAnimation(true);
-            uiElement.Visibility = Visibility.Visible;
-        }
+        private void ShowViewWithAnimation(ChildViewModel viewModel) => viewModel.Visibility = Visibility.Visible;
     }
 }

@@ -140,6 +140,7 @@
     <Compile Include="Extensions\ByteArrayBitmapExtension.cs" />
     <Compile Include="Extensions\DataRequestExtensions.cs" />
     <Compile Include="Extensions\ResourceExtension.cs" />
+    <Compile Include="Helpers\ElementAnimation.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\LiveTileHelper.cs" />
     <Compile Include="Helpers\ShareHelper.cs" />
@@ -170,7 +171,7 @@
     <Compile Include="UserControls\PhotoItemView.xaml.cs">
       <DependentUpon>PhotoItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ChildViewModel.cs" />
     <Compile Include="ViewModels\LocalViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MoreViewModel.cs" />
@@ -211,7 +212,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

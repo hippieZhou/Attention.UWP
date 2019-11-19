@@ -1,19 +1,15 @@
 ﻿using Attention.UWP.Models.Repositories;
-using System.IO;
-using Windows.Storage;
+using System;
 
 namespace Attention.UWP.Services
 {
     public class DAL
     {
-        public DownloadRepository DownloadRepo { get; private set; }
-        public DAL(string dbPath = default)
+        private readonly string _dbPath = string.Empty;
+        public DownloadRepository DownloadRepo => new DownloadRepository(_dbPath);
+        public DAL(string dbPath)
         {
-            if (string.IsNullOrEmpty(dbPath))
-            {
-                dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
-            }
-            DownloadRepo = new DownloadRepository(dbPath);
+            _dbPath = dbPath ?? throw new ArgumentNullException(nameof(dbPath));
         }
     }
 }

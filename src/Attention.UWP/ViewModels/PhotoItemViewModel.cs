@@ -22,18 +22,18 @@ namespace Attention.UWP.ViewModels
         private Visibility _visibility = Visibility.Collapsed;
         public Visibility Visibility
         {
-            get { return _visibility; }
-            set { Set(ref _visibility, value); }
+            get => _visibility;
+            set => Set(ref _visibility, value);
         }
 
         private ImageItem _item;
         public ImageItem Item
         {
-            get { return _item; }
-            set { Set(ref _item, value); }
+            get => _item;
+            set => Set(ref _item, value);
         }
 
-        internal void Initialize(Grid destinationElement) => _destinationElement = destinationElement;
+        public void Initialize(Grid destinationElement) => _destinationElement = destinationElement;
 
         protected ICommand _loadedCommand;
         public ICommand LoadedCommand

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:Attention.UWP.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP"
@@ -28,7 +29,7 @@
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
 
-        <v:MainView x:Name="mainView" />
+        <v:MainView x:Name="mainView" helper:ElementAnimation.SpringVector3AnimationEnabled="{x:Bind ViewModel.SpringVector3AnimationEnabled, Mode=OneWay}" />
         <v:LocalView />
         <v:MoreView />
     </Grid>

@@ -19,6 +19,7 @@ namespace Attention.UWP.Models
         public string DbFile => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
 
         public string Name => "AppDisplayName".GetLocalized();
+
         public string Version
         {
             get

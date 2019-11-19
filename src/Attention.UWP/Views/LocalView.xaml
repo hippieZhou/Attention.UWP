@@ -60,7 +60,7 @@
                 Style="{ThemeResource TitleTextBlockStyle}" />
             <Button
                 HorizontalAlignment="Right"
-                Command="{x:Bind ViewModel.BackCommand}"
+                Command="{x:Bind ViewModel.HideCommand}"
                 Content="&#xE894;"
                 CornerRadius="{StaticResource DefaultCornerRadius}"
                 FontSize="14"
