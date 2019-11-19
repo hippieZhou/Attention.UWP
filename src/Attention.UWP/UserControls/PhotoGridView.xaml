@@ -171,7 +171,6 @@
                             FontWeight="Bold"
                             Foreground="{ThemeResource SystemBaseHighColor}"
                             Text="LOADING..." />
-
                     </Grid>
 
                     <StackPanel

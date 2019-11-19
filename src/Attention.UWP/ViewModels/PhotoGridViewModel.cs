@@ -5,7 +5,6 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.UWP.ViewModels
 {
@@ -97,13 +95,13 @@ namespace Attention.UWP.ViewModels
 
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
-        protected GridView View { get; set; }
+        public GridView ViewContainer { get; private set; }
 
         private IType _selected;
         public IType Selected
         {
             get => _selected;
-            protected set => Set(ref _selected, value);
+            set => Set(ref _selected, value);
         }
 
         private IncrementalLoadingCollection<TSource, IType> _items;
@@ -134,7 +132,7 @@ namespace Attention.UWP.ViewModels
             set => Set(ref _notFoundVisibility, value);
         }
 
-        public void Initialize(AdaptiveGridView view) => View = view;
+        public void Initialize(GridView view) => ViewContainer = view;
 
         protected ICommand _loadedCommand;
         public virtual ICommand LoadedCommand
@@ -145,7 +143,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand(() =>
                     {
-                        View.Visibility = Visibility.Visible;
+                        ViewContainer.Visibility = Visibility.Visible;
                     });
                 }
                 return _loadedCommand;
@@ -161,18 +159,11 @@ namespace Attention.UWP.ViewModels
                 {
                     _itemClickCommand = new RelayCommand<IType>(item =>
                     {
-                        if (View.ContainerFromItem(item) is GridViewItem container)
+                        if (ViewContainer.ContainerFromItem(item) is GridViewItem container)
                         {
                             Selected = item;
-                            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
-                            ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
-                            animation.IsScaleAnimationEnabled = true;
-                            animation.Configuration = new BasicConnectedAnimationConfiguration();
-                            var done = ViewModelLocator.Current.Main.PhotoItemViewModel.TryStart(Selected, animation);
-                            if (done)
-                            {
-                                container.Opacity = 0.0d;
-                            }
+
+                            ViewModelLocator.Current.Main.Forward(container);
                         }
                     });
                 }
@@ -194,22 +185,6 @@ namespace Attention.UWP.ViewModels
                 }
                 return _refreshCommand;
             }
-        }
-
-        public async Task<bool> TryStart(IType item, ConnectedAnimation animation)
-        {
-            Selected = item;
-            View.ScrollIntoView(Selected, ScrollIntoViewAlignment.Default);
-            View.UpdateLayout();
-
-            animation.Completed += (sender, e) =>
-            {
-                if (View.ContainerFromItem(Selected) is GridViewItem container)
-                {
-                    container.Opacity = 1.0d;
-                }
-            };
-            return await View.TryStartConnectedAnimationAsync(animation, Selected, "connectedElement");
         }
     }
 }
