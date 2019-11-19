@@ -74,7 +74,7 @@
                 x:Name="destinationFooterElement"
                 Padding="12"
                 VerticalAlignment="Bottom"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                Background="{ThemeResource SystemControlAcrylicElementBrush}"
                 CornerRadius="{StaticResource DefaultCornerRadius}">
                 <Grid.Shadow>
                     <ThemeShadow />
@@ -167,13 +167,3 @@
         </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>
-
-<!--<PersonPicture
-      Width="40"
-      Height="40"
-      HorizontalAlignment="Left"
-      VerticalAlignment="Bottom"
-      ProfilePicture="{x:Bind ViewModel.Item.UserImageURL,
-                    Mode=OneWay,
-                    Converter={StaticResource ImageSourceNullValueConverter},
-                    ConverterParameter=ms-appx:///Assets/User.png}" />-->

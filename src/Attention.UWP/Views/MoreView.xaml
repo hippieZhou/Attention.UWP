@@ -3,16 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:converrter="using:Attention.UWP.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.UWP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:Attention.UWP.Models"
     xmlns:mtui="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:xaml="using:Windows.UI.Xaml"
     d:DesignHeight="768"
     d:DesignWidth="1024"
     mc:Ignorable="d">
@@ -55,7 +51,7 @@
                 Text="MORE" />
             <Button
                 HorizontalAlignment="Right"
-                Command="{x:Bind ViewModel.BackCommand}"
+                Command="{x:Bind ViewModel.HideCommand}"
                 Content="&#xE894;"
                 CornerRadius="{StaticResource DefaultCornerRadius}"
                 FontSize="14"

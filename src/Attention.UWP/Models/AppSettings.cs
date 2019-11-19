@@ -2,8 +2,7 @@
 using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -15,13 +14,12 @@ using Windows.UI.Xaml;
 
 namespace Attention.UWP.Models
 {
-    public class AppSettings : ObservableObject
+    public partial class AppSettings : ObservableObject
     {
-        private readonly ApplicationDataContainer localSettings;
         public string DbFile => Path.Combine(ApplicationData.Current.LocalFolder.Path, "Storage.sqlite");
-        public string SecretFile => Path.Combine(Package.Current.InstalledLocation.Path, "secret.json");
 
         public string Name => "AppDisplayName".GetLocalized();
+
         public string Version
         {
             get
@@ -31,6 +29,7 @@ namespace Attention.UWP.Models
             }
         }
 
+        #region Theme
         private const int ELEMENTTHEME_DEFAULT = 0;
         private const int ELEMENTTHEME_DARK = 2;
         public int Theme
@@ -44,15 +43,21 @@ namespace Attention.UWP.Models
                 SaveSettings(nameof(Theme), value);
                 RaisePropertyChanged(() => Theme);
 
-                if (Window.Current.Content is FrameworkElement rootElement)
+                void RefreshTheme()
                 {
-                    var theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), Theme);
-                    rootElement.RequestedTheme = theme;
-                    Messenger.Default.Send(theme, nameof(ExtendedTitleBar));
+                    if (Window.Current.Content is FrameworkElement rootElement)
+                    {
+                        var theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), Theme);
+                        rootElement.RequestedTheme = theme;
+                        Messenger.Default.Send(theme, nameof(ElementTheme));
+                    }
                 }
+                RefreshTheme();
             }
         }
+        #endregion
 
+        #region Language
         private const int LANGUAGE_ZH = 0;
         private const int LANGUAGE_EN = 1;
         public int Language
@@ -66,11 +71,17 @@ namespace Attention.UWP.Models
                 SaveSettings(nameof(Language), value);
                 RaisePropertyChanged(() => Language);
 
-                ApplicationLanguages.PrimaryLanguageOverride = value == LANGUAGE_ZH ? "zh-CN" : "en-US";
-                Messenger.Default.Send("more_Personalized_Language_restart".GetLocalized(), nameof(AppNotification));
+                void RefreshLanguage()
+                {
+                    ApplicationLanguages.PrimaryLanguageOverride = Language == LANGUAGE_ZH ? "zh-CN" : "en-US";
+                    Messenger.Default.Send("more_Personalized_Language_restart".GetLocalized(), nameof(AppNotification));
+                }
+                RefreshLanguage();
             }
         }
+        #endregion
 
+        #region HeaderMode
         private const int SCROLLHEADERMODE_NONE = 0;
         private const int SCROLLHEADERMODE_FADE = 3;
         public int HeaderMode
@@ -83,10 +94,18 @@ namespace Attention.UWP.Models
 
                 SaveSettings(nameof(HeaderMode), value);
                 RaisePropertyChanged(() => HeaderMode);
-                ViewModelLocator.Current.Main.PhotoGridHeaderViewModel.SwitchHeaderMode(HeaderMode);
+
+                void RefreshHeaderMode()
+                {
+                    ViewModelLocator.Current.Main.PhotoGridHeaderViewModel.HeaderModel =
+                        (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), HeaderMode);
+                }
+                RefreshHeaderMode();
             }
         }
+        #endregion
 
+        #region LiveTitle
         private const bool LIVETITLE_DEFAULT = false;
         public bool LiveTitle
         {
@@ -99,7 +118,9 @@ namespace Attention.UWP.Models
                 Messenger.Default.Send(LiveTitle, nameof(LiveTitle));
             }
         }
+        #endregion
 
+        #region Filter
         private readonly Filter defaultFilter = new Filter()
         {
             Query = string.Empty,
@@ -121,47 +142,10 @@ namespace Attention.UWP.Models
                 RaisePropertyChanged(() => Filter);
             }
         }
+        #endregion
 
-        public bool LoadInMemory
+        public async Task InitializeAsync()
         {
-            get
-            {
-                return ReadSettings(nameof(LoadInMemory), false);
-            }
-            set
-            {
-                SaveSettings(nameof(LoadInMemory), value);
-                RaisePropertyChanged(() => LoadInMemory);
-            }
-        }
-
-        public string AppSummary
-        {
-            get
-            {
-                string info = $@"
-------------------------------------------------------------------------
-IsFirstRun:{SystemInformation.IsFirstRun};
-ApplicationName:{SystemInformation.ApplicationName};
-ApplicationVersion:{Version};
-Culture:{SystemInformation.Culture};
-OperatingSystem:{SystemInformation.OperatingSystem};
-OperatingSystemArchitecture:{SystemInformation.OperatingSystemArchitecture};
-OperatingSystemVersion:{SystemInformation.OperatingSystemVersion};
-DeviceFamily:{SystemInformation.DeviceFamily};
-DeviceModel:{SystemInformation.DeviceModel};
-DeviceManufacturer:{SystemInformation.DeviceManufacturer};
-AvailableMemory:{SystemInformation.AvailableMemory};
-VersionInstalled:{Version};
-------------------------------------------------------------------------";
-                return info;
-            }
-        }
-
-        public AppSettings()
-        {
-            localSettings = ApplicationData.Current.LocalSettings;
-
             var language = ApplicationLanguages.PrimaryLanguageOverride?.Trim();
             if (string.IsNullOrEmpty(language))
             {
@@ -169,8 +153,7 @@ VersionInstalled:{Version};
                 SaveSettings(nameof(Language), primary.StartsWith("zh") ? LANGUAGE_ZH : LANGUAGE_EN);
             }
 
-            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
-            ImageCache.Instance.MaxMemoryCacheCount = LoadInMemory ? 200 : 0;
+            await Task.CompletedTask;
         }
 
         public async Task<StorageFolder> GetSavingFolderAsync()
@@ -190,6 +173,13 @@ VersionInstalled:{Version};
             StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
             return folder;
         }
+    }
+
+    public partial class AppSettings : ObservableObject
+    {
+        public AppSettings() => localSettings = ApplicationData.Current.LocalSettings;
+
+        private readonly ApplicationDataContainer localSettings;
 
         private void SaveSettings(string key, object value)
         {

@@ -1,12 +1,10 @@
 ﻿using Attention.UWP.Helpers;
-using Attention.UWP.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
@@ -19,15 +17,14 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.UWP.ViewModels
 {
     public class PhotoGridViewModel : PixViewModel<PhotoItemSource, ImageItem>
     {
-        public PhotoGridViewModel(PixabayService service)
+        public PhotoGridViewModel()
         {
-            Items = new IncrementalLoadingCollection<PhotoItemSource, ImageItem>(new PhotoItemSource(service),
+            Items = new IncrementalLoadingCollection<PhotoItemSource, ImageItem>(new PhotoItemSource(),
                 20, () =>
                  {
                      LoadingVisibility = Visibility.Visible;
@@ -43,31 +40,49 @@ namespace Attention.UWP.ViewModels
                      NotFoundVisibility = Visibility.Collapsed;
                      LoadingVisibility = Visibility.Collapsed;
                  });
+
             Items.CollectionChanged += (sender, e) =>
             {
                 NotFoundVisibility = Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             };
+
+            Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
+            {
+                AppListEntry entry = (await Package.Current.GetAppListEntriesAsync())[0];
+                bool isPinned = await StartScreenManager.GetDefault().RequestAddAppListEntryAsync(entry);
+                if (isPinned && enabled)
+                {
+                    IEnumerable<string> images = from p in Items.Take(5) select p.PreviewURL;
+                    LiveTileHelper.UpdateLiveTile(images);
+                }
+                else
+                {
+                    LiveTileHelper.CleanUpTile();
+                }
+            });
         }
     }
 
     public class PhotoItemSource : IIncrementalSource<ImageItem>
     {
-        private readonly PixabayService _service;
+        private readonly bool _loadInMemory;
 
-        public PhotoItemSource(PixabayService service)
+        public PhotoItemSource(bool loadInMemory = true)
         {
-            _service = service;
+            _loadInMemory = loadInMemory;
+
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
+            ImageCache.Instance.MaxMemoryCacheCount = loadInMemory ? 200 : 0;
         }
 
         public async Task<IEnumerable<ImageItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            var result = await _service.QueryImagesAsync(page: ++pageIndex, per_page: pageSize, App.Settings.Filter);
+            var result = await ViewModelLocator.Current.Pixabay.QueryImagesAsync(page: ++pageIndex, per_page: pageSize, App.Settings.Filter);
             if (result?.Images != null)
             {
-                var loadInMemory = App.Settings.LoadInMemory;
                 Parallel.ForEach(result.Images, async p =>
                 {
-                    await ImageCache.Instance.PreCacheAsync(new Uri(p.LargeImageURL), false, loadInMemory);
+                    await ImageCache.Instance.PreCacheAsync(new Uri(p.LargeImageURL), false, _loadInMemory);
                 });
                 return result.Images;
             }
@@ -80,43 +95,44 @@ namespace Attention.UWP.ViewModels
 
     public class PixViewModel<TSource, IType> : ViewModelBase where TSource : IIncrementalSource<IType>
     {
-        protected GridView View { get; set; }
+        public GridView ViewContainer { get; private set; }
 
         private IType _selected;
         public IType Selected
         {
-            get { return _selected; }
-            protected set { Set(ref _selected, value); }
+            get => _selected;
+            set => Set(ref _selected, value);
         }
 
         private IncrementalLoadingCollection<TSource, IType> _items;
         public IncrementalLoadingCollection<TSource, IType> Items
         {
-            get { return _items; }
-            protected set { Set(ref _items, value); }
+            get => _items;
+            protected set => Set(ref _items, value);
         }
 
         private Visibility _loadingVisibility = Visibility.Visible;
         public Visibility LoadingVisibility
         {
-            get { return _loadingVisibility; }
-            set { Set(ref _loadingVisibility, value); }
+            get => _loadingVisibility;
+            set => Set(ref _loadingVisibility, value);
         }
 
         private Visibility _errorVisibility = Visibility.Collapsed;
         public Visibility ErrorVisibility
         {
-            get { return _errorVisibility; }
-            set { Set(ref _errorVisibility, value); }
+            get => _errorVisibility;
+            set => Set(ref _errorVisibility, value);
         }
 
         private Visibility _notFoundVisibility = Visibility.Collapsed;
         public Visibility NotFoundVisibility
         {
-            get { return _notFoundVisibility; }
-            set { Set(ref _notFoundVisibility, value); }
+            get => _notFoundVisibility;
+            set => Set(ref _notFoundVisibility, value);
         }
-        internal void Initialize(AdaptiveGridView view) => View = view;
+
+        public void Initialize(GridView view) => ViewContainer = view;
 
         protected ICommand _loadedCommand;
         public virtual ICommand LoadedCommand
@@ -127,7 +143,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _loadedCommand = new RelayCommand(() =>
                     {
-                        View.Visibility = Visibility.Visible;
+                        ViewContainer.Visibility = Visibility.Visible;
                     });
                 }
                 return _loadedCommand;
@@ -143,18 +159,11 @@ namespace Attention.UWP.ViewModels
                 {
                     _itemClickCommand = new RelayCommand<IType>(item =>
                     {
-                        if (View.ContainerFromItem(item) is GridViewItem container)
+                        if (ViewContainer.ContainerFromItem(item) is GridViewItem container)
                         {
                             Selected = item;
-                            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
-                            ConnectedAnimation animation = View.PrepareConnectedAnimation("forwardAnimation", Selected, "connectedElement");
-                            animation.IsScaleAnimationEnabled = true;
-                            animation.Configuration = new BasicConnectedAnimationConfiguration();
-                            var done = ViewModelLocator.Current.Main.PhotoItemViewModel.TryStart(Selected, animation);
-                            if (done)
-                            {
-                                container.Opacity = 0.0d;
-                            }
+
+                            ViewModelLocator.Current.Main.Forward(container);
                         }
                     });
                 }
@@ -176,22 +185,6 @@ namespace Attention.UWP.ViewModels
                 }
                 return _refreshCommand;
             }
-        }
-
-        public async Task<bool> TryStart(IType item, ConnectedAnimation animation)
-        {
-            Selected = item;
-            View.ScrollIntoView(Selected, ScrollIntoViewAlignment.Default);
-            View.UpdateLayout();
-
-            animation.Completed += (sender, e) =>
-            {
-                if (View.ContainerFromItem(Selected) is GridViewItem container)
-                {
-                    container.Opacity = 1.0d;
-                }
-            };
-            return await View.TryStartConnectedAnimationAsync(animation, Selected, "connectedElement");
         }
     }
 }

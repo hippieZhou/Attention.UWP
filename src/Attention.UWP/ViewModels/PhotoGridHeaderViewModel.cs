@@ -1,5 +1,4 @@
-﻿using Attention.UWP.Extensions;
-using Attention.UWP.Helpers;
+﻿using Attention.UWP.Helpers;
 using Attention.UWP.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,16 +11,11 @@ namespace Attention.UWP.ViewModels
 {
     public class PhotoGridHeaderViewModel : ViewModelBase
     {
-        public PhotoGridHeaderViewModel()
-        {
-            SwitchHeaderMode(App.Settings.HeaderMode);
-        }
-
         private ScrollHeaderMode _headerMode;
         public ScrollHeaderMode HeaderModel
         {
-            get { return _headerMode; }
-            set { Set(ref _headerMode, value); }
+            get => _headerMode;
+            set => Set(ref _headerMode, value);
         }
 
         private ICommand _searchCommand;
@@ -49,7 +43,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(() =>
                     {
-                        BackToView(ViewModelLocator.Current.Local);
+                        ShowViewWithAnimation(ViewModelLocator.Current.Local);
                     });
                 }
                 return _downloadCommand;
@@ -65,19 +59,13 @@ namespace Attention.UWP.ViewModels
                 {
                     _moreCommand = new RelayCommand(() =>
                     {
-                        BackToView(ViewModelLocator.Current.More);
+                        ShowViewWithAnimation(ViewModelLocator.Current.More);
                     });
                 }
                 return _moreCommand;
             }
         }
 
-        public void SwitchHeaderMode(int mode) => HeaderModel = (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), mode);
-
-        private void BackToView(BaseViewModel uiElement)
-        {
-            ViewModelLocator.Current.Shell.MainElement.PlayScaleSpringAnimation(true);
-            uiElement.Visibility = Visibility.Visible;
-        }
+        private void ShowViewWithAnimation(ChildViewModel viewModel) => viewModel.Visibility = Visibility.Visible;
     }
 }

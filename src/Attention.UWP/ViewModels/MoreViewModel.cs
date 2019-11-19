@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using MetroLog;
 using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -14,12 +15,10 @@ using Windows.System;
 
 namespace Attention.UWP.ViewModels
 {
-    public class MoreViewModel : BaseViewModel
+    public class MoreViewModel : ChildViewModel
     {
-        private readonly ILogger _logger;
-        public MoreViewModel(ILogManager logManager)
+        public MoreViewModel(ILogManager logManager) : base(logManager)
         {
-            _logger = logManager.GetLogger<MoreViewModel>();
         }
 
         public string Markdown
@@ -49,6 +48,28 @@ namespace Attention.UWP.ViewModels
 - [cnbluefire](https://github.com/cnbluefire)
 - [h82258652](https://github.com/h82258652)
 ";
+            }
+        }
+
+        public string Summary
+        {
+            get
+            {
+                var appSummary = $@"
+------------------------------------------------------------------------
+IsFirstRun:{SystemInformation.IsFirstRun};
+ApplicationName:{SystemInformation.ApplicationName};
+ApplicationVersion:{App.Settings.Version};
+Culture:{SystemInformation.Culture};
+OperatingSystem:{SystemInformation.OperatingSystem};
+OperatingSystemArchitecture:{SystemInformation.OperatingSystemArchitecture};
+OperatingSystemVersion:{SystemInformation.OperatingSystemVersion};
+DeviceFamily:{SystemInformation.DeviceFamily};
+DeviceModel:{SystemInformation.DeviceModel};
+DeviceManufacturer:{SystemInformation.DeviceManufacturer};
+AvailableMemory:{SystemInformation.AvailableMemory};
+------------------------------------------------------------------------";
+                return appSummary;
             }
         }
 
@@ -112,14 +133,14 @@ namespace Attention.UWP.ViewModels
 
         private async Task SendEmailAsync(string sender)
         {
-            _logger.Info(App.Settings.AppSummary);
+            _logger.Info(Summary);
 
             //https://talkitbr.com/2015/06/11/adicionando-logs-em-universal-apps/
             Stream compressedLogsStream = await ViewModelLocator.Current.LogManager.GetCompressedLogs();
             FileInfo fileInfo = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path,
                 $"logs_{DateTime.UtcNow.ToString("yyyyMMdd_hhmmss")}.zip"));
 
-            Debug.WriteLine("My compressed logs file will be located at: " + fileInfo.FullName);
+            _logger.Info("My compressed logs file will be located at: " + fileInfo.FullName);
 
             using (FileStream fileStream = fileInfo.Create())
             {

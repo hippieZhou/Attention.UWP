@@ -11,29 +11,28 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.UWP.ViewModels
 {
     public class PhotoItemViewModel : ViewModelBase
     {
-        private UIElement _destinationElement;
+        public UIElement DestinationElement;
 
         private Visibility _visibility = Visibility.Collapsed;
         public Visibility Visibility
         {
-            get { return _visibility; }
-            set { Set(ref _visibility, value); }
+            get => _visibility;
+            set => Set(ref _visibility, value);
         }
 
         private ImageItem _item;
         public ImageItem Item
         {
-            get { return _item; }
-            set { Set(ref _item, value); }
+            get => _item;
+            set => Set(ref _item, value);
         }
 
-        internal void Initialize(Grid destinationElement) => _destinationElement = destinationElement;
+        public void Initialize(Grid destinationElement) => DestinationElement = destinationElement;
 
         protected ICommand _loadedCommand;
         public ICommand LoadedCommand
@@ -62,14 +61,7 @@ namespace Attention.UWP.ViewModels
                     {
                         if (args.OriginalSource is FrameworkElement root && root.Name == "overlayPopup")
                         {
-                            ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _destinationElement);
-                            animation.Configuration = new DirectConnectedAnimationConfiguration();
-                            animation.IsScaleAnimationEnabled = true;
-                            var done = await ViewModelLocator.Current.Main.PhotoGridViewModel.TryStart(Item, animation);
-                            if (done)
-                            {
-                                Visibility = Visibility.Collapsed;
-                            }
+                            await ViewModelLocator.Current.Main.Backwards();
                         }
                     });
                 }
@@ -124,20 +116,6 @@ namespace Attention.UWP.ViewModels
                     });
                 }
                 return _browseCommand;
-            }
-        }
-
-        public bool TryStart(object selected, ConnectedAnimation animation)
-        {
-            if (selected is ImageItem item)
-            {
-                Item = item;
-                Visibility = Visibility.Visible;
-                return animation.TryStart(_destinationElement);
-            }
-            else
-            {
-                return false;
             }
         }
     }

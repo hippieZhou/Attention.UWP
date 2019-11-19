@@ -17,27 +17,7 @@ namespace Attention.UWP.ViewModels
         public IEnumerable<ImageType> ImageTypes => Enum.GetValues(typeof(ImageType)).Cast<ImageType>();
         public IEnumerable<Category> Categories => Enum.GetValues(typeof(Category)).Cast<Category>();
 
-        public Filter Filter { get; private set; }
-
-        public SearchViewModel()
-        {
-            Filter = App.Settings.Filter;
-        }
-
-        private ICommand _backCommand;
-        public ICommand BackCommand
-        {
-            get
-            {
-                if (_backCommand == null)
-                {
-                    _backCommand = new RelayCommand(() =>
-                    {
-                    });
-                }
-                return _backCommand;
-            }
-        }
+        public Filter Filter { get; private set; } = App.Settings.Filter;
 
         private ICommand _primaryButtonCommand;
         public ICommand PrimaryButtonCommand

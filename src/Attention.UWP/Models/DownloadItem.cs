@@ -147,25 +147,28 @@ namespace Attention.UWP.Models
         {
             var result = await BackgroundExecutionManager.RequestAccessAsync();
 
-            BackgroundDownloader downloader = new BackgroundDownloader();
+            BackgroundTransferCompletionGroup completionGroup = new BackgroundTransferCompletionGroup();
+            RegisterBackgroundTask(completionGroup.Trigger);
+
+            BackgroundDownloader downloader = new BackgroundDownloader(completionGroup);
+
+            var group = BackgroundTransferGroup.CreateGroup(Guid.NewGuid().ToString());
+            group.TransferBehavior = BackgroundTransferBehavior.Serialized;
+            downloader.TransferGroup = group;
 
             CreateNotifications(downloader);
             StorageFile destinationFile = await GetLocalFileFromName(_folder, _entity.FileName);
             DownloadOperation download = downloader.CreateDownload(target, destinationFile);
             download.Priority = priority;
 
-            Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(obj =>
-            {
-                Debug.WriteLine($"{obj.Progress.Status}:{obj.Progress.ToString()}");
-
-                var progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
-                UpdateToast(progress, obj.ResultFile.Name);
-            });
+            completionGroup.Enable();
 
             if (cts == default)
             {
                 cts = new CancellationTokenSource();
             }
+
+            Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
             var downloadTask = download.StartAsync().AsTask(cts.Token, progressCallback);
 
             CreateToast(_folder.Path, _entity.Model.UserImageURL, _entity.Model.User, _entity.Model.PreviewURL, _entity.FileName);
@@ -186,11 +189,33 @@ namespace Attention.UWP.Models
     public partial class DownloadItem : ObservableObject
     {
         private static readonly ToastNotifier _notifier = ToastNotificationManager.CreateToastNotifier();
+
+        public static async Task AttachToDownloads()
+        {
+            var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
+            foreach (var download in downloads)
+            {
+                Progress<DownloadOperation> progressCallback = new Progress<DownloadOperation>(DownloadProgress);
+                await download.AttachAsync().AsTask(progressCallback);
+            }
+        }
         private static async Task<bool> IsDownloading(Uri uri)
         {
             var downloads = await BackgroundDownloader.GetCurrentDownloadsAsync();
             return downloads.Any(dl => dl.RequestedUri == uri);
         }
+
+        private static void RegisterBackgroundTask(IBackgroundTrigger trigger)
+        {
+            var builder = new BackgroundTaskBuilder
+            {
+                Name = "DownloadCompleteTrigger"
+            };
+            builder.SetTrigger(trigger);
+
+            BackgroundTaskRegistration task = builder.Register();
+        }
+
         private static async Task<StorageFile> GetLocalFileFromName(StorageFolder folder, string fileName)
         {
             return await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
@@ -239,6 +264,13 @@ namespace Attention.UWP.Models
             {
                 return default;
             }
+        }
+        private static void DownloadProgress(DownloadOperation obj)
+        {
+            Debug.WriteLine($"{obj.Progress.Status}:{obj.Progress.ToString()}");
+
+            var progress = obj.Progress.BytesReceived / (double)obj.Progress.TotalBytesToReceive;
+            UpdateToast(progress, obj.ResultFile.Name);
         }
         private static void CreateNotifications(BackgroundDownloader downloader)
         {
