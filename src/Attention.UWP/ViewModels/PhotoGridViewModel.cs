@@ -28,17 +28,23 @@ namespace Attention.UWP.ViewModels
                 20, () =>
                  {
                      LoadingVisibility = Visibility.Visible;
+
                      ErrorVisibility = Visibility.Collapsed;
+                     RefreshVisibility = Visibility.Collapsed;
                      NotFoundVisibility = Visibility.Collapsed;
                  }, () =>
                  {
+                     RefreshVisibility = Visibility.Visible;
+
                      LoadingVisibility = Visibility.Collapsed;
                      ErrorVisibility = Visibility.Collapsed;
+                     NotFoundVisibility = Items == null || Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                  }, ex =>
                  {
                      ErrorVisibility = Visibility.Visible;
-                     NotFoundVisibility = Visibility.Collapsed;
                      LoadingVisibility = Visibility.Collapsed;
+                     RefreshVisibility = Visibility.Collapsed;
+                     NotFoundVisibility = Visibility.Collapsed;
                  });
 
             Items.CollectionChanged += (sender, e) =>
@@ -132,6 +138,13 @@ namespace Attention.UWP.ViewModels
             set => Set(ref _notFoundVisibility, value);
         }
 
+        private Visibility _refreshVisibility = Visibility.Collapsed;
+        public Visibility RefreshVisibility
+        {
+            get => _refreshVisibility;
+            set => Set(ref _refreshVisibility, value);
+        }
+
         public void Initialize(GridView view) => ViewContainer = view;
 
         protected ICommand _loadedCommand;
@@ -180,6 +193,8 @@ namespace Attention.UWP.ViewModels
                 {
                     _refreshCommand = new RelayCommand(async () =>
                     {
+                        RefreshVisibility = Visibility.Collapsed;
+
                         await Items.RefreshAsync();
                     });
                 }

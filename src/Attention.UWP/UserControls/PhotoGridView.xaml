@@ -234,5 +234,68 @@
                 Content="RETRY"
                 FontSize="20" />
         </StackPanel>
+
+        <Button
+            Margin="0,0,28,28"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{x:Bind ViewModel.RefreshCommand}"
+            Style="{StaticResource RefreshButtonStyle}"
+            Visibility="{x:Bind ViewModel.RefreshVisibility, Mode=OneWay}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    From="0, 100, 0"
+                    To="0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+
+            <animations:Implicit.HideAnimations>
+                <animations:ScalarAnimation
+                    Target="Opacity"
+                    To="0.0"
+                    Duration="0:0:1" />
+                <animations:ScalarAnimation
+                    Target="Translation.Y"
+                    To="100"
+                    Duration="0:0:1" />
+            </animations:Implicit.HideAnimations>
+
+            <i:Interaction.Behaviors>
+                <behaviors:Scale
+                    x:Name="ScaleUp"
+                    AutomaticallyStart="True"
+                    CenterX="20"
+                    CenterY="20"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Linear"
+                    ScaleX="1.1"
+                    ScaleY="1.1"
+                    Duration="200" />
+                <behaviors:Scale
+                    x:Name="ScaleDown"
+                    AutomaticallyStart="True"
+                    CenterX="20"
+                    CenterY="20"
+                    Delay="0"
+                    EasingMode="EaseOut"
+                    EasingType="Linear"
+                    ScaleX="1"
+                    ScaleY="1"
+                    Duration="200" />
+
+                <ic:EventTriggerBehavior EventName="PointerEntered">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ScaleUp}" />
+                </ic:EventTriggerBehavior>
+                <ic:EventTriggerBehavior EventName="PointerExited">
+                    <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=ScaleDown}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </Button>
+
     </Grid>
 </UserControl>
