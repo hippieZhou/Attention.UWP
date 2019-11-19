@@ -8,9 +8,9 @@ namespace Attention.UWP
 {
     public class BackgroundProxy
     {
-        public static void Refresh(bool liveTitle)
+        public static void Initialize(bool liveTitle)
         {
-            if (liveTitle)
+            if(liveTitle)
             {
                 Register();
             }

@@ -1,8 +1,16 @@
-﻿using Attention.UWP.Services;
+﻿using Attention.UWP.Models;
+using Attention.UWP.Services;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using MetroLog;
 using MetroLog.Targets;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Storage;
 
 namespace Attention.UWP.ViewModels
 {
@@ -12,6 +20,7 @@ namespace Attention.UWP.ViewModels
         private static ViewModelLocator _current;
         public static ViewModelLocator Current => _current ?? (_current = new ViewModelLocator());
 
+        private string _key;
         private ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -29,7 +38,7 @@ namespace Attention.UWP.ViewModels
                 return LogManagerFactory.DefaultLogManager;
             });
             SimpleIoc.Default.Register(() => new DAL(App.Settings.DbFile));
-            SimpleIoc.Default.Register(() => new PixabayService(App.Settings.API_KEY.Release));
+            SimpleIoc.Default.Register(() => new PixabayService(_key));
             #endregion
 
             #region ViewModels
@@ -49,5 +58,27 @@ namespace Attention.UWP.ViewModels
         public SearchViewModel Search => ServiceLocator.Current.GetInstance<SearchViewModel>();
         public LocalViewModel Local => ServiceLocator.Current.GetInstance<LocalViewModel>();
         public MoreViewModel More => ServiceLocator.Current.GetInstance<MoreViewModel>();
+
+        public async Task InitializeAsync() => await LoadSecretAsync();
+
+        private async Task LoadSecretAsync()
+        {
+            try
+            {
+                var file = Path.Combine(Package.Current.InstalledLocation.Path, "secret.json");
+                StorageFile secret = await StorageFile.GetFileFromPathAsync(file);
+                string json = await FileIO.ReadTextAsync(secret);
+                var key = JsonConvert.DeserializeObject<JObject>(json)[nameof(API_KEY)].ToObject<API_KEY>();
+#if DEBUG
+                _key = key.Debug;
+#else
+                _key = key.Release;
+#endif
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

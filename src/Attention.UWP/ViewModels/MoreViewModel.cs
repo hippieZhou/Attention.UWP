@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using MetroLog;
 using Microsoft.Toolkit.Extensions;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -112,7 +113,22 @@ namespace Attention.UWP.ViewModels
 
         private async Task SendEmailAsync(string sender)
         {
-            _logger.Info(App.Settings.AppSummary);
+           var appSummary =  $@"
+------------------------------------------------------------------------
+IsFirstRun:{SystemInformation.IsFirstRun};
+ApplicationName:{SystemInformation.ApplicationName};
+ApplicationVersion:{App.Settings.Version};
+Culture:{SystemInformation.Culture};
+OperatingSystem:{SystemInformation.OperatingSystem};
+OperatingSystemArchitecture:{SystemInformation.OperatingSystemArchitecture};
+OperatingSystemVersion:{SystemInformation.OperatingSystemVersion};
+DeviceFamily:{SystemInformation.DeviceFamily};
+DeviceModel:{SystemInformation.DeviceModel};
+DeviceManufacturer:{SystemInformation.DeviceManufacturer};
+AvailableMemory:{SystemInformation.AvailableMemory};
+------------------------------------------------------------------------";
+
+            _logger.Info(appSummary);
 
             //https://talkitbr.com/2015/06/11/adicionando-logs-em-universal-apps/
             Stream compressedLogsStream = await ViewModelLocator.Current.LogManager.GetCompressedLogs();

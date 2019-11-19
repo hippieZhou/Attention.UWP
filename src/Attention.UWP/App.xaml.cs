@@ -1,5 +1,6 @@
 ﻿using Attention.UWP.Helpers;
 using Attention.UWP.Models;
+using Attention.UWP.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -20,7 +21,6 @@ namespace Attention.UWP
     sealed partial class App : Application
     {
         public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
-        private Frame rootFrame;
 
         public App()
         {
@@ -58,13 +58,14 @@ namespace Attention.UWP
 
         private async Task InitializeAsync()
         {
+            await ViewModelLocator.Current.InitializeAsync();
             await Settings.InitializeAsync();
-            BackgroundProxy.Refresh(Settings.LiveTitle);
+            BackgroundProxy.Initialize(Settings.LiveTitle);
         }
 
         private void InitWindow(bool skipWindowCreation)
         {
-            rootFrame = Window.Current.Content as Frame;
+            Frame rootFrame = Window.Current.Content as Frame;
             bool initApp = rootFrame == null && !skipWindowCreation;
             if (initApp)
             {
@@ -78,7 +79,6 @@ namespace Attention.UWP
                 }
 
                 SetupTitlebar();
-                // Ensure the current window is active
                 Window.Current.Activate();
             }
         }

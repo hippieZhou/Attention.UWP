@@ -53,10 +53,15 @@ namespace Attention.UWP.ViewModels
     public class PhotoItemSource : IIncrementalSource<ImageItem>
     {
         private readonly PixabayService _service;
+        private readonly bool _loadInMemory;
 
-        public PhotoItemSource(PixabayService service)
+        public PhotoItemSource(PixabayService service, bool loadInMemory = true)
         {
             _service = service;
+            _loadInMemory = loadInMemory;
+
+            ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
+            ImageCache.Instance.MaxMemoryCacheCount = loadInMemory ? 200 : 0;
 
             Messenger.Default.Register<bool>(this, nameof(App.Settings.LiveTitle), async enabled =>
             {
@@ -83,10 +88,9 @@ namespace Attention.UWP.ViewModels
             var result = await _service.QueryImagesAsync(page: ++pageIndex, per_page: pageSize, App.Settings.Filter);
             if (result?.Images != null)
             {
-                var loadInMemory = App.Settings.LoadInMemory;
                 Parallel.ForEach(result.Images, async p =>
                 {
-                    await ImageCache.Instance.PreCacheAsync(new Uri(p.LargeImageURL), false, loadInMemory);
+                    await ImageCache.Instance.PreCacheAsync(new Uri(p.LargeImageURL), false, _loadInMemory);
                 });
                 return result.Images;
             }

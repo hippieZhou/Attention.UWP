@@ -12,11 +12,6 @@ namespace Attention.UWP.ViewModels
 {
     public class PhotoGridHeaderViewModel : ViewModelBase
     {
-        public PhotoGridHeaderViewModel()
-        {
-            SwitchHeaderMode(App.Settings.HeaderMode);
-        }
-
         private ScrollHeaderMode _headerMode;
         public ScrollHeaderMode HeaderModel
         {
@@ -49,7 +44,7 @@ namespace Attention.UWP.ViewModels
                 {
                     _downloadCommand = new RelayCommand(() =>
                     {
-                        BackToView(ViewModelLocator.Current.Local);
+                        ShowViewWithAnimation(ViewModelLocator.Current.Local);
                     });
                 }
                 return _downloadCommand;
@@ -65,16 +60,14 @@ namespace Attention.UWP.ViewModels
                 {
                     _moreCommand = new RelayCommand(() =>
                     {
-                        BackToView(ViewModelLocator.Current.More);
+                        ShowViewWithAnimation(ViewModelLocator.Current.More);
                     });
                 }
                 return _moreCommand;
             }
         }
 
-        public void SwitchHeaderMode(int mode) => HeaderModel = (ScrollHeaderMode)Enum.ToObject(typeof(ScrollHeaderMode), mode);
-
-        private void BackToView(BaseViewModel uiElement)
+        private void ShowViewWithAnimation(BaseViewModel uiElement)
         {
             ViewModelLocator.Current.Shell.MainElement.PlayScaleSpringAnimation(true);
             uiElement.Visibility = Visibility.Visible;
