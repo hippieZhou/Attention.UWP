@@ -54,7 +54,6 @@
             VerticalAlignment="Center"
             x:DeferLoadStrategy="Lazy"
             x:FieldModifier="public"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
@@ -65,6 +64,7 @@
 
             <mtui:ImageEx
                 x:Name="imageEx"
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                 CacheMode="BitmapCache"
                 IsCacheEnabled="True"
                 Source="{x:Bind ViewModel.Item.LargeImageURL, Mode=OneWay, TargetNullValue=ms-appx:///Assets/Image.png}"
