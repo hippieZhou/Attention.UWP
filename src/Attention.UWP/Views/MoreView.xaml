@@ -145,6 +145,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock
                         Margin="0,48,0,0"
@@ -204,6 +205,17 @@
                             </Button>-->
                         </StackPanel>
                     </StackPanel>
+                    <Button
+                        Grid.Row="3"
+                        Width="120"
+                        Margin="24"
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind ViewModel.ShowInStoreCommand}">
+                        <Button.Content>
+                            <Image Source="ms-appx:///Assets/StoreBadge.png" />
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </PivotItem>
         </Pivot>
