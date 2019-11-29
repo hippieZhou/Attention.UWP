@@ -131,6 +131,23 @@ AvailableMemory:{SystemInformation.AvailableMemory};
             }
         }
 
+        private ICommand _showInStoreCommand;
+        public ICommand ShowInStoreCommand
+        {
+            get
+            {
+                if (_showInStoreCommand == null)
+                {
+                    _showInStoreCommand = new RelayCommand(async () =>
+                    {
+                        await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9NC82MFX4BTZ"));
+                    });
+                }
+                return _showInStoreCommand;
+            }
+        }
+
+
         private async Task SendEmailAsync(string sender)
         {
             _logger.Info(Summary);

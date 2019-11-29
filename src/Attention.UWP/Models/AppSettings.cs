@@ -158,7 +158,7 @@ namespace Attention.UWP.Models
 
         public async Task<StorageFolder> GetSavingFolderAsync()
         {
-            StorageFolder folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
+            StorageFolder folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("PicturesLibrary", CreationCollisionOption.OpenIfExists);
             return folder;
         }
 
