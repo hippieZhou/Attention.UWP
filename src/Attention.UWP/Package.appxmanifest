@@ -9,7 +9,7 @@
   <Identity
     Name="49037hippieZhou.AttentionForUWP"
     Publisher="CN=FB39366C-1F01-4867-BE1F-B5C0C7888AAA"
-    Version="1.0.1.0" />
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="99b4445d-2baa-4be1-b965-2b99bd5ec41c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
