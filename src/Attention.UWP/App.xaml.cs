@@ -58,14 +58,16 @@ namespace Attention.UWP
 
         private async Task InitializeAsync()
         {
+            await Settings.InitializeAsync();
+
             var isDebug = true;
 #if DEBUG
             isDebug = true;
 #else
             isDebug = false;
 #endif
+
             await ViewModelLocator.Current.InitializeAsync(isDebug);
-            await Settings.InitializeAsync();
             BackgroundProxy.Initialize(Settings.LiveTitle);
         }
 
