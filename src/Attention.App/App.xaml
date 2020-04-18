@@ -6,7 +6,10 @@
     xmlns:prismUnity="using:Prism.Unity.Windows">
     <prismUnity:PrismUnityApplication.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries />
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!--  Other merged dictionaries here  -->
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </prismUnity:PrismUnityApplication.Resources>
 </prismUnity:PrismUnityApplication>

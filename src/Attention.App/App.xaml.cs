@@ -6,8 +6,6 @@ using Windows.UI.Xaml;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
-using Prism.Windows.AppModel;
-using Windows.ApplicationModel.Resources;
 
 namespace Attention.App
 {
@@ -30,21 +28,25 @@ namespace Attention.App
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
-            #region Extend Titlebar
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationView appView = ApplicationView.GetForCurrentView();
-            appView.TitleBar.BackgroundColor = Colors.Transparent;
-            appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
-            appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-            #endregion
+            void ExtendTitlebar()
+            {
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                ApplicationView appView = ApplicationView.GetForCurrentView();
+                appView.TitleBar.BackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
+                appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
+            }
+
+            ExtendTitlebar();
             base.OnWindowCreated(args);
         }
 
-        private Task LoadAppResources()
+        private async Task LoadAppResources()
         {
-            return Task.Delay(7000);
+            //return Task.Delay(2000);
+            await Task.Yield();
         }
 
         protected override Task OnInitializeAsync(IActivatedEventArgs args)
@@ -52,7 +54,7 @@ namespace Attention.App
             Container.RegisterInstance(NavigationService);
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);
-           // Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+            //Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
             return base.OnInitializeAsync(args);
         }

@@ -3,12 +3,59 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
+    xmlns:vm="using:Attention.App.ViewModels"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
+    <prismMvvm:SessionStateAwarePage.Resources>
+        <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="White" />
+        <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="White" />
+        <DataTemplate x:Key="SeparatorTemplate" x:DataType="vm:Separator">
+            <muxc:NavigationViewItemSeparator />
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTemplate" x:DataType="vm:Header">
+            <muxc:NavigationViewItemHeader Content="{x:Bind Name}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ItemTemplate" x:DataType="vm:Category">
+            <muxc:NavigationViewItem Content="{x:Bind Path=Name}" ToolTipService.ToolTip="{x:Bind Path=Tooltip}">
+                <muxc:NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="{x:Bind Path=Glyph}" />
+                </muxc:NavigationViewItem.Icon>
+            </muxc:NavigationViewItem>
+        </DataTemplate>
+    </prismMvvm:SessionStateAwarePage.Resources>
 
-    <Grid />
+    <Grid>
+        <i:Interaction.Behaviors>
+            <ic:EventTriggerBehavior EventName="Loaded">
+                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand}" />
+            </ic:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
+        <muxc:NavigationView
+            x:Name="NavigationViewControl"
+            Header="{x:Bind Path=ConcreteDataContext.Header}"
+            IsBackButtonVisible="Auto"
+            IsTabStop="False"
+            MenuItemsSource="{x:Bind Path=ConcreteDataContext.Categories}"
+            PaneTitle="Attention For Wallpaper"
+            SelectedItem="{Binding SelectedItem}"
+            SelectionFollowsFocus="Disabled">
+            <muxc:NavigationView.MenuItemTemplateSelector>
+                <local:MenuItemTemplateSelector
+                    HeaderTemplate="{StaticResource HeaderTemplate}"
+                    ItemTemplate="{StaticResource ItemTemplate}"
+                    SeparatorTemplate="{StaticResource SeparatorTemplate}" />
+            </muxc:NavigationView.MenuItemTemplateSelector>
+            <muxc:NavigationView.AutoSuggestBox>
+                <AutoSuggestBox QueryIcon="Find" />
+            </muxc:NavigationView.AutoSuggestBox>
+            <Frame x:Name="contentFrame" />
+        </muxc:NavigationView>
+    </Grid>
 </prismMvvm:SessionStateAwarePage>
