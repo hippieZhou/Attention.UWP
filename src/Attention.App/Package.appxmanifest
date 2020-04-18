@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="8adc3f92-9690-4703-8f28-d127e05386a7"
+    Name="70c7fc48-3ac1-4333-a34c-f5b438d6b31e"
     Publisher="CN=hippieZhou"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="8adc3f92-9690-4703-8f28-d127e05386a7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="70c7fc48-3ac1-4333-a34c-f5b438d6b31e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Attention.App</DisplayName>
@@ -20,7 +20,7 @@
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17134.0" MaxVersionTested="10.0.17134.0" />
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
   </Dependencies>
 
   <Resources>

@@ -1,78 +1,60 @@
-﻿using System;
-using Windows.ApplicationModel;
+﻿using Prism.Unity.Windows;
+using Microsoft.Practices.Unity;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
+using Windows.UI.Xaml;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Media;
+using Windows.UI;
+using Prism.Windows.AppModel;
+using Windows.ApplicationModel.Resources;
 
 namespace Attention.App
 {
-    sealed partial class App : Application
+    public sealed partial class App : PrismUnityApplication
     {
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            ExtendedSplashScreenFactory = (splashscreen) => new ExtendedSplashScreen(splashscreen);
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            if (args.PreviousExecutionState != ApplicationExecutionState.Running)
+            {
+                await LoadAppResources();
+            }
+            NavigationService.Navigate(PageTokens.Shell.ToString(), args.Arguments);
+        }
 
+        protected override void OnWindowCreated(WindowCreatedEventArgs args)
+        {
+            #region Extend Titlebar
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             ApplicationView appView = ApplicationView.GetForCurrentView();
             appView.TitleBar.BackgroundColor = Colors.Transparent;
             appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
             appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
             appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-
-
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (!(Window.Current.Content is Frame rootFrame))
-            {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
-            }
-
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
-            }
+            #endregion
+            base.OnWindowCreated(args);
         }
 
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private Task LoadAppResources()
         {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+            return Task.Delay(7000);
         }
 
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        protected override Task OnInitializeAsync(IActivatedEventArgs args)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();
+            Container.RegisterInstance(NavigationService);
+            Container.RegisterInstance(SessionStateService);
+            Container.RegisterInstance(EventAggregator);
+           // Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+
+            return base.OnInitializeAsync(args);
         }
     }
 }
