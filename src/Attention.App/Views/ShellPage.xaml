@@ -13,49 +13,87 @@
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
-    <prismMvvm:SessionStateAwarePage.Resources>
-        <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="White" />
-        <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="White" />
-        <DataTemplate x:Key="SeparatorTemplate" x:DataType="vm:Separator">
-            <muxc:NavigationViewItemSeparator />
-        </DataTemplate>
-        <DataTemplate x:Key="HeaderTemplate" x:DataType="vm:Header">
-            <muxc:NavigationViewItemHeader Content="{x:Bind Name}" />
-        </DataTemplate>
-        <DataTemplate x:Key="ItemTemplate" x:DataType="vm:Category">
-            <muxc:NavigationViewItem Content="{x:Bind Path=Name}" ToolTipService.ToolTip="{x:Bind Path=Tooltip}">
-                <muxc:NavigationViewItem.Icon>
-                    <SymbolIcon Symbol="{x:Bind Path=Glyph}" />
-                </muxc:NavigationViewItem.Icon>
-            </muxc:NavigationViewItem>
-        </DataTemplate>
-    </prismMvvm:SessionStateAwarePage.Resources>
+    <!--<prismMvvm:SessionStateAwarePage.Resources>
+        <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
+        <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
+    </prismMvvm:SessionStateAwarePage.Resources>-->
 
     <Grid>
         <i:Interaction.Behaviors>
             <ic:EventTriggerBehavior EventName="Loaded">
-                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
         <muxc:NavigationView
             x:Name="NavigationViewControl"
-            Header="{x:Bind Path=ConcreteDataContext.Header}"
+            Header="{Binding Header}"
             IsBackButtonVisible="Auto"
+            IsPaneOpen="{x:Bind ConcreteDataContext.IsPaneOpen}"
             IsTabStop="False"
             MenuItemsSource="{x:Bind Path=ConcreteDataContext.Categories}"
+            PaneDisplayMode="{x:Bind ConcreteDataContext.DisplayMode}"
             PaneTitle="Attention For Wallpaper"
-            SelectedItem="{Binding SelectedItem}"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             SelectionFollowsFocus="Disabled">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="ItemInvoked">
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand, Mode=OneWay}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
             <muxc:NavigationView.MenuItemTemplateSelector>
-                <local:MenuItemTemplateSelector
-                    HeaderTemplate="{StaticResource HeaderTemplate}"
-                    ItemTemplate="{StaticResource ItemTemplate}"
-                    SeparatorTemplate="{StaticResource SeparatorTemplate}" />
+                <local:MenuItemTemplateSelector>
+                    <local:MenuItemTemplateSelector.SeparatorTemplate>
+                        <DataTemplate x:DataType="vm:Separator">
+                            <muxc:NavigationViewItemSeparator />
+                        </DataTemplate>
+                    </local:MenuItemTemplateSelector.SeparatorTemplate>
+                    <local:MenuItemTemplateSelector.HeaderTemplate>
+                        <DataTemplate x:DataType="vm:Header">
+                            <muxc:NavigationViewItemHeader Content="{x:Bind Name}" />
+                        </DataTemplate>
+                    </local:MenuItemTemplateSelector.HeaderTemplate>
+                    <local:MenuItemTemplateSelector.ItemTemplate>
+                        <DataTemplate x:DataType="vm:Category">
+                            <muxc:NavigationViewItem Content="{x:Bind Path=Name}" ToolTipService.ToolTip="{x:Bind Path=Tooltip}">
+                                <muxc:NavigationViewItem.Icon>
+                                    <SymbolIcon Symbol="{x:Bind Path=Glyph}" />
+                                </muxc:NavigationViewItem.Icon>
+                            </muxc:NavigationViewItem>
+                        </DataTemplate>
+                    </local:MenuItemTemplateSelector.ItemTemplate>
+                </local:MenuItemTemplateSelector>
             </muxc:NavigationView.MenuItemTemplateSelector>
             <muxc:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox QueryIcon="Find" />
             </muxc:NavigationView.AutoSuggestBox>
-            <Frame x:Name="contentFrame" />
+            <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+                <Frame x:Name="shellFrame" />
+            </Grid>
         </muxc:NavigationView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="CurrentStateChanged">
+                        <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.StateChangedCommand}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <VisualState x:Name="PanoramicState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1024" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </prismMvvm:SessionStateAwarePage>

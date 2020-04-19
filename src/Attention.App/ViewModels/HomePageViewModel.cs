@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace Attention.App.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class HomePageViewModel : ViewModelBase
     {
-        public MainPageViewModel()
+        public HomePageViewModel()
         {
 
         }

@@ -4,11 +4,11 @@ using System.ComponentModel;
 
 namespace Attention.App.Views
 {
-    public sealed partial class MainPage : SessionStateAwarePage, INotifyPropertyChanged
+    public sealed partial class HomePage : SessionStateAwarePage, INotifyPropertyChanged
     {
-        public MainPageViewModel ConcreteDataContext => DataContext as MainPageViewModel;
+        public HomePageViewModel ConcreteDataContext => DataContext as HomePageViewModel;
         public event PropertyChangedEventHandler PropertyChanged;
-        public MainPage()
+        public HomePage()
         {
             this.InitializeComponent();
             this.DataContextChanged += (sender, e) => 
