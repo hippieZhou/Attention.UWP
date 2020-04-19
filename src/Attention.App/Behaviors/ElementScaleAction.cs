@@ -11,34 +11,33 @@ namespace Attention.App.Behaviors
     {
         public object Execute(object sender, object parameter)
         {
-            var uiElement = TargetObject ?? sender as FrameworkElement;
+            var root = TargetObject ?? sender as FrameworkElement;
 
-            if (uiElement is null)
+            if (root is null)
             {
                 throw new InvalidOperationException("ElementScalarAction can only be attached to types inheriting UIElement");
             }
 
-            if (VisualTreeHelper.GetParent(uiElement) is FrameworkElement parent)
+            if (VisualTreeHelper.GetParent(root) is FrameworkElement parent)
             {
                 parent.Clip = new RectangleGeometry()
                 {
                     Rect = new Rect(0, 0, parent.ActualWidth, parent.ActualHeight)
                 };
             }
-
-            uiElement.PlayScaleAnimation(uiElement, AnimationExtension.CreateScaleAnimation(Enable));
-            return null;
+            
+            return root.Play(root.CreateScaleAnimation(Entered));
         }
 
-        public bool Enable
+        public bool Entered
         {
-            get { return (bool)GetValue(EnableProperty); }
-            set { SetValue(EnableProperty, value); }
+            get { return (bool)GetValue(EnteredProperty); }
+            set { SetValue(EnteredProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Enable.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EnableProperty =
-            DependencyProperty.Register("Enable", typeof(bool), typeof(ElementScaleAction), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnteredProperty =
+            DependencyProperty.Register("Entered", typeof(bool), typeof(ElementScaleAction), new PropertyMetadata(false));
 
         public FrameworkElement TargetObject
         {

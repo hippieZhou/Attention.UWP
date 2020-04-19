@@ -6,6 +6,7 @@
     xmlns:be="using:Attention.App.Behaviors"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ex="using:Attention.App.Extensions"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.App.Views"
@@ -24,18 +25,22 @@
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
         <mtuc:AdaptiveGridView
-            Padding="12,0,6,0"
+            Padding="8,0"
             animations:ReorderGridAnimation.Duration="250"
             DataFetchSize="1"
             DesiredWidth="420"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
-            ItemContainerStyle="{StaticResource AdaptiveGridViewItemStyle}"
             ItemHeight="280"
             ItemsSource="{x:Bind ConcreteDataContext.Wallpapers, Mode=OneWay}"
             OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectionMode="Single">
+            <mtuc:AdaptiveGridView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="6" />
+                </Style>
+            </mtuc:AdaptiveGridView.ItemContainerStyle>
             <mtuc:AdaptiveGridView.ItemTemplate>
                 <DataTemplate x:DataType="model:WallpaperEntity">
                     <Grid Background="{x:Bind Background}">
@@ -74,33 +79,32 @@
                                     Duration="400" />
                             </i:Interaction.Behaviors>
                         </TextBlock>
-                        
+
                         <i:Interaction.Behaviors>
                             <!--  鼠标相关操作  -->
                             <ic:EventTriggerBehavior EventName="PointerEntered">
                                 <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                                <be:ElementScaleAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
+                                <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="PointerExited">
                                 <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                             </ic:EventTriggerBehavior>
 
                             <!--  单指相关操作  -->
                             <ic:EventTriggerBehavior EventName="PointerPressed">
                                 <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                                <be:ElementScaleAction Enable="True" TargetObject="{Binding ElementName=imageEx}" />
+                                <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="PointerReleased">
                                 <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                             </ic:EventTriggerBehavior>
                             <ic:EventTriggerBehavior EventName="PointerCanceled">
                                 <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Enable="False" TargetObject="{Binding ElementName=imageEx}" />
+                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
-                        
                     </Grid>
                 </DataTemplate>
             </mtuc:AdaptiveGridView.ItemTemplate>
