@@ -125,7 +125,6 @@
       <DependentUpon>ExtendedSplashScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\FluentDesignExtension.cs" />
-    <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Models\WallpaperEntity.cs" />
     <Compile Include="PageTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,7 +151,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\0b7a8b6a210ee4c0dc2dea8f36c44211e968cdbd.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

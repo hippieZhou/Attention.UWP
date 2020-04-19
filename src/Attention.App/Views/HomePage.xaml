@@ -48,8 +48,8 @@
                             x:Name="imageEx"
                             CacheMode="BitmapCache"
                             IsCacheEnabled="True"
-                            Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/0b7a8b6a210ee4c0dc2dea8f36c44211e968cdbd.jpg}"
-                            Stretch="UniformToFill" />
+                            Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}"
+                            Stretch="None" />
 
                         <TextBlock
                             Margin="12"

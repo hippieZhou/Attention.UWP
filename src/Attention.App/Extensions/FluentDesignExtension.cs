@@ -3,6 +3,7 @@ using System.Numerics;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
 
 namespace Attention.App.Extensions
 {
@@ -30,6 +31,23 @@ namespace Attention.App.Extensions
             }
             rootVisual.StartAnimation("Scale", scaleAnimation);
             return root;
+        }
+
+        public static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is TChild found)
+                    return found;
+                else
+                {
+                    TChild childOfChild = FindVisualChild<TChild>(child);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
         }
     }
 }

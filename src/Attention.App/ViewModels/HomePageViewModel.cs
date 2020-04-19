@@ -46,8 +46,8 @@ namespace Attention.App.ViewModels
                                     BackgroundSource = AcrylicBackgroundSource.Backdrop, 
                                     TintColor=color, 
                                     FallbackColor = color,
-                                    TintOpacity=0.8,
-                                    TintLuminosityOpacity = 0.8,
+                                    TintOpacity=0.6,
+                                    TintLuminosityOpacity = 0.6,
                                 },
                                 CreateAt = DateTime.Now
                             });
