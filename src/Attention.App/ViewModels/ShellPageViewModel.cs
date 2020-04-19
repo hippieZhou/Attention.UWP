@@ -8,6 +8,8 @@ using System;
 using Windows.UI.Xaml.Controls;
 using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
+using Attention.App.Views;
+using System.Diagnostics;
 
 namespace Attention.App.ViewModels
 {
@@ -15,16 +17,27 @@ namespace Attention.App.ViewModels
 
     public class Category : CategoryBase
     {
-        public string Name { get; set; }
-        public string Tooltip { get; set; }
+        public string Label { get; set; }
         public Symbol Glyph { get; set; }
+        public Type PageType { get; set; }
+
+        public Category(string label, Symbol symbol, Type type)
+        {
+            Label = label;
+            Glyph = symbol;
+            PageType = type;
+        }
+
+        public override string ToString() => Label;
+
+        public static Category FromType<T>(string label, Symbol symbol) where T : Page => new Category(label, symbol, typeof(T));
     }
 
     public class Separator : CategoryBase { }
 
     public class Header : CategoryBase
     {
-        public string Name { get; set; }
+        public string Label { get; set; }
     }
 
 
@@ -35,6 +48,8 @@ namespace Attention.App.ViewModels
         private const string NarrowStateName = "NarrowState";
         private const double WideStateMinWindowWidth = 640;
         private const double PanoramicStateMinWindowWidth = 1024;
+
+        private Frame _shellFrame;
 
         private readonly ILoggerFacade _logger;
         public ShellPageViewModel(ILoggerFacade logger)
@@ -47,6 +62,13 @@ namespace Attention.App.ViewModels
         {
             get { return _isPaneOpen; }
             set { SetProperty(ref _isPaneOpen, value); }
+        }
+
+        private bool _isBackEnabled;
+        public bool IsBackEnabled
+        {
+            get { return _isBackEnabled; }
+            set { SetProperty(ref _isBackEnabled, value); }
         }
 
         private muxc.NavigationViewPaneDisplayMode _displayMode = muxc.NavigationViewPaneDisplayMode.LeftCompact;
@@ -63,32 +85,18 @@ namespace Attention.App.ViewModels
             set { SetProperty(ref _header, value); }
         }
 
-        private ObservableCollection<CategoryBase> _categories;
-        public ObservableCollection<CategoryBase> Categories
+        private ObservableCollection<CategoryBase> _primaryItems;
+        public ObservableCollection<CategoryBase> PrimaryItems
         {
-            get { return _categories ?? (_categories = new ObservableCollection<CategoryBase>()); }
-            set { SetProperty(ref _categories, value); }
+            get { return _primaryItems ?? (_primaryItems = new ObservableCollection<CategoryBase>()); }
+            set { SetProperty(ref _primaryItems, value); }
         }
 
         private CategoryBase _selectedItem;
         public CategoryBase SelectedItem
         {
             get { return _selectedItem; }
-            set
-            {
-                if (value != _selectedItem)
-                {
-                    SetProperty(ref _selectedItem, value);
-                    Header = SelectedItem is Category category ? category.Name : (default);
-                }
-            }
-        }
-
-        private ViewModelBase _selectedContent;
-        public ViewModelBase SelectedContent
-        {
-            get { return _selectedContent; }
-            set { SetProperty(ref _selectedContent, value); }
+            set { SetProperty(ref _selectedItem, value); }
         }
 
         private ICommand _stateChangedCommand;
@@ -116,12 +124,13 @@ namespace Attention.App.ViewModels
                 {
                     _loadCommand = new DelegateCommand(() => 
                     {
-                        Categories.Clear();
-                        Categories.Add(new Separator());
-                        Categories.Add(new Header() { Name = "菜单" });
-                        Categories.Add(new Category { Name = "首页", Glyph = Symbol.Home, Tooltip = "首页" });
-                        Categories.Add(new Category { Name = "下载", Glyph = Symbol.Download, Tooltip = "下载" });
-                        SelectedItem = Categories.FirstOrDefault(x => x.GetType() == typeof(Category));
+                        PrimaryItems.Clear();
+                        PrimaryItems.Add(new Separator());
+                        PrimaryItems.Add(new Header() { Label = "菜单" });
+                        PrimaryItems.Add(Category.FromType<HomePage>("首页", Symbol.Home));
+                        PrimaryItems.Add(Category.FromType<DownloadPage>("下载", Symbol.Download));
+
+                        _shellFrame.Navigate(typeof(HomePage));
                     });
                 }
                 return _loadCommand;
@@ -137,27 +146,59 @@ namespace Attention.App.ViewModels
                 {
                     _itemInvokedCommand = new DelegateCommand<muxc.NavigationViewItemInvokedEventArgs>(args =>
                     {
+                        Trace.WriteLine(args.InvokedItem.ToString());
                         if (args.IsSettingsInvoked)
                         {
-                            //todo
-                        }
-                        var current = Categories.FirstOrDefault(x => x.GetType() == typeof(Category) && ((Category)x).Name == args.InvokedItem.ToString());
-                        if (current == SelectedItem)
-                        {
-                            return;
+                            _shellFrame.Navigate(typeof(SettingsPage));
                         }
 
-                        //.FirstOrDefault(x => x.GetType() == typeof(Category) && x.);
-                        //args.InvokedItem;
+                        if (PrimaryItems.FirstOrDefault(x => x is Category category && category.Label == args.InvokedItem.ToString()) is Category navItem)
+                        {
+                            if (SelectedItem is Category currentNavItem && currentNavItem != navItem)
+                            {
+                                _shellFrame.Navigate(navItem.PageType);
+                            }
+                        }
                     });
                 }
                 return _itemInvokedCommand;
             }
         }
 
+        private ICommand _backRequestedCommand;
+        public ICommand BackRequestedCommand
+        {
+            get
+            {
+                if (_backRequestedCommand == null)
+                {
+                    _backRequestedCommand = new DelegateCommand(() =>
+                    {
+                        _shellFrame.GoBack();
+                    });
+                }
+                return _backRequestedCommand;
+            }
+        }
+
         public void Initialize(Frame frame)
         {
-            var Frame = frame;
+            _shellFrame = frame;
+            _shellFrame.Navigated += (sender, e) => 
+            {
+                IsBackEnabled = _shellFrame.CanGoBack;
+                SelectedItem = PrimaryItems.FirstOrDefault(x => x is Category category && category.PageType == e?.SourcePageType);
+                if (e?.SourcePageType == typeof(SettingsPage))
+                {
+                    Header = "设置";
+                    return;
+                }
+                if (SelectedItem != null)
+                {
+                    Header = ((Category)SelectedItem).Label;
+                    return;
+                }
+            };
             InitializeState(Window.Current.Bounds.Width);
         }
 
@@ -183,10 +224,11 @@ namespace Attention.App.ViewModels
             {
                 case PanoramicStateName:
                     DisplayMode = muxc.NavigationViewPaneDisplayMode.Auto;
+                    IsPaneOpen = true;
                     break;
                 case WideStateName:
                     DisplayMode = muxc.NavigationViewPaneDisplayMode.LeftCompact;
-                    IsPaneOpen = false;
+                    IsPaneOpen = true;
                     break;
                 case NarrowStateName:
                     DisplayMode = muxc.NavigationViewPaneDisplayMode.LeftMinimal;
@@ -196,6 +238,5 @@ namespace Attention.App.ViewModels
                     break;
             }
         }
-
     }
 }

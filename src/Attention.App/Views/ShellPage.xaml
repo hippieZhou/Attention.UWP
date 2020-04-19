@@ -13,10 +13,12 @@
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
-    <!--<prismMvvm:SessionStateAwarePage.Resources>
+    <!--
+    <prismMvvm:SessionStateAwarePage.Resources>
         <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
         <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
-    </prismMvvm:SessionStateAwarePage.Resources>-->
+    </prismMvvm:SessionStateAwarePage.Resources>
+    -->
 
     <Grid>
         <i:Interaction.Behaviors>
@@ -26,18 +28,22 @@
         </i:Interaction.Behaviors>
         <muxc:NavigationView
             x:Name="NavigationViewControl"
-            Header="{Binding Header}"
+            Header="{x:Bind ConcreteDataContext.Header, Mode=OneWay}"
             IsBackButtonVisible="Auto"
-            IsPaneOpen="{x:Bind ConcreteDataContext.IsPaneOpen}"
+            IsBackEnabled="{x:Bind ConcreteDataContext.IsBackEnabled, Mode=OneWay}"
+            IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}"
             IsTabStop="False"
-            MenuItemsSource="{x:Bind Path=ConcreteDataContext.Categories}"
-            PaneDisplayMode="{x:Bind ConcreteDataContext.DisplayMode}"
+            MenuItemsSource="{x:Bind Path=ConcreteDataContext.PrimaryItems, Mode=OneWay}"
+            PaneDisplayMode="{Binding DisplayMode, Mode=TwoWay}"
             PaneTitle="Attention For Wallpaper"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            SelectedItem="{x:Bind ConcreteDataContext.SelectedItem, Mode=OneWay}"
             SelectionFollowsFocus="Disabled">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
-                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand, Mode=OneWay}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand}" />
+                </ic:EventTriggerBehavior>
+                <ic:EventTriggerBehavior EventName="BackRequested">
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.BackRequestedCommand}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <muxc:NavigationView.MenuItemTemplateSelector>
@@ -49,12 +55,12 @@
                     </local:MenuItemTemplateSelector.SeparatorTemplate>
                     <local:MenuItemTemplateSelector.HeaderTemplate>
                         <DataTemplate x:DataType="vm:Header">
-                            <muxc:NavigationViewItemHeader Content="{x:Bind Name}" />
+                            <muxc:NavigationViewItemHeader Content="{x:Bind Label}" />
                         </DataTemplate>
                     </local:MenuItemTemplateSelector.HeaderTemplate>
                     <local:MenuItemTemplateSelector.ItemTemplate>
                         <DataTemplate x:DataType="vm:Category">
-                            <muxc:NavigationViewItem Content="{x:Bind Path=Name}" ToolTipService.ToolTip="{x:Bind Path=Tooltip}">
+                            <muxc:NavigationViewItem Content="{x:Bind Path=Label}" ToolTipService.ToolTip="{x:Bind Path=Label}">
                                 <muxc:NavigationViewItem.Icon>
                                     <SymbolIcon Symbol="{x:Bind Path=Glyph}" />
                                 </muxc:NavigationViewItem.Icon>
@@ -66,7 +72,7 @@
             <muxc:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox QueryIcon="Find" />
             </muxc:NavigationView.AutoSuggestBox>
-            <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+            <Grid>
                 <Frame x:Name="shellFrame" />
             </Grid>
         </muxc:NavigationView>
