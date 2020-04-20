@@ -19,7 +19,6 @@ namespace Attention.App.ViewModels
         private const string NarrowStateName = "NarrowState";
         private const double WideStateMinWindowWidth = 640;
         private const double PanoramicStateMinWindowWidth = 1024;
-        private muxc.NavigationView _shellNav;
         private Frame _shellFrame;
 
         private readonly ILoggerFacade _logger;
@@ -63,12 +62,12 @@ namespace Attention.App.ViewModels
             set { SetProperty(ref _primaryItems, value); }
         }
 
-        //private muxc.NavigationViewItem _selectedItem;
-        //public muxc.NavigationViewItem SelectedItem
-        //{
-        //    get { return _selectedItem; }
-        //    set { SetProperty(ref _selectedItem, value); }
-        //}
+        private object _selectedItem;
+        public object SelectedItem
+        {
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem, value); }
+        }
 
         private ICommand _stateChangedCommand;
         public ICommand StateChangedCommand
@@ -100,7 +99,8 @@ namespace Attention.App.ViewModels
                         PrimaryItems.Add(new muxc.NavigationViewItemHeader() { Content = "菜单" });
                         PrimaryItems.Add(new muxc.NavigationViewItem() { Content = "首页", Icon = new SymbolIcon(Symbol.Home), Tag = typeof(HomePage) });
                         PrimaryItems.Add(new muxc.NavigationViewItem() { Content = "下载", Icon = new SymbolIcon(Symbol.Download), Tag = typeof(DownloadPage) });
-                        var first = PrimaryItems.FirstOrDefault(x => x.GetType() == typeof(muxc.NavigationViewItem)) as muxc.NavigationViewItem;
+
+                        var first = PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
                         _shellFrame.Navigate(Type.GetType(first.Tag.ToString()));
                     });
                 }
@@ -118,7 +118,7 @@ namespace Attention.App.ViewModels
                     _itemInvokedCommand = new DelegateCommand<muxc.NavigationViewItemInvokedEventArgs>(args =>
                     {
                         var pageType = args.IsSettingsInvoked ? typeof(SettingsPage) : Type.GetType(args.InvokedItemContainer.Tag.ToString());
-                        if (pageType != null && _shellNav.SelectedItem != args.InvokedItemContainer)
+                        if (pageType != null && SelectedItem != args.InvokedItemContainer)
                         {
                             _shellFrame.Navigate(pageType);
                         }
@@ -144,21 +144,17 @@ namespace Attention.App.ViewModels
             }
         }
 
-        public void Initialize(muxc.NavigationView shellNav, Frame frame)
+        public void Initialize(Frame frame)
         {
-            _shellNav = shellNav ?? throw new ArgumentNullException(nameof(shellNav));
             _shellFrame = frame ?? throw new ArgumentNullException(nameof(frame));
             _shellFrame.Navigated += (sender, e) => 
             {
                 IsBackEnabled = _shellFrame.CanGoBack;
-                var selectedItem = PrimaryItems
-                .Where(x => x is muxc.NavigationViewItem navItem)
-                .Cast<muxc.NavigationViewItem>()
-                .FirstOrDefault(x => x.Tag.ToString() == e?.SourcePageType.ToString());
-                if (selectedItem != null)
+                var currentItem = PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(x => x.Tag.ToString() == e?.SourcePageType.ToString());
+                if (currentItem != null)
                 {
-                    _shellNav.SelectedItem = selectedItem;
-                    Header = e?.SourcePageType == typeof(SettingsPage) ? "设置" : selectedItem?.Content;
+                    SelectedItem = currentItem;
+                    Header = e?.SourcePageType == typeof(SettingsPage) ? "设置" : currentItem?.Content;
                 }
             };
             InitializeState(Window.Current.Bounds.Width);

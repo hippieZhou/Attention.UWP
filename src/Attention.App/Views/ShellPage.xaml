@@ -36,6 +36,7 @@
             MenuItemsSource="{x:Bind Path=ConcreteDataContext.PrimaryItems, Mode=OneWay}"
             PaneDisplayMode="{Binding DisplayMode, Mode=TwoWay}"
             PaneTitle="Attention For Wallpaper"
+            SelectedItem="{x:Bind ConcreteDataContext.SelectedItem, Mode=OneWay}"
             SelectionFollowsFocus="Disabled">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
