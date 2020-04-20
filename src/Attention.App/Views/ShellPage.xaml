@@ -28,6 +28,7 @@
         </i:Interaction.Behaviors>
         <muxc:NavigationView
             x:Name="shellNav"
+            x:Uid="shellNav"
             Header="{x:Bind ConcreteDataContext.Header.ToString(), Mode=OneWay}"
             IsBackButtonVisible="Auto"
             IsBackEnabled="{x:Bind ConcreteDataContext.IsBackEnabled, Mode=OneWay}"
@@ -37,7 +38,7 @@
             PaneDisplayMode="{Binding DisplayMode, Mode=TwoWay}"
             PaneTitle="Attention For Wallpaper"
             SelectedItem="{x:Bind ConcreteDataContext.SelectedItem, Mode=OneWay}"
-            SelectionFollowsFocus="Disabled">
+            SelectionFollowsFocus="Enabled">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
                     <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand}" />

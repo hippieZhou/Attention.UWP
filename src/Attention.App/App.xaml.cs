@@ -6,6 +6,8 @@ using Windows.UI.Xaml;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI;
+using Prism.Windows.AppModel;
+using Windows.ApplicationModel.Resources;
 
 namespace Attention.App
 {
@@ -54,7 +56,7 @@ namespace Attention.App
             Container.RegisterInstance(NavigationService);
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);
-            //Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+            Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
             return base.OnInitializeAsync(args);
         }
