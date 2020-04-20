@@ -25,7 +25,6 @@ namespace Attention.App.Behaviors
                     Rect = new Rect(0, 0, parent.ActualWidth, parent.ActualHeight)
                 };
             }
-            
             return root.Play(root.CreateScaleAnimation(Entered));
         }
 

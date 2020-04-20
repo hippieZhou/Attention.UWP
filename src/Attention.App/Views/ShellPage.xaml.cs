@@ -15,23 +15,11 @@ namespace Attention.App.Views
         public ShellPage()
         {
             this.InitializeComponent();
-            ConcreteDataContext.Initialize(shellFrame);
+            ConcreteDataContext.Initialize(shellNav,shellFrame);
             this.DataContextChanged += (sender, e) =>
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConcreteDataContext)));
             };
-        }
-    }
-
-    [ContentProperty(Name = "ItemTemplate")]
-    public class MenuItemTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate SeparatorTemplate { get; set; }
-        public DataTemplate HeaderTemplate { get; set; }
-        public DataTemplate ItemTemplate { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            return item is Separator ? SeparatorTemplate : item is Header ? HeaderTemplate : ItemTemplate;
         }
     }
 }
