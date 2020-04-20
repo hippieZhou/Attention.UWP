@@ -8,6 +8,12 @@ using Windows.UI.ViewManagement;
 using Windows.UI;
 using Prism.Windows.AppModel;
 using Windows.ApplicationModel.Resources;
+using Attention.App.Extensions;
+using Serilog;
+using System.IO;
+using Windows.Storage;
+using System.Text;
+using Serilog.Events;
 
 namespace Attention.App
 {
@@ -15,6 +21,23 @@ namespace Attention.App
     {
         public App()
         {
+            Log.Logger = new LoggerConfiguration()
+#if DEBUG
+                .MinimumLevel.Debug()
+#else
+                .MinimumLevel.Information()
+#endif
+                .Enrich.FromLogContext()
+                .WriteTo.Debug()
+                .WriteTo.File(path: Path.Combine(ApplicationData.Current.LocalFolder.Path, "logs", "log.txt"),
+                encoding: Encoding.UTF8,
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel: LogEventLevel.Warning)
+                .CreateLogger();
+
+            Logger = new SerilogLoggerFacade(Log.Logger, Logger);
+
+            Log.Information("系统已启动。");
             InitializeComponent();
             ExtendedSplashScreenFactory = (splashscreen) => new ExtendedSplashScreen(splashscreen);
         }
@@ -53,6 +76,7 @@ namespace Attention.App
 
         protected override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            Container.RegisterInstance(Logger);
             Container.RegisterInstance(NavigationService);
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);

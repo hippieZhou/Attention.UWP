@@ -21,11 +21,6 @@ namespace Attention.App.ViewModels
         private const double PanoramicStateMinWindowWidth = 1024;
         private Frame _shellFrame;
 
-        private readonly ILoggerFacade _logger;
-        public ShellPageViewModel(ILoggerFacade logger)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
 
         private bool _isPaneOpen;
         public bool IsPaneOpen

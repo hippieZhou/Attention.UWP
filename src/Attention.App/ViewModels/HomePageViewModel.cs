@@ -13,11 +13,6 @@ namespace Attention.App.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        public HomePageViewModel()
-        {
-
-        }
-
         private ObservableCollection<WallpaperEntity> _wallpapers;
         public ObservableCollection<WallpaperEntity> Wallpapers
         {
