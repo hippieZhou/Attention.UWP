@@ -14,6 +14,7 @@ using System.IO;
 using Windows.Storage;
 using System.Text;
 using Serilog.Events;
+using Attention.App.Views;
 
 namespace Attention.App
 {
@@ -48,7 +49,7 @@ namespace Attention.App
             {
                 await LoadAppResources();
             }
-            NavigationService.Navigate(PageTokens.Shell.ToString(), args.Arguments);
+            NavigationService.NavigateToPage<ShellPage>(args.Arguments);
         }
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
