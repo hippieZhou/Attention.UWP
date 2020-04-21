@@ -23,43 +23,14 @@
         <Grid.Resources>
             <ThemeShadow x:Name="SharedShadow" />
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid
-            x:Name="BackgroundGrid"
-            Grid.Row="0"
-            Grid.RowSpan="2" />
-        <StackPanel
-            Grid.Row="0"
-            Margin="12"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal"
-            Spacing="12">
-            <animations:Implicit.ShowAnimations>
-                <animations:TranslationAnimation
-                    From="200, 0, 0"
-                    To="0"
-                    Duration="0:0:2" />
-                <animations:OpacityAnimation
-                    From="0"
-                    To="1.0"
-                    Duration="0:0:2" />
-            </animations:Implicit.ShowAnimations>
-            <Button Content="&#xE896;" />
-            <Button Content="&#xEC27;" />
-            <Button Content="&#xE72D;" />
-            <Button Command="{x:Bind ConcreteDataContext.BackCommand, Mode=OneWay}" Content="&#xE106;" />
-        </StackPanel>
+        <Grid x:Name="BackgroundGrid" />
         <Grid
             x:Name="destinationElement"
-            Grid.Row="1"
             Width="400"
             Height="400"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay}"
+            Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
@@ -68,5 +39,38 @@
                 <CompositeTransform x:Name="destinationElement_Transform" />
             </Grid.RenderTransform>
         </Grid>
+        <CommandBar VerticalAlignment="Bottom" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <AppBarButton
+                Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
+                Icon="Download"
+                Label="Download" />
+            <AppBarButton
+                Command="{x:Bind ConcreteDataContext.BrowseCommand, Mode=OneWay}"
+                Icon="World"
+                Label="Browse" />
+            <AppBarButton
+                Command="{x:Bind ConcreteDataContext.ShareCommand, Mode=OneWay}"
+                Icon="Share"
+                Label="Share" />
+            <AppBarButton
+                Command="{x:Bind ConcreteDataContext.BackCommand, Mode=OneWay}"
+                Icon="Cancel"
+                Label="Close" />
+            <CommandBar.SecondaryCommands>
+                <AppBarElementContainer HorizontalContentAlignment="Center">
+                    <Grid Padding="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <PersonPicture
+                            Grid.Row="0"
+                            Width="40"
+                            Height="40"
+                            ProfilePicture="https://docs.microsoft.com/windows/uwp/contacts-and-calendar/images/shoulder-tap-static-payload.png" />
+                    </Grid>
+                </AppBarElementContainer>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
     </Grid>
 </UserControl>

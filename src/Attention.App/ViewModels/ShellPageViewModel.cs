@@ -21,26 +21,11 @@ namespace Attention.App.ViewModels
         private const double PanoramicStateMinWindowWidth = 1024;
         private Frame _shellFrame;
 
-
-        private bool _isPaneOpen;
-        public bool IsPaneOpen
-        {
-            get { return _isPaneOpen; }
-            set { SetProperty(ref _isPaneOpen, value); }
-        }
-
         private bool _isBackEnabled;
         public bool IsBackEnabled
         {
             get { return _isBackEnabled; }
             set { SetProperty(ref _isBackEnabled, value); }
-        }
-
-        private muxc.NavigationViewPaneDisplayMode _displayMode = muxc.NavigationViewPaneDisplayMode.LeftCompact;
-        public muxc.NavigationViewPaneDisplayMode DisplayMode
-        {
-            get { return _displayMode; }
-            set { SetProperty(ref _displayMode, value); }
         }
 
         private object _header;
@@ -62,22 +47,6 @@ namespace Attention.App.ViewModels
         {
             get { return _selectedItem; }
             set { SetProperty(ref _selectedItem, value); }
-        }
-
-        private ICommand _stateChangedCommand;
-        public ICommand StateChangedCommand
-        {
-            get
-            {
-                if (_stateChangedCommand == null)
-                {
-                    _stateChangedCommand = new DelegateCommand<VisualStateChangedEventArgs>(args => 
-                    {
-                        GoToState(args.NewState.Name);
-                    });
-                }
-                return _stateChangedCommand;
-            }
         }
 
         private ICommand _loadCommand;
@@ -152,44 +121,6 @@ namespace Attention.App.ViewModels
                     Header = e?.SourcePageType == typeof(SettingsPage) ? "设置" : currentItem?.Content;
                 }
             };
-            InitializeState(Window.Current.Bounds.Width);
-        }
-
-        private void InitializeState(double windowWith)
-        {
-            if (windowWith < WideStateMinWindowWidth)
-            {
-                GoToState(NarrowStateName);
-            }
-            else if (windowWith < PanoramicStateMinWindowWidth)
-            {
-                GoToState(WideStateName);
-            }
-            else
-            {
-                GoToState(PanoramicStateName);
-            }
-        }
-
-        private void GoToState(string stateName)
-        {
-            switch (stateName)
-            {
-                case PanoramicStateName:
-                    DisplayMode = muxc.NavigationViewPaneDisplayMode.Auto;
-                    IsPaneOpen = true;
-                    break;
-                case WideStateName:
-                    DisplayMode = muxc.NavigationViewPaneDisplayMode.LeftCompact;
-                    IsPaneOpen = true;
-                    break;
-                case NarrowStateName:
-                    DisplayMode = muxc.NavigationViewPaneDisplayMode.LeftMinimal;
-                    IsPaneOpen = false;
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

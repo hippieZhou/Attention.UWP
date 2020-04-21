@@ -14,6 +14,7 @@
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <prismMvvm:SessionStateAwarePage.Resources>
         <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperEntity">

@@ -173,6 +173,55 @@ namespace Attention.App.ViewModels
             }
         }
 
+        private ICommand _downloadCommand;
+        public ICommand DownloadCommand
+        {
+            get
+            {
+                if (_downloadCommand == null)
+                {
+                    _downloadCommand = new DelegateCommand(() =>
+                    {
+
+                    });
+                }
+                return _downloadCommand;
+            }
+            
+        }
+
+        private ICommand _browseCommand;
+        public ICommand BrowseCommand
+        {
+            get
+            {
+                if (_browseCommand == null)
+                {
+                    _browseCommand = new DelegateCommand(() =>
+                    {
+
+                    });
+                }
+                return _browseCommand;
+            }
+        }
+
+        private ICommand _shareCommand;
+        public ICommand ShareCommand
+        {
+            get
+            {
+                if (_shareCommand == null)
+                {
+                    _shareCommand = new DelegateCommand(() =>
+                    {
+
+                    });
+                }
+                return _shareCommand;
+            }
+        }
+
         private ICommand _backCommand;
         public ICommand BackCommand
         {
