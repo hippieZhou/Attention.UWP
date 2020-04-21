@@ -32,8 +32,8 @@
             IsBackButtonVisible="Auto"
             IsBackEnabled="{x:Bind ConcreteDataContext.IsBackEnabled, Mode=OneWay}"
             IsTabStop="False"
-            MenuItemsSource="{x:Bind Path=ConcreteDataContext.PrimaryItems, Mode=OneWay}"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            MenuItemsSource="{x:Bind ConcreteDataContext.PrimaryItems, Mode=OneWay}"
+            SelectedItem="{x:Bind ConcreteDataContext.SelectedItem, Mode=OneWay}"
             SelectionFollowsFocus="Enabled">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="ItemInvoked">
