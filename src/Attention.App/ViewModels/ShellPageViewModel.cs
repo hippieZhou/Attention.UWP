@@ -19,6 +19,7 @@ namespace Attention.App.ViewModels
         private const string NarrowStateName = "NarrowState";
         private const double WideStateMinWindowWidth = 640;
         private const double PanoramicStateMinWindowWidth = 1024;
+        private muxc.NavigationView _shellNav;
         private Frame _shellFrame;
 
         private bool _isBackEnabled;
@@ -108,18 +109,17 @@ namespace Attention.App.ViewModels
             }
         }
 
-        public void Initialize(Frame frame)
+        public void Initialize(muxc.NavigationView shellNav, Frame frame)
         {
+            _shellNav = shellNav ?? throw new ArgumentNullException(nameof(shellNav));
             _shellFrame = frame ?? throw new ArgumentNullException(nameof(frame));
-            _shellFrame.Navigated += (sender, e) => 
+            _shellFrame.Navigated += (sender, e) =>
             {
                 IsBackEnabled = _shellFrame.CanGoBack;
-                var currentItem = PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(x => x.Tag.ToString() == e?.SourcePageType.ToString());
-                if (currentItem != null)
-                {
-                    SelectedItem = currentItem;
-                    Header = e?.SourcePageType == typeof(SettingsPage) ? "设置" : currentItem?.Content;
-                }
+                SelectedItem = e?.SourcePageType == typeof(SettingsPage)
+                    ? _shellNav.SettingsItem
+                    : PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(x => x.Tag.ToString() == e?.SourcePageType.ToString());
+                Header = SelectedItem is muxc.NavigationViewItem navItem ? navItem.Content : (default);
             };
         }
     }
