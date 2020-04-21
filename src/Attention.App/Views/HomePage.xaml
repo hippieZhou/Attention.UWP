@@ -100,8 +100,7 @@
             OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectionMode="Single"
-            ShowsScrollingPlaceholders="False"
-            SizeChanged="AdaptiveGridView_SizeChanged">
+            ShowsScrollingPlaceholders="False">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="Loaded">
                     <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" CommandParameter="{x:Bind adaptiveGV, Mode=OneWay}" />
@@ -133,6 +132,6 @@
             </mtuc:AdaptiveGridView.Footer>
         </mtuc:AdaptiveGridView>
 
-        <uc:ConnectedCardView ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
+        <uc:ConnectedCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
     </Grid>
 </prismMvvm:SessionStateAwarePage>

@@ -2,8 +2,10 @@
 using System.Numerics;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.App.Extensions
 {
@@ -15,6 +17,11 @@ namespace Attention.App.Extensions
 
         public static Vector3KeyFrameAnimation CreateScaleAnimation(this UIElement root,bool show)
         {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
             var rootVisual = root.ElementVisual();
             var scaleAnimation = rootVisual.Compositor.CreateVector3KeyFrameAnimation();
             scaleAnimation.Duration = TimeSpan.FromMilliseconds(1000);
@@ -24,6 +31,11 @@ namespace Attention.App.Extensions
 
         public static FrameworkElement Play(this FrameworkElement root, Vector3KeyFrameAnimation scaleAnimation)
         {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
             var rootVisual = root.ElementVisual();
             if (rootVisual.CenterPoint.X == 0 && rootVisual.CenterPoint.Y == 0)
             {
@@ -48,6 +60,37 @@ namespace Attention.App.Extensions
                 }
             }
             return null;
+        }
+
+        public static ConnectedAnimation CreateForwardAnimation(this GridViewItem container, GridView root, object entity, Action onCompleted = null)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
+            var connectedElement = container.ContentTemplateRoot as FrameworkElement;
+            ConnectedAnimation animation = root.PrepareConnectedAnimation("forwardAnimation", entity, connectedElement.Name);
+            animation.IsScaleAnimationEnabled = true;
+            animation.Configuration = new BasicConnectedAnimationConfiguration();
+            animation.Completed += (sender, e) => { onCompleted?.Invoke(); };
+            return animation;
+        }
+
+        public static ConnectedAnimation CreateBackwardsAnimation(this UIElement destinationElement, Action onCompleted = null)
+        {
+            if (destinationElement == null)
+            {
+                throw new ArgumentNullException(nameof(destinationElement));
+            }
+
+            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
+            ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationElement);
+            animation.Configuration = new DirectConnectedAnimationConfiguration();
+            animation.IsScaleAnimationEnabled = true;
+            animation.Completed += (sender, e) => { onCompleted?.Invoke(); };
+            return animation;
         }
     }
 }

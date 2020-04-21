@@ -10,8 +10,14 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
+    <prismMvvm:SessionStateAwarePage.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <DrillInNavigationTransitionInfo />
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </prismMvvm:SessionStateAwarePage.Transitions>
     <!--
     <prismMvvm:SessionStateAwarePage.Resources>
         <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
@@ -19,7 +25,10 @@
     </prismMvvm:SessionStateAwarePage.Resources>
     -->
 
-    <Grid>
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+        <Grid.BackgroundTransition>
+            <BrushTransition Duration="0:0:0.4" />
+        </Grid.BackgroundTransition>
         <i:Interaction.Behaviors>
             <ic:EventTriggerBehavior EventName="Loaded">
                 <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />

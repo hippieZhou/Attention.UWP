@@ -15,6 +15,7 @@ using Windows.Storage;
 using System.Text;
 using Serilog.Events;
 using Attention.App.Views;
+using Attention.App.Services;
 
 namespace Attention.App
 {
@@ -82,7 +83,7 @@ namespace Attention.App
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
-
+            Container.RegisterInstance<IPixabayService>(new PixabayService("12645414-59a5251905dfea7b916dd796f"));
             return base.OnInitializeAsync(args);
         }
     }

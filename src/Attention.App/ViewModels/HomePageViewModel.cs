@@ -10,6 +10,7 @@ using System;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using Attention.App.Extensions;
 
 namespace Attention.App.ViewModels
 {
@@ -61,8 +62,16 @@ namespace Attention.App.ViewModels
                     _loadCommand = new DelegateCommand<AdaptiveGridView>(adaptiveGV =>
                     {
                         _adaptiveGV = adaptiveGV ?? throw new ArgumentNullException(nameof(adaptiveGV));
+                        _adaptiveGV.SizeChanged += (sender, args) =>
+                        {
+                            if (args.NewSize != args.PreviousSize && _adaptiveGV.SelectedItem != null)
+                            {
+                                _adaptiveGV.ScrollIntoView(_adaptiveGV.SelectedItem, ScrollIntoViewAlignment.Default);
+                            }
+                        };
+
                         CardViewModel = new WallpaperCardViewModel();
-                        CardViewModel.TryStartConnectedBack += async (sender, args) =>
+                        CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
                         {
                             _adaptiveGV.ScrollIntoView(args.Item1, ScrollIntoViewAlignment.Default);
                             _adaptiveGV.UpdateLayout();
@@ -120,15 +129,8 @@ namespace Attention.App.ViewModels
                     {
                         if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
                         {
-                            #region 创建 Connected View
-                            ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
-                            ConnectedAnimation animation = _adaptiveGV.PrepareConnectedAnimation("forwardAnimation", entity, "connectedElement");
-                            animation.IsScaleAnimationEnabled = true;
-                            animation.Configuration = new BasicConnectedAnimationConfiguration();
-                            animation.Completed += (sender, e) => { container.Opacity = 0.0d; };
-                            #endregion
-
-                            CardViewModel.TryStartConnectedTo(entity, animation);
+                            var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () => container.Opacity = 0.0d);
+                            CardViewModel.TryStartForwardAnimation(entity, animation);
                         }
                     });
                 }
@@ -139,21 +141,21 @@ namespace Attention.App.ViewModels
 
     public class WallpaperCardViewModel : ViewModelBase
     {
-        public event EventHandler<(WallpaperEntity, ConnectedAnimation)> TryStartConnectedBack;
+        public event EventHandler<(WallpaperEntity, ConnectedAnimation)> TryStartBackwardsAnimation;
         private UIElement _destinationElement;
 
         private WallpaperEntity _entity;
         public WallpaperEntity Entity
         {
             get { return _entity; }
-            protected set { SetProperty(ref _entity, value); }
+            set { SetProperty(ref _entity, value); }
         }
 
         private Visibility _visibility = Visibility.Collapsed;
         public Visibility Visibility
         {
             get { return _visibility; }
-            protected set { SetProperty(ref _visibility, value); }
+            set { SetProperty(ref _visibility, value); }
         }
 
         private ICommand _loadCommand;
@@ -231,18 +233,15 @@ namespace Attention.App.ViewModels
                 {
                     _backCommand = new DelegateCommand(() =>
                     {
-                        ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", _destinationElement);
-                        animation.Configuration = new DirectConnectedAnimationConfiguration();
-                        animation.IsScaleAnimationEnabled = true;
-                        animation.Completed += (sender, e) => { Visibility = Visibility.Collapsed; };
-                        TryStartConnectedBack?.Invoke(this, (Entity, animation));
+                        var animation = _destinationElement.CreateBackwardsAnimation(() => Visibility = Visibility.Collapsed);
+                        TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
                     });
                 }
                 return _backCommand;
             }
         }
 
-        public void TryStartConnectedTo(WallpaperEntity entity, ConnectedAnimation animation)
+        public void TryStartForwardAnimation(WallpaperEntity entity, ConnectedAnimation animation)
         {
             Entity = entity;
             Visibility = Visibility.Visible;

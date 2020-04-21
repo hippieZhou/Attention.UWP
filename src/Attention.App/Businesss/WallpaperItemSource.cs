@@ -24,8 +24,8 @@ namespace Attention.App.Businesss
                     BackgroundSource = AcrylicBackgroundSource.Backdrop,
                     TintColor = x,
                     FallbackColor = x,
-                    TintOpacity = 0.6,
-                    TintLuminosityOpacity = 0.6,
+                    TintOpacity = 1.0,
+                    TintLuminosityOpacity = 1.0,
                 },
                 CreateAt = DateTime.Now
             });

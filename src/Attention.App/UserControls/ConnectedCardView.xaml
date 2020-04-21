@@ -15,11 +15,10 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Background="{ThemeResource SystemControlAcrylicElementBrush}"
-        Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
+    <Grid Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
+        <Grid.Background>
+            <SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />
+        </Grid.Background>
         <Grid.Resources>
             <ThemeShadow x:Name="SharedShadow" />
         </Grid.Resources>
@@ -40,6 +39,16 @@
             </Grid.RenderTransform>
         </Grid>
         <CommandBar VerticalAlignment="Bottom" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    From="0, 60, 0"
+                    To="0"
+                    Duration="0:0:0.6" />
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:0.6" />
+            </animations:Implicit.ShowAnimations>
             <AppBarButton
                 Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
                 Icon="Download"
