@@ -6,108 +6,132 @@
     xmlns:be="using:Attention.App.Behaviors"
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:ex="using:Attention.App.Extensions"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:Attention.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
+    xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <prismMvvm:SessionStateAwarePage.Resources>
+        <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperEntity">
+            <Grid x:Name="connectedElement" Background="{x:Bind Background}">
+                <mtuc:ImageEx
+                    x:Name="imageEx"
+                    CacheMode="BitmapCache"
+                    IsCacheEnabled="True"
+                    Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}"
+                    Stretch="None" />
+
+                <TextBlock
+                    Margin="12"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    FontWeight="Medium"
+                    Foreground="{ThemeResource ButtonForegroundPressed}"
+                    Opacity="0"
+                    RequestedTheme="Dark"
+                    Text="{x:Bind CreateAt}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:Fade
+                            x:Name="UserUp"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseOut"
+                            EasingType="Linear"
+                            Value="1"
+                            Duration="400" />
+                        <behaviors:Fade
+                            x:Name="UserDowm"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseIn"
+                            EasingType="Linear"
+                            Value="0"
+                            Duration="400" />
+                    </i:Interaction.Behaviors>
+                </TextBlock>
+
+                <i:Interaction.Behaviors>
+                    <!--  鼠标相关操作  -->
+                    <ic:EventTriggerBehavior EventName="PointerEntered">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
+                        <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
+                    </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="PointerExited">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
+                    </ic:EventTriggerBehavior>
+
+                    <!--  单指相关操作  -->
+                    <ic:EventTriggerBehavior EventName="PointerPressed">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
+                        <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
+                    </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="PointerReleased">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
+                    </ic:EventTriggerBehavior>
+                    <ic:EventTriggerBehavior EventName="PointerCanceled">
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Grid>
+        </DataTemplate>
+    </prismMvvm:SessionStateAwarePage.Resources>
 
     <Grid>
-        <i:Interaction.Behaviors>
-            <ic:EventTriggerBehavior EventName="Loaded">
-                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
-            </ic:EventTriggerBehavior>
-        </i:Interaction.Behaviors>
         <mtuc:AdaptiveGridView
+            x:Name="adaptiveGV"
             Padding="8,0"
-            animations:ReorderGridAnimation.Duration="250"
+            animations:ReorderGridAnimation.Duration="260"
             DataFetchSize="1"
             DesiredWidth="420"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
+            ItemClickCommand="{x:Bind ConcreteDataContext.ItemClickCommand}"
             ItemHeight="280"
+            ItemTemplate="{StaticResource WallpaperDataTemplate}"
             ItemsSource="{x:Bind ConcreteDataContext.Wallpapers, Mode=OneWay}"
             OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SelectionMode="Single">
+            SelectionMode="Single"
+            ShowsScrollingPlaceholders="False"
+            SizeChanged="AdaptiveGridView_SizeChanged">
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="Loaded">
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" CommandParameter="{x:Bind adaptiveGV, Mode=OneWay}" />
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
             <mtuc:AdaptiveGridView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
                     <Setter Property="Margin" Value="6" />
                 </Style>
             </mtuc:AdaptiveGridView.ItemContainerStyle>
-            <mtuc:AdaptiveGridView.ItemTemplate>
-                <DataTemplate x:DataType="model:WallpaperEntity">
-                    <Grid Background="{x:Bind Background}">
-                        <mtuc:ImageEx
-                            x:Name="imageEx"
-                            CacheMode="BitmapCache"
-                            IsCacheEnabled="True"
-                            Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}"
-                            Stretch="None" />
-
-                        <TextBlock
-                            Margin="12"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            FontWeight="Medium"
-                            Foreground="{ThemeResource ButtonForegroundPressed}"
-                            Opacity="0"
-                            RequestedTheme="Dark"
-                            Text="{x:Bind CreateAt}">
-                            <i:Interaction.Behaviors>
-                                <behaviors:Fade
-                                    x:Name="UserUp"
-                                    AutomaticallyStart="True"
-                                    Delay="0"
-                                    EasingMode="EaseOut"
-                                    EasingType="Linear"
-                                    Value="1"
-                                    Duration="400" />
-                                <behaviors:Fade
-                                    x:Name="UserDowm"
-                                    AutomaticallyStart="True"
-                                    Delay="0"
-                                    EasingMode="EaseIn"
-                                    EasingType="Linear"
-                                    Value="0"
-                                    Duration="400" />
-                            </i:Interaction.Behaviors>
-                        </TextBlock>
-
-                        <i:Interaction.Behaviors>
-                            <!--  鼠标相关操作  -->
-                            <ic:EventTriggerBehavior EventName="PointerEntered">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                                <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="PointerExited">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
-                            </ic:EventTriggerBehavior>
-
-                            <!--  单指相关操作  -->
-                            <ic:EventTriggerBehavior EventName="PointerPressed">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
-                                <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="PointerReleased">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="PointerCanceled">
-                                <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
-                                <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
-                            </ic:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
+            <mtuc:AdaptiveGridView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="True" />
+                </TransitionCollection>
+            </mtuc:AdaptiveGridView.ItemContainerTransitions>
+            <mtuc:AdaptiveGridView.Footer>
+                <Grid Padding="0,12,0,32" VerticalAlignment="Bottom">
+                    <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
+                        <ProgressRing IsActive="True" />
                     </Grid>
-                </DataTemplate>
-            </mtuc:AdaptiveGridView.ItemTemplate>
+                    <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
+                        <Button
+                            Command="{x:Bind ConcreteDataContext.RefreshCommand}"
+                            Content="THERE HAVE SOMETHING WRONG"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource SystemBaseHighColor}" />
+                    </Grid>
+                </Grid>
+            </mtuc:AdaptiveGridView.Footer>
         </mtuc:AdaptiveGridView>
+
+        <uc:ConnectedCardView ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
     </Grid>
 </prismMvvm:SessionStateAwarePage>
