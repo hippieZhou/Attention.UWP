@@ -2,25 +2,25 @@
 using Prism.Windows.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Prism.Logging;
 using System;
 using Windows.UI.Xaml.Controls;
 using muxc = Microsoft.UI.Xaml.Controls;
-using Windows.UI.Xaml;
 using Attention.App.Views;
 using System.Linq;
+using Prism.Windows.AppModel;
 
 namespace Attention.App.ViewModels
 {
     public class ShellPageViewModel: ViewModelBase
     {
-        private const string PanoramicStateName = "PanoramicState";
-        private const string WideStateName = "WideState";
-        private const string NarrowStateName = "NarrowState";
-        private const double WideStateMinWindowWidth = 640;
-        private const double PanoramicStateMinWindowWidth = 1024;
         private muxc.NavigationView _shellNav;
         private Frame _shellFrame;
+        private readonly IResourceLoader _resourceLoader;
+
+        public ShellPageViewModel(IResourceLoader resourceLoader)
+        {
+            _resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+        }
 
         private bool _isBackEnabled;
         public bool IsBackEnabled
@@ -60,10 +60,11 @@ namespace Attention.App.ViewModels
                     _loadCommand = new DelegateCommand(() => 
                     {
                         PrimaryItems.Clear();
+                        
                         PrimaryItems.Add(new muxc.NavigationViewItemSeparator());
-                        PrimaryItems.Add(new muxc.NavigationViewItemHeader() { Content = "菜单" });
-                        PrimaryItems.Add(new muxc.NavigationViewItem() { Content = "首页", Icon = new SymbolIcon(Symbol.Home), Tag = typeof(HomePage) });
-                        PrimaryItems.Add(new muxc.NavigationViewItem() { Content = "下载", Icon = new SymbolIcon(Symbol.Download), Tag = typeof(DownloadPage) });
+                        PrimaryItems.Add(new muxc.NavigationViewItemHeader() { Content = _resourceLoader.GetString("shellNav_menu") });
+                        PrimaryItems.Add(new muxc.NavigationViewItem() { Content = _resourceLoader.GetString("shellNav_home"), Icon = new SymbolIcon(Symbol.Home), Tag = typeof(HomePage) });
+                        PrimaryItems.Add(new muxc.NavigationViewItem() { Content = _resourceLoader.GetString("shellNav_download"), Icon = new SymbolIcon(Symbol.Download), Tag = typeof(DownloadPage) });
 
                         var first = PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault();
                         _shellFrame.Navigate(Type.GetType(first.Tag.ToString()));

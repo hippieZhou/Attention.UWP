@@ -4,16 +4,40 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:Attention.App.Converters"
     xmlns:local="using:Attention.App"
-    xmlns:prismUnity="using:Prism.Unity.Windows">
+    xmlns:prismUnity="using:Prism.Unity.Windows"
+    RequestedTheme="Dark">
     <prismUnity:PrismUnityApplication.Resources>
         <ResourceDictionary>
             <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
             <converter:ImageSourceNullValueConverter x:Key="ImageSourceNullValueConverter" />
 
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="PrimaryTextColor" Color="Black" />
+                    <AcrylicBrush
+                        x:Key="BackdropAcrylicBrush"
+                        BackgroundSource="Backdrop"
+                        FallbackColor="#FF484848"
+                        TintColor="#88484848"
+                        TintOpacity="0.4" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="PrimaryTextColor" Color="White" />
+                    <AcrylicBrush
+                        x:Key="BackdropAcrylicBrush"
+                        BackgroundSource="Backdrop"
+                        FallbackColor="#FF484848"
+                        TintColor="#88484848"
+                        TintOpacity="0.4" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!--  Other merged dictionaries here  -->
+                <ResourceDictionary Source="/Themes/AutoSuggestBox.xaml" />
+                <ResourceDictionary Source="/Themes/Button.xaml" />
                 <ResourceDictionary Source="/Themes/GridViewItem.xaml" />
                 <ResourceDictionary Source="/Themes/ScrollViewer.xaml" />
             </ResourceDictionary.MergedDictionaries>

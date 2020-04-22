@@ -1,4 +1,6 @@
-﻿using Attention.App.Models;
+﻿using Attention.App.Framework;
+using Attention.App.Models;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,7 +11,7 @@ namespace Attention.App.Services
     public interface IWallpaperService
     {
         string APIKEY { get; }
-        Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default);
+        Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default);
     }
 
     public class WallpaperService : IWallpaperService
@@ -18,9 +20,19 @@ namespace Attention.App.Services
 
         public string APIKEY { get; }
 
-        public virtual Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+        }
+
+        protected IEnumerable<WallpaperEntity> MapToEntities(object source)
+        {
+            var mapper = EnginContext.Current.Resolve<IMapper>();
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(IMapper));
+            }
+            return mapper.Map<IEnumerable<WallpaperEntity>>(source);
         }
     }
 }

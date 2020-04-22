@@ -11,6 +11,7 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Attention.App.Extensions;
+using System.Threading.Tasks;
 
 namespace Attention.App.ViewModels
 {
@@ -129,7 +130,11 @@ namespace Attention.App.ViewModels
                     {
                         if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
                         {
-                            var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () => container.Opacity = 0.0d);
+                            var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () =>
+                           {
+                               container.Opacity = 0.0d;
+                               CardViewModel.AvatarVisibility = Visibility.Visible;
+                           });
                             CardViewModel.TryStartForwardAnimation(entity, animation);
                         }
                     });
@@ -156,6 +161,13 @@ namespace Attention.App.ViewModels
         {
             get { return _visibility; }
             set { SetProperty(ref _visibility, value); }
+        }
+
+        private Visibility _avatarVisibility = Visibility.Collapsed;
+        public Visibility AvatarVisibility
+        {
+            get { return _avatarVisibility; }
+            set { SetProperty(ref _avatarVisibility, value); }
         }
 
         private ICommand _loadCommand;
@@ -233,7 +245,12 @@ namespace Attention.App.ViewModels
                 {
                     _backCommand = new DelegateCommand(() =>
                     {
-                        var animation = _destinationElement.CreateBackwardsAnimation(() => Visibility = Visibility.Collapsed);
+
+                        var animation = _destinationElement.CreateBackwardsAnimation(() =>
+                        {
+                            Visibility = Visibility.Collapsed;
+                            AvatarVisibility = Visibility.Collapsed;
+                        });
                         TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
                     });
                 }

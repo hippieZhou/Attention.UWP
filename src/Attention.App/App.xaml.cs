@@ -17,6 +17,7 @@ using Serilog.Events;
 using Attention.App.Views;
 using Attention.App.Services;
 using Attention.App.Framework;
+using AutoMapper;
 
 namespace Attention.App
 {
@@ -90,6 +91,11 @@ namespace Attention.App
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+            Container.RegisterInstance<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<PixabayMappingProfile>();
+                cfg.AddProfile<UnsplashMappingProfile>();
+            })));
             Container.RegisterInstance<IWallpaperService>(nameof(PixabayService), new PixabayService("12645414-59a5251905dfea7b916dd796f"));
             Container.RegisterInstance<IWallpaperService>(nameof(UnsplashService), new UnsplashService("12645414-59a5251905dfea7b916dd796f"));
             return base.OnInitializeAsync(args);

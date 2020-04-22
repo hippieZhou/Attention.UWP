@@ -18,12 +18,6 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </prismMvvm:SessionStateAwarePage.Transitions>
-    <!--
-    <prismMvvm:SessionStateAwarePage.Resources>
-        <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
-        <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="{ThemeResource SystemColorControlAccentColor}" />
-    </prismMvvm:SessionStateAwarePage.Resources>
-    -->
 
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.BackgroundTransition>
@@ -53,7 +47,7 @@
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox QueryIcon="Find" />
+                <AutoSuggestBox QueryIcon="Find" Style="{StaticResource CustomStyledAutoSuggestBox}" />
             </muxc:NavigationView.AutoSuggestBox>
             <Grid>
                 <Frame x:Name="shellFrame" />

@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="768"
@@ -22,12 +23,14 @@
         <Grid.Resources>
             <ThemeShadow x:Name="SharedShadow" />
         </Grid.Resources>
-        <Grid x:Name="BackgroundGrid" />
+        <Grid
+            x:Name="BackgroundGrid"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch" />
         <Grid
             x:Name="destinationElement"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}"
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
@@ -35,7 +38,45 @@
             <Grid.RenderTransform>
                 <CompositeTransform x:Name="destinationElement_Transform" />
             </Grid.RenderTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}" />
+            <Grid
+                Grid.Row="1"
+                Height="48"
+                Background="{ThemeResource BackdropAcrylicBrush}" />
+            <PersonPicture
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Margin="0,-48,0,0"
+                VerticalAlignment="Top"
+                extensions:VisualExtensions.NormalizedCenterPoint="0.5,0.5,0"
+                Initials="RL"
+                ProfilePicture="ms-appx:///Assets/Images/Avatar.png"
+                Visibility="{x:Bind ConcreteDataContext.AvatarVisibility, Mode=OneWay, FallbackValue=Collapsed}">
+                <animations:Implicit.Animations>
+                    <animations:ScaleAnimation Duration="0:0:0.600" />
+                </animations:Implicit.Animations>
+                <animations:Implicit.ShowAnimations>
+                    <animations:ScaleAnimation
+                        From="0.8"
+                        To="1"
+                        Duration="0:0:0.600" />
+                    <animations:TranslationAnimation
+                        From="0, 80, 0"
+                        To="0"
+                        Duration="0:0:0.600" />
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.600" />
+                </animations:Implicit.ShowAnimations>
+            </PersonPicture>
         </Grid>
+
+
         <CommandBar VerticalAlignment="Bottom" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <animations:Implicit.ShowAnimations>
                 <animations:TranslationAnimation
@@ -63,21 +104,6 @@
                 Command="{x:Bind ConcreteDataContext.BackCommand, Mode=OneWay}"
                 Icon="Cancel"
                 Label="Close" />
-            <CommandBar.SecondaryCommands>
-                <AppBarElementContainer HorizontalContentAlignment="Center">
-                    <Grid Padding="12">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <PersonPicture
-                            Grid.Row="0"
-                            Width="40"
-                            Height="40"
-                            ProfilePicture="https://docs.microsoft.com/windows/uwp/contacts-and-calendar/images/shoulder-tap-static-payload.png" />
-                    </Grid>
-                </AppBarElementContainer>
-            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <VisualStateManager.VisualStateGroups>
@@ -87,8 +113,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Width" Value="900" />
-                        <Setter Target="destinationElement.Height" Value="520" />
+                        <Setter Target="destinationElement.Width" Value="748" />
+                        <Setter Target="destinationElement.Height" Value="406" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -96,8 +122,8 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Width" Value="600" />
-                        <Setter Target="destinationElement.Height" Value="320" />
+                        <Setter Target="destinationElement.Width" Value="572" />
+                        <Setter Target="destinationElement.Height" Value="312" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>

@@ -120,4 +120,13 @@
   <data name="shellNav.PaneTitle" xml:space="preserve">
     <value>Attention For UWP</value>
   </data>
+  <data name="shellNav_download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="shellNav_home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="shellNav_menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
 </root>

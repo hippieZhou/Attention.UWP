@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
@@ -88,7 +89,7 @@
         <mtuc:AdaptiveGridView
             x:Name="adaptiveGV"
             Padding="8,0"
-            animations:ReorderGridAnimation.Duration="260"
+            animations:ReorderGridAnimation.Duration="600"
             DataFetchSize="1"
             DesiredWidth="420"
             IncrementalLoadingTrigger="Edge"
@@ -116,17 +117,41 @@
                     <EntranceThemeTransition IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </mtuc:AdaptiveGridView.ItemContainerTransitions>
+            <mtuc:AdaptiveGridView.Header>
+                <mtuc:ScrollHeader Margin="0,0,8,0" Mode="Fade">
+                    <muxc:SplitButton HorizontalAlignment="Right" Content="切换源">
+                        <muxc:SplitButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Tag="pixabay" Text="Pixabay">
+                                    <muxc:MenuFlyoutItem.Icon>
+                                        <muxc:BitmapIcon UriSource="/Assets/pixabay.png" />
+                                    </muxc:MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem Tag="unsplash" Text="Unsplash">
+                                    <muxc:MenuFlyoutItem.Icon>
+                                        <muxc:BitmapIcon UriSource="/Assets/unsplash.png" />
+                                    </muxc:MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </muxc:SplitButton.Flyout>
+                    </muxc:SplitButton>
+                </mtuc:ScrollHeader>
+            </mtuc:AdaptiveGridView.Header>
             <mtuc:AdaptiveGridView.Footer>
-                <Grid Padding="0,12,0,32" VerticalAlignment="Bottom">
+                <Grid
+                    Padding="0,12,0,32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
                     <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
                         <ProgressRing IsActive="True" />
                     </Grid>
                     <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
                         <Button
+                            Background="Red"
                             Command="{x:Bind ConcreteDataContext.RefreshCommand}"
                             Content="THERE HAVE SOMETHING WRONG"
                             FontWeight="Bold"
-                            Foreground="{ThemeResource SystemBaseHighColor}" />
+                            RequestedTheme="Dark" />
                     </Grid>
                 </Grid>
             </mtuc:AdaptiveGridView.Footer>
