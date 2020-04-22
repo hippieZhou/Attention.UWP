@@ -1,4 +1,6 @@
-﻿using Attention.App.Models;
+﻿using Attention.App.Framework;
+using Attention.App.Models;
+using Attention.App.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.UI.Xaml.Media;
 using System;
@@ -13,9 +15,11 @@ namespace Attention.App.Businesss
 {
     public class WallpaperItemSource : IIncrementalSource<WallpaperEntity>
     {
+        private readonly IWallpaperService _client;
         private readonly List<WallpaperEntity> _entities;
         public WallpaperItemSource()
         {
+            _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(UnsplashService)) ?? throw new ArgumentNullException(nameof(UnsplashService));
             _entities = new List<WallpaperEntity>();
             var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new WallpaperEntity
             {

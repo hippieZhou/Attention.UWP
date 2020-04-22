@@ -15,7 +15,7 @@ namespace Attention.App.Extensions
 
         private const float SCALE_ANIMATION_FACTOR = 1.05f;
 
-        public static Vector3KeyFrameAnimation CreateScaleAnimation(this UIElement root,bool show)
+        public static Vector3KeyFrameAnimation CreateScaleAnimation(this UIElement root, bool show)
         {
             if (root == null)
             {
@@ -29,7 +29,7 @@ namespace Attention.App.Extensions
             return scaleAnimation;
         }
 
-        public static FrameworkElement Play(this FrameworkElement root, Vector3KeyFrameAnimation scaleAnimation)
+        public static FrameworkElement Play(this FrameworkElement root, CompositionAnimation animation)
         {
             if (root == null)
             {
@@ -41,7 +41,7 @@ namespace Attention.App.Extensions
             {
                 rootVisual.CenterPoint = new Vector3((float)(root.ActualWidth / 2.0), (float)(root.ActualHeight / 2.0), 0f);
             }
-            rootVisual.StartAnimation("Scale", scaleAnimation);
+            rootVisual.StartAnimation("Scale", animation);
             return root;
         }
 

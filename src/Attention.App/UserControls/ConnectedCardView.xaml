@@ -25,8 +25,6 @@
         <Grid x:Name="BackgroundGrid" />
         <Grid
             x:Name="destinationElement"
-            Width="400"
-            Height="400"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}"
@@ -81,5 +79,37 @@
                 </AppBarElementContainer>
             </CommandBar.SecondaryCommands>
         </CommandBar>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="900" />
+                        <Setter Target="destinationElement.Height" Value="520" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="600" />
+                        <Setter Target="destinationElement.Height" Value="320" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="destinationElement.Width" Value="440" />
+                        <Setter Target="destinationElement.Height" Value="240" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>

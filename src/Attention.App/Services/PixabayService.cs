@@ -1,18 +1,34 @@
-﻿using System;
+﻿using Attention.App.Models;
+using PixabaySharp;
+using PixabaySharp.Enums;
+using PixabaySharp.Utility;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Attention.App.Services
 {
-    public class PixabayService : IPixabayService
+    public class PixabayService : WallpaperService, IWallpaperService
     {
-        private string v;
+        private readonly PixabaySharpClient _client;
 
-        public PixabayService(string v)
+        public PixabayService(string apiKey) : base(apiKey) => _client = new PixabaySharpClient(APIKEY);
+
+        public override async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            this.v = v;
+            ImageQueryBuilder qb = new ImageQueryBuilder()
+            {
+                Page = pageIndex,
+                PerPage = pageSize,
+
+                IsEditorsChoice = true,
+                IsSafeSearch = true,
+                ResponseGroup = ResponseGroup.HighResolution
+            };
+
+            var listPhotos = await _client.QueryImagesAsync(qb);
+
+            return default;
         }
     }
 }

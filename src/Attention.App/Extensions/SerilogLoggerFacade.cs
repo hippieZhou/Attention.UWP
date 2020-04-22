@@ -35,15 +35,19 @@ namespace Attention.App.Extensions
                 case Priority.None:
                     logger = _loggerPriorityNone;
                     break;
+
                 case Priority.High:
                     logger = _loggerPriorityHigh;
                     break;
+
                 case Priority.Medium:
                     logger = _loggerPriorityMedium;
                     break;
+
                 case Priority.Low:
                     logger = _loggerPriorityLow;
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(priority), priority, $"Unknown {nameof(Priority)}: `{priority}`");
             }
@@ -53,15 +57,19 @@ namespace Attention.App.Extensions
                 case Category.Debug:
                     logger.Debug(message);
                     break;
+
                 case Category.Info:
                     logger.Information(message);
                     break;
+
                 case Category.Warn:
                     logger.Warning(message);
                     break;
+
                 case Category.Exception:
                     logger.Error(message);
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(category), category, $"Unknown {nameof(Category)}: `{category}`");
             }
