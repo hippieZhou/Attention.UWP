@@ -5,6 +5,8 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="768"
@@ -23,6 +25,12 @@
         <Grid.Resources>
             <ThemeShadow x:Name="SharedShadow" />
         </Grid.Resources>
+        <i:Interaction.Behaviors>
+            <ic:EventTriggerBehavior EventName="Tapped">
+                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.BackCommand, Mode=OneWay}" />
+            </ic:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
+
         <Grid
             x:Name="BackgroundGrid"
             HorizontalAlignment="Stretch"
@@ -40,17 +48,79 @@
             </Grid.RenderTransform>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="12" />
+                <RowDefinition Height="48" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}" />
             <Grid
-                Grid.Row="1"
-                Height="48"
-                Background="{ThemeResource BackdropAcrylicBrush}" />
-            <PersonPicture
                 Grid.Row="0"
-                Grid.RowSpan="2"
-                Margin="0,-48,0,0"
+                Background="{x:Bind ConcreteDataContext.Entity.Background, Mode=OneWay, TargetNullValue={StaticResource SystemControlAcrylicElementBrush}}"
+                CornerRadius="4,4,0,0" />
+            <Grid
+                Grid.Row="2"
+                VerticalAlignment="Bottom"
+                Background="{ThemeResource BackdropAcrylicBrush}"
+                CornerRadius="0,0,4,4"
+                Visibility="{x:Bind ConcreteDataContext.FooterVisibility, Mode=OneWay}">
+                <animations:Implicit.ShowAnimations>
+                    <animations:TranslationAnimation
+                        From="0, 100, 0"
+                        To="0"
+                        Duration="0:0:0.600" />
+                    <animations:OpacityAnimation
+                        From="0"
+                        To="1.0"
+                        Duration="0:0:0.600" />
+                </animations:Implicit.ShowAnimations>
+                <StackPanel
+                    Margin="0,8"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="24">
+                    <Button
+                        Background="Transparent"
+                        Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
+                        Foreground="{StaticResource PrimaryTextColor}"
+                        Opacity="0.6"
+                        Style="{StaticResource IconOnlyWithoutBackgroundButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="20"
+                                FontWeight="Light"
+                                Glyph="&#xE896;" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Background="Transparent"
+                        Command="{x:Bind ConcreteDataContext.ShareCommand, Mode=OneWay}"
+                        Foreground="{StaticResource PrimaryTextColor}"
+                        Opacity="0.6"
+                        Style="{StaticResource IconOnlyWithoutBackgroundButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="20"
+                                FontWeight="Light"
+                                Glyph="&#xE72D;" />
+                        </Button.Content>
+                    </Button>
+                    <Button
+                        Background="Transparent"
+                        Command="{x:Bind ConcreteDataContext.BrowseCommand, Mode=OneWay}"
+                        Foreground="{StaticResource PrimaryTextColor}"
+                        Opacity="0.6"
+                        Style="{StaticResource IconOnlyWithoutBackgroundButton}">
+                        <Button.Content>
+                            <FontIcon
+                                FontSize="20"
+                                FontWeight="Light"
+                                Glyph="&#xEC27;" />
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <PersonPicture
+                x:Name="avatarPersonPicture"
+                Grid.Row="0"
+                Grid.RowSpan="3"
                 VerticalAlignment="Top"
                 extensions:VisualExtensions.NormalizedCenterPoint="0.5,0.5,0"
                 Initials="RL"
@@ -76,36 +146,6 @@
             </PersonPicture>
         </Grid>
 
-
-        <CommandBar VerticalAlignment="Bottom" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <animations:Implicit.ShowAnimations>
-                <animations:TranslationAnimation
-                    From="0, 60, 0"
-                    To="0"
-                    Duration="0:0:0.6" />
-                <animations:OpacityAnimation
-                    From="0"
-                    To="1.0"
-                    Duration="0:0:0.6" />
-            </animations:Implicit.ShowAnimations>
-            <AppBarButton
-                Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
-                Icon="Download"
-                Label="Download" />
-            <AppBarButton
-                Command="{x:Bind ConcreteDataContext.BrowseCommand, Mode=OneWay}"
-                Icon="World"
-                Label="Browse" />
-            <AppBarButton
-                Command="{x:Bind ConcreteDataContext.ShareCommand, Mode=OneWay}"
-                Icon="Share"
-                Label="Share" />
-            <AppBarButton
-                Command="{x:Bind ConcreteDataContext.BackCommand, Mode=OneWay}"
-                Icon="Cancel"
-                Label="Close" />
-        </CommandBar>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState>
@@ -113,8 +153,11 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="destinationElement.Width" Value="748" />
-                        <Setter Target="destinationElement.Height" Value="406" />
+                        <Setter Target="avatarPersonPicture.Width" Value="80" />
+                        <Setter Target="avatarPersonPicture.Height" Value="80" />
+                        <Setter Target="avatarPersonPicture.Margin" Value="0,-40,0,0" />
+                        <Setter Target="destinationElement.Width" Value="740" />
+                        <Setter Target="destinationElement.Height" Value="480" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -122,8 +165,11 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="avatarPersonPicture.Width" Value="60" />
+                        <Setter Target="avatarPersonPicture.Height" Value="60" />
+                        <Setter Target="avatarPersonPicture.Margin" Value="0,-30,0,0" />
                         <Setter Target="destinationElement.Width" Value="572" />
-                        <Setter Target="destinationElement.Height" Value="312" />
+                        <Setter Target="destinationElement.Height" Value="400" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -131,8 +177,11 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="avatarPersonPicture.Width" Value="40" />
+                        <Setter Target="avatarPersonPicture.Height" Value="40" />
+                        <Setter Target="avatarPersonPicture.Margin" Value="0,-20,0,0" />
                         <Setter Target="destinationElement.Width" Value="440" />
-                        <Setter Target="destinationElement.Height" Value="240" />
+                        <Setter Target="destinationElement.Height" Value="300" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

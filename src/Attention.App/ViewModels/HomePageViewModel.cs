@@ -11,7 +11,8 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Attention.App.Extensions;
-using System.Threading.Tasks;
+using Windows.UI.Xaml.Input;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace Attention.App.ViewModels
 {
@@ -129,11 +130,12 @@ namespace Attention.App.ViewModels
                     _itemClickCommand = new DelegateCommand<WallpaperEntity>(entity =>
                     {
                         if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
-                        {
+                        {  
+                            container.Opacity = 0.0d;
                             var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () =>
                            {
-                               container.Opacity = 0.0d;
                                CardViewModel.AvatarVisibility = Visibility.Visible;
+                               CardViewModel.FooterVisibility = Visibility.Visible;
                            });
                             CardViewModel.TryStartForwardAnimation(entity, animation);
                         }
@@ -170,6 +172,13 @@ namespace Attention.App.ViewModels
             set { SetProperty(ref _avatarVisibility, value); }
         }
 
+        private Visibility _footerVisibility = Visibility.Collapsed;
+        public Visibility FooterVisibility
+        {
+            get { return _footerVisibility; }
+            set { SetProperty(ref _footerVisibility, value); }
+        }
+
         private ICommand _loadCommand;
         public ICommand LoadCommand
         {
@@ -181,6 +190,8 @@ namespace Attention.App.ViewModels
                     {
                         _destinationElement = destinationElement ?? throw new ArgumentNullException(nameof(destinationElement));
                         Visibility = Visibility.Collapsed;
+                        AvatarVisibility = Visibility.Collapsed;
+                        FooterVisibility = Visibility.Collapsed;
                     });
                 }
                 return _loadCommand;
@@ -243,15 +254,20 @@ namespace Attention.App.ViewModels
             {
                 if (_backCommand == null)
                 {
-                    _backCommand = new DelegateCommand(() =>
+                    _backCommand = new DelegateCommand<TappedRoutedEventArgs>(args =>
                     {
-
-                        var animation = _destinationElement.CreateBackwardsAnimation(() =>
+                        var parent = LogicalTree.FindParent<Grid>(_destinationElement as FrameworkElement);
+                        if (args.OriginalSource == parent)
                         {
-                            Visibility = Visibility.Collapsed;
-                            AvatarVisibility = Visibility.Collapsed;
-                        });
-                        TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
+                            var animation = _destinationElement.CreateBackwardsAnimation(() =>
+                            {
+                                Visibility = Visibility.Collapsed;
+                                AvatarVisibility = Visibility.Collapsed;
+                                FooterVisibility = Visibility.Collapsed;
+                            });
+                            TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
+                        }
+                        args.Handled = true;
                     });
                 }
                 return _backCommand;

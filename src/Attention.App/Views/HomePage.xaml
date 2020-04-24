@@ -118,8 +118,35 @@
                 </TransitionCollection>
             </mtuc:AdaptiveGridView.ItemContainerTransitions>
             <mtuc:AdaptiveGridView.Header>
-                <mtuc:ScrollHeader Margin="0,0,8,0" Mode="Fade">
-                    <muxc:SplitButton HorizontalAlignment="Right" Content="切换源">
+                <mtuc:ScrollHeader Margin="8,0" Mode="Fade">
+                    <Grid Padding="12">
+                        <Button
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            Foreground="{StaticResource PrimaryTextColor}"
+                            Opacity="0.6"
+                            Style="{StaticResource IconOnlyWithoutBackgroundButton}">
+                            <animations:Implicit.ShowAnimations>
+                                <animations:TranslationAnimation
+                                    From="200, 0, 0"
+                                    To="0"
+                                    Duration="0:0:0.600" />
+                                <animations:OpacityAnimation
+                                    From="0"
+                                    To="1.0"
+                                    Duration="0:0:0.600" />
+                            </animations:Implicit.ShowAnimations>
+                            <Button.Content>
+                                <FontIcon
+                                    FontSize="20"
+                                    FontWeight="Light"
+                                    Glyph="&#xE7E8;" />
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <!--<muxc:SplitButton HorizontalAlignment="Right" Content="切换源">
                         <muxc:SplitButton.Flyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Tag="pixabay" Text="Pixabay">
@@ -134,7 +161,7 @@
                                 </MenuFlyoutItem>
                             </MenuFlyout>
                         </muxc:SplitButton.Flyout>
-                    </muxc:SplitButton>
+                    </muxc:SplitButton>-->
                 </mtuc:ScrollHeader>
             </mtuc:AdaptiveGridView.Header>
             <mtuc:AdaptiveGridView.Footer>

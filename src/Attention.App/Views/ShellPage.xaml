@@ -47,7 +47,21 @@
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox QueryIcon="Find" Style="{StaticResource CustomStyledAutoSuggestBox}" />
+                <AutoSuggestBox
+                    x:Name="SearchBox"
+                    Height="42"
+                    GotFocus="AutoSuggestBox_GotFocus"
+                    LostFocus="SearchBox_LostFocus"
+                    PlaceholderText="Search .."
+                    Style="{StaticResource CustomStyledAutoSuggestBox}"
+                    Translation="0,0,4">
+                    <AutoSuggestBox.QueryIcon>
+                        <SymbolIcon Symbol="Find" />
+                    </AutoSuggestBox.QueryIcon>
+                    <AutoSuggestBox.TranslationTransition>
+                        <Vector3Transition Duration="0:0:0.8" />
+                    </AutoSuggestBox.TranslationTransition>
+                </AutoSuggestBox>
             </muxc:NavigationView.AutoSuggestBox>
             <Grid>
                 <Frame x:Name="shellFrame" />
