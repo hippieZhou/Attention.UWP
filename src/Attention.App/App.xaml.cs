@@ -14,7 +14,6 @@ using Attention.App.Views;
 using Attention.App.Services;
 using Attention.App.Framework;
 using AutoMapper;
-using System;
 using Attention.App.Models;
 using System.Text;
 using Serilog.Events;
@@ -44,8 +43,8 @@ namespace Attention.App
                 .CreateLogger();
 
             Logger = new SerilogLoggerFacade(Log.Logger, Logger);
-
             Log.Information("系统已启动。");
+
             InitializeComponent();
             ExtendedSplashScreenFactory = (splashscreen) => new ExtendedSplashScreen(splashscreen);
             UnhandledException += (sender, e) =>

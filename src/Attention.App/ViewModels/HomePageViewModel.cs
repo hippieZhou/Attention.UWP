@@ -108,6 +108,23 @@ namespace Attention.App.ViewModels
             }
         }
 
+        private ICommand _exploreCommand;
+        public ICommand ExploreCommand
+        {
+            get
+            {
+                if (_exploreCommand == null)
+                {
+                    _exploreCommand = new DelegateCommand(() =>
+                    {
+                        //App.Settings.Theme = 
+                    });
+                }
+                return _exploreCommand;
+            }
+        }
+
+
         private ICommand _refreshCommand;
         public ICommand RefreshCommand
         {

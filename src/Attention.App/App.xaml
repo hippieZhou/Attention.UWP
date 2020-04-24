@@ -5,8 +5,7 @@
     xmlns:converter="using:Attention.App.Converters"
     xmlns:local="using:Attention.App"
     xmlns:model="using:Attention.App.Models"
-    xmlns:prismUnity="using:Prism.Unity.Windows"
-    RequestedTheme="Dark">
+    xmlns:prismUnity="using:Prism.Unity.Windows">
     <prismUnity:PrismUnityApplication.Resources>
         <ResourceDictionary>
             <model:AppSettings x:Key="AppSettings" />

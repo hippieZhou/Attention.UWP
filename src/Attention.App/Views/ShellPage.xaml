@@ -11,13 +11,6 @@
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-    <prismMvvm:SessionStateAwarePage.Transitions>
-        <TransitionCollection>
-            <NavigationThemeTransition>
-                <DrillInNavigationTransitionInfo />
-            </NavigationThemeTransition>
-        </TransitionCollection>
-    </prismMvvm:SessionStateAwarePage.Transitions>
 
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.BackgroundTransition>
@@ -64,7 +57,15 @@
                 </AutoSuggestBox>
             </muxc:NavigationView.AutoSuggestBox>
             <Grid>
-                <Frame x:Name="shellFrame" />
+                <Frame x:Name="shellFrame">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition>
+                                <DrillInNavigationTransitionInfo />
+                            </NavigationThemeTransition>
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
             </Grid>
         </muxc:NavigationView>
     </Grid>
