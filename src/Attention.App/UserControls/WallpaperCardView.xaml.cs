@@ -1,4 +1,4 @@
-﻿using Attention.App.ViewModels;
+﻿using Attention.App.ViewModels.UcViewModels;
 using System;
 using System.Numerics;
 using Windows.UI.Xaml;
@@ -8,9 +8,9 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.App.UserControls
 {
-    public sealed partial class ConnectedCardView : UserControl
+    public sealed partial class WallpaperCardView : UserControl
     {
-        public ConnectedCardView()
+        public WallpaperCardView()
         {
             this.InitializeComponent();
             SharedShadow.Receivers.Add(BackgroundGrid);
@@ -25,9 +25,9 @@ namespace Attention.App.UserControls
 
         // Using a DependencyProperty as the backing store for ConcreteDataContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConcreteDataContextProperty =
-            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(ConnectedCardView), new PropertyMetadata(null,(d,e)=> 
+            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(WallpaperCardView), new PropertyMetadata(null,(d,e)=> 
             {
-                if (d is ConnectedCardView handler && e.NewValue is WallpaperCardViewModel viewmodel)
+                if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel viewmodel)
                 {
                     viewmodel.LoadCommand.Execute(handler.destinationElement);
                 }

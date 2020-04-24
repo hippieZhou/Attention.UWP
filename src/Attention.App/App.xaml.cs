@@ -10,19 +10,23 @@ using Prism.Windows.AppModel;
 using Windows.ApplicationModel.Resources;
 using Attention.App.Extensions;
 using Serilog;
-using System.IO;
-using Windows.Storage;
-using System.Text;
-using Serilog.Events;
 using Attention.App.Views;
 using Attention.App.Services;
 using Attention.App.Framework;
 using AutoMapper;
+using System;
+using Attention.App.Models;
+using System.Text;
+using Serilog.Events;
+using Windows.Storage;
+using System.IO;
 
 namespace Attention.App
 {
     public sealed partial class App : PrismUnityApplication
     {
+        public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
+
         public App()
         {
             Log.Logger = new LoggerConfiguration()
@@ -79,8 +83,7 @@ namespace Attention.App
 
         private async Task LoadAppResources()
         {
-            EnginContext.Initialize(new GeneralEngine(this.Container));
-            //return Task.Delay(2000);
+            EnginContext.Initialize(new GeneralEngine(Container));
             await Task.Yield();
         }
 

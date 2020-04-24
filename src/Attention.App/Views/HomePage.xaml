@@ -145,23 +145,6 @@
                             </Button.Content>
                         </Button>
                     </Grid>
-
-                    <!--<muxc:SplitButton HorizontalAlignment="Right" Content="切换源">
-                        <muxc:SplitButton.Flyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem Tag="pixabay" Text="Pixabay">
-                                    <muxc:MenuFlyoutItem.Icon>
-                                        <muxc:BitmapIcon UriSource="/Assets/pixabay.png" />
-                                    </muxc:MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutItem Tag="unsplash" Text="Unsplash">
-                                    <muxc:MenuFlyoutItem.Icon>
-                                        <muxc:BitmapIcon UriSource="/Assets/unsplash.png" />
-                                    </muxc:MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </muxc:SplitButton.Flyout>
-                    </muxc:SplitButton>-->
                 </mtuc:ScrollHeader>
             </mtuc:AdaptiveGridView.Header>
             <mtuc:AdaptiveGridView.Footer>
@@ -184,6 +167,7 @@
             </mtuc:AdaptiveGridView.Footer>
         </mtuc:AdaptiveGridView>
 
-        <uc:ConnectedCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
+        <uc:WallpaperExploreView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.ExploreViewModel, Mode=OneWay}" />
+        <uc:WallpaperCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
     </Grid>
 </prismMvvm:SessionStateAwarePage>

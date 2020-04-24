@@ -131,18 +131,25 @@
     <Compile Include="Framework\EnginContext.cs" />
     <Compile Include="Framework\IEngine.cs" />
     <Compile Include="GeneralEngine.cs" />
+    <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\WallpaperEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IWallpaperService.cs" />
     <Compile Include="Services\PixabayService.cs" />
     <Compile Include="Services\UnsplashService.cs" />
-    <Compile Include="UserControls\ConnectedCardView.xaml.cs">
-      <DependentUpon>ConnectedCardView.xaml</DependentUpon>
+    <Compile Include="UserControls\WallpaperCardView.xaml.cs">
+      <DependentUpon>WallpaperCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WallpaperExploreView.xaml.cs">
+      <DependentUpon>WallpaperExploreView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DownloadPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\ShellPageViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\WallpaperExploreViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\UcBaseViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\WallpaperCardViewModel.cs" />
     <Compile Include="Views\DownloadPage.xaml.cs">
       <DependentUpon>DownloadPage.xaml</DependentUpon>
     </Compile>
@@ -199,7 +206,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ConnectedCardView.xaml">
+    <Page Include="UserControls\WallpaperCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\WallpaperExploreView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,10 +9,8 @@ using Windows.UI.Xaml;
 using System;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Attention.App.Extensions;
-using Windows.UI.Xaml.Input;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Attention.App.ViewModels.UcViewModels;
 
 namespace Attention.App.ViewModels
 {
@@ -27,7 +25,6 @@ namespace Attention.App.ViewModels
             get { return _wallpapers; }
             set { SetProperty(ref _wallpapers, value); }
         }
-
         public HomePageViewModel(ILoggerFacade logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -45,6 +42,13 @@ namespace Attention.App.ViewModels
         {
             get { return _errorVisibility; }
             set { SetProperty(ref _errorVisibility, value); }
+        }
+
+        private WallpaperExploreViewModel _exploreViewModel;
+        public WallpaperExploreViewModel ExploreViewModel
+        {
+            get { return _exploreViewModel ?? (_exploreViewModel = new WallpaperExploreViewModel()); }
+            set { SetProperty(ref _exploreViewModel, value); }
         }
 
         private WallpaperCardViewModel _cardViewModel;
@@ -143,142 +147,6 @@ namespace Attention.App.ViewModels
                 }
                 return _itemClickCommand; 
             }
-        }
-    }
-
-    public class WallpaperCardViewModel : ViewModelBase
-    {
-        public event EventHandler<(WallpaperEntity, ConnectedAnimation)> TryStartBackwardsAnimation;
-        private UIElement _destinationElement;
-
-        private WallpaperEntity _entity;
-        public WallpaperEntity Entity
-        {
-            get { return _entity; }
-            set { SetProperty(ref _entity, value); }
-        }
-
-        private Visibility _visibility = Visibility.Collapsed;
-        public Visibility Visibility
-        {
-            get { return _visibility; }
-            set { SetProperty(ref _visibility, value); }
-        }
-
-        private Visibility _avatarVisibility = Visibility.Collapsed;
-        public Visibility AvatarVisibility
-        {
-            get { return _avatarVisibility; }
-            set { SetProperty(ref _avatarVisibility, value); }
-        }
-
-        private Visibility _footerVisibility = Visibility.Collapsed;
-        public Visibility FooterVisibility
-        {
-            get { return _footerVisibility; }
-            set { SetProperty(ref _footerVisibility, value); }
-        }
-
-        private ICommand _loadCommand;
-        public ICommand LoadCommand
-        {
-            get
-            {
-                if (_loadCommand == null)
-                {
-                    _loadCommand = new DelegateCommand<UIElement>(destinationElement =>
-                    {
-                        _destinationElement = destinationElement ?? throw new ArgumentNullException(nameof(destinationElement));
-                        Visibility = Visibility.Collapsed;
-                        AvatarVisibility = Visibility.Collapsed;
-                        FooterVisibility = Visibility.Collapsed;
-                    });
-                }
-                return _loadCommand;
-            }
-        }
-
-        private ICommand _downloadCommand;
-        public ICommand DownloadCommand
-        {
-            get
-            {
-                if (_downloadCommand == null)
-                {
-                    _downloadCommand = new DelegateCommand(() =>
-                    {
-
-                    });
-                }
-                return _downloadCommand;
-            }
-            
-        }
-
-        private ICommand _browseCommand;
-        public ICommand BrowseCommand
-        {
-            get
-            {
-                if (_browseCommand == null)
-                {
-                    _browseCommand = new DelegateCommand(() =>
-                    {
-
-                    });
-                }
-                return _browseCommand;
-            }
-        }
-
-        private ICommand _shareCommand;
-        public ICommand ShareCommand
-        {
-            get
-            {
-                if (_shareCommand == null)
-                {
-                    _shareCommand = new DelegateCommand(() =>
-                    {
-
-                    });
-                }
-                return _shareCommand;
-            }
-        }
-
-        private ICommand _backCommand;
-        public ICommand BackCommand
-        {
-            get
-            {
-                if (_backCommand == null)
-                {
-                    _backCommand = new DelegateCommand<TappedRoutedEventArgs>(args =>
-                    {
-                        var parent = LogicalTree.FindParent<Grid>(_destinationElement as FrameworkElement);
-                        if (args.OriginalSource == parent)
-                        {
-                            var animation = _destinationElement.CreateBackwardsAnimation(() =>
-                            {
-                                Visibility = Visibility.Collapsed;
-                                AvatarVisibility = Visibility.Collapsed;
-                                FooterVisibility = Visibility.Collapsed;
-                            });
-                            TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
-                        }
-                        args.Handled = true;
-                    });
-                }
-                return _backCommand;
-            }
-        }
-
-        public void TryStartForwardAnimation(WallpaperEntity entity, ConnectedAnimation animation)
-        {
-            Entity = entity;
-            Visibility = Visibility.Visible;
-            animation.TryStart(_destinationElement);
         }
     }
 }

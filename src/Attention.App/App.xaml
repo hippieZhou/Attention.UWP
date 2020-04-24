@@ -4,10 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:Attention.App.Converters"
     xmlns:local="using:Attention.App"
+    xmlns:model="using:Attention.App.Models"
     xmlns:prismUnity="using:Prism.Unity.Windows"
     RequestedTheme="Dark">
     <prismUnity:PrismUnityApplication.Resources>
         <ResourceDictionary>
+            <model:AppSettings x:Key="AppSettings" />
             <x:Double x:Key="CompactModeThresholdWidth">641</x:Double>
             <x:Double x:Key="ExpandedModeThresholdWidth">1008</x:Double>
             <converter:ImageSourceNullValueConverter x:Key="ImageSourceNullValueConverter" />
