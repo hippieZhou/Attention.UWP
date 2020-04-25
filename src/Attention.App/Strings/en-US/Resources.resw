@@ -117,6 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="settings_About.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="settings_Contract.Text" xml:space="preserve">
+    <value>Contract</value>
+  </data>
+  <data name="settings_dp.Text" xml:space="preserve">
+    <value>Dependencies and References</value>
+  </data>
+  <data name="settings_Language.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="settings_Language_En.Content" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="settings_Language_Zh.Content" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="settings_ThemeMode.Text" xml:space="preserve">
+    <value>Theme Mode</value>
+  </data>
+  <data name="settings_ThemeMode_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="settings_ThemeMode_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="settings_ThemeMode_System.Content" xml:space="preserve">
+    <value>Use System setting</value>
+  </data>
   <data name="shellNav.PaneTitle" xml:space="preserve">
     <value>Attention For UWP</value>
   </data>

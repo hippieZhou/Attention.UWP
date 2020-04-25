@@ -25,7 +25,7 @@ namespace Attention.App.Businesss
         public WallpaperItemSource()
         {
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
-            ImageCache.Instance.MaxMemoryCacheCount = App.Settings.EnableHighLevel ? 200 : 0;
+            //ImageCache.Instance.MaxMemoryCacheCount = App.Settings.EnableHighLevel ? 200 : 0;
 
             _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(UnsplashService)) ?? throw new ArgumentNullException(nameof(UnsplashService));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));

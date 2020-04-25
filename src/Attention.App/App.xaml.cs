@@ -19,6 +19,7 @@ using System.Text;
 using Serilog.Events;
 using Windows.Storage;
 using System.IO;
+using Windows.Globalization;
 
 namespace Attention.App
 {
@@ -82,6 +83,12 @@ namespace Attention.App
 
         private async Task LoadAppResources()
         {
+            ApplicationLanguages.PrimaryLanguageOverride = Settings.Language;
+            if (Window.Current.Content is FrameworkElement frameworkElement)
+            {
+                frameworkElement.RequestedTheme = Settings.Theme;
+            }
+
             EnginContext.Initialize(new GeneralEngine(Container));
             await Task.Yield();
         }

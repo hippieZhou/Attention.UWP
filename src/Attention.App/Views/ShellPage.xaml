@@ -57,15 +57,7 @@
                 </AutoSuggestBox>
             </muxc:NavigationView.AutoSuggestBox>
             <Grid>
-                <Frame x:Name="shellFrame">
-                    <Frame.ContentTransitions>
-                        <TransitionCollection>
-                            <NavigationThemeTransition>
-                                <DrillInNavigationTransitionInfo />
-                            </NavigationThemeTransition>
-                        </TransitionCollection>
-                    </Frame.ContentTransitions>
-                </Frame>
+                <Frame x:Name="shellFrame" />
             </Grid>
         </muxc:NavigationView>
     </Grid>
