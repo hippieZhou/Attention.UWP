@@ -79,7 +79,6 @@
                     <Button
                         Background="Transparent"
                         Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
-                        Foreground="{StaticResource PrimaryTextColor}"
                         Opacity="0.6"
                         Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                         <Button.Content>
@@ -92,7 +91,6 @@
                     <Button
                         Background="Transparent"
                         Command="{x:Bind ConcreteDataContext.ShareCommand, Mode=OneWay}"
-                        Foreground="{StaticResource PrimaryTextColor}"
                         Opacity="0.6"
                         Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                         <Button.Content>
@@ -105,7 +103,6 @@
                     <Button
                         Background="Transparent"
                         Command="{x:Bind ConcreteDataContext.BrowseCommand, Mode=OneWay}"
-                        Foreground="{StaticResource PrimaryTextColor}"
                         Opacity="0.6"
                         Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                         <Button.Content>

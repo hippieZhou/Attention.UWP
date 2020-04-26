@@ -16,7 +16,6 @@
 
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="PrimaryTextColor" Color="Black" />
                     <AcrylicBrush
                         x:Key="BackdropAcrylicBrush"
                         BackgroundSource="Backdrop"
@@ -26,7 +25,6 @@
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="PrimaryTextColor" Color="White" />
                     <AcrylicBrush
                         x:Key="BackdropAcrylicBrush"
                         BackgroundSource="Backdrop"

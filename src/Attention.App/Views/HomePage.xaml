@@ -156,7 +156,6 @@
                             VerticalAlignment="Center"
                             Background="Transparent"
                             Command="{x:Bind ConcreteDataContext.ExploreCommand, Mode=OneWay}"
-                            Foreground="{StaticResource PrimaryTextColor}"
                             Opacity="0.6"
                             Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                             <animations:Implicit.ShowAnimations>
