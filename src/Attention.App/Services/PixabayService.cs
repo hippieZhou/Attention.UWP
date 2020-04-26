@@ -37,7 +37,7 @@ namespace Attention.App.Services
             };
 
             var imageResult = await _client.QueryImagesAsync(qb);
-            return MapToEntities(imageResult.Images);
+            return MapToEntities(imageResult?.Images);
         }
     }
 }

@@ -25,8 +25,13 @@ namespace Attention.App.Services
             throw new NotImplementedException();
         }
 
-        protected IEnumerable<WallpaperEntity> MapToEntities(object source)
+        protected IEnumerable<WallpaperEntity> MapToEntities<T>(IEnumerable<T> source) where T : class
         {
+            if (source == default)
+            {
+                return Array.Empty<WallpaperEntity>();
+            }
+
             var mapper = EnginContext.Current.Resolve<IMapper>();
             if (mapper == null)
             {

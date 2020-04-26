@@ -27,7 +27,7 @@ namespace Attention.App.Businesss
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
             ImageCache.Instance.MaxMemoryCacheCount = 200;
 
-            _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(UnsplashService)) ?? throw new ArgumentNullException(nameof(UnsplashService));
+            _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(PixabayService)) ?? throw new ArgumentNullException(nameof(PixabayService));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
             _entities = new List<WallpaperEntity>();
 

@@ -8,10 +8,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
@@ -26,6 +28,30 @@
                     IsCacheEnabled="True"
                     Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}"
                     Stretch="None" />
+
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.Background>
+                        <media:BackdropBlurBrush Amount="2" />
+                    </Grid.Background>
+                    <i:Interaction.Behaviors>
+                        <behaviors:Fade
+                            x:Name="SmokeUp"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseOut"
+                            EasingType="Linear"
+                            Value="1"
+                            Duration="400" />
+                        <behaviors:Fade
+                            x:Name="SmokeDowm"
+                            AutomaticallyStart="True"
+                            Delay="0"
+                            EasingMode="EaseIn"
+                            EasingType="Linear"
+                            Value="0"
+                            Duration="400" />
+                    </i:Interaction.Behaviors>
+                </Grid>
 
                 <TextBlock
                     Margin="12"
@@ -60,24 +86,29 @@
                     <!--  鼠标相关操作  -->
                     <ic:EventTriggerBehavior EventName="PointerEntered">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeUp}" />
                         <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerExited">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeDowm}" />
                         <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
 
                     <!--  单指相关操作  -->
                     <ic:EventTriggerBehavior EventName="PointerPressed">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserUp}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeUp}" />
                         <be:ElementScaleAction Entered="True" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerReleased">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeDowm}" />
                         <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                     <ic:EventTriggerBehavior EventName="PointerCanceled">
                         <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=UserDowm}" />
+                        <ic:CallMethodAction MethodName="StartAnimation" TargetObject="{Binding ElementName=SmokeDowm}" />
                         <be:ElementScaleAction Entered="False" TargetObject="{Binding ElementName=imageEx}" />
                     </ic:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
@@ -154,7 +185,9 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom">
                     <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
-                        <ProgressRing IsActive="True" />
+                        <muxc:AnimatedVisualPlayer Width="240">
+                            <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
+                        </muxc:AnimatedVisualPlayer>
                     </Grid>
                     <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
                         <Button
