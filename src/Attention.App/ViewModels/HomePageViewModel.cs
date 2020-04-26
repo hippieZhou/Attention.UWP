@@ -47,7 +47,7 @@ namespace Attention.App.ViewModels
         private WallpaperExploreViewModel _exploreViewModel;
         public WallpaperExploreViewModel ExploreViewModel
         {
-            get { return _exploreViewModel ?? (_exploreViewModel = new WallpaperExploreViewModel()); }
+            get { return _exploreViewModel; }
             set { SetProperty(ref _exploreViewModel, value); }
         }
 
@@ -76,6 +76,11 @@ namespace Attention.App.ViewModels
                             }
                         };
 
+
+                        ExploreViewModel = new WallpaperExploreViewModel();
+                        ExploreViewModel.Visibility = Visibility.Collapsed;
+
+
                         CardViewModel = new WallpaperCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
                         {
@@ -87,6 +92,7 @@ namespace Attention.App.ViewModels
                             }
                             await _adaptiveGV.TryStartConnectedAnimationAsync(args.Item2, args.Item1, "connectedElement");
                         };
+
 
                         Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperEntity>(10, () =>
                         {
@@ -117,7 +123,7 @@ namespace Attention.App.ViewModels
                 {
                     _exploreCommand = new DelegateCommand(() =>
                     {
-                        //App.Settings.Theme = 
+                        ExploreViewModel.SwitchCommand.Execute(Visibility.Visible);
                     });
                 }
                 return _exploreCommand;
