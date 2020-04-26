@@ -25,7 +25,7 @@ namespace Attention.App.Businesss
         public WallpaperItemSource()
         {
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
-            //ImageCache.Instance.MaxMemoryCacheCount = App.Settings.EnableHighLevel ? 200 : 0;
+            ImageCache.Instance.MaxMemoryCacheCount = 200;
 
             _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(UnsplashService)) ?? throw new ArgumentNullException(nameof(UnsplashService));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
@@ -48,6 +48,7 @@ namespace Attention.App.Businesss
 
         public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
+            var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
             Stopwatch sp = Stopwatch.StartNew();
             var result = (from p in _entities
                           select p).Skip(pageIndex * pageSize).Take(pageSize);

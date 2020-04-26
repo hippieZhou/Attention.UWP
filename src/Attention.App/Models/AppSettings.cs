@@ -21,20 +21,6 @@ namespace Attention.App.Models
             }
         }
 
-        private bool _enableHighLevel;
-        public bool EnableHighLevel
-        {
-            get { return _enableHighLevel; }
-            set
-            {
-                if (_enableHighLevel != value)
-                {
-                    SetProperty(ref _enableHighLevel, value);
-                    SaveSettings(nameof(EnableHighLevel), EnableHighLevel);
-                }
-            }
-        }
-
         private ElementTheme _theme;
         public ElementTheme Theme
         {
@@ -68,19 +54,6 @@ namespace Attention.App.Models
             }
         }
 
-        private bool _enableLiveTitle;
-        public bool EnableLiveTitle
-        {
-            get { return _enableLiveTitle; }
-            set
-            {
-                if (_enableLiveTitle != value)
-                {
-                    SetProperty(ref _enableLiveTitle, value);
-                }
-            }
-        }
-
         public AppSettings()
         {
             _localSettings = ApplicationData.Current.LocalSettings;
@@ -89,13 +62,13 @@ namespace Attention.App.Models
 
         private void LoadSettings()
         {
-            EnableHighLevel = ReadSettings(nameof(EnableHighLevel), true);
-            Theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), ReadSettings(nameof(Theme), (int)ElementTheme.Dark));
-            EnableHighLevel = ReadSettings(nameof(EnableHighLevel), true);
-            Language = ReadSettings(nameof(Language),
-                string.IsNullOrWhiteSpace(ApplicationLanguages.PrimaryLanguageOverride)
-                ? ApplicationLanguages.Languages[0]
-                : ApplicationLanguages.PrimaryLanguageOverride);
+            Theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), ReadSettings(nameof(Theme), (int)ElementTheme.Default));
+            var lang = ApplicationLanguages.PrimaryLanguageOverride;
+            if (string.IsNullOrWhiteSpace(lang))
+            {
+                lang = ApplicationLanguages.Languages[0];
+            }
+            Language = lang.StartsWith("zh") ? "zh-CN" : "en-US";
         }
 
         public async Task<StorageFolder> GetSavedFolderAsync() => await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);

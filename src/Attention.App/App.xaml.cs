@@ -106,7 +106,7 @@ namespace Attention.App
                 cfg.AddProfile<UnsplashMappingProfile>();
             })));
             Container.RegisterInstance<IWallpaperService>(nameof(PixabayService), new PixabayService("12645414-59a5251905dfea7b916dd796f"));
-            Container.RegisterInstance<IWallpaperService>(nameof(UnsplashService), new UnsplashService("12645414-59a5251905dfea7b916dd796f"));
+            Container.RegisterInstance<IWallpaperService>(nameof(UnsplashService), new UnsplashService("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU"));
             return base.OnInitializeAsync(args);
         }
     }
