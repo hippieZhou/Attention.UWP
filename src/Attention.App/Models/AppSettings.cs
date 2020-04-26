@@ -21,55 +21,32 @@ namespace Attention.App.Models
             }
         }
 
-        private ElementTheme _theme;
         public ElementTheme Theme
         {
-            get { return _theme; }
+            get { return (ElementTheme)ReadSettings(nameof(Theme), (int)ElementTheme.Default); }
             set
             {
-                if (_theme != value)
+                SaveSettings(nameof(Theme), (int)value);
+                RaisePropertyChanged(nameof(Theme));
+                if (Window.Current.Content is FrameworkElement frameworkElement)
                 {
-                    SetProperty(ref _theme, value);
-                    SaveSettings(nameof(Theme), (int)Theme);
-                    if (Window.Current.Content is FrameworkElement frameworkElement)
-                    {
-                        frameworkElement.RequestedTheme = Theme;
-                    }
+                    frameworkElement.RequestedTheme = Theme;
                 }
             }
         }
 
-        private string _language;
         public string Language
         {
-            get { return _language; }
+            get { return ReadSettings(nameof(Language), ApplicationLanguages.Languages[0].StartsWith("zh") ? "zh-CN" : "en-US"); }
             set
             {
-                if (_language != value)
-                {
-                    SetProperty(ref _language, value);
-                    SaveSettings(nameof(Language), Language);
-                    ApplicationLanguages.PrimaryLanguageOverride = Language;
-                }
+                SaveSettings(nameof(Language), value);
+                RaisePropertyChanged(nameof(Language));
+                ApplicationLanguages.PrimaryLanguageOverride = Language;
             }
         }
 
-        public AppSettings()
-        {
-            _localSettings = ApplicationData.Current.LocalSettings;
-            LoadSettings();
-        }
-
-        private void LoadSettings()
-        {
-            Theme = (ElementTheme)Enum.ToObject(typeof(ElementTheme), ReadSettings(nameof(Theme), (int)ElementTheme.Default));
-            var lang = ApplicationLanguages.PrimaryLanguageOverride;
-            if (string.IsNullOrWhiteSpace(lang))
-            {
-                lang = ApplicationLanguages.Languages[0];
-            }
-            Language = lang.StartsWith("zh") ? "zh-CN" : "en-US";
-        }
+        public AppSettings() => _localSettings = ApplicationData.Current.LocalSettings;
 
         public async Task<StorageFolder> GetSavedFolderAsync() => await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);
 
