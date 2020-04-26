@@ -88,7 +88,7 @@
                         <TextBlock x:Uid="settings_About" Style="{ThemeResource TitleTextBlockStyle}" />
                     </mtuc:HeaderedContentControl.Header>
                     <mtuc:HeaderedContentControl.Content>
-                        <TextBlock Text="AAA" />
+                        <TextBlock Text="{Binding Source={StaticResource AppSettings}, Path=Version}" />
                     </mtuc:HeaderedContentControl.Content>
                 </mtuc:HeaderedContentControl>
                 <mtuc:HeaderedContentControl>
@@ -114,6 +114,7 @@
                             Spacing="12">
                             <Button
                                 Background="Transparent"
+                                Command="{x:Bind ConcreteDataContext.ContractCommand, Mode=OneWay}"
                                 CommandParameter="hippiezhou@outlook.com"
                                 Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                                 <Viewbox Height="20">
@@ -122,6 +123,7 @@
                             </Button>
                             <Button
                                 Background="Transparent"
+                                Command="{x:Bind ConcreteDataContext.ContractCommand, Mode=OneWay}"
                                 CommandParameter="https://twitter.com/hippiechou"
                                 Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                                 <Viewbox Height="20">
@@ -130,6 +132,7 @@
                             </Button>
                             <Button
                                 Background="Transparent"
+                                Command="{x:Bind ConcreteDataContext.ContractCommand, Mode=OneWay}"
                                 CommandParameter="https://github.com/hippiezhou"
                                 Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                                 <Viewbox Height="20">
@@ -138,6 +141,7 @@
                             </Button>
                             <Button
                                 Background="Transparent"
+                                Command="{x:Bind ConcreteDataContext.ContractCommand, Mode=OneWay}"
                                 CommandParameter="https://www.cnblogs.com/hippieZhou"
                                 Style="{StaticResource IconOnlyWithoutBackgroundButton}">
                                 <Viewbox Height="20">

@@ -5,6 +5,11 @@ using Windows.UI.Xaml;
 using System;
 using Prism.Windows.AppModel;
 using Attention.App.Framework;
+using Microsoft.Toolkit.Extensions;
+using Windows.ApplicationModel.Email;
+using Windows.Storage.Streams;
+using System.Text.RegularExpressions;
+using Windows.System;
 
 namespace Attention.App.ViewModels
 {
@@ -97,6 +102,34 @@ namespace Attention.App.ViewModels
 					});
 				}
 				return _changeLanguageCommand;
+			}
+		}
+
+		private ICommand _contractCommand;
+		public ICommand ContractCommand
+		{
+			get
+			{
+				if (_contractCommand == null)
+				{
+					_contractCommand = new DelegateCommand<string>(async contract =>
+					{
+						if (contract.IsEmail())
+						{
+							EmailMessage email = new EmailMessage();
+							email.To.Add(new EmailRecipient("From UWP Client"));
+							email.Subject = $"FeedBack For UWP Client";
+							email.Body = $"version:{App.Settings.Version}";
+							//email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
+							await EmailManager.ShowComposeNewEmailAsync(email);
+						}
+						else if (Regex.IsMatch(contract, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$"))
+						{
+							await Launcher.LaunchUriAsync(new Uri(contract));
+						}
+					});
+				}
+				return _contractCommand;
 			}
 		}
 	}
