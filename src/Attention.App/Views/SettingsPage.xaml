@@ -41,6 +41,7 @@
                     <RadioButton
                         x:Uid="settings_ThemeMode_Light"
                         Command="{x:Bind ConcreteDataContext.ChangeThemeCommand, Mode=OneWay}"
+                        GroupName="Theme"
                         IsChecked="{Binding Source={StaticResource AppSettings}, Path=Theme, Converter={StaticResource ObjectEqualToCheckedConverter}, ConverterParameter=Light}">
                         <RadioButton.CommandParameter>
                             <ElementTheme>Light</ElementTheme>
@@ -49,6 +50,7 @@
                     <RadioButton
                         x:Uid="settings_ThemeMode_Dark"
                         Command="{x:Bind ConcreteDataContext.ChangeThemeCommand, Mode=OneWay}"
+                        GroupName="Theme"
                         IsChecked="{Binding Source={StaticResource AppSettings}, Path=Theme, Converter={StaticResource ObjectEqualToCheckedConverter}, ConverterParameter=Dark}">
                         <RadioButton.CommandParameter>
                             <ElementTheme>Dark</ElementTheme>
@@ -57,6 +59,7 @@
                     <RadioButton
                         x:Uid="settings_ThemeMode_System"
                         Command="{x:Bind ConcreteDataContext.ChangeThemeCommand, Mode=OneWay}"
+                        GroupName="Theme"
                         IsChecked="{Binding Source={StaticResource AppSettings}, Path=Theme, Converter={StaticResource ObjectEqualToCheckedConverter}, ConverterParameter=Default}">
                         <RadioButton.CommandParameter>
                             <ElementTheme>Default</ElementTheme>
@@ -71,11 +74,13 @@
                         x:Uid="settings_Language_Zh"
                         Command="{x:Bind ConcreteDataContext.ChangeLanguageCommand, Mode=OneWay}"
                         CommandParameter="zh-CN"
+                        GroupName="Language"
                         IsChecked="{Binding Source={StaticResource AppSettings}, Path=Language, Converter={StaticResource ObjectEqualToCheckedConverter}, ConverterParameter=zh-CN}" />
                     <RadioButton
                         x:Uid="settings_Language_En"
                         Command="{x:Bind ConcreteDataContext.ChangeLanguageCommand, Mode=OneWay}"
                         CommandParameter="en-US"
+                        GroupName="Language"
                         IsChecked="{Binding Source={StaticResource AppSettings}, Path=Language, Converter={StaticResource ObjectEqualToCheckedConverter}, ConverterParameter=en-US}" />
                 </muxc:RadioButtons>
                 <mtuc:HeaderedContentControl>

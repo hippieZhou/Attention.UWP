@@ -145,7 +145,7 @@
     <value>Light</value>
   </data>
   <data name="settings_ThemeMode_System.Content" xml:space="preserve">
-    <value>Use System setting</value>
+    <value>Use system setting</value>
   </data>
   <data name="shellNav.PaneTitle" xml:space="preserve">
     <value>Attention For UWP</value>
