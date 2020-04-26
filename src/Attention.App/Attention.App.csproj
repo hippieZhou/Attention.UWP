@@ -119,10 +119,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppNotification.cs" />
     <Compile Include="Behaviors\ElementScaleAction.cs" />
     <Compile Include="Businesss\WallpaperItemSource.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />
+    <Compile Include="Events\NotificationEvent.cs" />
     <Compile Include="ExtendedSplashScreen.xaml.cs">
       <DependentUpon>ExtendedSplashScreen.xaml</DependentUpon>
     </Compile>
@@ -198,6 +200,10 @@
     <Page Include="Themes\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\GridViewItem.xaml">
       <SubType>Designer</SubType>

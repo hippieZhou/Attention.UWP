@@ -13,9 +13,10 @@ namespace Attention.App.ViewModels
 {
     public class ShellPageViewModel: ViewModelBase
     {
+        private readonly IResourceLoader _resourceLoader;
+
         private muxc.NavigationView _shellNav;
         private Frame _shellFrame;
-        private readonly IResourceLoader _resourceLoader;
 
         public ShellPageViewModel(IResourceLoader resourceLoader)
         {
@@ -57,7 +58,7 @@ namespace Attention.App.ViewModels
             {
                 if (_loadCommand == null)
                 {
-                    _loadCommand = new DelegateCommand(() => 
+                    _loadCommand = new DelegateCommand(() =>
                     {
                         PrimaryItems.Clear();
                         

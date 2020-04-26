@@ -132,6 +132,9 @@
   <data name="settings_Language_En.Content" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="settings_Language_Notification" xml:space="preserve">
+    <value>Please restart the client with the current modification enabled</value>
+  </data>
   <data name="settings_Language_Zh.Content" xml:space="preserve">
     <value>简体中文</value>
   </data>

@@ -2,11 +2,21 @@
 using Prism.Windows.Mvvm;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using System;
+using Prism.Windows.AppModel;
+using Attention.App.Framework;
 
 namespace Attention.App.ViewModels
 {
 	public class SettingsPageViewModel: ViewModelBase
     {
+		private readonly IResourceLoader _resourceLoader;
+
+		public SettingsPageViewModel(IResourceLoader resourceLoader)
+		{
+			_resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+		}
+
 		private string _dependencies;
 		public string Dependencies
 		{
@@ -79,9 +89,11 @@ namespace Attention.App.ViewModels
 			{
 				if (_changeLanguageCommand == null)
 				{
-					_changeLanguageCommand = new DelegateCommand<string>(language =>
+					_changeLanguageCommand = new DelegateCommand<string>(async language =>
 					{
 						App.Settings.Language = language;
+						await EnginContext.Current.Resolve<AppNotification>()?
+						.ShowAsync(_resourceLoader.GetString("settings_Language_Notification"), TimeSpan.FromSeconds(3.0));
 					});
 				}
 				return _changeLanguageCommand;
