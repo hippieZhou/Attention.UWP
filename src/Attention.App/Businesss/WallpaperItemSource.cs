@@ -17,7 +17,7 @@ using Windows.UI;
 
 namespace Attention.App.Businesss
 {
-    public class WallpaperItemSource : IIncrementalSource<WallpaperEntity>
+    public sealed class WallpaperItemSource : IIncrementalSource<WallpaperEntity>
     {
         private readonly IWallpaperService _client;
         private readonly ILoggerFacade _logger;

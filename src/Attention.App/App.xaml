@@ -27,15 +27,16 @@
             </animations:AnimationCollection>
 
             <animations:AnimationCollection x:Key="DefaultHideAnimations">
-                <animations:ScalarAnimation
-                    Target="Opacity"
-                    To="0.0"
-                    Duration="0:0:0.200" />
                 <animations:TranslationAnimation
                     From="0"
                     To="600, 0, 0"
                     Duration="0:0:0.600" />
+                <animations:OpacityAnimation
+                    From="1.0"
+                    To="0"
+                    Duration="0:0:0.200" />
             </animations:AnimationCollection>
+
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <AcrylicBrush

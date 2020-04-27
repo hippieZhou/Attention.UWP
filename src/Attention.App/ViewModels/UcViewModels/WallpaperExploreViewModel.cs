@@ -45,10 +45,7 @@ namespace Attention.App.ViewModels.UcViewModels
                                 TintOpacity = 1.0,
                                 TintLuminosityOpacity = 1.0,
                             },
-                            Thumbnail = new BitmapImage
-                            {
-                                UriSource = new Uri($"ms-appx:///Assets/Explore/Avatar0{random.Next(0, 5)}.png")
-                            },
+                            Thumbnail = new BitmapImage(new Uri($"ms-appx:///Assets/Explore/Avatar0{random.Next(0, 5)}.png")),
                             Title = DateTime.Now.ToString()
                         });
 

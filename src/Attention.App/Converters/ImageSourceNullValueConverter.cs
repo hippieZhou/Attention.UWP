@@ -8,17 +8,23 @@ namespace Attention.App.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            var defaultSource = parameter?.ToString();
+            if (value == null && string.IsNullOrWhiteSpace(defaultSource))
+            {
+                throw new ArgumentNullException("ImageSource is Null.");
+            }
+
             if (value is BitmapImage bitmapImage)
             {
                 return bitmapImage;
             }
 
-            var uri = value is string passUri && !string.IsNullOrWhiteSpace(passUri) ? passUri : parameter?.ToString();
-            if (string.IsNullOrWhiteSpace(uri))
+            if (value is string wantSource && !string.IsNullOrWhiteSpace(wantSource))
             {
-                throw new ArgumentNullException("ImageSource is Null.");
+                new BitmapImage(new Uri(wantSource, UriKind.RelativeOrAbsolute));
             }
-            return new BitmapImage(new Uri(uri));
+
+            return new BitmapImage(new Uri(defaultSource, UriKind.RelativeOrAbsolute));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
