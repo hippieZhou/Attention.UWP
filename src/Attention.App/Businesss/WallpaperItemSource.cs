@@ -48,7 +48,7 @@ namespace Attention.App.Businesss
 
         public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
+            //var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
             Stopwatch sp = Stopwatch.StartNew();
             var result = (from p in _entities
                           select p).Skip(pageIndex * pageSize).Take(pageSize);

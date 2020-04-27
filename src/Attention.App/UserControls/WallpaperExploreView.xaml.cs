@@ -19,6 +19,13 @@ namespace Attention.App.UserControls
 
         // Using a DependencyProperty as the backing store for ConcreteDataContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConcreteDataContextProperty =
-            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperExploreViewModel), typeof(WallpaperExploreView), new PropertyMetadata(default));
+            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperExploreViewModel), typeof(WallpaperExploreView), new PropertyMetadata(default, (d, e) => 
+            {
+                if (d is WallpaperExploreView handler && e.NewValue is WallpaperExploreViewModel viewmodel)
+                {
+                    handler.FindName("DeferredGrid");
+                    viewmodel.LoadCommand.Execute(null);
+                }
+            }));
     }
 }

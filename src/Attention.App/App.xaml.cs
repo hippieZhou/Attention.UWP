@@ -20,6 +20,7 @@ using Serilog.Events;
 using Windows.Storage;
 using System.IO;
 using Windows.Globalization;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Attention.App
 {
@@ -29,6 +30,8 @@ namespace Attention.App
 
         public App()
         {
+            CoreApplication.EnablePrelaunch(true);
+
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Debug()
@@ -61,7 +64,13 @@ namespace Attention.App
             {
                 await LoadAppResources();
             }
-            NavigationService.NavigateToPage<ShellPage>(args.Arguments);
+
+            if (!args.PrelaunchActivated)
+            {
+                NavigationService.NavigateToPage<ShellPage>(args.Arguments);
+            }
+
+            Window.Current.Activate();
         }
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
@@ -88,6 +97,18 @@ namespace Attention.App
             {
                 frameworkElement.RequestedTheme = Settings.Theme;
             }
+
+            var uiSettings = new UISettings();
+            uiSettings.ColorValuesChanged += async (sender, e) =>
+            {
+                Color bg = sender.GetColorValue(UIColorType.Accent);
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                {
+                    //todo
+                }, Windows.UI.Core.CoreDispatcherPriority.Normal);
+            };
+
+            ApplicationView.GetForCurrentView().IsScreenCaptureEnabled = false;
 
             EnginContext.Initialize(new GeneralEngine(Container));
             await Task.Yield();

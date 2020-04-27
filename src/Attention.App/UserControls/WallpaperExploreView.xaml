@@ -6,13 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Attention.App.Models"
+    xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     d:DesignHeight="768"
     d:DesignWidth="1024"
     mc:Ignorable="d">
 
     <Grid
+        x:Name="DeferredGrid"
         animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
         animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+        x:DeferLoadStrategy="Lazy"
         Background="{ThemeResource SystemControlAcrylicElementBrush}"
         Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
         <Grid.RowDefinitions>
@@ -45,5 +50,38 @@
                 </StackPanel>
             </Button.Content>
         </Button>
+        <Grid Grid.Row="2">
+            <GridView
+                Padding="8,0"
+                animations:ReorderGridAnimation.Duration="600"
+                IncrementalLoadingTrigger="Edge"
+                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}">
+                <GridView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="6" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ExploreEntity">
+                        <Grid Background="{x:Bind Background}" CornerRadius="4">
+                            <mtuc:ImageEx
+                                CacheMode="BitmapCache"
+                                IsCacheEnabled="True"
+                                Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}" />
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <mtuc:StaggeredPanel
+                            HorizontalAlignment="Left"
+                            ColumnSpacing="6"
+                            DesiredColumnWidth="260"
+                            RowSpacing="6" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </Grid>
     </Grid>
 </UserControl>

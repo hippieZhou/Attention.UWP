@@ -135,6 +135,7 @@
     <Compile Include="Framework\IEngine.cs" />
     <Compile Include="GeneralEngine.cs" />
     <Compile Include="Models\AppSettings.cs" />
+    <Compile Include="Models\ExploreEntity.cs" />
     <Compile Include="Models\WallpaperEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IWallpaperService.cs" />
@@ -172,6 +173,11 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Explore\Avatar01.png" />
+    <Content Include="Assets\Explore\Avatar02.png" />
+    <Content Include="Assets\Explore\Avatar03.png" />
+    <Content Include="Assets\Explore\Avatar04.png" />
+    <Content Include="Assets\Explore\Avatar05.png" />
     <Content Include="Assets\Images\Avatar.png" />
     <Content Include="Assets\pixabay.png" />
     <Content Include="Assets\unsplash.png" />
@@ -301,6 +307,7 @@
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\Resources.resw" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
