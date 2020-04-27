@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="AppNotification.cs" />
     <Compile Include="Behaviors\ElementScaleAction.cs" />
+    <Compile Include="Businesss\ExploreItemSource.cs" />
     <Compile Include="Businesss\WallpaperItemSource.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />

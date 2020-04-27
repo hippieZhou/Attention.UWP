@@ -52,6 +52,7 @@
         </Button>
         <Grid Grid.Row="2">
             <GridView
+                x:Name="exploreView"
                 Padding="8,0"
                 animations:ReorderGridAnimation.Duration="600"
                 IncrementalLoadingTrigger="Edge"

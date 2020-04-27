@@ -45,7 +45,7 @@ namespace Attention.App.Extensions
             return root;
         }
 
-        public static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
+        public static TChild FindVisualChild<TChild>(this DependencyObject obj) where TChild : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
@@ -54,7 +54,7 @@ namespace Attention.App.Extensions
                     return found;
                 else
                 {
-                    TChild childOfChild = FindVisualChild<TChild>(child);
+                    TChild childOfChild = child.FindVisualChild<TChild>();
                     if (childOfChild != null)
                         return childOfChild;
                 }

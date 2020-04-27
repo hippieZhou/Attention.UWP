@@ -1,4 +1,6 @@
-﻿using Attention.App.ViewModels.UcViewModels;
+﻿using Attention.App.Extensions;
+using Attention.App.ViewModels.UcViewModels;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -9,6 +11,7 @@ namespace Attention.App.UserControls
         public WallpaperExploreView()
         {
             this.InitializeComponent();
+          
         }
 
         public WallpaperExploreViewModel ConcreteDataContext
@@ -24,6 +27,19 @@ namespace Attention.App.UserControls
                 if (d is WallpaperExploreView handler && e.NewValue is WallpaperExploreViewModel viewmodel)
                 {
                     handler.FindName("DeferredGrid");
+
+                    #region 增量加载
+                    //https://www.cnblogs.com/Damai-Pang/p/5209093.html
+                    var viewer = handler.FindVisualChild<ScrollViewer>();
+                    if (viewer != null)
+                    {
+                        viewer.ViewChanged += (sender, args) =>
+                        {
+                            Trace.WriteLine($"{viewer.VerticalOffset}:{viewer.ScrollableHeight}");
+                        };
+                    }
+                    #endregion
+
                     viewmodel.LoadCommand.Execute(null);
                 }
             }));
