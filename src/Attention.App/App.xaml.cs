@@ -87,6 +87,9 @@ namespace Attention.App
             }
 
             ExtendTitlebar();
+
+            //ApplicationView.GetForCurrentView().IsScreenCaptureEnabled = false;
+
             base.OnWindowCreated(args);
         }
 
@@ -107,8 +110,6 @@ namespace Attention.App
                     //todo
                 }, Windows.UI.Core.CoreDispatcherPriority.Normal);
             };
-
-            ApplicationView.GetForCurrentView().IsScreenCaptureEnabled = false;
 
             EnginContext.Initialize(new GeneralEngine(Container));
             await Task.Yield();

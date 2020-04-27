@@ -1,5 +1,6 @@
 ﻿using Attention.App.Extensions;
 using Attention.App.ViewModels.UcViewModels;
+using System;
 using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,12 +31,18 @@ namespace Attention.App.UserControls
 
                     #region 增量加载
                     //https://www.cnblogs.com/Damai-Pang/p/5209093.html
-                    var viewer = handler.FindVisualChild<ScrollViewer>();
-                    if (viewer != null)
+                    var scrollRoot = handler.FindVisualChild<ScrollViewer>();
+                    if (scrollRoot != null)
                     {
-                        viewer.ViewChanged += (sender, args) =>
+                        scrollRoot.ViewChanged += async (sender, args) =>
                         {
-                            Trace.WriteLine($"{viewer.VerticalOffset}:{viewer.ScrollableHeight}");
+                            if (viewmodel.Entities.IsLoading)
+                                return;
+                            if (scrollRoot.VerticalOffset <= scrollRoot.ScrollableHeight - 500) return;
+
+                            Trace.WriteLine($"{scrollRoot.VerticalOffset}:{scrollRoot.ScrollableHeight}");
+
+                            await viewmodel.Entities.LoadMoreItemsAsync(10);
                         };
                     }
                     #endregion

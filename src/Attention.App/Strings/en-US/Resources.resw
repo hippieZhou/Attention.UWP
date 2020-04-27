@@ -120,6 +120,9 @@
   <data name="explore_Back.Text" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="explore_Header.Text" xml:space="preserve">
+    <value>Collections</value>
+  </data>
   <data name="settings_About.Text" xml:space="preserve">
     <value>About</value>
   </data>

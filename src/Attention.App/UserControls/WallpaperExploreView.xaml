@@ -5,6 +5,7 @@
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.App.UserControls"
+    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -21,14 +22,20 @@
         Background="{ThemeResource SystemControlAcrylicElementBrush}"
         Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="88" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" />
+        <Grid Grid.Row="0">
+            <TextBlock
+                x:Name="headerTextBlock"
+                x:Uid="explore_Header"
+                VerticalAlignment="Bottom"
+                Style="{ThemeResource TitleTextBlockStyle}" />
+        </Grid>
         <Button
             Grid.Row="1"
-            Margin="0,12,20,0"
+            Margin="0,0,20,0"
             HorizontalAlignment="Right"
             Background="Transparent"
             Command="{x:Bind ConcreteDataContext.SwitchCommand, Mode=OneWay}"
@@ -51,38 +58,88 @@
             </Button.Content>
         </Button>
         <Grid Grid.Row="2">
-            <GridView
-                x:Name="exploreView"
-                Padding="8,0"
-                animations:ReorderGridAnimation.Duration="600"
-                IncrementalLoadingTrigger="Edge"
-                IsItemClickEnabled="True"
-                ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}">
-                <GridView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
-                        <Setter Property="Margin" Value="6" />
-                    </Style>
-                </GridView.ItemContainerStyle>
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="model:ExploreEntity">
-                        <Grid Background="{x:Bind Background}" CornerRadius="4">
-                            <mtuc:ImageEx
-                                CacheMode="BitmapCache"
-                                IsCacheEnabled="True"
-                                Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}" />
+            <ScrollViewer>
+                <GridView
+                    Padding="8,0"
+                    animations:ReorderGridAnimation.Duration="600"
+                    IncrementalLoadingTrigger="Edge"
+                    IsItemClickEnabled="True"
+                    ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}">
+                    <GridView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="6" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ExploreEntity">
+                            <Grid Background="{x:Bind Background}" CornerRadius="4">
+                                <mtuc:ImageEx
+                                    CacheMode="BitmapCache"
+                                    IsCacheEnabled="True"
+                                    Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <mtuc:StaggeredPanel
+                                HorizontalAlignment="Left"
+                                ColumnSpacing="6"
+                                DesiredColumnWidth="260"
+                                RowSpacing="6" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.Footer>
+                        <Grid
+                            Padding="0,12,0,32"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom">
+                            <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
+                                <muxc:AnimatedVisualPlayer Width="240">
+                                    <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
+                                </muxc:AnimatedVisualPlayer>
+                            </Grid>
+                            <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
+                                <Button
+                                    Background="Red"
+                                    Command="{x:Bind ConcreteDataContext.RefreshCommand}"
+                                    Content="THERE HAVE SOMETHING WRONG"
+                                    FontWeight="Bold"
+                                    RequestedTheme="Dark" />
+                            </Grid>
                         </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <mtuc:StaggeredPanel
-                            HorizontalAlignment="Left"
-                            ColumnSpacing="6"
-                            DesiredColumnWidth="260"
-                            RowSpacing="6" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
+                    </GridView.Footer>
+                </GridView>
+            </ScrollViewer>
         </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerTextBlock.Margin" Value="12,0,0,32" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerTextBlock.Margin" Value="12,0,0,32" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerTextBlock.Margin" Value="86,0,0,22" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>

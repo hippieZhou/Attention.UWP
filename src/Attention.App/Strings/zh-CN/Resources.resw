@@ -120,6 +120,9 @@
   <data name="explore_Back.Text" xml:space="preserve">
     <value>返回</value>
   </data>
+  <data name="explore_Header.Text" xml:space="preserve">
+    <value>集合</value>
+  </data>
   <data name="settings_About.Text" xml:space="preserve">
     <value>关于</value>
   </data>
