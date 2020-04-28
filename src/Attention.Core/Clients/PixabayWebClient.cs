@@ -1,4 +1,5 @@
-﻿using Attention.App.Models;
+﻿using Attention.Core.Entities;
+using Attention.Core.Framework;
 using AutoMapper;
 using PixabaySharp;
 using PixabaySharp.Enums;
@@ -8,23 +9,28 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Attention.App.Services
+namespace Attention.Core.Services
 {
     public class PixabayMappingProfile : Profile
     {
         public PixabayMappingProfile()
         {
-            CreateMap<ImageItem, WallpaperDto>();
+            CreateMap<ImageItem, WallpaperEntity>();
         }
     }
 
-    public class PixabayService : WallpaperService, IWallpaperService
+    public class PixabayWebClient : IWebClient
     {
         private readonly PixabaySharpClient _client;
+        public string APIKEY { get; }
 
-        public PixabayService(string apiKey) : base(apiKey) => _client = new PixabaySharpClient(APIKEY);
+        public PixabayWebClient(string apiKey)
+        {
+            APIKEY = apiKey;
+            _client = new PixabaySharpClient(APIKEY);
+        }
 
-        public override async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {
@@ -37,7 +43,9 @@ namespace Attention.App.Services
             };
 
             var imageResult = await _client.QueryImagesAsync(qb);
-            return MapToEntities(imageResult?.Images);
+
+            var mapper = EnginContext.Current.Resolve<IMapper>();
+            return mapper.Map<IEnumerable<WallpaperEntity>>(imageResult?.Images);
         }
     }
 }

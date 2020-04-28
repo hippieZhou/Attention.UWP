@@ -51,7 +51,8 @@ namespace Attention.App.Businesss
             sp.Stop();
 
             _logger.Log(string.Format(
-                "数据请求共计耗时：{0} 毫秒，内存消耗：{1}",
+                "{0} 数据请求共计耗时：{1} 毫秒，内存消耗：{2}",
+                nameof(ExploreItemSource),
                 sp.ElapsedMilliseconds,
                 Microsoft.Toolkit.Converters.ToFileSizeString((long)MemoryManager.AppMemoryUsage)),
                 Category.Debug, Priority.None);

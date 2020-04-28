@@ -1,6 +1,6 @@
 ﻿using Attention.App.Models;
-using Attention.App.Services;
 using Attention.Core.Framework;
+using Attention.Core.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.UI.Xaml.Media;
@@ -19,7 +19,7 @@ namespace Attention.App.Businesss
 {
     public sealed class WallpaperItemSource : IIncrementalSource<WallpaperDto>
     {
-        private readonly IWallpaperService _client;
+        private readonly IWebClient _client;
         private readonly ILoggerFacade _logger;
         private readonly List<WallpaperDto> _entities;
         public WallpaperItemSource()
@@ -27,7 +27,7 @@ namespace Attention.App.Businesss
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
             ImageCache.Instance.MaxMemoryCacheCount = 200;
 
-            _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(PixabayService)) ?? throw new ArgumentNullException(nameof(PixabayService));
+            _client = EnginContext.Current.Resolve<IWebClient>(nameof(UnsplashWebClient)) ?? throw new ArgumentNullException(nameof(PixabayWebClient));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
             _entities = new List<WallpaperDto>();
 
@@ -55,7 +55,8 @@ namespace Attention.App.Businesss
             sp.Stop();
 
             _logger.Log(string.Format(
-                "数据请求共计耗时：{0} 毫秒，内存消耗：{1}",
+                "{0} 数据请求共计耗时：{1} 毫秒，内存消耗：{2}",
+                nameof(WallpaperItemSource),
                 sp.ElapsedMilliseconds,
                 Microsoft.Toolkit.Converters.ToFileSizeString((long)MemoryManager.AppMemoryUsage)),
                 Category.Debug, Priority.None);

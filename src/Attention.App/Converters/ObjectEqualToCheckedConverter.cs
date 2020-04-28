@@ -19,7 +19,6 @@ namespace Attention.App.Converters
         {
             TypeConverter tc = TypeDescriptor.GetConverter(value?.GetType());
             var target = tc.ConvertFromString(null, CultureInfo.InvariantCulture, parameter?.ToString());
-            _logger.Log($"{value}:{target} ======== {Equals(value, target)}", Category.Debug, Priority.High);
             return Equals(value, target);
         }
 

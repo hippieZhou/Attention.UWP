@@ -10,8 +10,6 @@ using Windows.ApplicationModel.Resources;
 using Attention.App.Extensions;
 using Serilog;
 using Attention.App.Views;
-using Attention.App.Services;
-using AutoMapper;
 using Attention.App.Models;
 using System.Text;
 using Serilog.Events;
@@ -25,6 +23,8 @@ using Microsoft.Practices.Unity;
 using Attention.Core.Framework;
 using Attention.Core.Context;
 using Attention.Core.Uow;
+using Attention.Core.Services;
+using AutoMapper;
 
 namespace Attention.App
 {
@@ -150,8 +150,8 @@ namespace Attention.App
                 cfg.AddProfile<PixabayMappingProfile>();
                 cfg.AddProfile<UnsplashMappingProfile>();
             })));
-            Container.RegisterInstance<IWallpaperService>(nameof(PixabayService), new PixabayService("12645414-59a5251905dfea7b916dd796f"));
-            Container.RegisterInstance<IWallpaperService>(nameof(UnsplashService), new UnsplashService("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU"));
+            Container.RegisterInstance<IWebClient>(nameof(PixabayWebClient), new PixabayWebClient("12645414-59a5251905dfea7b916dd796f"));
+            Container.RegisterInstance<IWebClient>(nameof(UnsplashWebClient), new UnsplashWebClient("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU"));
             Container.RegisterInstance(new AppNotification(), new ContainerControlledLifetimeManager());
             return base.OnInitializeAsync(args);
         }

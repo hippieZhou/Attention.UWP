@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Attention.Core.Services
 {
-    public interface IWebService
+    public interface IWebClient
     {
         string APIKEY { get; }
         Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default);
