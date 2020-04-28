@@ -1,5 +1,4 @@
 ﻿using Prism.Unity.Windows;
-using Microsoft.Practices.Unity;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -20,11 +19,12 @@ using Windows.Storage;
 using System.IO;
 using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Attention.Core.Framework;
-using Attention.Core.Context;
-using Attention.Core.Uow;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Attention.Framework;
+using Microsoft.Practices.Unity;
+using Attention.Context;
+using Attention.Uow;
 
 namespace Attention.App
 {
@@ -140,12 +140,10 @@ namespace Attention.App
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
-            #region UOW
             Container.RegisterType<ApplicationDbContext>();
             Container.RegisterType<IDateTime, MachineDateTime>();
             Container.RegisterType(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
             Container.RegisterType<IUnitOfWork, UnitOfWork>();
-            #endregion
 
             Container.RegisterInstance<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {

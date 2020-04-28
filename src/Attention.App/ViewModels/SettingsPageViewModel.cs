@@ -8,7 +8,7 @@ using Microsoft.Toolkit.Extensions;
 using Windows.ApplicationModel.Email;
 using System.Text.RegularExpressions;
 using Windows.System;
-using Attention.Core.Framework;
+using Attention.Framework;
 
 namespace Attention.App.ViewModels
 {

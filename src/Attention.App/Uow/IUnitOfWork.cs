@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Attention.Core.Uow
+namespace Attention.Uow
 {
     public interface IUnitOfWork : IDisposable
     {

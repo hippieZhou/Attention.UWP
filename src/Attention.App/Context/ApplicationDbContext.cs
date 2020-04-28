@@ -1,4 +1,4 @@
-﻿using Attention.Core.Entities;
+﻿using Attention.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Attention.Core.Context
+namespace Attention.Context
 {
     public class ApplicationDbContext : DbContext
     {

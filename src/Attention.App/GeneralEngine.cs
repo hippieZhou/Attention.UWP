@@ -1,4 +1,4 @@
-﻿using Attention.Core.Framework;
+﻿using Attention.Framework;
 using Microsoft.Practices.Unity;
 using System;
 

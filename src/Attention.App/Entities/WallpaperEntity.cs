@@ -1,4 +1,4 @@
-﻿namespace Attention.Core.Entities
+﻿namespace Attention.Entities
 {
     public class WallpaperEntity : AuditableEntity
     {

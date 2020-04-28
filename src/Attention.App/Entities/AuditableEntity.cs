@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Attention.Core.Entities
+namespace Attention.Entities
 {
     public class AuditableEntity
     {

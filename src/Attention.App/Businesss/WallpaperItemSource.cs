@@ -1,6 +1,6 @@
 ﻿using Attention.App.Models;
 using Attention.App.Services;
-using Attention.Core.Framework;
+using Attention.Framework;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.UI.Xaml.Media;

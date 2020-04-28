@@ -1,5 +1,5 @@
 ﻿using Attention.App.Models;
-using Attention.Core.Framework;
+using Attention.Framework;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
