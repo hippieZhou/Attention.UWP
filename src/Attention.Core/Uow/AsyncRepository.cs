@@ -1,12 +1,12 @@
-﻿using Attention.Context;
-using Attention.Entities;
+﻿using Attention.Core.Context;
+using Attention.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Attention.Uow
+namespace Attention.Core.Uow
 {
     public class AsyncRepository<TEntity> : IAsyncRepository<TEntity> where TEntity : AuditableEntity
     {

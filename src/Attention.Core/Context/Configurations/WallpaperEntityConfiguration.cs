@@ -1,8 +1,8 @@
-﻿using Attention.Entities;
+﻿using Attention.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Attention.Context.Configurations
+namespace Attention.Core.Context.Configurations
 {
     public class WallpaperEntityConfiguration : IEntityTypeConfiguration<WallpaperEntity>
     {

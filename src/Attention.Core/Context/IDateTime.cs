@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Attention.Context
+namespace Attention.Core.Context
 {
     public interface IDateTime
     {

@@ -123,14 +123,8 @@
     <Compile Include="Behaviors\ElementScaleAction.cs" />
     <Compile Include="Businesss\ExploreItemSource.cs" />
     <Compile Include="Businesss\WallpaperItemSource.cs" />
-    <Compile Include="Context\ApplicationDbContext.cs" />
-    <Compile Include="Context\Configurations\WallpaperEntityConfiguration.cs" />
-    <Compile Include="Context\IDateTime.cs" />
-    <Compile Include="Context\MachineDateTime.cs" />
     <Compile Include="Converters\ImageSourceNullValueConverter.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />
-    <Compile Include="Entities\AuditableEntity.cs" />
-    <Compile Include="Entities\WallpaperEntity.cs" />
     <Compile Include="Events\NotificationEvent.cs" />
     <Compile Include="ExtendedSplashScreen.xaml.cs">
       <DependentUpon>ExtendedSplashScreen.xaml</DependentUpon>
@@ -138,22 +132,14 @@
     <Compile Include="Extensions\FluentDesignExtension.cs" />
     <Compile Include="Extensions\NavigationExtension.cs" />
     <Compile Include="Extensions\SerilogLoggerFacade.cs" />
-    <Compile Include="Framework\EnginContext.cs" />
-    <Compile Include="Framework\IEngine.cs" />
     <Compile Include="GeneralEngine.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\ExploreDto.cs" />
     <Compile Include="Models\WallpaperDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IWebService.cs" />
-    <Compile Include="Services\UnsplashWebService.cs" />
     <Compile Include="Services\WallpaperService.cs" />
     <Compile Include="Services\PixabayService.cs" />
     <Compile Include="Services\UnsplashService.cs" />
-    <Compile Include="Uow\AsyncRepository.cs" />
-    <Compile Include="Uow\IAsyncRepository.cs" />
-    <Compile Include="Uow\IUnitOfWork.cs" />
-    <Compile Include="Uow\UnitOfWork.cs" />
     <Compile Include="UserControls\WallpaperCardView.xaml.cs">
       <DependentUpon>WallpaperCardView.xaml</DependentUpon>
     </Compile>
@@ -261,9 +247,6 @@
     <PackageReference Include="AutoMapper">
       <Version>9.0.0</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>3.1.3</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
       <Version>3.1.3</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -319,6 +302,12 @@
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\zh-CN\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Attention.Core\Attention.Core.csproj">
+      <Project>{f62be7d7-b082-4649-bed3-1134bab4622c}</Project>
+      <Name>Attention.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -1,4 +1,4 @@
-﻿using Attention.Framework;
+﻿using Attention.Core.Framework;
 using Prism.Logging;
 using System;
 using System.ComponentModel;

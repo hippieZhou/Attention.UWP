@@ -1,5 +1,5 @@
 ﻿using Attention.App.Models;
-using Attention.Framework;
+using Attention.Core.Framework;
 using Microsoft.Toolkit.Collections;
 using Microsoft.UI.Xaml.Media;
 using Prism.Logging;

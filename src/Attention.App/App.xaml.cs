@@ -21,10 +21,10 @@ using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Attention.Framework;
 using Microsoft.Practices.Unity;
-using Attention.Context;
-using Attention.Uow;
+using Attention.Core.Framework;
+using Attention.Core.Context;
+using Attention.Core.Uow;
 
 namespace Attention.App
 {

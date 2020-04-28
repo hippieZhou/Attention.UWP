@@ -1,9 +1,9 @@
-﻿using Attention.Context;
+﻿using Attention.Core.Context;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Attention.Uow
+namespace Attention.Core.Uow
 {
     public class UnitOfWork : IUnitOfWork
     {

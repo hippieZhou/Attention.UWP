@@ -1,10 +1,10 @@
-﻿using Attention.Entities;
+﻿using Attention.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Attention.Uow
+namespace Attention.Core.Uow
 {
     public interface IAsyncRepository<TEntity> where TEntity : AuditableEntity
     {
