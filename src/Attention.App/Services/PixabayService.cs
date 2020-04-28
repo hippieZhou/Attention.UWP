@@ -14,7 +14,7 @@ namespace Attention.App.Services
     {
         public PixabayMappingProfile()
         {
-            CreateMap<ImageItem, WallpaperEntity>();
+            CreateMap<ImageItem, WallpaperDto>();
         }
     }
 
@@ -24,7 +24,7 @@ namespace Attention.App.Services
 
         public PixabayService(string apiKey) : base(apiKey) => _client = new PixabaySharpClient(APIKEY);
 
-        public override async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
+        public override async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {
             ImageQueryBuilder qb = new ImageQueryBuilder()
             {

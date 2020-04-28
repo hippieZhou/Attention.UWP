@@ -2,7 +2,7 @@
 
 namespace Attention.App.Models
 {
-    public class ExploreEntity
+    public class ExploreDto
     {
         public string Title { get; set; }
         public Brush Background { get; set; }

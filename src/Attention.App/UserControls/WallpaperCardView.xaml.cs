@@ -27,9 +27,9 @@ namespace Attention.App.UserControls
         public static readonly DependencyProperty ConcreteDataContextProperty =
             DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(WallpaperCardView), new PropertyMetadata(null,(d,e)=> 
             {
-                if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel viewmodel)
+                if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel vm)
                 {
-                    viewmodel.LoadCommand.Execute(handler.destinationElement);
+                    vm.LoadCommand.Execute(handler.destinationElement);
                 }
             }));
 

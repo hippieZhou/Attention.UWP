@@ -4,10 +4,10 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Attention.App.Models
 {
-    public class WallpaperEntity
+    public class WallpaperDto
     {
         public Brush Background { get; set; }
-        public DateTime CreateAt { get; set; }
         public BitmapImage Thumbnail { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
     }
 }

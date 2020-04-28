@@ -13,11 +13,11 @@ namespace Attention.App.ViewModels.UcViewModels
 {
     public class WallpaperCardViewModel : UcBaseViewModel
     {
-        public event EventHandler<(WallpaperEntity, ConnectedAnimation)> TryStartBackwardsAnimation;
+        public event EventHandler<(WallpaperDto, ConnectedAnimation)> TryStartBackwardsAnimation;
         private UIElement _destinationElement;
 
-        private WallpaperEntity _entity;
-        public WallpaperEntity Entity
+        private WallpaperDto _entity;
+        public WallpaperDto Entity
         {
             get { return _entity; }
             set { SetProperty(ref _entity, value); }
@@ -132,7 +132,7 @@ namespace Attention.App.ViewModels.UcViewModels
             }
         }
 
-        public void TryStartForwardAnimation(WallpaperEntity entity, ConnectedAnimation animation)
+        public void TryStartForwardAnimation(WallpaperDto entity, ConnectedAnimation animation)
         {
             Entity = entity;
             Visibility = Visibility.Visible;

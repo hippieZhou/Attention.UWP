@@ -1,6 +1,6 @@
-﻿using Attention.App.Framework;
-using Attention.App.Models;
+﻿using Attention.App.Models;
 using Attention.App.Services;
+using Attention.Core.Framework;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.UI.Xaml.Media;
@@ -17,11 +17,11 @@ using Windows.UI;
 
 namespace Attention.App.Businesss
 {
-    public sealed class WallpaperItemSource : IIncrementalSource<WallpaperEntity>
+    public sealed class WallpaperItemSource : IIncrementalSource<WallpaperDto>
     {
         private readonly IWallpaperService _client;
         private readonly ILoggerFacade _logger;
-        private readonly List<WallpaperEntity> _entities;
+        private readonly List<WallpaperDto> _entities;
         public WallpaperItemSource()
         {
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
@@ -29,9 +29,9 @@ namespace Attention.App.Businesss
 
             _client = EnginContext.Current.Resolve<IWallpaperService>(nameof(PixabayService)) ?? throw new ArgumentNullException(nameof(PixabayService));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
-            _entities = new List<WallpaperEntity>();
+            _entities = new List<WallpaperDto>();
 
-            var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new WallpaperEntity
+            var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new WallpaperDto
             {
                 Background = new AcrylicBrush
                 {
@@ -40,13 +40,12 @@ namespace Attention.App.Businesss
                     FallbackColor = x,
                     TintOpacity = 1.0,
                     TintLuminosityOpacity = 1.0,
-                },
-                CreateAt = DateTime.Now
+                }
             });
             _entities.AddRange(colors);
         }
 
-        public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             //var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
             Stopwatch sp = Stopwatch.StartNew();

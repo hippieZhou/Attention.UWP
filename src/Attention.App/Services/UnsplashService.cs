@@ -13,7 +13,7 @@ namespace Attention.App.Services
     {
         public UnsplashMappingProfile()
         {
-            CreateMap<Photo, WallpaperEntity>();
+            CreateMap<Photo, WallpaperDto>();
         }
     }
 
@@ -23,7 +23,7 @@ namespace Attention.App.Services
 
         public UnsplashService(string apiKey) : base(apiKey) => _client = new UnsplasharpClient(APIKEY);
 
-        public override async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+        public override async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int page, int pageSize, CancellationToken cancellationToken = default)
         {
             var listPhotos = await _client.ListPhotos(page: page, perPage: pageSize, orderBy: OrderBy.Popular);
             return MapToEntities(listPhotos);

@@ -20,7 +20,7 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <prismMvvm:SessionStateAwarePage.Resources>
-        <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperEntity">
+        <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperDto">
             <Grid x:Name="connectedElement" Background="{x:Bind Background}">
                 <mtuc:ImageEx
                     x:Name="imageEx"
@@ -61,7 +61,7 @@
                     Foreground="{ThemeResource ButtonForegroundPressed}"
                     Opacity="0"
                     RequestedTheme="Dark"
-                    Text="{x:Bind CreateAt}">
+                    Text="{x:Bind Created}">
                     <i:Interaction.Behaviors>
                         <behaviors:Fade
                             x:Name="UserUp"

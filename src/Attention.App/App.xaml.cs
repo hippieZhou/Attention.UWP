@@ -12,7 +12,6 @@ using Attention.App.Extensions;
 using Serilog;
 using Attention.App.Views;
 using Attention.App.Services;
-using Attention.App.Framework;
 using AutoMapper;
 using Attention.App.Models;
 using System.Text;
@@ -21,6 +20,11 @@ using Windows.Storage;
 using System.IO;
 using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Attention.Core.Framework;
+using Attention.Core.Context;
+using Attention.Core.Uow;
+using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attention.App
 {
@@ -95,6 +99,18 @@ namespace Attention.App
 
         private async Task LoadAppResources()
         {
+            #region Database Initialize
+            if (!(await Settings.LocalFolder.TryGetItemAsync(AppSettings.DBFile) is IStorageFile dbFile))
+            {
+                using (var dbContext = Container.Resolve<ApplicationDbContext>())
+                {
+                    dbContext.DbFilePath = Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile);
+                    dbContext.Database.Migrate();
+                }
+            }
+            #endregion
+
+            #region Application Configuration
             ApplicationLanguages.PrimaryLanguageOverride = Settings.Language;
             if (Window.Current.Content is FrameworkElement frameworkElement)
             {
@@ -110,6 +126,7 @@ namespace Attention.App
                     //todo
                 }, Windows.UI.Core.CoreDispatcherPriority.Normal);
             };
+            #endregion
 
             EnginContext.Initialize(new GeneralEngine(Container));
             await Task.Yield();
@@ -122,6 +139,14 @@ namespace Attention.App
             Container.RegisterInstance(SessionStateService);
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+
+            #region UOW
+            Container.RegisterType<ApplicationDbContext>();
+            Container.RegisterType<IDateTime, MachineDateTime>();
+            Container.RegisterType(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
+            Container.RegisterType<IUnitOfWork, UnitOfWork>();
+            #endregion
+
             Container.RegisterInstance<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<PixabayMappingProfile>();

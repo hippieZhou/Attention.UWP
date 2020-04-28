@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Attention.App.Framework
+namespace Attention.Core.Framework
 {
     public class EnginContext
     {

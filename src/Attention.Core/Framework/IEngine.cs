@@ -1,4 +1,4 @@
-﻿namespace Attention.App.Framework
+﻿namespace Attention.Core.Framework
 {
     public interface IEngine
     {

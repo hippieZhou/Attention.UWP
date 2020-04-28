@@ -1,5 +1,5 @@
-﻿using Attention.App.Framework;
-using Attention.App.Models;
+﻿using Attention.App.Models;
+using Attention.Core.Framework;
 using Microsoft.Toolkit.Collections;
 using Microsoft.UI.Xaml.Media;
 using Prism.Logging;
@@ -16,17 +16,17 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Attention.App.Businesss
 {
-    public class ExploreItemSource : IIncrementalSource<ExploreEntity>
+    public class ExploreItemSource : IIncrementalSource<ExploreDto>
     {
         private readonly ILoggerFacade _logger;
-        private readonly List<ExploreEntity> _entities;
+        private readonly List<ExploreDto> _entities;
         public ExploreItemSource()
         {
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
-            _entities = new List<ExploreEntity>();
+            _entities = new List<ExploreDto>();
 
             var random = new Random(DateTime.Now.Second);
-            var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new ExploreEntity
+            var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new ExploreDto
             {
                 Background = new AcrylicBrush
                 {
@@ -42,7 +42,7 @@ namespace Attention.App.Businesss
             _entities.AddRange(colors);
         }
 
-        public async Task<IEnumerable<ExploreEntity>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ExploreDto>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             Stopwatch sp = Stopwatch.StartNew();
             var result = (from p in _entities

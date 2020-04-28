@@ -1,5 +1,5 @@
-﻿using Attention.App.Framework;
-using Attention.App.Models;
+﻿using Attention.App.Models;
+using Attention.Core.Framework;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Attention.App.Services
     public interface IWallpaperService
     {
         string APIKEY { get; }
-        Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default);
+        Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default);
     }
 
     public class WallpaperService : IWallpaperService
@@ -20,16 +20,16 @@ namespace Attention.App.Services
 
         public string APIKEY { get; }
 
-        public virtual Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        protected IEnumerable<WallpaperEntity> MapToEntities<T>(IEnumerable<T> source) where T : class
+        protected IEnumerable<WallpaperDto> MapToEntities<T>(IEnumerable<T> source) where T : class
         {
             if (source == default)
             {
-                return Array.Empty<WallpaperEntity>();
+                return Array.Empty<WallpaperDto>();
             }
 
             var mapper = EnginContext.Current.Resolve<IMapper>();
@@ -37,7 +37,7 @@ namespace Attention.App.Services
             {
                 throw new ArgumentNullException(nameof(IMapper));
             }
-            return mapper.Map<IEnumerable<WallpaperEntity>>(source);
+            return mapper.Map<IEnumerable<WallpaperDto>>(source);
         }
     }
 }

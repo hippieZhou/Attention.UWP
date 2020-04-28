@@ -25,7 +25,7 @@ namespace Attention.App.UserControls
         public static readonly DependencyProperty ConcreteDataContextProperty =
             DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperExploreViewModel), typeof(WallpaperExploreView), new PropertyMetadata(default, (d, e) => 
             {
-                if (d is WallpaperExploreView handler && e.NewValue is WallpaperExploreViewModel viewmodel)
+                if (d is WallpaperExploreView handler && e.NewValue is WallpaperExploreViewModel vm)
                 {
                     handler.FindName("DeferredGrid");
 
@@ -35,19 +35,18 @@ namespace Attention.App.UserControls
                     if (scrollRoot != null)
                     {
                         scrollRoot.ViewChanged += async (sender, args) =>
-                        {
-                            if (viewmodel.Entities.IsLoading)
-                                return;
-                            if (scrollRoot.VerticalOffset <= scrollRoot.ScrollableHeight - 500) return;
+                       {
+                           if (vm.Entities.IsLoading)
+                               return;
+                           if (scrollRoot.VerticalOffset <= scrollRoot.ScrollableHeight - 480) return;
 
-                            Trace.WriteLine($"{scrollRoot.VerticalOffset}:{scrollRoot.ScrollableHeight}");
-
-                            await viewmodel.Entities.LoadMoreItemsAsync(10);
-                        };
+                           Trace.WriteLine($"{scrollRoot.VerticalOffset}:{scrollRoot.ScrollableHeight}");
+                           await vm.Entities.LoadMoreItemsAsync(10);
+                       };
                     }
                     #endregion
 
-                    viewmodel.LoadCommand.Execute(null);
+                    vm.LoadCommand.Execute(null);
                 }
             }));
     }

@@ -19,8 +19,8 @@ namespace Attention.App.ViewModels
         private readonly ILoggerFacade _logger;
         private AdaptiveGridView _adaptiveGV;
 
-        private IncrementalLoadingCollection<WallpaperItemSource, WallpaperEntity> _wallpapers;
-        public IncrementalLoadingCollection<WallpaperItemSource, WallpaperEntity> Wallpapers
+        private IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> _wallpapers;
+        public IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> Wallpapers
         {
             get { return _wallpapers; }
             set { SetProperty(ref _wallpapers, value); }
@@ -94,7 +94,7 @@ namespace Attention.App.ViewModels
                         };
 
 
-                        Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperEntity>(10, () =>
+                        Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
                         {
                             LoadingVisibility = Visibility.Visible;
                             ErrorVisibility = Visibility.Collapsed;
@@ -154,7 +154,7 @@ namespace Attention.App.ViewModels
             {
                 if (_itemClickCommand == null)
                 {
-                    _itemClickCommand = new DelegateCommand<WallpaperEntity>(entity =>
+                    _itemClickCommand = new DelegateCommand<WallpaperDto>(entity =>
                     {
                         if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
                         {  

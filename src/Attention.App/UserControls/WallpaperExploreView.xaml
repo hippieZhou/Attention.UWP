@@ -71,7 +71,7 @@
                         </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ExploreEntity">
+                        <DataTemplate x:DataType="model:ExploreDto">
                             <Grid Background="{x:Bind Background}" CornerRadius="4">
                                 <mtuc:ImageEx
                                     CacheMode="BitmapCache"
@@ -89,26 +89,6 @@
                                 RowSpacing="6" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                    <GridView.Footer>
-                        <Grid
-                            Padding="0,12,0,32"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom">
-                            <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
-                                <muxc:AnimatedVisualPlayer Width="240">
-                                    <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
-                                </muxc:AnimatedVisualPlayer>
-                            </Grid>
-                            <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
-                                <Button
-                                    Background="Red"
-                                    Command="{x:Bind ConcreteDataContext.RefreshCommand}"
-                                    Content="THERE HAVE SOMETHING WRONG"
-                                    FontWeight="Bold"
-                                    RequestedTheme="Dark" />
-                            </Grid>
-                        </Grid>
-                    </GridView.Footer>
                 </GridView>
             </ScrollViewer>
         </Grid>

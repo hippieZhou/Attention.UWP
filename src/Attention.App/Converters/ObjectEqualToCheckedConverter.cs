@@ -1,8 +1,7 @@
-﻿using Attention.App.Framework;
+﻿using Attention.Core.Framework;
 using Prism.Logging;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using Windows.UI.Xaml.Data;
 

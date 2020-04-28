@@ -10,6 +10,9 @@ namespace Attention.App.Models
 {
     public class AppSettings : BindableBase
     {
+        public const string DBFile = "default.db";
+
+        public StorageFolder LocalFolder => ApplicationData.Current.LocalFolder;
         private readonly ApplicationDataContainer _localSettings;
 
         public string Version

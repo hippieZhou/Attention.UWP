@@ -4,12 +4,11 @@ using System.Windows.Input;
 using Windows.UI.Xaml;
 using System;
 using Prism.Windows.AppModel;
-using Attention.App.Framework;
 using Microsoft.Toolkit.Extensions;
 using Windows.ApplicationModel.Email;
-using Windows.Storage.Streams;
 using System.Text.RegularExpressions;
 using Windows.System;
+using Attention.Core.Framework;
 
 namespace Attention.App.ViewModels
 {
