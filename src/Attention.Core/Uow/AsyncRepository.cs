@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Attention.Core.Uow
 {
-    public class AsyncRepository<TEntity> : IAsyncRepository<TEntity> where TEntity : AuditableEntity
+    public class AsyncRepository<TEntity> : IAsyncRepository<TEntity> where TEntity : AuditableEntity, new()
     {
         private readonly IDateTime _dateTime;
         private readonly IApplicationDbContext _dbContext;

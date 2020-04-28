@@ -1,5 +1,5 @@
 ﻿using Attention.Core.Entities;
-using SQLite.Net.Interop;
+using SQLite;
 
 namespace Attention.Core.Context
 {
