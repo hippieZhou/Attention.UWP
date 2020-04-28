@@ -18,7 +18,6 @@ using System.IO;
 using Windows.Globalization;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.Unity;
 using Attention.Core.Framework;
 using Attention.Core.Context;
@@ -102,11 +101,8 @@ namespace Attention.App
             #region Database Initialize
             if (!(await Settings.LocalFolder.TryGetItemAsync(AppSettings.DBFile) is IStorageFile dbFile))
             {
-                using (var dbContext = Container.Resolve<ApplicationDbContext>())
-                {
-                    dbContext.DbFilePath = Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile);
-                    dbContext.Database.Migrate();
-                }
+                var dbContext = Container.Resolve<IApplicationDbContext>();
+                ApplicationDbInitializer.Migrate(dbContext);
             }
             #endregion
 
@@ -140,10 +136,9 @@ namespace Attention.App
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
-            Container.RegisterType<ApplicationDbContext>();
+            Container.RegisterInstance<IApplicationDbContext>(new ApplicationDbContext(Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile)));
             Container.RegisterType<IDateTime, MachineDateTime>();
             Container.RegisterType(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
-            Container.RegisterType<IUnitOfWork, UnitOfWork>();
 
             Container.RegisterInstance<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
