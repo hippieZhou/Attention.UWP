@@ -2,7 +2,7 @@
 
 namespace Attention.App.ViewModels
 {
-    public class DownloadPageViewModel: ViewModelBase
+    public class DownloadPageViewModel : ViewModelBase
     {
     }
 }

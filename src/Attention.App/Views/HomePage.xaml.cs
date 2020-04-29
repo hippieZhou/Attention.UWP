@@ -13,7 +13,7 @@ namespace Attention.App.Views
         public HomePage()
         {
             this.InitializeComponent();
-            this.DataContextChanged += (sender, e) => 
+            this.DataContextChanged += (sender, e) =>
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConcreteDataContext)));
             };

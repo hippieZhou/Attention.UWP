@@ -35,6 +35,10 @@ namespace Attention.App.Common
                      {
                          image.Source = imageBitmap;
                      }
+                     else
+                     {
+                         throw new ArgumentNullException("Target Control does Not Support.");
+                     }
                  }
                  else
                  {

@@ -48,7 +48,7 @@ namespace Attention.App.Behaviors
             {
                 scrollViewer.ViewChanging += async (sender, e) =>
                 {
-                   //https://www.cnblogs.com/Damai-Pang/p/5209093.html
+                    //https://www.cnblogs.com/Damai-Pang/p/5209093.html
                     double verticalOffset = ((ScrollViewer)sender).VerticalOffset;
                     if (scrollViewer.ScrollableHeight - verticalOffset >= scrollViewerThresholdValue)
                     {

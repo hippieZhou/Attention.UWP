@@ -1,17 +1,17 @@
-﻿using Prism.Commands;
+﻿using Attention.App.Views;
+using Prism.Commands;
+using Prism.Windows.AppModel;
 using Prism.Windows.Mvvm;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 using muxc = Microsoft.UI.Xaml.Controls;
-using Attention.App.Views;
-using System.Linq;
-using Prism.Windows.AppModel;
 
 namespace Attention.App.ViewModels
 {
-    public class ShellPageViewModel: ViewModelBase
+    public class ShellPageViewModel : ViewModelBase
     {
         private readonly IResourceLoader _resourceLoader;
 
@@ -61,7 +61,7 @@ namespace Attention.App.ViewModels
                     _loadCommand = new DelegateCommand(() =>
                     {
                         PrimaryItems.Clear();
-                        
+
                         PrimaryItems.Add(new muxc.NavigationViewItemSeparator());
                         PrimaryItems.Add(new muxc.NavigationViewItemHeader() { Content = _resourceLoader.GetString("shellNav_menu") });
                         PrimaryItems.Add(new muxc.NavigationViewItem() { Content = _resourceLoader.GetString("shellNav_home"), Icon = new SymbolIcon(Symbol.Home), Tag = typeof(HomePage) });

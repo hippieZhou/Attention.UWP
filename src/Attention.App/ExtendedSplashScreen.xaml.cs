@@ -18,11 +18,11 @@ namespace Attention.App
 
             this.InitializeComponent();
 
-            SizeChanged += (sender, e) => 
+            SizeChanged += (sender, e) =>
             {
                 Resize();
             };
-            splashImage.ImageOpened += (sender, e) => 
+            splashImage.ImageOpened += (sender, e) =>
             {
                 Resize();
                 Window.Current.Activate();

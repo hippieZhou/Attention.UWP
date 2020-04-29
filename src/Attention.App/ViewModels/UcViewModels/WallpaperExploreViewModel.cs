@@ -23,7 +23,7 @@ namespace Attention.App.ViewModels.UcViewModels
             {
                 if (_loadCommand == null)
                 {
-                    _loadCommand = new DelegateCommand(async() =>
+                    _loadCommand = new DelegateCommand(async () =>
                     {
                         Entities = new IncrementalLoadingCollection<ExploreItemSource, ExploreDto>();
                         await Entities.RefreshAsync();

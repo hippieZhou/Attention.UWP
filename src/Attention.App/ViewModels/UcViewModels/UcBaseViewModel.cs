@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 
 namespace Attention.App.ViewModels.UcViewModels
 {
-    public class UcBaseViewModel: ViewModelBase
+    public class UcBaseViewModel : ViewModelBase
     {
         private Visibility _visibility = Visibility.Collapsed;
         public Visibility Visibility

@@ -1,16 +1,16 @@
 ﻿using Attention.App.Businesss;
+using Attention.App.Extensions;
 using Attention.App.Models;
+using Attention.App.ViewModels.UcViewModels;
 using Microsoft.Toolkit.Uwp;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
 using Prism.Logging;
 using Prism.Windows.Mvvm;
+using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
-using System;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls;
-using Attention.App.Extensions;
-using Attention.App.ViewModels.UcViewModels;
 
 namespace Attention.App.ViewModels
 {
@@ -147,7 +147,7 @@ namespace Attention.App.ViewModels
                     _itemClickCommand = new DelegateCommand<WallpaperDto>(entity =>
                     {
                         if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
-                        {  
+                        {
                             container.Opacity = 0.0d;
                             var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () =>
                            {
@@ -158,7 +158,7 @@ namespace Attention.App.ViewModels
                         }
                     });
                 }
-                return _itemClickCommand; 
+                return _itemClickCommand;
             }
         }
     }

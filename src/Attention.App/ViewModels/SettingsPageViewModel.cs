@@ -1,43 +1,43 @@
-﻿using Prism.Commands;
-using Prism.Windows.Mvvm;
-using System.Windows.Input;
-using Windows.UI.Xaml;
-using System;
-using Prism.Windows.AppModel;
+﻿using Attention.Core.Framework;
 using Microsoft.Toolkit.Extensions;
-using Windows.ApplicationModel.Email;
+using Prism.Commands;
+using Prism.Windows.AppModel;
+using Prism.Windows.Mvvm;
+using System;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Windows.ApplicationModel.Email;
 using Windows.System;
-using Attention.Core.Framework;
+using Windows.UI.Xaml;
 
 namespace Attention.App.ViewModels
 {
-	public class SettingsPageViewModel: ViewModelBase
+    public class SettingsPageViewModel : ViewModelBase
     {
-		private readonly IResourceLoader _resourceLoader;
+        private readonly IResourceLoader _resourceLoader;
 
-		public SettingsPageViewModel(IResourceLoader resourceLoader)
-		{
-			_resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
-		}
+        public SettingsPageViewModel(IResourceLoader resourceLoader)
+        {
+            _resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+        }
 
-		private string _dependencies;
-		public string Dependencies
-		{
-			get { return _dependencies; }
-			set { SetProperty(ref _dependencies, value); }
-		}
+        private string _dependencies;
+        public string Dependencies
+        {
+            get { return _dependencies; }
+            set { SetProperty(ref _dependencies, value); }
+        }
 
-		private ICommand _loadCommand;
-		public ICommand LoadCommand
-		{
-			get
-			{
-				if (_loadCommand == null)
-				{
-					_loadCommand = new DelegateCommand(() =>
-					{
-						Dependencies = @"
+        private ICommand _loadCommand;
+        public ICommand LoadCommand
+        {
+            get
+            {
+                if (_loadCommand == null)
+                {
+                    _loadCommand = new DelegateCommand(() =>
+                    {
+                        Dependencies = @"
 ## Toolkit
 
 - [Windows UI Library](https://github.com/microsoft/microsoft-ui-xaml)
@@ -61,75 +61,75 @@ namespace Attention.App.ViewModels
 - [cnbluefire](https://github.com/cnbluefire)
 - [h82258652](https://github.com/h82258652)
 ";
-					});
-				}
-				return _loadCommand;
-			}
-		}
+                    });
+                }
+                return _loadCommand;
+            }
+        }
 
-		private ICommand _changeThemeCommand;
-		public ICommand ChangeThemeCommand
-		{
-			get
-			{
-				if (_changeThemeCommand == null)
-				{
-					_changeThemeCommand = new DelegateCommand<object>(theme =>
-					{
-						if (theme is ElementTheme current)
-						{
-							App.Settings.Theme = current;
-						}
-					});
-				}
-				return _changeThemeCommand;
-			}
-		}
+        private ICommand _changeThemeCommand;
+        public ICommand ChangeThemeCommand
+        {
+            get
+            {
+                if (_changeThemeCommand == null)
+                {
+                    _changeThemeCommand = new DelegateCommand<object>(theme =>
+                    {
+                        if (theme is ElementTheme current)
+                        {
+                            App.Settings.Theme = current;
+                        }
+                    });
+                }
+                return _changeThemeCommand;
+            }
+        }
 
-		private ICommand _changeLanguageCommand;
-		public ICommand ChangeLanguageCommand
-		{
-			get
-			{
-				if (_changeLanguageCommand == null)
-				{
-					_changeLanguageCommand = new DelegateCommand<string>(async language =>
-					{
-						App.Settings.Language = language;
-						await EnginContext.Current.Resolve<AppNotification>()?
-						.ShowAsync(_resourceLoader.GetString("settings_Language_Notification"), TimeSpan.FromSeconds(3.0));
-					});
-				}
-				return _changeLanguageCommand;
-			}
-		}
+        private ICommand _changeLanguageCommand;
+        public ICommand ChangeLanguageCommand
+        {
+            get
+            {
+                if (_changeLanguageCommand == null)
+                {
+                    _changeLanguageCommand = new DelegateCommand<string>(async language =>
+                    {
+                        App.Settings.Language = language;
+                        await EnginContext.Current.Resolve<AppNotification>()?
+                        .ShowAsync(_resourceLoader.GetString("settings_Language_Notification"), TimeSpan.FromSeconds(3.0));
+                    });
+                }
+                return _changeLanguageCommand;
+            }
+        }
 
-		private ICommand _contractCommand;
-		public ICommand ContractCommand
-		{
-			get
-			{
-				if (_contractCommand == null)
-				{
-					_contractCommand = new DelegateCommand<string>(async contract =>
-					{
-						if (contract.IsEmail())
-						{
-							EmailMessage email = new EmailMessage();
-							email.To.Add(new EmailRecipient("From UWP Client"));
-							email.Subject = $"FeedBack For UWP Client";
-							email.Body = $"version:{App.Settings.Version}";
-							//email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
-							await EmailManager.ShowComposeNewEmailAsync(email);
-						}
-						else if (Regex.IsMatch(contract, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$"))
-						{
-							await Launcher.LaunchUriAsync(new Uri(contract));
-						}
-					});
-				}
-				return _contractCommand;
-			}
-		}
-	}
+        private ICommand _contractCommand;
+        public ICommand ContractCommand
+        {
+            get
+            {
+                if (_contractCommand == null)
+                {
+                    _contractCommand = new DelegateCommand<string>(async contract =>
+                    {
+                        if (contract.IsEmail())
+                        {
+                            EmailMessage email = new EmailMessage();
+                            email.To.Add(new EmailRecipient("From UWP Client"));
+                            email.Subject = $"FeedBack For UWP Client";
+                            email.Body = $"version:{App.Settings.Version}";
+                            //email.Attachments.Add(new EmailAttachment(fileInfo.Name, RandomAccessStreamReference.CreateFromFile(logFile)));
+                            await EmailManager.ShowComposeNewEmailAsync(email);
+                        }
+                        else if (Regex.IsMatch(contract, @"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$"))
+                        {
+                            await Launcher.LaunchUriAsync(new Uri(contract));
+                        }
+                    });
+                }
+                return _contractCommand;
+            }
+        }
+    }
 }

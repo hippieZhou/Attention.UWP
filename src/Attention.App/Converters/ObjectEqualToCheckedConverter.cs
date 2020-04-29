@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace Attention.App.Converters
 {
-    public class ObjectEqualToCheckedConverter:IValueConverter
+    public class ObjectEqualToCheckedConverter : IValueConverter
     {
         private readonly ILoggerFacade _logger;
 

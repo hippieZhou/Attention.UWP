@@ -1,7 +1,6 @@
 ﻿using Attention.App.ViewModels;
 using Prism.Windows.Mvvm;
 using System.ComponentModel;
-using Windows.UI.Xaml.Controls;
 
 namespace Attention.App.Views
 {

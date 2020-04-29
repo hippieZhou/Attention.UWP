@@ -25,13 +25,13 @@ namespace Attention.App.UserControls
 
         // Using a DependencyProperty as the backing store for ConcreteDataContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConcreteDataContextProperty =
-            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(WallpaperCardView), new PropertyMetadata(null,(d,e)=> 
-            {
-                if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel vm)
-                {
-                    vm.LoadCommand.Execute(handler.destinationElement);
-                }
-            }));
+            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(WallpaperCardView), new PropertyMetadata(null, (d, e) =>
+             {
+                 if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel vm)
+                 {
+                     vm.LoadCommand.Execute(handler.destinationElement);
+                 }
+             }));
 
         private void DestinationElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {

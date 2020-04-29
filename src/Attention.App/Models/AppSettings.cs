@@ -55,7 +55,6 @@ namespace Attention.App.Models
 
         public async Task<StorageFolder> GetTemporaryFolderAsync() => await ApplicationData.Current.TemporaryFolder.CreateFolderAsync("ImageCache", CreationCollisionOption.OpenIfExists);
 
-
         private void SaveSettings(string key, object value)
         {
             _localSettings.Values[key] = value;
