@@ -75,6 +75,7 @@ namespace Attention.App.ViewModels
                     {
                         _eventAggregator.GetEvent<RaisedExceptionEvent>().Subscribe(ex =>
                         {
+                            _inAppNotification?.Show("Ops!", 2000);
                             _logger.Log(ex.ToString(), Category.Exception, Priority.High);
                         });
                         _eventAggregator.GetEvent<NotificationEvent>().Subscribe(text =>
