@@ -13,8 +13,6 @@ namespace Attention.App.UserControls
         public WallpaperCardView()
         {
             this.InitializeComponent();
-            SharedShadow.Receivers.Add(BackgroundGrid);
-            destinationElement.Translation += new Vector3(0, 0, 32);
         }
 
         public WallpaperCardViewModel ConcreteDataContext
