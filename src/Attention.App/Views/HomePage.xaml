@@ -153,9 +153,11 @@
                 <Grid Margin="-8,0,-8,24">
                     <ParallaxView
                         x:Name="headerImageView"
-                        Height="280"
                         Source="{x:Bind adaptiveGV}"
-                        VerticalShift="350">
+                        VerticalShift="360"
+                        VerticalSourceEndOffset="250"
+                        VerticalSourceOffsetKind="Absolute"
+                        VerticalSourceStartOffset="-50">
                         <Image
                             x:Name="headerImage"
                             HorizontalAlignment="Center"
@@ -244,5 +246,35 @@
 
         <uc:WallpaperExploreView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.ExploreViewModel, Mode=OneWay}" />
         <uc:WallpaperCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
+
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerImageView.Height" Value="320" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerImageView.Height" Value="260" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="headerImageView.Height" Value="240" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </prismMvvm:SessionStateAwarePage>
