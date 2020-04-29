@@ -244,50 +244,5 @@
 
         <uc:WallpaperExploreView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.ExploreViewModel, Mode=OneWay}" />
         <uc:WallpaperCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
-
-        <!--
-           <uc:PageHeader
-            x:Name="pageHeader"
-            Title="首页"
-            Margin="0,-88,0,0"
-            Padding="12,38,0,0"
-            VerticalAlignment="Top"
-            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            FontSize="42"
-            IsHitTestVisible="False"
-            ShadowOpacity="1" />
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="pageHeader.Visibility" Value="Visible" />
-                        <Setter Target="pageHeader.Margin" Value="0,-88,0,0" />
-                        <Setter Target="pageHeader.Padding" Value="12,38,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="pageHeader.Margin" Value="0,-88,0,0" />
-                        <Setter Target="pageHeader.Padding" Value="12,38,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="pageHeader.Visibility" Value="Collapsed" />
-                        <Setter Target="smallHeaderText.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
     </Grid>
 </prismMvvm:SessionStateAwarePage>

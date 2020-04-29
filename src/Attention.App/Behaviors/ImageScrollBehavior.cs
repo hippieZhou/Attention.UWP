@@ -1,21 +1,16 @@
-﻿using Attention.App.Extensions;
-using Attention.App.UserControls;
+﻿using Attention.App.Businesss;
+using Attention.App.Models;
+using Microsoft.Toolkit.Uwp;
 using Microsoft.Xaml.Interactivity;
-using System.Linq;
-using Windows.UI;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
 namespace Attention.App.Behaviors
 {
     public class ImageScrollBehavior : DependencyObject, IBehavior
     {
-        private const int _opacityMaxValue = 250;
-        private const int _alpha = 255;
-        private const int _maxFontSize = 42;
-        private const int _minFontSize = 24;
-        private const int scrollViewerThresholdValue = 190;
+        private const int scrollViewerThresholdValue = 480;
         private ScrollViewer scrollViewer;
         private ListViewBase listGridView;
 
@@ -48,36 +43,28 @@ namespace Attention.App.Behaviors
 
         private bool GetScrollViewer()
         {
-            scrollViewer = UIHelper.GetDescendantsOfType<ScrollViewer>(AssociatedObject).FirstOrDefault();
+            scrollViewer = TargetControl as ScrollViewer;
             if (scrollViewer != null)
             {
-                scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
+                scrollViewer.ViewChanging += async (sender, e) =>
+                {
+                   //https://www.cnblogs.com/Damai-Pang/p/5209093.html
+                    double verticalOffset = ((ScrollViewer)sender).VerticalOffset;
+                    if (scrollViewer.ScrollableHeight - verticalOffset >= scrollViewerThresholdValue)
+                    {
+                        return;
+                    }
+                    if (listGridView.ItemsSource is IncrementalLoadingCollection<ExploreItemSource, ExploreDto> items)
+                    {
+                        if (items.IsLoading)
+                            return;
+
+                        await items.LoadMoreItemsAsync(10);
+                    }
+                };
                 return true;
             }
             return false;
-        }
-
-        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-        {
-            double verticalOffset = ((ScrollViewer)sender).VerticalOffset;
-            var header = (PageHeader)TargetControl;
-            header.BackgroundColorOpacity = verticalOffset / _opacityMaxValue;
-            header.AcrylicOpacity = 0.3 * (1 - (verticalOffset / _opacityMaxValue));
-            if (verticalOffset < 10)
-            {
-                header.BackgroundColorOpacity = 0;
-                header.FontSize = 42;
-                header.Foreground = new SolidColorBrush(Colors.White);
-                header.AcrylicOpacity = 0.3;
-            }
-            else if (verticalOffset > scrollViewerThresholdValue)
-            {
-                header.FontSize = _minFontSize;
-            }
-            else
-            {
-                header.FontSize = -(((verticalOffset / scrollViewerThresholdValue) * (_maxFontSize - _minFontSize)) - _maxFontSize);
-            }
         }
 
         public void Detach()

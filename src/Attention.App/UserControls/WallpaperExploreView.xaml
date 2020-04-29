@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:be="using:Attention.App.Behaviors"
     xmlns:common="using:Attention.App.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Attention.App.Models"
@@ -78,13 +80,16 @@
             </Button.Content>
         </Button>
         <Grid Grid.Row="2">
-            <ScrollViewer>
+            <ScrollViewer x:Name="scrollViewer">
                 <GridView
                     Padding="8,0"
                     animations:ReorderGridAnimation.Duration="600"
                     IncrementalLoadingTrigger="Edge"
                     IsItemClickEnabled="True"
                     ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}">
+                    <i:Interaction.Behaviors>
+                        <be:ImageScrollBehavior TargetControl="{Binding ElementName=scrollViewer}" />
+                    </i:Interaction.Behaviors>
                     <GridView.ItemContainerStyle>
                         <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
                             <Setter Property="Margin" Value="6" />
