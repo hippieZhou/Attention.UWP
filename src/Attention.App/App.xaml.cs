@@ -1,4 +1,5 @@
-﻿using Attention.App.Extensions;
+﻿using Attention.App.Events;
+using Attention.App.Extensions;
 using Attention.App.Models;
 using Attention.App.Views;
 using Attention.Core.Context;
@@ -66,7 +67,7 @@ namespace Attention.App
             ExtendedSplashScreenFactory = (splashscreen) => new ExtendedSplashScreen(splashscreen);
             UnhandledException += (sender, e) =>
             {
-                Logger.Log(e.Exception.ToString(), Prism.Logging.Category.Exception, Prism.Logging.Priority.High);
+                EventAggregator.GetEvent<RaisedExceptionEvent>().Publish(e.Exception);
                 e.Handled = true;
             };
         }
@@ -144,9 +145,9 @@ namespace Attention.App
                 cfg.AddProfile<PixabayMappingProfile>();
                 cfg.AddProfile<UnsplashMappingProfile>();
             })));
+
             Container.RegisterInstance<IWebClient>(nameof(PixabayWebClient), new PixabayWebClient("12645414-59a5251905dfea7b916dd796f"));
             Container.RegisterInstance<IWebClient>(nameof(UnsplashWebClient), new UnsplashWebClient("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU"));
-            Container.RegisterInstance(new AppNotification(), new ContainerControlledLifetimeManager());
             return base.OnInitializeAsync(args);
         }
     }

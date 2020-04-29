@@ -1,6 +1,7 @@
-﻿using Attention.Core.Framework;
+﻿using Attention.App.Events;
 using Microsoft.Toolkit.Extensions;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Windows.AppModel;
 using Prism.Windows.Mvvm;
 using System;
@@ -15,10 +16,14 @@ namespace Attention.App.ViewModels
     public class SettingsPageViewModel : ViewModelBase
     {
         private readonly IResourceLoader _resourceLoader;
+        private readonly IEventAggregator _eventAggregator;
 
-        public SettingsPageViewModel(IResourceLoader resourceLoader)
+        public SettingsPageViewModel(
+            IResourceLoader resourceLoader,
+            IEventAggregator eventAggregator)
         {
             _resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         private string _dependencies;
@@ -93,11 +98,10 @@ namespace Attention.App.ViewModels
             {
                 if (_changeLanguageCommand == null)
                 {
-                    _changeLanguageCommand = new DelegateCommand<string>(async language =>
+                    _changeLanguageCommand = new DelegateCommand<string>(language =>
                     {
                         App.Settings.Language = language;
-                        await EnginContext.Current.Resolve<AppNotification>()?
-                        .ShowAsync(_resourceLoader.GetString("settings_Language_Notification"), TimeSpan.FromSeconds(3.0));
+                        _eventAggregator.GetEvent<NotificationEvent>().Publish(_resourceLoader.GetString("settings_Language_Notification"));
                     });
                 }
                 return _changeLanguageCommand;

@@ -69,10 +69,7 @@ namespace Attention.App.ViewModels
                             }
                         };
 
-
-                        ExploreViewModel = new WallpaperExploreViewModel();
-                        ExploreViewModel.Visibility = Visibility.Collapsed;
-
+                        ExploreViewModel = new WallpaperExploreViewModel { Visibility = Visibility.Collapsed };
 
                         CardViewModel = new WallpaperCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
@@ -85,7 +82,6 @@ namespace Attention.App.ViewModels
                             }
                             await _adaptiveGV.TryStartConnectedAnimationAsync(args.Item2, args.Item1, "connectedElement");
                         };
-
 
                         Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
                         {

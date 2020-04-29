@@ -12,7 +12,7 @@ namespace Attention.App.Views
         public ShellPage()
         {
             this.InitializeComponent();
-            ConcreteDataContext.Initialize(shellNav, shellFrame);
+            ConcreteDataContext.Initialize(shellNav, shellFrame, inAppNotification);
             this.DataContextChanged += (sender, e) =>
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConcreteDataContext)));

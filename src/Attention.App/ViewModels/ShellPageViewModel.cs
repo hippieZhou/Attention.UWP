@@ -1,5 +1,9 @@
-﻿using Attention.App.Views;
+﻿using Attention.App.Events;
+using Attention.App.Views;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
+using Prism.Events;
+using Prism.Logging;
 using Prism.Windows.AppModel;
 using Prism.Windows.Mvvm;
 using System;
@@ -13,14 +17,23 @@ namespace Attention.App.ViewModels
 {
     public class ShellPageViewModel : ViewModelBase
     {
+        private readonly ILoggerFacade _logger;
         private readonly IResourceLoader _resourceLoader;
+        private readonly IEventAggregator _eventAggregator;
 
-        private muxc.NavigationView _shellNav;
         private Frame _shellFrame;
+        private muxc.NavigationView _shellNav;
+        private InAppNotification _inAppNotification;
 
-        public ShellPageViewModel(IResourceLoader resourceLoader)
+        public ShellPageViewModel(
+            ILoggerFacade logger,
+            IResourceLoader resourceLoader,
+            IEventAggregator eventAggregator)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));          
             _resourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+
         }
 
         private bool _isBackEnabled;
@@ -60,6 +73,15 @@ namespace Attention.App.ViewModels
                 {
                     _loadCommand = new DelegateCommand(() =>
                     {
+                        _eventAggregator.GetEvent<RaisedExceptionEvent>().Subscribe(ex =>
+                        {
+                            _logger.Log(ex.ToString(), Category.Exception, Priority.High);
+                        });
+                        _eventAggregator.GetEvent<NotificationEvent>().Subscribe(text =>
+                        {
+                            _inAppNotification?.Show(text, 2000);
+                        });
+
                         PrimaryItems.Clear();
 
                         PrimaryItems.Add(new muxc.NavigationViewItemSeparator());
@@ -111,7 +133,7 @@ namespace Attention.App.ViewModels
             }
         }
 
-        public void Initialize(muxc.NavigationView shellNav, Frame frame)
+        public void Initialize(muxc.NavigationView shellNav, Frame frame, InAppNotification inAppNotification)
         {
             _shellNav = shellNav ?? throw new ArgumentNullException(nameof(shellNav));
             _shellFrame = frame ?? throw new ArgumentNullException(nameof(frame));
@@ -123,6 +145,7 @@ namespace Attention.App.ViewModels
                     : PrimaryItems.OfType<muxc.NavigationViewItem>().FirstOrDefault(x => x.Tag.ToString() == e?.SourcePageType.ToString());
                 Header = SelectedItem is muxc.NavigationViewItem navItem ? navItem.Content : (default);
             };
+            _inAppNotification = inAppNotification;
         }
     }
 }
