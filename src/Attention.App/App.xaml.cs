@@ -14,7 +14,6 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
@@ -30,15 +29,7 @@ namespace Attention.App
 {
     public sealed partial class App : PrismUnityApplication
     {
-        public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
-        {
-            if (!typeof(TEnum).GetTypeInfo().IsEnum)
-            {
-                throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
-            }
-            return (TEnum)Enum.Parse(typeof(TEnum), text);
-        }
-
+        public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
         public void ExtendTitlebar()
         {
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
@@ -49,20 +40,6 @@ namespace Attention.App
             appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
         }
-
-        public void EnableSound(bool withSpatial = false)
-        {
-            ElementSoundPlayer.State = ElementSoundPlayerState.On;
-
-            if (!withSpatial)
-                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
-            else
-                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.On;
-        }
-    }
-    public sealed partial class App : PrismUnityApplication
-    {
-        public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
 
         public App()
         {
@@ -112,9 +89,6 @@ namespace Attention.App
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
             ExtendTitlebar();
-
-            //ApplicationView.GetForCurrentView().IsScreenCaptureEnabled = false;
-
             base.OnWindowCreated(args);
         }
 
@@ -144,9 +118,12 @@ namespace Attention.App
                     //todo
                 }, Windows.UI.Core.CoreDispatcherPriority.Normal);
             };
+
+            Settings.EnableSound(Settings.SoundPlayerState);
             #endregion
 
             EnginContext.Initialize(new GeneralEngine(Container));
+
             await Task.Yield();
         }
 

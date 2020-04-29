@@ -49,6 +49,23 @@ namespace Attention.App.Models
             }
         }
 
+        public ElementSoundPlayerState SoundPlayerState
+        {
+            get { return (ElementSoundPlayerState)ReadSettings(nameof(SoundPlayerState), (int)ElementSoundPlayerState.Off); }
+            set
+            {
+                SaveSettings(nameof(SoundPlayerState), (int)value);
+                RaisePropertyChanged(nameof(SoundPlayerState));
+                EnableSound(SoundPlayerState);
+            }
+        }
+
+        public void EnableSound(ElementSoundPlayerState soundPlayerState, bool withSpatial = false)
+        {
+            ElementSoundPlayer.State = soundPlayerState;
+            ElementSoundPlayer.SpatialAudioMode = !withSpatial ? ElementSpatialAudioMode.Off : ElementSpatialAudioMode.On;
+        }
+
         public AppSettings() => _localSettings = ApplicationData.Current.LocalSettings;
 
         public async Task<StorageFolder> GetSavedFolderAsync() => await KnownFolders.PicturesLibrary.CreateFolderAsync("Attention", CreationCollisionOption.OpenIfExists);

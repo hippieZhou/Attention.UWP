@@ -9,8 +9,8 @@
     mc:Ignorable="d">
 
 
-    <Canvas Background="Turquoise">
-        <Image x:Name="splashImage" Source="Assets/SplashScreen.png" />
+    <Canvas Background="{ThemeResource SystemAccentColor}">
+        <Image x:Name="splashImage" Source="ms-appx:///Assets/Images/Unsplash.png" />
         <ProgressRing
             x:Name="progressRing"
             Width="50"

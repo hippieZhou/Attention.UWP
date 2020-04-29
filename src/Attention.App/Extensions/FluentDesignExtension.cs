@@ -4,7 +4,6 @@ using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.App.Extensions
@@ -43,23 +42,6 @@ namespace Attention.App.Extensions
             }
             rootVisual.StartAnimation("Scale", animation);
             return root;
-        }
-
-        public static TChild FindVisualChild<TChild>(this DependencyObject obj) where TChild : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null && child is TChild found)
-                    return found;
-                else
-                {
-                    TChild childOfChild = child.FindVisualChild<TChild>();
-                    if (childOfChild != null)
-                        return childOfChild;
-                }
-            }
-            return null;
         }
 
         public static ConnectedAnimation CreateForwardAnimation(this GridViewItem container, GridView root, object entity, Action onCompleted = null)

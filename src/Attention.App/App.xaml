@@ -55,6 +55,8 @@
             </ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!--  application theme color here  -->
+                <ResourceDictionary Source="/Themes/Default.xaml" />
                 <!--  Other merged dictionaries here  -->
                 <ResourceDictionary Source="/Themes/AutoSuggestBox.xaml" />
                 <ResourceDictionary Source="/Themes/Button.xaml" />

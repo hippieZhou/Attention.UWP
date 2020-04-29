@@ -9,5 +9,12 @@ namespace Attention.Core.Entities
         public string Background { get; set; }
         [Column("thumbnail"), NotNull]
         public string Thumbnail { get; set; }
+        [Column("Width"), NotNull]
+        public int Width { get; set; }
+        [Column("Height"), NotNull]
+        public int Height { get; set; }
+
+        [Column("Description")]
+        public string Description { get; set; }
     }
 }

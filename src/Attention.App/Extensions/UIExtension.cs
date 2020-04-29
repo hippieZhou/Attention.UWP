@@ -5,12 +5,30 @@ using Windows.UI.Xaml.Media;
 
 namespace Attention.App.Extensions
 {
-    public static class UIHelper
+    public static class UIExtension
     {
+        public static TChild FindVisualChild<TChild>(this DependencyObject obj) where TChild : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is TChild found)
+                    return found;
+                else
+                {
+                    TChild childOfChild = child.FindVisualChild<TChild>();
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
+        }
+
         public static IEnumerable<T> GetDescendantsOfType<T>(this DependencyObject start) where T : DependencyObject
         {
             return start.GetDescendants().OfType<T>();
         }
+
 
         public static IEnumerable<DependencyObject> GetDescendants(this DependencyObject start)
         {
