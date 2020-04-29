@@ -6,6 +6,6 @@ namespace Attention.App.Models
     {
         public string Title { get; set; }
         public Brush Background { get; set; }
-        public ImageSource Thumbnail { get; set; }
+        public string Thumbnail { get; set; }
     }
 }

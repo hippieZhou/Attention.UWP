@@ -24,9 +24,42 @@ using Attention.Core.Context;
 using Attention.Core.Uow;
 using Attention.Core.Services;
 using AutoMapper;
+using System.Reflection;
 
 namespace Attention.App
 {
+    public sealed partial class App : PrismUnityApplication
+    {
+        public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
+        {
+            if (!typeof(TEnum).GetTypeInfo().IsEnum)
+            {
+                throw new InvalidOperationException("Generic parameter 'TEnum' must be an enum.");
+            }
+            return (TEnum)Enum.Parse(typeof(TEnum), text);
+        }
+
+        public void ExtendTitlebar()
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            ApplicationView appView = ApplicationView.GetForCurrentView();
+            appView.TitleBar.BackgroundColor = Colors.Transparent;
+            appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
+            appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
+        }
+
+        public void EnableSound(bool withSpatial = false)
+        {
+            ElementSoundPlayer.State = ElementSoundPlayerState.On;
+
+            if (!withSpatial)
+                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
+            else
+                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.On;
+        }
+    }
     public sealed partial class App : PrismUnityApplication
     {
         public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
@@ -78,17 +111,6 @@ namespace Attention.App
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
-            void ExtendTitlebar()
-            {
-                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                ApplicationView appView = ApplicationView.GetForCurrentView();
-                appView.TitleBar.BackgroundColor = Colors.Transparent;
-                appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-                appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
-                appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-            }
-
             ExtendTitlebar();
 
             //ApplicationView.GetForCurrentView().IsScreenCaptureEnabled = false;

@@ -7,7 +7,7 @@ namespace Attention.App.Models
     public class WallpaperDto
     {
         public Brush Background { get; set; }
-        public BitmapImage Thumbnail { get; set; }
+        public string Thumbnail { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }

@@ -9,10 +9,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
+    xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+        <Grid.Resources>
+            <AcrylicBrush
+                x:Key="NavigationViewExpandedPaneBackground"
+                BackgroundSource="Backdrop"
+                FallbackColor="{StaticResource SystemChromeMediumColor}"
+                TintColor="{StaticResource SystemChromeMediumColor}"
+                TintOpacity="0.15" />
+        </Grid.Resources>
         <Grid.BackgroundTransition>
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
@@ -43,11 +52,8 @@
                 <AutoSuggestBox
                     x:Name="SearchBox"
                     Height="42"
-                    GotFocus="AutoSuggestBox_GotFocus"
-                    LostFocus="SearchBox_LostFocus"
                     PlaceholderText="Search .."
-                    Style="{StaticResource CustomStyledAutoSuggestBox}"
-                    Translation="0,0,4">
+                    Style="{StaticResource CustomStyledAutoSuggestBox}">
                     <AutoSuggestBox.QueryIcon>
                         <SymbolIcon Symbol="Find" />
                     </AutoSuggestBox.QueryIcon>

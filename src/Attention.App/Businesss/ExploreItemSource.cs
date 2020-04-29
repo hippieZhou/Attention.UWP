@@ -12,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Attention.App.Businesss
 {
@@ -36,7 +35,7 @@ namespace Attention.App.Businesss
                     TintOpacity = 1.0,
                     TintLuminosityOpacity = 1.0,
                 },
-                Thumbnail = new BitmapImage(new Uri($"ms-appx:///Assets/Explore/Avatar0{random.Next(0, 5)}.png")),
+                Thumbnail = $"ms-appx:///Assets/Explore/Avatar0{random.Next(0, 5)}.png",
                 Title = DateTime.Now.ToString()
             });
             _entities.AddRange(colors);

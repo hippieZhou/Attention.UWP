@@ -9,8 +9,6 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="768"
-    d:DesignWidth="1024"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style BasedOn="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" TargetType="Button">

@@ -3,16 +3,36 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:common="using:Attention.App.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.App.UserControls"
-    xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    d:DesignHeight="768"
-    d:DesignWidth="1024"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <animations:AnimationCollection x:Key="DefaultShowAnimations">
+            <animations:TranslationAnimation
+                From="600, 0, 0"
+                To="0"
+                Duration="0:0:0.600" />
+            <animations:OpacityAnimation
+                From="0"
+                To="1.0"
+                Duration="0:0:0.200" />
+        </animations:AnimationCollection>
+
+        <animations:AnimationCollection x:Key="DefaultHideAnimations">
+            <animations:TranslationAnimation
+                From="0"
+                To="600, 0, 0"
+                Duration="0:0:0.600" />
+            <animations:OpacityAnimation
+                From="1.0"
+                To="0"
+                Duration="0:0:0.200" />
+        </animations:AnimationCollection>
+    </UserControl.Resources>
 
     <Grid
         x:Name="DeferredGrid"
@@ -74,19 +94,15 @@
                         <DataTemplate x:DataType="model:ExploreDto">
                             <Grid Background="{x:Bind Background}" CornerRadius="4">
                                 <mtuc:ImageEx
+                                    common:ImageLoader.Source="{Binding Thumbnail}"
                                     CacheMode="BitmapCache"
-                                    IsCacheEnabled="True"
-                                    Source="{x:Bind Thumbnail, Converter={StaticResource ImageSourceNullValueConverter}, ConverterParameter=ms-appx:///Assets/StoreLogo.png}" />
+                                    IsCacheEnabled="True" />
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <mtuc:StaggeredPanel
-                                HorizontalAlignment="Left"
-                                ColumnSpacing="6"
-                                DesiredColumnWidth="260"
-                                RowSpacing="6" />
+                            <mtuc:StaggeredPanel HorizontalAlignment="Left" DesiredColumnWidth="240" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
