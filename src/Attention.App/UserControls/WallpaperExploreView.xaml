@@ -57,7 +57,7 @@
         </Grid>
         <Button
             Grid.Row="1"
-            Margin="0,0,20,0"
+            Margin="0,0,20,12"
             HorizontalAlignment="Right"
             Background="Transparent"
             Command="{x:Bind ConcreteDataContext.SwitchCommand, Mode=OneWay}"
