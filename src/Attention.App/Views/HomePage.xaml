@@ -169,7 +169,7 @@
                     Padding="0,12,0,32"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom">
-                    <Grid Visibility="{x:Bind ConcreteDataContext.LoadingVisibility, Mode=OneWay}">
+                    <Grid Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <muxc:AnimatedVisualPlayer Width="240">
                             <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
                         </muxc:AnimatedVisualPlayer>
@@ -190,7 +190,28 @@
             Margin="24"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Spacing="12">
+            Spacing="12"
+            Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource ReversedBoolToVisibilityConverter}}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation
+                    From="100, 0, 0"
+                    To="0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    From="0"
+                    To="1.0"
+                    Duration="0:0:1" />
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation
+                    From="0"
+                    To="100, 0, 0"
+                    Duration="0:0:1" />
+                <animations:OpacityAnimation
+                    From="1.0"
+                    To="0"
+                    Duration="0:0:1" />
+            </animations:Implicit.HideAnimations>
             <Button
                 Width="40"
                 Height="40"

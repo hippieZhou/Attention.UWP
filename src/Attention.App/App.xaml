@@ -2,6 +2,7 @@
     x:Class="Attention.App.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:converter="using:Attention.App.Converters"
     xmlns:local="using:Attention.App"
     xmlns:model="using:Attention.App.Models"
@@ -16,6 +17,22 @@
             <Thickness x:Key="PageHeaderMinimalPadding">-4,0,12,0</Thickness>
 
             <converter:ObjectEqualToCheckedConverter x:Key="ObjectEqualToCheckedConverter" />
+            <con:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter">
+                <con:BoolToVisibilityConverter.TrueValue>
+                    <Visibility>Visible</Visibility>
+                </con:BoolToVisibilityConverter.TrueValue>
+                <con:BoolToVisibilityConverter.FalseValue>
+                    <Visibility>Collapsed</Visibility>
+                </con:BoolToVisibilityConverter.FalseValue>
+            </con:BoolToVisibilityConverter>
+            <con:BoolToVisibilityConverter x:Key="ReversedBoolToVisibilityConverter">
+                <con:BoolToVisibilityConverter.TrueValue>
+                    <Visibility>Collapsed</Visibility>
+                </con:BoolToVisibilityConverter.TrueValue>
+                <con:BoolToVisibilityConverter.FalseValue>
+                    <Visibility>Visible</Visibility>
+                </con:BoolToVisibilityConverter.FalseValue>
+            </con:BoolToVisibilityConverter>
 
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">

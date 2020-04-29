@@ -30,13 +30,6 @@ namespace Attention.App.ViewModels
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        private Visibility _loadingVisibility = Visibility.Visible;
-        public Visibility LoadingVisibility
-        {
-            get { return _loadingVisibility; }
-            set { SetProperty(ref _loadingVisibility, value); }
-        }
-
         private Visibility _errorVisibility = Visibility.Collapsed;
         public Visibility ErrorVisibility
         {
@@ -96,16 +89,13 @@ namespace Attention.App.ViewModels
 
                         Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
                         {
-                            LoadingVisibility = Visibility.Visible;
                             ErrorVisibility = Visibility.Collapsed;
                         }, () =>
                         {
-                            LoadingVisibility = Visibility.Collapsed;
                             ErrorVisibility = Visibility.Collapsed;
                         }, ex =>
                         {
                             _logger.Log(ex.ToString(), Category.Exception, Priority.High);
-                            LoadingVisibility = Visibility.Collapsed;
                             ErrorVisibility = Visibility.Visible;
                         });
                     });
