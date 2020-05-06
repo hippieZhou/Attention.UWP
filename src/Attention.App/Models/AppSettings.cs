@@ -49,6 +49,18 @@ namespace Attention.App.Models
             }
         }
 
+        public bool IsCompact
+        {
+            get { return ReadSettings(nameof(IsCompact), false); }
+            set
+            {
+
+                SaveSettings(nameof(IsCompact), value);
+                RaisePropertyChanged(nameof(IsCompact));
+                EnableCompact(IsCompact);
+            }
+        }
+
         public ElementSoundPlayerState SoundPlayerState
         {
             get { return (ElementSoundPlayerState)ReadSettings(nameof(SoundPlayerState), (int)ElementSoundPlayerState.Off); }
@@ -57,6 +69,25 @@ namespace Attention.App.Models
                 SaveSettings(nameof(SoundPlayerState), (int)value);
                 RaisePropertyChanged(nameof(SoundPlayerState));
                 EnableSound(SoundPlayerState);
+            }
+        }
+
+        public void EnableCompact(bool isCompact)
+        {
+            var dic = new ResourceDictionary() { Source = new Uri("ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml") };
+            if (isCompact)
+            {
+                if (!Application.Current.Resources.MergedDictionaries.Contains(dic))
+                {
+                    Application.Current.Resources.MergedDictionaries.Add(dic);
+                }
+            }
+            else
+            {
+                if (Application.Current.Resources.MergedDictionaries.Contains(dic))
+                {
+                    Application.Current.Resources.MergedDictionaries.Remove(dic);
+                }
             }
         }
 

@@ -31,16 +31,6 @@ namespace Attention.App
     public sealed partial class App : PrismUnityApplication
     {
         public static AppSettings Settings => Current.Resources["AppSettings"] as AppSettings;
-        public void ExtendTitlebar()
-        {
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationView appView = ApplicationView.GetForCurrentView();
-            appView.TitleBar.BackgroundColor = Colors.Transparent;
-            appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
-            appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-        }
 
         public App()
         {
@@ -89,6 +79,17 @@ namespace Attention.App
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
+            void ExtendTitlebar()
+            {
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                ApplicationView appView = ApplicationView.GetForCurrentView();
+                appView.TitleBar.BackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+                appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
+                appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+                appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
+            }
+
             ExtendTitlebar();
             base.OnWindowCreated(args);
         }
@@ -120,6 +121,7 @@ namespace Attention.App
                 }, Windows.UI.Core.CoreDispatcherPriority.Normal);
             };
 
+            Settings.EnableCompact(Settings.IsCompact);
             Settings.EnableSound(Settings.SoundPlayerState);
             #endregion
 

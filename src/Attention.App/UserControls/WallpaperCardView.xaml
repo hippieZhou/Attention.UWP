@@ -16,7 +16,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
+    <Grid x:Name="Root" Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
         <Grid.Background>
             <SolidColorBrush Opacity="0.8" Color="{ThemeResource SystemChromeAltHighColor}" />
         </Grid.Background>
@@ -32,7 +32,8 @@
             ManipulationCompleted="DestinationElement_ManipulationCompleted"
             ManipulationDelta="DestinationElement_ManipulationDelta"
             ManipulationMode="TranslateX, TranslateY, Scale"
-            ManipulationStarted="DestinationElement_ManipulationStarted">
+            ManipulationStarted="DestinationElement_ManipulationStarted"
+            PointerPressed="DestinationElement_PointerPressed">
             <Grid.RenderTransform>
                 <CompositeTransform x:Name="destinationElement_Transform" />
             </Grid.RenderTransform>

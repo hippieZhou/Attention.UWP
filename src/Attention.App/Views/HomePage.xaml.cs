@@ -6,8 +6,6 @@ namespace Attention.App.Views
 {
     public sealed partial class HomePage : SessionStateAwarePage, INotifyPropertyChanged
     {
-        public const string connectedElement = "connectedElement";
-
         public HomePageViewModel ConcreteDataContext => DataContext as HomePageViewModel;
         public event PropertyChangedEventHandler PropertyChanged;
         public HomePage()
