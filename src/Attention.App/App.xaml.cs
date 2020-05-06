@@ -147,7 +147,7 @@ namespace Attention.App
             })));
 
             Container.RegisterInstance<IWebClient>(nameof(PixabayWebClient), new PixabayWebClient("12645414-59a5251905dfea7b916dd796f"));
-            Container.RegisterInstance<IWebClient>(nameof(UnsplashWebClient), new UnsplashWebClient("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU"));
+            Container.RegisterInstance<IWebClient>(nameof(UnsplashWebClient), new UnsplashWebClient("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU", "gjKCMX5mopNYC7WBg8psV8iozNOTTRfUfWCeP-UADXY"));
             return base.OnInitializeAsync(args);
         }
     }

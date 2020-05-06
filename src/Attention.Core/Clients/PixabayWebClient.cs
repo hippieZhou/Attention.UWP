@@ -22,13 +22,8 @@ namespace Attention.Core.Services
     public class PixabayWebClient : IWebClient
     {
         private readonly PixabaySharpClient _client;
-        public string APIKEY { get; }
 
-        public PixabayWebClient(string apiKey)
-        {
-            APIKEY = apiKey;
-            _client = new PixabaySharpClient(APIKEY);
-        }
+        public PixabayWebClient(string apiKey) => _client = new PixabaySharpClient(apiKey);
 
         public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {

@@ -17,17 +17,11 @@ namespace Attention.Core.Services
         }
     }
 
-
     public class UnsplashWebClient : IWebClient
     {
         private readonly UnsplasharpClient _client;
-        public string APIKEY { get; }
 
-        public UnsplashWebClient(string apiKey)
-        {
-            APIKEY = apiKey;
-            _client = new UnsplasharpClient(APIKEY, "gjKCMX5mopNYC7WBg8psV8iozNOTTRfUfWCeP-UADXY");
-        }
+        public UnsplashWebClient(string apiKey, string secret) => _client = new UnsplasharpClient(apiKey, secret);
 
         public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)
         {
