@@ -50,11 +50,11 @@ namespace Attention.App.Businesss
         {
             Stopwatch sp = Stopwatch.StartNew();
 
-            var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
+            //var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
 
-            //var photos = (from p in _entities
-            //              select p).Skip(pageIndex * pageSize).Take(pageSize);
-            await Task.Delay(1000);
+            var photos = (from p in _entities
+                          select p).Skip(pageIndex * pageSize).Take(pageSize);
+            await Task.Yield();
             sp.Stop();
 
             _logger.Log(string.Format(
@@ -64,7 +64,7 @@ namespace Attention.App.Businesss
                 Microsoft.Toolkit.Converters.ToFileSizeString((long)MemoryManager.AppMemoryUsage)),
                 Category.Debug, Priority.None);
 
-            return default;
+            return photos;
         }
     }
 }
