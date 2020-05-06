@@ -13,16 +13,15 @@
     xmlns:uc="using:Attention.App.UserControls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-
+    <prismMvvm:SessionStateAwarePage.Resources>
+        <AcrylicBrush
+            x:Key="NavigationViewExpandedPaneBackground"
+            BackgroundSource="Backdrop"
+            FallbackColor="{StaticResource SystemChromeMediumColor}"
+            TintColor="{StaticResource SystemChromeMediumColor}"
+            TintOpacity="0.15" />
+    </prismMvvm:SessionStateAwarePage.Resources>
     <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-        <Grid.Resources>
-            <AcrylicBrush
-                x:Key="NavigationViewExpandedPaneBackground"
-                BackgroundSource="Backdrop"
-                FallbackColor="{StaticResource SystemChromeMediumColor}"
-                TintColor="{StaticResource SystemChromeMediumColor}"
-                TintOpacity="0.15" />
-        </Grid.Resources>
         <Grid.BackgroundTransition>
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
@@ -65,13 +64,8 @@
             </muxc:NavigationView.AutoSuggestBox>
             <Grid>
                 <Frame x:Name="shellFrame" />
+                <mtxc:InAppNotification x:Name="inAppNotification" Style="{StaticResource MSEdgeNotificationTemplate_NoDismissButton}" />
             </Grid>
         </muxc:NavigationView>
-
-        <mtxc:InAppNotification
-            x:Name="inAppNotification"
-            BorderBrush="Transparent"
-            BorderThickness="4" />
-
     </Grid>
 </prismMvvm:SessionStateAwarePage>

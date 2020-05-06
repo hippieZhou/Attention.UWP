@@ -24,11 +24,12 @@ namespace Attention.App.Businesss
         private readonly List<WallpaperDto> _entities;
         public WallpaperItemSource()
         {
+            _client = EnginContext.Current.Resolve<IWebClient>(nameof(UnsplashWebClient)) ?? throw new ArgumentNullException(nameof(UnsplashWebClient));
+            _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
+
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
             ImageCache.Instance.MaxMemoryCacheCount = 200;
 
-            _client = EnginContext.Current.Resolve<IWebClient>(nameof(UnsplashWebClient)) ?? throw new ArgumentNullException(nameof(PixabayWebClient));
-            _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
             _entities = new List<WallpaperDto>();
 
             var colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).Select(x => new WallpaperDto
@@ -47,10 +48,12 @@ namespace Attention.App.Businesss
 
         public async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
-            //var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
             Stopwatch sp = Stopwatch.StartNew();
-            var result = (from p in _entities
-                          select p).Skip(pageIndex * pageSize).Take(pageSize);
+
+            var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
+
+            //var photos = (from p in _entities
+            //              select p).Skip(pageIndex * pageSize).Take(pageSize);
             await Task.Delay(1000);
             sp.Stop();
 
@@ -60,7 +63,8 @@ namespace Attention.App.Businesss
                 sp.ElapsedMilliseconds,
                 Microsoft.Toolkit.Converters.ToFileSizeString((long)MemoryManager.AppMemoryUsage)),
                 Category.Debug, Priority.None);
-            return result;
+
+            return default;
         }
     }
 }

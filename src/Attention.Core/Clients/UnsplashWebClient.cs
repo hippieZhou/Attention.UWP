@@ -26,7 +26,7 @@ namespace Attention.Core.Services
         public UnsplashWebClient(string apiKey)
         {
             APIKEY = apiKey;
-            _client = new UnsplasharpClient(APIKEY);
+            _client = new UnsplasharpClient(APIKEY, "gjKCMX5mopNYC7WBg8psV8iozNOTTRfUfWCeP-UADXY");
         }
 
         public async Task<IEnumerable<WallpaperEntity>> GetPagedItemsAsync(int page, int perPage, CancellationToken cancellationToken = default)

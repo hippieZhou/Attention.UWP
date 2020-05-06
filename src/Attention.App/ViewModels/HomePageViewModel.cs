@@ -1,10 +1,13 @@
 ﻿using Attention.App.Businesss;
+using Attention.App.Events;
 using Attention.App.Extensions;
 using Attention.App.Models;
 using Attention.App.ViewModels.UcViewModels;
+using Attention.Core.Services;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Logging;
 using Prism.Windows.Mvvm;
 using System;
@@ -17,6 +20,7 @@ namespace Attention.App.ViewModels
     public class HomePageViewModel : ViewModelBase
     {
         private readonly ILoggerFacade _logger;
+        private readonly IEventAggregator _eventAggregator;
         private AdaptiveGridView _adaptiveGV;
 
         private IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> _wallpapers;
@@ -25,16 +29,11 @@ namespace Attention.App.ViewModels
             get { return _wallpapers; }
             set { SetProperty(ref _wallpapers, value); }
         }
-        public HomePageViewModel(ILoggerFacade logger)
+
+        public HomePageViewModel(ILoggerFacade logger, IEventAggregator eventAggregator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        private Visibility _errorVisibility = Visibility.Collapsed;
-        public Visibility ErrorVisibility
-        {
-            get { return _errorVisibility; }
-            set { SetProperty(ref _errorVisibility, value); }
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
         private WallpaperExploreViewModel _exploreViewModel;
@@ -84,16 +83,14 @@ namespace Attention.App.ViewModels
                         };
 
                         Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
-                        {
-                            ErrorVisibility = Visibility.Collapsed;
-                        }, () =>
-                        {
-                            ErrorVisibility = Visibility.Collapsed;
-                        }, ex =>
-                        {
-                            _logger.Log(ex.ToString(), Category.Exception, Priority.High);
-                            ErrorVisibility = Visibility.Visible;
-                        });
+                         {
+                         }, () =>
+                         {
+                         }, ex =>
+                         {
+                             _logger.Log(ex.ToString(), Category.Exception, Priority.High);
+                             _eventAggregator.GetEvent<NotificationEvent>().Publish("THERE HAVE SOMETHING WRONG");
+                         });
                     });
                 }
                 return _loadCommand;

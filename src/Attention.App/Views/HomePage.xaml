@@ -170,20 +170,11 @@
                 <Grid
                     Padding="0,12,0,32"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom">
-                    <Grid Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <muxc:AnimatedVisualPlayer Width="240">
-                            <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
-                        </muxc:AnimatedVisualPlayer>
-                    </Grid>
-                    <Grid Visibility="{x:Bind ConcreteDataContext.ErrorVisibility, Mode=OneWay}">
-                        <Button
-                            Background="Red"
-                            Command="{x:Bind ConcreteDataContext.RefreshCommand}"
-                            Content="THERE HAVE SOMETHING WRONG"
-                            FontWeight="Bold"
-                            RequestedTheme="Dark" />
-                    </Grid>
+                    VerticalAlignment="Bottom"
+                    Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <muxc:AnimatedVisualPlayer Width="240">
+                        <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
+                    </muxc:AnimatedVisualPlayer>
                 </Grid>
             </mtuc:AdaptiveGridView.Footer>
         </mtuc:AdaptiveGridView>
