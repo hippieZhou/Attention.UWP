@@ -28,6 +28,7 @@
                     <Grid x:Name="Pane1Panel" Padding="64,0,64,40">
                         <Image
                             x:Name="HeroImage"
+                            PointerEntered="OnPointerPressed"
                             Source="{x:Bind ConcreteDataContext.Entity.ImageUri, Mode=OneWay}"
                             Stretch="UniformToFill" />
                         <Image x:Name="HeroImageMirror" Stretch="UniformToFill" />
@@ -162,6 +163,50 @@
                     Opacity="0.8"
                     Text="{x:Bind ConcreteDataContext.Entity.Created, Mode=OneWay}"
                     TextLineBounds="Tight" />
+                <Button
+                    x:Name="PlanTripTop"
+                    Grid.Column="2"
+                    Width="52"
+                    Height="52"
+                    HorizontalAlignment="Right"
+                    extensions:VisualExtensions.NormalizedCenterPoint="0.5,0.5,0"
+                    Background="#FFF0F0F2"
+                    Style="{StaticResource Style-Button-Icon-Circle}"
+                    Visibility="Collapsed">
+                    <animations:Implicit.ShowAnimations>
+                        <animations:TranslationAnimation
+                            From="0,32,0"
+                            To="0,0,0"
+                            Duration="0:0:0.4" />
+                        <animations:ScaleAnimation
+                            From="0.6"
+                            To="1"
+                            Duration="0:0:0.4" />
+                        <animations:OpacityAnimation
+                            From="0"
+                            To="1"
+                            Duration="0:0:0.4" />
+                    </animations:Implicit.ShowAnimations>
+                    <animations:Implicit.HideAnimations>
+                        <animations:TranslationAnimation
+                            From="0,0,0"
+                            To="0,16,0"
+                            Duration="0:0:0.2" />
+                        <animations:ScaleAnimation
+                            From="1"
+                            To="0.6"
+                            Duration="0:0:0.2" />
+                        <animations:OpacityAnimation
+                            From="1"
+                            To="0"
+                            Duration="0:0:0.2" />
+                    </animations:Implicit.HideAnimations>
+
+                    <ContentControl
+                        Width="18"
+                        Foreground="#FF0477BF"
+                        Style="{StaticResource Style-Icon-PaperPlane}" />
+                </Button>
             </Grid>
         </Grid>
 
