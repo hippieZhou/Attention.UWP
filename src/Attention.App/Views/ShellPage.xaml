@@ -2,70 +2,97 @@
     x:Class="Attention.App.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:Attention.App.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:local="using:Attention.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtxc="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
     xmlns:uc="using:Attention.App.UserControls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <prismMvvm:SessionStateAwarePage.Resources>
-        <AcrylicBrush
-            x:Key="NavigationViewExpandedPaneBackground"
-            BackgroundSource="Backdrop"
-            FallbackColor="{StaticResource SystemChromeMediumColor}"
-            TintColor="{StaticResource SystemChromeMediumColor}"
-            TintOpacity="0.15" />
+        <Style x:Key="Style-NavigationViewItem-Base" TargetType="winui:NavigationViewItem">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="{StaticResource RobotoMonoMedium}" />
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
+        <Style
+            x:Key="Style-NavigationViewItem-Wide"
+            BasedOn="{StaticResource Style-NavigationViewItem-Base}"
+            TargetType="winui:NavigationViewItem">
+            <Setter Property="Margin" Value="6,0" />
+        </Style>
+
+        <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="Transparent" />
+        <x:Double x:Key="NavigationViewTopPaneHeight">72</x:Double>
+        <StaticResource x:Key="NavigationViewTopPaneBackground" ResourceKey="SystemControlForegroundTransparentBrush" />
     </prismMvvm:SessionStateAwarePage.Resources>
-    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid.BackgroundTransition>
             <BrushTransition Duration="0:0:0.4" />
         </Grid.BackgroundTransition>
-        <i:Interaction.Behaviors>
-            <ic:EventTriggerBehavior EventName="Loaded">
-                <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
-            </ic:EventTriggerBehavior>
-        </i:Interaction.Behaviors>
-        <muxc:NavigationView
+        <winui:NavigationView
             x:Name="shellNav"
             x:Uid="shellNav"
-            Header="{x:Bind ConcreteDataContext.Header.ToString(), Mode=OneWay}"
-            IsBackButtonVisible="Auto"
-            IsBackEnabled="{x:Bind ConcreteDataContext.IsBackEnabled, Mode=OneWay}"
-            IsTabStop="False"
-            MenuItemsSource="{x:Bind ConcreteDataContext.PrimaryItems, Mode=OneWay}"
-            SelectedItem="{x:Bind ConcreteDataContext.SelectedItem, Mode=OneWay}"
-            SelectionFollowsFocus="Enabled">
+            Grid.Row="1"
+            animations:Implicit.Animations="{StaticResource ImplicitOffsetAnimation}"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="False"
+            MenuItemContainerStyle="{StaticResource Style-NavigationViewItem-Wide}"
+            PaneDisplayMode="Top">
             <i:Interaction.Behaviors>
-                <ic:EventTriggerBehavior EventName="ItemInvoked">
-                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand}" />
+                <ic:EventTriggerBehavior EventName="Loaded">
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
                 </ic:EventTriggerBehavior>
-                <ic:EventTriggerBehavior EventName="BackRequested">
-                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.BackRequestedCommand}" />
+                <ic:EventTriggerBehavior EventName="ItemInvoked">
+                    <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.ItemInvokedCommand, Mode=OneWay}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox
-                    x:Name="SearchBox"
-                    Height="42"
-                    PlaceholderText="Search .."
-                    Style="{StaticResource CustomStyledAutoSuggestBox}">
-                    <AutoSuggestBox.QueryIcon>
-                        <SymbolIcon Symbol="Find" />
-                    </AutoSuggestBox.QueryIcon>
-                    <AutoSuggestBox.TranslationTransition>
-                        <Vector3Transition Duration="0:0:0.8" />
-                    </AutoSuggestBox.TranslationTransition>
-                </AutoSuggestBox>
-            </muxc:NavigationView.AutoSuggestBox>
+            <winui:NavigationView.PaneHeader>
+                <uc:Logo x:Name="Logo" Margin="62,0,24,0" />
+            </winui:NavigationView.PaneHeader>
+            <winui:NavigationView.MenuItems>
+                <winui:NavigationViewItem helper:NavHelper.NavTo="Attention.App.Views.HomePage" Content="Unsplash" />
+                <winui:NavigationViewItem helper:NavHelper.NavTo="Attention.App.Views.DownloadPage" Content="Download" />
+            </winui:NavigationView.MenuItems>
+            <winui:NavigationView.PaneCustomContent>
+                <StackPanel
+                    x:Name="RightMenu"
+                    Margin="0,0,40,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="52"
+                        Height="52"
+                        Style="{StaticResource Style-Button-Icon-Circle}">
+                        <ContentControl
+                            Width="15"
+                            Foreground="#FF373238"
+                            Style="{StaticResource Style-Icon-Search}" />
+                    </Button>
+                </StackPanel>
+            </winui:NavigationView.PaneCustomContent>
             <Grid>
                 <Frame x:Name="shellFrame" />
-                <mtxc:InAppNotification x:Name="inAppNotification" Style="{StaticResource MSEdgeNotificationTemplate_NoDismissButton}" />
             </Grid>
-        </muxc:NavigationView>
+        </winui:NavigationView>
+
+        <mtxc:InAppNotification x:Name="inAppNotification" Style="{StaticResource MSEdgeNotificationTemplate_NoDismissButton}" />
+
+        <Rectangle
+            x:Name="DraggableAppTitleBarArea"
+            Grid.Row="0"
+            Height="32"
+            Fill="Transparent" />
     </Grid>
 </prismMvvm:SessionStateAwarePage>

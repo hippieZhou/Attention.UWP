@@ -1,20 +1,18 @@
 ﻿using Attention.App.Extensions;
 using Attention.App.Models;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Prism.Commands;
 using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.App.ViewModels.UcViewModels
 {
     public class WallpaperCardViewModel : UcBaseViewModel
     {
+        private FrameworkElement _heroImage;
+        private FrameworkElement _header;
         public event EventHandler<(WallpaperDto, ConnectedAnimation)> TryStartBackwardsAnimation;
-        private UIElement _destinationElement;
 
         private WallpaperDto _entity;
         public WallpaperDto Entity
@@ -37,23 +35,14 @@ namespace Attention.App.ViewModels.UcViewModels
             set { SetProperty(ref _footerVisibility, value); }
         }
 
-        private ICommand _loadCommand;
-        public ICommand LoadCommand
+        public void Initialize(FrameworkElement heroImage, FrameworkElement header)
         {
-            get
-            {
-                if (_loadCommand == null)
-                {
-                    _loadCommand = new DelegateCommand<UIElement>(destinationElement =>
-                    {
-                        _destinationElement = destinationElement ?? throw new ArgumentNullException(nameof(destinationElement));
-                        Visibility = Visibility.Collapsed;
-                        AvatarVisibility = Visibility.Collapsed;
-                        FooterVisibility = Visibility.Collapsed;
-                    });
-                }
-                return _loadCommand;
-            }
+            _heroImage = heroImage ?? throw new ArgumentNullException(nameof(heroImage));
+            _header = header ?? throw new ArgumentNullException(nameof(header));
+
+            Visibility = Visibility.Collapsed;
+            AvatarVisibility = Visibility.Collapsed;
+            FooterVisibility = Visibility.Collapsed;
         }
 
         private ICommand _downloadCommand;
@@ -112,20 +101,15 @@ namespace Attention.App.ViewModels.UcViewModels
             {
                 if (_backCommand == null)
                 {
-                    _backCommand = new DelegateCommand<TappedRoutedEventArgs>(args =>
+                    _backCommand = new DelegateCommand(() =>
                     {
-                        var parent = LogicalTree.FindParent<Grid>(_destinationElement as FrameworkElement);
-                        if (args.OriginalSource == parent)
+                        var animation = _heroImage.CreateBackwardsAnimation(() =>
                         {
-                            var animation = _destinationElement.CreateBackwardsAnimation(() =>
-                            {
-                                Visibility = Visibility.Collapsed;
-                                AvatarVisibility = Visibility.Collapsed;
-                                FooterVisibility = Visibility.Collapsed;
-                            });
-                            TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
-                        }
-                        args.Handled = true;
+                            Visibility = Visibility.Collapsed;
+                            AvatarVisibility = Visibility.Collapsed;
+                            FooterVisibility = Visibility.Collapsed;
+                        });
+                        TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
                     });
                 }
                 return _backCommand;
@@ -136,7 +120,7 @@ namespace Attention.App.ViewModels.UcViewModels
         {
             Entity = entity;
             Visibility = Visibility.Visible;
-            animation.TryStart(_destinationElement);
+            animation.TryStart(_heroImage, new[] { _header });
         }
     }
 }

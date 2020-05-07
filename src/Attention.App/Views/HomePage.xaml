@@ -21,6 +21,14 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <prismMvvm:SessionStateAwarePage.Resources>
+
+        <Style x:Key="WideGridViewItemStyle" TargetType="GridViewItem">
+            <Setter Property="Margin" Value="24,0,24,48" />
+        </Style>
+        <Style x:Key="NarrowGridViewItemStyle" TargetType="GridViewItem">
+            <Setter Property="Margin" Value="24,0,24,24" />
+        </Style>
+
         <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperDto">
             <Grid x:Name="connectedElement" Background="{x:Bind Background}">
                 <mtuc:ImageEx
@@ -28,7 +36,7 @@
                     common:ImageLoader.Source="{x:Bind Thumbnail, TargetNullValue=ms-appx:///Assets/StoreLogo.png}"
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"
-                    Stretch="None" />
+                    Stretch="UniformToFill" />
 
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.Background>
@@ -120,7 +128,7 @@
     <Grid>
         <mtuc:AdaptiveGridView
             x:Name="adaptiveGV"
-            Padding="8,0"
+            Margin="0,24,0,0"
             animations:ReorderGridAnimation.Duration="600"
             DataFetchSize="1"
             DesiredWidth="420"
@@ -130,42 +138,19 @@
             ItemHeight="280"
             ItemTemplate="{StaticResource WallpaperDataTemplate}"
             ItemsSource="{x:Bind ConcreteDataContext.Wallpapers, Mode=OneWay}"
-            OneRowModeEnabled="False"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SelectionMode="Single"
+            SelectionMode="None"
             ShowsScrollingPlaceholders="False">
             <i:Interaction.Behaviors>
                 <ic:EventTriggerBehavior EventName="Loaded">
                     <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" CommandParameter="{x:Bind adaptiveGV, Mode=OneWay}" />
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
-            <mtuc:AdaptiveGridView.ItemContainerStyle>
-                <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="6" />
-                </Style>
-            </mtuc:AdaptiveGridView.ItemContainerStyle>
             <mtuc:AdaptiveGridView.ItemContainerTransitions>
                 <TransitionCollection>
-                    <EntranceThemeTransition IsStaggeringEnabled="True" />
+                    <EntranceThemeTransition FromVerticalOffset="200" IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </mtuc:AdaptiveGridView.ItemContainerTransitions>
-            <mtuc:AdaptiveGridView.Header>
-                <Grid Margin="-8,0,-8,24">
-                    <ParallaxView
-                        x:Name="headerImageView"
-                        Source="{x:Bind adaptiveGV}"
-                        VerticalShift="360"
-                        VerticalSourceEndOffset="250"
-                        VerticalSourceOffsetKind="Absolute"
-                        VerticalSourceStartOffset="-50">
-                        <Image
-                            x:Name="headerImage"
-                            HorizontalAlignment="Center"
-                            Source="ms-appx:///Assets/Images/MainPage_Banner.jpg"
-                            Stretch="UniformToFill" />
-                    </ParallaxView>
-                </Grid>
-            </mtuc:AdaptiveGridView.Header>
             <mtuc:AdaptiveGridView.Footer>
                 <Grid
                     Padding="0,12,0,32"
@@ -235,9 +220,9 @@
             </Button>
         </StackPanel>
 
-        <uc:WallpaperExploreView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.ExploreViewModel, Mode=OneWay}" />
-        <uc:WallpaperCardView Margin="0,-88,0,0" ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
+        <uc:WallpaperCardView ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
 
+        <uc:WallpaperExploreView ConcreteDataContext="{x:Bind ConcreteDataContext.ExploreViewModel, Mode=OneWay}" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -246,7 +231,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="headerImageView.Height" Value="320" />
+                        <Setter Target="adaptiveGV.ItemContainerStyle" Value="{StaticResource WideGridViewItemStyle}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -254,7 +239,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="headerImageView.Height" Value="260" />
+                        <Setter Target="adaptiveGV.ItemContainerStyle" Value="{StaticResource WideGridViewItemStyle}" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -262,7 +247,7 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="headerImageView.Height" Value="240" />
+                        <Setter Target="adaptiveGV.ItemContainerStyle" Value="{StaticResource NarrowGridViewItemStyle}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

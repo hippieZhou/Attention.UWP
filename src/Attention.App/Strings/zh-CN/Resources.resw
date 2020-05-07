@@ -156,16 +156,4 @@
   <data name="settings_ThemeMode_System.Content" xml:space="preserve">
     <value>跟随系统设置</value>
   </data>
-  <data name="shellNav.PaneTitle" xml:space="preserve">
-    <value>Attention For UWP</value>
-  </data>
-  <data name="shellNav_download" xml:space="preserve">
-    <value>下载</value>
-  </data>
-  <data name="shellNav_home" xml:space="preserve">
-    <value>首页</value>
-  </data>
-  <data name="shellNav_menu" xml:space="preserve">
-    <value>菜单</value>
-  </data>
 </root>

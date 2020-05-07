@@ -3,7 +3,6 @@ using Attention.App.Events;
 using Attention.App.Extensions;
 using Attention.App.Models;
 using Attention.App.ViewModels.UcViewModels;
-using Attention.Core.Services;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;

@@ -41,7 +41,12 @@ namespace Attention.App.Businesss
                     FallbackColor = x,
                     TintOpacity = 1.0,
                     TintLuminosityOpacity = 1.0,
-                }
+                },
+                Created = DateTime.Now,
+                ImageAuthor = DateTime.Now.Year.ToString(),
+                ImageAuthorUrl = "https://www.baidu.com",
+                ImageUri = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg",
+                Thumbnail = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg"
             });
             _entities.AddRange(colors);
         }
@@ -54,7 +59,7 @@ namespace Attention.App.Businesss
 
             var photos = (from p in _entities
                           select p).Skip(pageIndex * pageSize).Take(pageSize);
-            await Task.Yield();
+            await Task.Delay(1000);
             sp.Stop();
 
             _logger.Log(string.Format(

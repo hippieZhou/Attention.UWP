@@ -7,6 +7,9 @@ namespace Attention.App.Models
     {
         public Brush Background { get; set; }
         public string Thumbnail { get; set; }
+        public string ImageUri { get; set; }
+        public string ImageAuthor { get; set; }
+        public string ImageAuthorUrl { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }

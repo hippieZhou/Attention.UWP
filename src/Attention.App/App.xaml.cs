@@ -77,23 +77,6 @@ namespace Attention.App
             Window.Current.Activate();
         }
 
-        protected override void OnWindowCreated(WindowCreatedEventArgs args)
-        {
-            void ExtendTitlebar()
-            {
-                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                ApplicationView appView = ApplicationView.GetForCurrentView();
-                appView.TitleBar.BackgroundColor = Colors.Transparent;
-                appView.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-                appView.TitleBar.ButtonForegroundColor = Colors.DarkGray;
-                appView.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-                appView.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-            }
-
-            ExtendTitlebar();
-            base.OnWindowCreated(args);
-        }
-
         private async Task LoadAppResources()
         {
             #region Database Initialize
