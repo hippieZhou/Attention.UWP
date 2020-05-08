@@ -2,11 +2,9 @@
 using Attention.App.Extensions;
 using Attention.App.Models;
 using Attention.App.Views;
+using Attention.Core;
 using Attention.Core.Context;
 using Attention.Core.Framework;
-using Attention.Core.Services;
-using Attention.Core.Uow;
-using AutoMapper;
 using Microsoft.Practices.Unity;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Prism.Unity.Windows;
@@ -121,18 +119,8 @@ namespace Attention.App
             Container.RegisterInstance(EventAggregator);
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
-            Container.RegisterInstance<IApplicationDbContext>(new ApplicationDbContext(Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile)));
-            Container.RegisterType<IDateTime, MachineDateTime>();
-            Container.RegisterType(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
+            Container.RegisterApplicationCore(Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile));
 
-            Container.RegisterInstance<IMapper>(new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PixabayMappingProfile>();
-                cfg.AddProfile<UnsplashMappingProfile>();
-            })));
-
-            Container.RegisterInstance<IWebClient>(nameof(PixabayWebClient), new PixabayWebClient("12645414-59a5251905dfea7b916dd796f"));
-            Container.RegisterInstance<IWebClient>(nameof(UnsplashWebClient), new UnsplashWebClient("xtU9WrbC5zUgMhkHAoNnq1La-vaVZYa8pxMtf-XiLgU", "gjKCMX5mopNYC7WBg8psV8iozNOTTRfUfWCeP-UADXY"));
             return base.OnInitializeAsync(args);
         }
     }

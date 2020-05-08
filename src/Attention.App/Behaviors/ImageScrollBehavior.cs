@@ -1,5 +1,6 @@
 ﻿using Attention.App.Businesss;
 using Attention.App.Models;
+using Attention.Core.Dtos;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Xaml.Interactivity;
 using System;

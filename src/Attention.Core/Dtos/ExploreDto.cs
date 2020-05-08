@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Media;
 
-namespace Attention.App.Models
+namespace Attention.Core.Dtos
 {
     public class ExploreDto
     {

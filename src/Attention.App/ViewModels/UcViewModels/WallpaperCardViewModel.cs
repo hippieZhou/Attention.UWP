@@ -1,5 +1,6 @@
 ﻿using Attention.App.Extensions;
 using Attention.App.Models;
+using Attention.Core.Dtos;
 using Prism.Commands;
 using System;
 using System.Windows.Input;
@@ -12,6 +13,8 @@ namespace Attention.App.ViewModels.UcViewModels
     {
         private FrameworkElement _heroImage;
         private FrameworkElement _header;
+        private FrameworkElement _pane2Panel;
+
         public event EventHandler<(WallpaperDto, ConnectedAnimation)> TryStartBackwardsAnimation;
 
         private WallpaperDto _entity;
@@ -35,10 +38,11 @@ namespace Attention.App.ViewModels.UcViewModels
             set { SetProperty(ref _footerVisibility, value); }
         }
 
-        public void Initialize(FrameworkElement heroImage, FrameworkElement header)
+        public void Initialize(FrameworkElement heroImage, FrameworkElement header,FrameworkElement pane2Panel)
         {
             _heroImage = heroImage ?? throw new ArgumentNullException(nameof(heroImage));
             _header = header ?? throw new ArgumentNullException(nameof(header));
+            _pane2Panel = pane2Panel ?? throw new ArgumentNullException(nameof(pane2Panel));
 
             Visibility = Visibility.Collapsed;
             AvatarVisibility = Visibility.Collapsed;
@@ -120,7 +124,7 @@ namespace Attention.App.ViewModels.UcViewModels
         {
             Entity = entity;
             Visibility = Visibility.Visible;
-            animation.TryStart(_heroImage, new[] { _header });
+            animation.TryStart(_heroImage, new[] { _header, _pane2Panel });
         }
     }
 }

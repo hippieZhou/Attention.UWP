@@ -1,5 +1,5 @@
 ﻿using Attention.App.Businesss;
-using Attention.App.Models;
+using Attention.Core.Dtos;
 using Microsoft.Toolkit.Uwp;
 using Prism.Commands;
 using System.Windows.Input;

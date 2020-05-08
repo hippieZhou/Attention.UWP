@@ -7,12 +7,12 @@
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
     xmlns:common="using:Attention.App.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dto="using:Attention.Core.Dtos"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:lottie="using:Microsoft.Toolkit.Uwp.UI.Lottie"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
-    xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:prismMvvm="using:Prism.Windows.Mvvm"
@@ -29,7 +29,7 @@
             <Setter Property="Margin" Value="24,0,24,24" />
         </Style>
 
-        <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="model:WallpaperDto">
+        <DataTemplate x:Key="WallpaperDataTemplate" x:DataType="dto:WallpaperDto">
             <Grid x:Name="connectedElement" Background="{x:Bind Background}">
                 <mtuc:ImageEx
                     x:Name="imageEx"

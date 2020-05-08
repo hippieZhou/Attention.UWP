@@ -33,7 +33,7 @@
         <StaticResource x:Key="NavigationViewTopPaneBackground" ResourceKey="SystemControlForegroundTransparentBrush" />
     </prismMvvm:SessionStateAwarePage.Resources>
 
-    <Grid>
+    <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -87,7 +87,12 @@
             </Grid>
         </winui:NavigationView>
 
-        <mtxc:InAppNotification x:Name="inAppNotification" Style="{StaticResource MSEdgeNotificationTemplate_NoDismissButton}" />
+        <mtxc:InAppNotification
+            x:Name="inAppNotification"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            VerticalAlignment="Bottom"
+            Style="{StaticResource MSEdgeNotificationTemplate_NoDismissButton}" />
 
         <Rectangle
             x:Name="DraggableAppTitleBarArea"

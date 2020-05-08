@@ -6,10 +6,10 @@
     xmlns:be="using:Attention.App.Behaviors"
     xmlns:common="using:Attention.App.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dto="using:Attention.Core.Dtos"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:Attention.App.Models"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -96,7 +96,7 @@
                         </Style>
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ExploreDto">
+                        <DataTemplate x:DataType="dto:ExploreDto">
                             <Grid Background="{x:Bind Background}" CornerRadius="4">
                                 <mtuc:ImageEx
                                     common:ImageLoader.Source="{Binding Thumbnail}"

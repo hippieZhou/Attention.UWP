@@ -1,6 +1,7 @@
-﻿using Attention.App.Models;
+﻿using Attention.Core.Bus;
+using Attention.Core.Commands;
+using Attention.Core.Dtos;
 using Attention.Core.Framework;
-using Attention.Core.Services;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp.UI;
 using Microsoft.UI.Xaml.Media;
@@ -19,12 +20,12 @@ namespace Attention.App.Businesss
 {
     public sealed class WallpaperItemSource : IIncrementalSource<WallpaperDto>
     {
-        private readonly IWebClient _client;
+        private readonly IMediatorHandler _bus;
         private readonly ILoggerFacade _logger;
         private readonly List<WallpaperDto> _entities;
         public WallpaperItemSource()
         {
-            _client = EnginContext.Current.Resolve<IWebClient>(nameof(UnsplashWebClient)) ?? throw new ArgumentNullException(nameof(UnsplashWebClient));
+            _bus = EnginContext.Current.Resolve<IMediatorHandler>() ?? throw new ArgumentNullException(nameof(IMediatorHandler));
             _logger = EnginContext.Current.Resolve<ILoggerFacade>() ?? throw new ArgumentNullException(nameof(ILoggerFacade));
 
             ImageCache.Instance.CacheDuration = TimeSpan.FromHours(24);
@@ -54,12 +55,9 @@ namespace Attention.App.Businesss
         public async Task<IEnumerable<WallpaperDto>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             Stopwatch sp = Stopwatch.StartNew();
-
-            //var photos = await _client.GetPagedItemsAsync(pageIndex, pageSize, cancellationToken);
-
-            var photos = (from p in _entities
-                          select p).Skip(pageIndex * pageSize).Take(pageSize);
-            await Task.Delay(1000);
+            var response = await _bus.Send(new PixabayCommand { Page = pageIndex, PerPage = pageSize });
+            //var photos = (from p in _entities
+            //              select p).Skip(pageIndex * pageSize).Take(pageSize);
             sp.Stop();
 
             _logger.Log(string.Format(
@@ -69,7 +67,7 @@ namespace Attention.App.Businesss
                 Microsoft.Toolkit.Converters.ToFileSizeString((long)MemoryManager.AppMemoryUsage)),
                 Category.Debug, Priority.None);
 
-            return photos;
+            return response.Data;
         }
     }
 }

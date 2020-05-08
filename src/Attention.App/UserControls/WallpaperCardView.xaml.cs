@@ -104,7 +104,7 @@ namespace Attention.App.UserControls
              {
                  if (d is WallpaperCardView handler && e.NewValue is WallpaperCardViewModel vm)
                  {
-                     vm.Initialize(handler.HeroImage, handler.Header);
+                     vm.Initialize(handler.HeroImage, handler.Header, handler.Pane2Panel);
                  }
              }));
 
