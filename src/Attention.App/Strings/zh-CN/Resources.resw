@@ -123,6 +123,15 @@
   <data name="explore_Header.Text" xml:space="preserve">
     <value>集合</value>
   </data>
+  <data name="picked_Downloads" xml:space="preserve">
+    <value>我的下载</value>
+  </data>
+  <data name="picked_Search" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="picked_Settings" xml:space="preserve">
+    <value>控制中心</value>
+  </data>
   <data name="settings_About.Text" xml:space="preserve">
     <value>关于</value>
   </data>

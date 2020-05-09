@@ -1,6 +1,7 @@
 ﻿using Attention.App.Events;
 using Attention.App.Helpers;
 using Attention.App.ViewModels.UcViewModels;
+using Attention.Core.Framework;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
@@ -19,14 +20,6 @@ namespace Attention.App.ViewModels
 {
     public class ShellPageViewModel : ViewModelBase
     {
-        private readonly Dictionary<string, PickedPaneViewModel> _pickedViewModels
-            = new Dictionary<string, PickedPaneViewModel>
-            {
-                { nameof(PickedSearchViewModel), new PickedSearchViewModel() },
-                { nameof(PickedDownloadViewModel), new PickedDownloadViewModel() },
-                { nameof(PickedSettingsViewModel), new PickedSettingsViewModel() }
-            };
-
         private readonly ILoggerFacade _logger;
         private readonly IEventAggregator _eventAggregator;
 
@@ -39,6 +32,7 @@ namespace Attention.App.ViewModels
             ILoggerFacade logger,
             IEventAggregator eventAggregator)
         {
+            
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
@@ -104,7 +98,8 @@ namespace Attention.App.ViewModels
                 {
                     _pickPaneCommand = new DelegateCommand<string>(pickedViewModelName =>
                     {
-                        if (_pickedViewModels.TryGetValue(pickedViewModelName, out var viewModel))
+                        var viewModel = EnginContext.Current.Resolve<PickedPaneViewModel>(pickedViewModelName);
+                        if (viewModel != null)
                         {
                             PickedViewModel = viewModel;
                             _shellPickedPane.Visibility = Visibility.Visible;
@@ -112,11 +107,10 @@ namespace Attention.App.ViewModels
                             .Fade(0.5f)
                             .Scale(scaleX: 0.95f, scaleY: 0.95f, centerX: (float)_shellFrame.ActualWidth / 2, centerY: (float)_shellFrame.ActualHeight / 2)
                             .Start();
+
+                            return;
                         }
-                        else
-                        {
-                            throw new ArgumentException($"参数错误：{PickedViewModel}");
-                        }
+                        throw new ArgumentException($"参数错误：{PickedViewModel}");
                     });
                 }
                 return _pickPaneCommand;

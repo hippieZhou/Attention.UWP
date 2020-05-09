@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Attention.App.ViewModels.UcViewModels;
+using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Attention.App.UserControls
 {
     public sealed partial class PickedSearch : UserControl
     {
+        public PickedSearchViewModel ConcreteDataContext { get; set; }
         public PickedSearch()
         {
             this.InitializeComponent();
+            DataContextChanged += (sender, e) => ConcreteDataContext = DataContext as PickedSearchViewModel;
         }
+
+        private void AutoSuggestBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Translation = new Vector3(0, 0, 16);
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Translation = new Vector3(0, 0, 4);
+        }
+
     }
 }

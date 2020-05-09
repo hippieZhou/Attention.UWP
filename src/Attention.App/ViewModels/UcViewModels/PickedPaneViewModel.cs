@@ -1,14 +1,36 @@
 ﻿using Prism.Windows.Mvvm;
+using System;
 
 namespace Attention.App.ViewModels.UcViewModels
 {
-    public class PickedPaneViewModel: ViewModelBase
+	[Flags]
+	public enum PaneTypes
+	{
+		Search,
+		Download,
+		Settings
+	}
+
+    public abstract class PickedPaneViewModel: ViewModelBase
     {
+		private PaneTypes _paneType;
+		public PaneTypes PaneType
+		{
+			get { return _paneType; }
+			private set { SetProperty(ref _paneType, value); }
+		}
+
 		private string _title;
 		public string Title
 		{
 			get { return _title; }
-			set { SetProperty(ref _title, value); }
+			private set { SetProperty(ref _title, value); }
+		}
+
+		public PickedPaneViewModel(PaneTypes paneType, string title)
+		{
+			PaneType = paneType;
+			Title = title;
 		}
 	}
 }

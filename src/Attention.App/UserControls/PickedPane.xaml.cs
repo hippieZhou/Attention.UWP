@@ -40,9 +40,26 @@ namespace Attention.App.UserControls
         public DataTemplate Search { get; set; }
         public DataTemplate Download { get; set; }
         public DataTemplate Settings { get; set; }
-        protected override DataTemplate SelectTemplateCore(object item)
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            return base.SelectTemplateCore(item);
+            var dataTemplate = base.SelectTemplateCore(item, container);
+
+            if (item is PickedPaneViewModel viewModel)
+            {
+                switch (viewModel.PaneType)
+                {
+                    case PaneTypes.Search:
+                        dataTemplate = Search;
+                        break;
+                    case PaneTypes.Download:
+                        dataTemplate = Download;
+                        break;
+                    case PaneTypes.Settings:
+                        dataTemplate = Settings;
+                        break;
+                }
+            }
+            return dataTemplate;
         }
     }
 }

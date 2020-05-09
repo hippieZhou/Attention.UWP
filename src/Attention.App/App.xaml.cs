@@ -1,6 +1,7 @@
 ﻿using Attention.App.Events;
 using Attention.App.Extensions;
 using Attention.App.Models;
+using Attention.App.ViewModels.UcViewModels;
 using Attention.App.Views;
 using Attention.Core;
 using Attention.Core.Context;
@@ -120,6 +121,10 @@ namespace Attention.App
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
 
             Container.RegisterApplicationCore(Path.Combine(Settings.LocalFolder.Path, AppSettings.DBFile));
+
+            Container.RegisterType<PickedPaneViewModel, PickedSearchViewModel>(nameof(PickedSearchViewModel));
+            Container.RegisterType<PickedPaneViewModel, PickedDownloadViewModel>(nameof(PickedDownloadViewModel));
+            Container.RegisterType<PickedPaneViewModel, PickedSettingsViewModel>(nameof(PickedSettingsViewModel));
 
             return base.OnInitializeAsync(args);
         }

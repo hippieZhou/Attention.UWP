@@ -5,9 +5,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <AutoSuggestBox
+            x:Name="SearchBox"
+            Grid.Row="0"
+            Height="42"
+            MaxWidth="520"
+            Margin="42,42,42,0"
+            VerticalAlignment="Center"
+            GotFocus="AutoSuggestBox_GotFocus"
+            LostFocus="SearchBox_LostFocus"
+            PlaceholderText="Search the web and your device.."
+            Style="{StaticResource CustomStyledAutoSuggestBox}"
+            Translation="0,0,4">
+            <AutoSuggestBox.QueryIcon>
+                <SymbolIcon Symbol="Find" />
+            </AutoSuggestBox.QueryIcon>
+            <AutoSuggestBox.TranslationTransition>
+                <Vector3Transition Duration="0:0:0.8" />
+            </AutoSuggestBox.TranslationTransition>
+        </AutoSuggestBox>
+    </Grid>
 </UserControl>

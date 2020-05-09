@@ -1,10 +1,11 @@
-﻿namespace Attention.App.ViewModels.UcViewModels
+﻿using Prism.Windows.AppModel;
+
+namespace Attention.App.ViewModels.UcViewModels
 {
     public class PickedSearchViewModel: PickedPaneViewModel
     {
-        public PickedSearchViewModel()
+        public PickedSearchViewModel(IResourceLoader resourceLoader) : base(PaneTypes.Search, resourceLoader.GetString("picked_Search"))
         {
-            Title = "Search";
         }
     }
 }

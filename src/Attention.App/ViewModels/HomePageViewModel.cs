@@ -36,13 +36,6 @@ namespace Attention.App.ViewModels
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
-        private WallpaperExploreViewModel _exploreViewModel;
-        public WallpaperExploreViewModel ExploreViewModel
-        {
-            get { return _exploreViewModel; }
-            set { SetProperty(ref _exploreViewModel, value); }
-        }
-
         private WallpaperCardViewModel _cardViewModel;
         public WallpaperCardViewModel CardViewModel
         {
@@ -67,8 +60,6 @@ namespace Attention.App.ViewModels
                                 _adaptiveGV.ScrollIntoView(_adaptiveGV.SelectedItem, ScrollIntoViewAlignment.Default);
                             }
                         };
-
-                        ExploreViewModel = new WallpaperExploreViewModel { Visibility = Visibility.Collapsed };
 
                         CardViewModel = new WallpaperCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
@@ -96,23 +87,6 @@ namespace Attention.App.ViewModels
                 return _loadCommand;
             }
         }
-
-        private ICommand _exploreCommand;
-        public ICommand ExploreCommand
-        {
-            get
-            {
-                if (_exploreCommand == null)
-                {
-                    _exploreCommand = new DelegateCommand(() =>
-                    {
-                        ExploreViewModel.SwitchCommand.Execute(Visibility.Visible);
-                    });
-                }
-                return _exploreCommand;
-            }
-        }
-
 
         private ICommand _refreshCommand;
         public ICommand RefreshCommand

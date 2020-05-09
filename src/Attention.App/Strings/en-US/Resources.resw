@@ -123,6 +123,15 @@
   <data name="explore_Header.Text" xml:space="preserve">
     <value>Collections</value>
   </data>
+  <data name="picked_Downloads" xml:space="preserve">
+    <value>My Downloads</value>
+  </data>
+  <data name="picked_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="picked_Settings" xml:space="preserve">
+    <value>Settings Center</value>
+  </data>
   <data name="settings_About.Text" xml:space="preserve">
     <value>About</value>
   </data>
