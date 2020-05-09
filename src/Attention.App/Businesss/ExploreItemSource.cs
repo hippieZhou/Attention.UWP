@@ -1,5 +1,4 @@
-﻿using Attention.App.Models;
-using Attention.Core.Dtos;
+﻿using Attention.Core.Dtos;
 using Attention.Core.Framework;
 using Microsoft.Toolkit.Collections;
 using Microsoft.UI.Xaml.Media;

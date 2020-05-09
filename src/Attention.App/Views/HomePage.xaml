@@ -23,7 +23,7 @@
     <prismMvvm:SessionStateAwarePage.Resources>
 
         <Style x:Key="WideGridViewItemStyle" TargetType="GridViewItem">
-            <Setter Property="Margin" Value="24,0,24,48" />
+            <Setter Property="Margin" Value="32,0,32,64" />
         </Style>
         <Style x:Key="NarrowGridViewItemStyle" TargetType="GridViewItem">
             <Setter Property="Margin" Value="24,0,24,24" />
@@ -125,17 +125,17 @@
         </DataTemplate>
     </prismMvvm:SessionStateAwarePage.Resources>
 
-    <Grid>
+    <Grid Margin="0,24,0,0">
         <mtuc:AdaptiveGridView
             x:Name="adaptiveGV"
-            Margin="0,24,0,0"
+            Padding="12,0,0,0"
             animations:ReorderGridAnimation.Duration="600"
             DataFetchSize="1"
-            DesiredWidth="420"
+            DesiredWidth="460"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ConcreteDataContext.ItemClickCommand}"
-            ItemHeight="280"
+            ItemHeight="260"
             ItemTemplate="{StaticResource WallpaperDataTemplate}"
             ItemsSource="{x:Bind ConcreteDataContext.Wallpapers, Mode=OneWay}"
             ScrollViewer.VerticalScrollBarVisibility="Auto"

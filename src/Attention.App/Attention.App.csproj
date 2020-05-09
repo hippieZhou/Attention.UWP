@@ -184,6 +184,9 @@
     <Content Include="Assets\Explore\Avatar03.png" />
     <Content Include="Assets\Explore\Avatar04.png" />
     <Content Include="Assets\Explore\Avatar05.png" />
+    <Content Include="Assets\Icons\download.svg" />
+    <Content Include="Assets\Icons\more-horizontal.svg" />
+    <Content Include="Assets\Icons\sliders.svg" />
     <Content Include="Assets\Images\Avatar.png" />
     <Content Include="Assets\Images\bantersnaps-wPMvPMD9KBI-unsplash.jpg" />
     <Content Include="Assets\Images\MainPage_Banner.jpg" />

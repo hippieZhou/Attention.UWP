@@ -59,7 +59,7 @@
         <StackPanel
             x:Name="Header"
             Grid.Row="0"
-            Margin="103,40,103,12"
+            Margin="60,40,0,12"
             VerticalAlignment="Top"
             Orientation="Horizontal"
             Spacing="12">
