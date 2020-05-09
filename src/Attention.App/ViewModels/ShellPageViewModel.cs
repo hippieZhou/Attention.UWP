@@ -1,13 +1,17 @@
 ﻿using Attention.App.Events;
 using Attention.App.Helpers;
+using Attention.App.ViewModels.UcViewModels;
+using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Logging;
 using Prism.Windows.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using winui = Microsoft.UI.Xaml.Controls;
 
@@ -15,11 +19,20 @@ namespace Attention.App.ViewModels
 {
     public class ShellPageViewModel : ViewModelBase
     {
+        private readonly Dictionary<string, PickedPaneViewModel> _pickedViewModels
+            = new Dictionary<string, PickedPaneViewModel>
+            {
+                { nameof(PickedSearchViewModel), new PickedSearchViewModel() },
+                { nameof(PickedDownloadViewModel), new PickedDownloadViewModel() },
+                { nameof(PickedSettingsViewModel), new PickedSettingsViewModel() }
+            };
+
         private readonly ILoggerFacade _logger;
         private readonly IEventAggregator _eventAggregator;
 
         private Frame _shellFrame;
         private winui.NavigationView _shellNav;
+        private FrameworkElement _shellPickedPane;
         private InAppNotification _inAppNotification;
 
         public ShellPageViewModel(
@@ -30,11 +43,11 @@ namespace Attention.App.ViewModels
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
-        private object _selectedItem;
-        public object SelectedItem
+        private PickedPaneViewModel _pickedViewModel;
+        public PickedPaneViewModel PickedViewModel
         {
-            get { return _selectedItem; }
-            set { SetProperty(ref _selectedItem, value); }
+            get { return _pickedViewModel; }
+            set { SetProperty(ref _pickedViewModel, value); }
         }
 
         private ICommand _loadCommand;
@@ -82,6 +95,54 @@ namespace Attention.App.ViewModels
             }
         }
 
+        private ICommand _pickPaneCommand;
+        public ICommand PickPaneCommand
+        {
+            get
+            {
+                if (_pickPaneCommand == null)
+                {
+                    _pickPaneCommand = new DelegateCommand<string>(pickedViewModelName =>
+                    {
+                        if (_pickedViewModels.TryGetValue(pickedViewModelName, out var viewModel))
+                        {
+                            PickedViewModel = viewModel;
+                            _shellPickedPane.Visibility = Visibility.Visible;
+                            _shellFrame
+                            .Fade(0.5f)
+                            .Scale(scaleX: 0.95f, scaleY: 0.95f, centerX: (float)_shellFrame.ActualWidth / 2, centerY: (float)_shellFrame.ActualHeight / 2)
+                            .Start();
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"参数错误：{PickedViewModel}");
+                        }
+                    });
+                }
+                return _pickPaneCommand;
+            }
+        }
+
+        private ICommand _dismissPickPaneCommand;
+        public ICommand DismissPickPaneCommand
+        {
+            get
+            {
+                if (_dismissPickPaneCommand == null)
+                {
+                    _dismissPickPaneCommand = new DelegateCommand(() =>
+                    {
+                        _shellPickedPane.Visibility = Visibility.Collapsed;
+                        _shellFrame
+                        .Fade(1.0f)
+                        .Scale(scaleX: 1.0f, scaleY: 1.0f, centerX: (float)_shellFrame.ActualWidth / 2, centerY: (float)_shellFrame.ActualHeight / 2)
+                        .Start();
+                    });
+                }
+                return _dismissPickPaneCommand;
+            }
+        }
+
         private void NavigateToPage(winui.NavigationViewItemBase navItem)
         {
             if (navItem == null)
@@ -92,10 +153,11 @@ namespace Attention.App.ViewModels
             _shellFrame.Navigate(pageType);
         }
 
-        public void Initialize(winui.NavigationView shellNav, Frame frame, InAppNotification inAppNotification)
+        public void Initialize(winui.NavigationView shellNav, Frame frame, FrameworkElement pickedPlacesPane, InAppNotification inAppNotification)
         {
             _shellNav = shellNav ?? throw new ArgumentNullException(nameof(shellNav));
             _shellFrame = frame ?? throw new ArgumentNullException(nameof(frame));
+            _shellPickedPane = pickedPlacesPane ?? throw new ArgumentNullException(nameof(pickedPlacesPane));
             _inAppNotification = inAppNotification;
         }
     }

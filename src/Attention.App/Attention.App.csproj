@@ -143,6 +143,18 @@
     <Compile Include="UserControls\Logo.xaml.cs">
       <DependentUpon>Logo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PickedDownload.xaml.cs">
+      <DependentUpon>PickedDownload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PickedPane.xaml.cs">
+      <DependentUpon>PickedPane.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PickedSearch.xaml.cs">
+      <DependentUpon>PickedSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PickedSettings.xaml.cs">
+      <DependentUpon>PickedSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\WallpaperCardView.xaml.cs">
       <DependentUpon>WallpaperCardView.xaml</DependentUpon>
     </Compile>
@@ -153,6 +165,10 @@
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\ShellPageViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\PickedDownloadViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\PickedPaneViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\PickedSearchViewModel.cs" />
+    <Compile Include="ViewModels\UcViewModels\PickedSettingsViewModel.cs" />
     <Compile Include="ViewModels\UcViewModels\WallpaperExploreViewModel.cs" />
     <Compile Include="ViewModels\UcViewModels\UcBaseViewModel.cs" />
     <Compile Include="ViewModels\UcViewModels\WallpaperCardViewModel.cs" />
@@ -227,6 +243,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Logo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PickedDownload.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PickedPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PickedSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PickedSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

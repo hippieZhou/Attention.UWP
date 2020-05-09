@@ -63,7 +63,6 @@
             </winui:NavigationView.PaneHeader>
             <winui:NavigationView.MenuItems>
                 <winui:NavigationViewItem helper:NavHelper.NavTo="Attention.App.Views.HomePage" Content="Unsplash" />
-                <winui:NavigationViewItem helper:NavHelper.NavTo="Attention.App.Views.DownloadPage" Content="Download" />
             </winui:NavigationView.MenuItems>
             <winui:NavigationView.PaneCustomContent>
                 <StackPanel
@@ -74,11 +73,42 @@
                     <Button
                         Width="52"
                         Height="52"
+                        Command="{x:Bind ConcreteDataContext.PickPaneCommand, Mode=OneWay}"
+                        CommandParameter="PickedSearchViewModel"
                         Style="{StaticResource Style-Button-Icon-Circle}">
                         <ContentControl
                             Width="15"
                             Foreground="#FF373238"
                             Style="{StaticResource Style-Icon-Search}" />
+                    </Button>
+                    <Button
+                        Width="52"
+                        Height="52"
+                        Command="{x:Bind ConcreteDataContext.PickPaneCommand, Mode=OneWay}"
+                        CommandParameter="PickedDownloadViewModel"
+                        Style="{StaticResource Style-Button-Icon-Circle}">
+                        <ContentControl
+                            Width="12"
+                            Foreground="#FF373238"
+                            Style="{StaticResource Style-Icon-Download}" />
+                    </Button>
+                    <Button
+                        Width="52"
+                        Height="52"
+                        Command="{x:Bind ConcreteDataContext.PickPaneCommand, Mode=OneWay}"
+                        CommandParameter="PickedSettingsViewModel"
+                        Style="{StaticResource Style-Button-Icon-Circle}">
+                        <ContentControl
+                            Width="12"
+                            Foreground="#FF373238"
+                            Style="{StaticResource Style-Icon-More}" />
+                        <!--<Button.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <MenuFlyoutItem Icon="Find" Text="Find" />
+                                <MenuFlyoutItem Icon="Download" Text="Download" />
+                                <MenuFlyoutItem Icon="Setting" Text="Settings" />
+                            </MenuFlyout>
+                        </Button.Flyout>-->
                     </Button>
                 </StackPanel>
             </winui:NavigationView.PaneCustomContent>
@@ -86,6 +116,14 @@
                 <Frame x:Name="shellFrame" />
             </Grid>
         </winui:NavigationView>
+
+        <uc:PickedPane
+            x:Name="shellPickedPane"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            DismissCommand="{x:Bind ConcreteDataContext.DismissPickPaneCommand, Mode=OneWay}"
+            ViewModel="{x:Bind ConcreteDataContext.PickedViewModel, Mode=OneWay}"
+            Visibility="Collapsed" />
 
         <mtxc:InAppNotification
             x:Name="inAppNotification"
