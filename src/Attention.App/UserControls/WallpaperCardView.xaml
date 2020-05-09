@@ -29,7 +29,7 @@
                         <Image
                             x:Name="HeroImage"
                             PointerEntered="OnPointerPressed"
-                            Source="{x:Bind ConcreteDataContext.Entity.ImageUri, Mode=OneWay}"
+                            Source="{x:Bind ConcreteDataContext.Entity.ImageUri, Mode=OneWay, TargetNullValue=ms-appx:///Assets/bantersnaps-wPMvPMD9KBI-unsplash.jpg}"
                             Stretch="UniformToFill" />
                         <Image x:Name="HeroImageMirror" Stretch="UniformToFill" />
                         <Button
@@ -48,9 +48,9 @@
                                 <Flyout Placement="Right">
                                     <TextBlock FontFamily="{StaticResource MontserratMedium}" FontSize="12">
                                         <Run Text="Photo by" />
-                                        <Run FontFamily="{StaticResource MontserratSemiBold}" Text="{x:Bind ConcreteDataContext.Entity.ImageAuthor, Mode=OneWay}" />
-                                        <Run Text="on" />
-                                        <Hyperlink NavigateUri="{x:Bind ConcreteDataContext.Entity.ImageAuthorUrl, Mode=OneWay}">Unsplash</Hyperlink>
+                                        <Hyperlink NavigateUri="{x:Bind ConcreteDataContext.Entity.ImageAuthorUrl, Mode=OneWay}">
+                                            <Run Text="{x:Bind ConcreteDataContext.Entity.ImageAuthor, Mode=OneWay}" />
+                                        </Hyperlink>
                                     </TextBlock>
                                 </Flyout>
                             </Button.Flyout>
@@ -161,7 +161,7 @@
                     FontFamily="{StaticResource MontserratSemiBold}"
                     FontSize="18"
                     Opacity="0.8"
-                    Text="{x:Bind ConcreteDataContext.Entity.Created, Mode=OneWay}"
+                    Text="Created"
                     TextLineBounds="Tight" />
                 <Button
                     x:Name="PlanTripTop"

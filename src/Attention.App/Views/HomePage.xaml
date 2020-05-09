@@ -70,7 +70,7 @@
                     Foreground="{ThemeResource ButtonForegroundPressed}"
                     Opacity="0"
                     RequestedTheme="Dark"
-                    Text="{x:Bind Created}">
+                    Text="{x:Bind ImageAuthor}">
                     <i:Interaction.Behaviors>
                         <behaviors:Fade
                             x:Name="UserUp"

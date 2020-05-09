@@ -5,6 +5,7 @@ using PixabaySharp.Enums;
 using PixabaySharp.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,8 +42,14 @@ namespace Attention.Core.Commands
                 ResponseGroup = ResponseGroup.HighResolution
             };
 
-            var imageResult = await _client.QueryImagesAsync(qb);
-            var result = _mapper.Map<IEnumerable<WallpaperDto>>(imageResult?.Images);
+            //var imageResult = await _client.QueryImagesAsync(qb);
+            //var result = _mapper.Map<IEnumerable<WallpaperDto>>(imageResult?.Images);
+
+            var result = (from p in WallpaperDto.FakeData
+                          select p).Skip(qb.Page.Value * qb.PerPage.Value).Take(qb.PerPage.Value);
+
+            await Task.Delay(1000);
+
             return Response<IEnumerable<WallpaperDto>>.Success(result);
         }
     }
