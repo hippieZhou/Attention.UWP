@@ -12,6 +12,7 @@
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d">
@@ -22,41 +23,40 @@
                 <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ScrollViewer x:Name="scrollViewer">
-            <GridView
-                Padding="8,0"
-                animations:ReorderGridAnimation.Duration="600"
-                IncrementalLoadingTrigger="Edge"
-                IsItemClickEnabled="True"
-                ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}">
-                <i:Interaction.Behaviors>
-                    <be:ImageScrollBehavior TargetControl="{Binding ElementName=scrollViewer}" />
-                </i:Interaction.Behaviors>
-                <GridView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
-                        <Setter Property="Margin" Value="6" />
-                    </Style>
-                </GridView.ItemContainerStyle>
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="dto:ExploreDto">
-                        <Grid Background="{x:Bind Background}" CornerRadius="4">
-                            <mtuc:ImageEx
-                                common:ImageLoader.Source="{Binding Thumbnail}"
-                                CacheMode="BitmapCache"
-                                IsCacheEnabled="True" />
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <mtuc:StaggeredPanel HorizontalAlignment="Left" DesiredColumnWidth="240" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
-        </ScrollViewer>
+        <GridView
+            Padding="8,0"
+            animations:ReorderGridAnimation.Duration="600"
+            IncrementalLoadingTrigger="Edge"
+            IsItemClickEnabled="True"
+            ItemsSource="{x:Bind ConcreteDataContext.Entities.Result, Mode=OneWay}"
+            Visibility="{Binding Entities.IsCompleted, Converter={StaticResource BoolToVisibilityConverter}}">
+            <GridView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource BorderlessGridViewItem}" TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="6" />
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="dto:ExploreDto">
+                    <Grid Background="{x:Bind Background}" CornerRadius="4">
+                        <mtuc:ImageEx
+                            common:ImageLoader.Source="{Binding Thumbnail}"
+                            CacheMode="BitmapCache"
+                            IsCacheEnabled="True" />
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <mtuc:StaggeredPanel HorizontalAlignment="Left" DesiredColumnWidth="240" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+        <winui:ProgressRing
+            Width="120"
+            Height="120"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsActive="True"
+            Visibility="{Binding Entities.IsNotCompleted, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>
 </UserControl>

@@ -55,13 +55,13 @@ namespace Attention.App.Behaviors
                     {
                         return;
                     }
-                    if (listGridView.ItemsSource is IncrementalLoadingCollection<ExploreItemSource, ExploreDto> items)
-                    {
-                        if (items.IsLoading)
-                            return;
+                    //if (listGridView.ItemsSource is IncrementalLoadingCollection<ExploreItemSource, ExploreDto> items)
+                    //{
+                    //    if (items.IsLoading)
+                    //        return;
 
-                        await items.LoadMoreItemsAsync(10);
-                    }
+                    //    await items.LoadMoreItemsAsync(10);
+                    //}
                 };
                 return true;
             }

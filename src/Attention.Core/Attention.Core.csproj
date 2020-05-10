@@ -125,12 +125,14 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\UnsplashCommand.cs" />
     <Compile Include="Commands\PixabayCommand.cs" />
+    <Compile Include="Common\NotifyTaskCompletion.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Context\ApplicationDbInitializer.cs" />
     <Compile Include="Context\IApplicationDbContext.cs" />
     <Compile Include="Context\IDateTime.cs" />
     <Compile Include="Context\MachineDateTime.cs" />
     <Compile Include="DependencyInjection.cs" />
+    <Compile Include="Dtos\BaseDto.cs" />
     <Compile Include="Dtos\ExploreDto.cs" />
     <Compile Include="Dtos\WallpaperDto.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />

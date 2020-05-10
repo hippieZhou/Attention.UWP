@@ -121,7 +121,6 @@
     </Compile>
     <Compile Include="Behaviors\ElementScaleAction.cs" />
     <Compile Include="Behaviors\ImageScrollBehavior.cs" />
-    <Compile Include="Businesss\ExploreItemSource.cs" />
     <Compile Include="Businesss\WallpaperItemSource.cs" />
     <Compile Include="Common\ImageLoader.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />

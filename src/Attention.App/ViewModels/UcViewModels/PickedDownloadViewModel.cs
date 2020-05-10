@@ -1,8 +1,9 @@
-﻿using Attention.App.Businesss;
+﻿using Attention.Core.Common;
 using Attention.Core.Dtos;
-using Microsoft.Toolkit.Uwp;
 using Prism.Commands;
 using Prism.Windows.AppModel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Attention.App.ViewModels.UcViewModels
@@ -10,11 +11,12 @@ namespace Attention.App.ViewModels.UcViewModels
     public class PickedDownloadViewModel: PickedPaneViewModel
     {
         public PickedDownloadViewModel(IResourceLoader resourceLoader) : base(PaneTypes.Download, resourceLoader.GetString("picked_Downloads"))
-        {
+        { 
+            Entities = new NotifyTaskCompletion<IEnumerable<ExploreDto>>(Task.FromResult(ExploreDto.FakeData));
         }
 
-        private IncrementalLoadingCollection<ExploreItemSource, ExploreDto> _entities;
-        public IncrementalLoadingCollection<ExploreItemSource, ExploreDto> Entities
+        private NotifyTaskCompletion<IEnumerable<ExploreDto>> _entities;
+        public NotifyTaskCompletion<IEnumerable<ExploreDto>> Entities
         {
             get { return _entities; }
             set { SetProperty(ref _entities, value); }
@@ -27,10 +29,9 @@ namespace Attention.App.ViewModels.UcViewModels
             {
                 if (_loadCommand == null)
                 {
-                    _loadCommand = new DelegateCommand(async () =>
+                    _loadCommand = new DelegateCommand(() =>
                     {
-                        Entities = new IncrementalLoadingCollection<ExploreItemSource, ExploreDto>();
-                        await Entities.RefreshAsync();
+                       
                     });
                 }
                 return _loadCommand;

@@ -4,16 +4,13 @@ using PixabaySharp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Unsplasharp.Models;
-using Windows.UI;
 using Windows.UI.Xaml.Media;
 
 namespace Attention.Core.Dtos
 {
-    public class WallpaperDto : IMapFrom<ImageItem>, IMapFrom<Photo>
+    public class WallpaperDto : BaseDto, IMapFrom<ImageItem>, IMapFrom<Photo>
     {
-        private readonly static Color[] colors = typeof(Colors).GetRuntimeProperties().Select(x => (Color)x.GetValue(null)).ToArray();
         public static IEnumerable<WallpaperDto> FakeData => colors.Select(x => new WallpaperDto
         {
             Background = new AcrylicBrush
@@ -38,8 +35,6 @@ namespace Attention.Core.Dtos
 
         public void Mapping(Profile profile)
         {
-            var random = new Random(DateTime.Now.Millisecond);
-
             profile.CreateMap<ImageItem, WallpaperDto>()
                 .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => src.FullHDImageURL ?? src.LargeImageURL))
                 .ForMember(des => des.ImageUri, opt => opt.MapFrom(src => src.FullHDImageURL ?? src.LargeImageURL))
