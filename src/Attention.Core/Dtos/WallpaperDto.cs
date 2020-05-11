@@ -2,30 +2,25 @@
 using AutoMapper;
 using PixabaySharp.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Unsplasharp.Models;
 using Windows.UI.Xaml.Media;
 
 namespace Attention.Core.Dtos
 {
-    public class WallpaperDto : BaseDto, IMapFrom<ImageItem>, IMapFrom<Photo>
+    public class WallpaperDto : BaseDto<WallpaperDto>, IMapFrom<ImageItem>, IMapFrom<Photo>
     {
-        public static IEnumerable<WallpaperDto> FakeData => colors.Select(x => new WallpaperDto
+        static WallpaperDto()
         {
-            Background = new AcrylicBrush
+            FakeData = colors.Select(x => new WallpaperDto
             {
-                BackgroundSource = AcrylicBackgroundSource.Backdrop,
-                TintColor = x,
-                FallbackColor = x,
-                TintOpacity = 1.0,
-                TintLuminosityOpacity = 1.0,
-            },
-            ImageAuthor = DateTime.Now.Year.ToString(),
-            ImageAuthorUrl = "https://www.bing.com",
-            ImageUri = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg",
-            Thumbnail = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg"
-        });
+                Background =CreateAcrylicBrush(x),
+                ImageAuthor = DateTime.Now.Year.ToString(),
+                ImageAuthorUrl = "https://www.bing.com",
+                ImageUri = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg",
+                Thumbnail = "ms-appx:///Assets/Images/bantersnaps-wPMvPMD9KBI-unsplash.jpg"
+            });
+        }
 
         public Brush Background { get; set; }
         public string Thumbnail { get; set; }
@@ -45,18 +40,11 @@ namespace Attention.Core.Dtos
             profile.CreateMap<Photo, WallpaperDto>();
         }
 
-        private AcrylicBrush CreateBackground()
+        private Brush CreateBackground()
         {
             var random = new Random();
             var index = random.Next(0, colors.Length);
-            return new AcrylicBrush
-            {
-                BackgroundSource = AcrylicBackgroundSource.Backdrop,
-                TintColor = colors[index],
-                FallbackColor = colors[index],
-                TintOpacity = 1.0,
-                TintLuminosityOpacity = 1.0,
-            };
+            return CreateAcrylicBrush(colors[index]);
         }
     }
 }

@@ -62,7 +62,7 @@
                 <uc:Logo x:Name="Logo" Margin="62,0,24,0" />
             </winui:NavigationView.PaneHeader>
             <winui:NavigationView.MenuItems>
-                <winui:NavigationViewItem helper:NavHelper.NavTo="Attention.App.Views.HomePage" Content="Unsplash" />
+                <winui:NavigationViewItem helper:NavigationHelper.NavTo="Attention.App.Views.HomePage" Content="Unsplash" />
             </winui:NavigationView.MenuItems>
             <winui:NavigationView.PaneCustomContent>
                 <StackPanel

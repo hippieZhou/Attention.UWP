@@ -1,9 +1,4 @@
-﻿using Attention.App.Businesss;
-using Attention.App.Models;
-using Attention.Core.Dtos;
-using Microsoft.Toolkit.Uwp;
-using Microsoft.Xaml.Interactivity;
-using System;
+﻿using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -47,7 +42,7 @@ namespace Attention.App.Behaviors
             scrollViewer = TargetControl as ScrollViewer;
             if (scrollViewer != null)
             {
-                scrollViewer.ViewChanging += async (sender, e) =>
+                scrollViewer.ViewChanging +=  (sender, e) =>
                 {
                     //https://www.cnblogs.com/Damai-Pang/p/5209093.html
                     double verticalOffset = ((ScrollViewer)sender).VerticalOffset;
@@ -55,13 +50,6 @@ namespace Attention.App.Behaviors
                     {
                         return;
                     }
-                    //if (listGridView.ItemsSource is IncrementalLoadingCollection<ExploreItemSource, ExploreDto> items)
-                    //{
-                    //    if (items.IsLoading)
-                    //        return;
-
-                    //    await items.LoadMoreItemsAsync(10);
-                    //}
                 };
                 return true;
             }

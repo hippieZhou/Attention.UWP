@@ -33,7 +33,11 @@
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
         <ScrollViewer>
-            <StackPanel Margin="24" Spacing="24">
+            <StackPanel
+                x:Name="rootPanel"
+                Margin="24"
+                HorizontalAlignment="Center"
+                Spacing="24">
                 <winui:RadioButtons>
                     <winui:RadioButtons.Header>
                         <TextBlock x:Uid="settings_ThemeMode" Style="{ThemeResource TitleTextBlockStyle}" />
@@ -103,7 +107,7 @@
                             UriPrefix="ms-appx://" />
                     </mtuc:HeaderedContentControl.Content>
                 </mtuc:HeaderedContentControl>
-                <mtuc:HeaderedContentControl>
+                <mtuc:HeaderedContentControl HorizontalContentAlignment="Center">
                     <mtuc:HeaderedContentControl.Header>
                         <TextBlock x:Uid="settings_Contract" Style="{ThemeResource TitleTextBlockStyle}" />
                     </mtuc:HeaderedContentControl.Header>
@@ -151,7 +155,41 @@
                         </StackPanel>
                     </mtuc:HeaderedContentControl.Content>
                 </mtuc:HeaderedContentControl>
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontFamily="{StaticResource MontserratBold}"
+                    Text="{Binding Source={StaticResource AppSettings}, Path=Version}" />
             </StackPanel>
         </ScrollViewer>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource ExpandedModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="rootPanel.Width" Value="520" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource CompactModeThresholdWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="rootPanel.Width" Value="480" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="rootPanel.Width" Value="340" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </UserControl>

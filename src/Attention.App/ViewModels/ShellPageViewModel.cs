@@ -142,7 +142,7 @@ namespace Attention.App.ViewModels
             if (navItem == null)
                 throw new ArgumentNullException(nameof(navItem));
 
-            var pageName = NavHelper.GetNavTo(navItem);
+            var pageName = NavigationHelper.GetNavTo(navItem);
             var pageType = Type.GetType(pageName);
             _shellFrame.Navigate(pageType);
         }

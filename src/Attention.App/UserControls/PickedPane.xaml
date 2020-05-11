@@ -90,6 +90,7 @@
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             Content="{x:Bind ViewModel, Mode=OneWay}"
-            ContentTemplateSelector="{StaticResource PickedDataTemplateSelector}" />
+            ContentTemplateSelector="{StaticResource PickedDataTemplateSelector}"
+            DataContext="{x:Bind ViewModel, Mode=OneWay}" />
     </Grid>
 </UserControl>

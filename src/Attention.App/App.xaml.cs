@@ -99,15 +99,15 @@ namespace Attention.App
                 Color bg = sender.GetColorValue(UIColorType.Accent);
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
-                    //todo
+                    ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+                    var isDarkTheme = Settings.Theme == ElementTheme.Default ? Application.Current.RequestedTheme == ApplicationTheme.Dark : Settings.Theme == ElementTheme.Dark;
+                    titleBar.ButtonForegroundColor = isDarkTheme ? (Color?)Colors.White : (Color?)Colors.Black;
                 }, Windows.UI.Core.CoreDispatcherPriority.Normal);
             };
 
             Settings.EnableCompact(Settings.IsCompact);
             Settings.EnableSound(Settings.SoundPlayerState);
             #endregion
-
-            EnginContext.Initialize(new GeneralEngine(Container));
 
             await Task.Yield();
         }
@@ -126,6 +126,7 @@ namespace Attention.App
             Container.RegisterType<PickedPaneViewModel, PickedDownloadViewModel>(nameof(PickedDownloadViewModel));
             Container.RegisterType<PickedPaneViewModel, PickedSettingsViewModel>(nameof(PickedSettingsViewModel));
 
+            EnginContext.Initialize(new GeneralEngine(Container));
             return base.OnInitializeAsync(args);
         }
     }

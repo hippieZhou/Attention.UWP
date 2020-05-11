@@ -12,7 +12,6 @@ namespace Attention.App.ViewModels.UcViewModels
     {
         public PickedDownloadViewModel(IResourceLoader resourceLoader) : base(PaneTypes.Download, resourceLoader.GetString("picked_Downloads"))
         { 
-            Entities = new NotifyTaskCompletion<IEnumerable<ExploreDto>>(Task.FromResult(ExploreDto.FakeData));
         }
 
         private NotifyTaskCompletion<IEnumerable<ExploreDto>> _entities;
@@ -31,7 +30,7 @@ namespace Attention.App.ViewModels.UcViewModels
                 {
                     _loadCommand = new DelegateCommand(() =>
                     {
-                       
+                        Entities = new NotifyTaskCompletion<IEnumerable<ExploreDto>>(Task.FromResult(ExploreDto.FakeData));
                     });
                 }
                 return _loadCommand;

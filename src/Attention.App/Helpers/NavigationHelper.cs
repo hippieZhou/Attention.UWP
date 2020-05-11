@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 
 namespace Attention.App.Helpers
 {
-    public class NavHelper
+    public class NavigationHelper
     {
         public static string GetNavTo(DependencyObject obj)
         {
@@ -17,6 +17,6 @@ namespace Attention.App.Helpers
 
         // Using a DependencyProperty as the backing store for NavTo.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NavToProperty =
-            DependencyProperty.RegisterAttached("NavTo", typeof(string), typeof(NavHelper), new PropertyMetadata(default));
+            DependencyProperty.RegisterAttached("NavTo", typeof(string), typeof(NavigationHelper), new PropertyMetadata(default));
     }
 }
