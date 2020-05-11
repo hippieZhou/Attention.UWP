@@ -16,13 +16,8 @@ namespace Attention.App.Views
         public ShellPage()
         {
             this.InitializeComponent();
-            ConcreteDataContext.Initialize(shellNav, shellFrame, shellPickedPane, inAppNotification);
-            this.DataContextChanged += (sender, e) =>
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConcreteDataContext)));
-            };
+            this.DataContextChanged += (sender, e) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ConcreteDataContext)));
 
-            CustomizeTitleBar();
             void CustomizeTitleBar()
             {
                 var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -49,6 +44,10 @@ namespace Attention.App.Views
                 viewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
                 viewTitleBar.ButtonForegroundColor = Colors.DarkGray;
             }
+
+            CustomizeTitleBar();
+
+            ConcreteDataContext.Initialize(shellNav, shellFrame, shellPickedPane, inAppNotification);
 
             Loaded += (sender, e) => 
             {
