@@ -9,10 +9,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mtuc="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
     mc:Ignorable="d">
     <UserControl.Resources>
+
+        <x:String x:Key="About" xml:space="preserve">
+This app is the interactive companion to the Fluent Design System web site .
+Source code: [GitHub](https://github.com/hippieZhou/Attention.UWP) .
+To clone the source repository: git clone https://github.com/hippieZhou/Attention.UWP.git
+        </x:String>
+
+        <x:String x:Key="Dependencies" xml:space="preserve">
+## Toolkit
+            
+- [Windows UI Library](https://github.com/microsoft/microsoft-ui-xaml)
+- [WindowsCommunityToolkit](https://github.com/windows-toolkit/WindowsCommunityToolkit)
+- [WindowsCompositionSamples](https://github.com/microsoft/WindowsCompositionSamples)
+- [Lottie-Windows](https://github.com/windows-toolkit/Lottie-Windows)
+- [Microsoft.Xaml.Behaviors.Uwp.Managed](https://github.com/Microsoft/XamlBehaviors)
+- [Prism.Unity(6.3.0)](https://github.com/PrismLibrary/Prism)
+- [AutoMapper](https://github.com/AutoMapper/AutoMapper)
+- [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+- [unsplasharp](https://github.com/rootasjey/unsplasharp)
+- [Serilog](https://github.com/serilog/serilog)
+
+## Helpers
+
+- [JuniperPhoton](https://github.com/JuniperPhoton)
+- [JustinXinLiu](https://github.com/JustinXinLiu)
+- [Niels Laute](https://github.com/niels9001)
+- [DinoChan](https://github.com/DinoChan)
+- [hhchaos](https://github.com/HHChaos)
+- [cnbluefire](https://github.com/cnbluefire)
+- [h82258652](https://github.com/h82258652)
+        </x:String>
+
         <Style x:Key="SocialPathStyle" TargetType="Path">
             <Setter Property="Fill" Value="{ThemeResource ButtonForegroundThemeBrush}" />
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
@@ -38,7 +68,7 @@
                 Margin="24"
                 HorizontalAlignment="Center"
                 Spacing="24">
-                <winui:RadioButtons>
+                <winui:RadioButtons MaxColumns="3">
                     <winui:RadioButtons.Header>
                         <TextBlock x:Uid="settings_ThemeMode" Style="{ThemeResource TitleTextBlockStyle}" />
                     </winui:RadioButtons.Header>
@@ -70,7 +100,7 @@
                         </RadioButton.CommandParameter>
                     </RadioButton>
                 </winui:RadioButtons>
-                <winui:RadioButtons>
+                <winui:RadioButtons MaxColumns="2">
                     <winui:RadioButtons.Header>
                         <TextBlock x:Uid="settings_Language" Style="{ThemeResource TitleTextBlockStyle}" />
                     </winui:RadioButtons.Header>
@@ -92,7 +122,11 @@
                         <TextBlock x:Uid="settings_About" Style="{ThemeResource TitleTextBlockStyle}" />
                     </mtuc:HeaderedContentControl.Header>
                     <mtuc:HeaderedContentControl.Content>
-                        <TextBlock Text="{Binding Source={StaticResource AppSettings}, Path=Version}" />
+                        <mtuc:MarkdownTextBlock
+                            Background="Transparent"
+                            SchemeList="companyportal,randomscheme"
+                            Text="{StaticResource About}"
+                            UriPrefix="ms-appx://" />
                     </mtuc:HeaderedContentControl.Content>
                 </mtuc:HeaderedContentControl>
                 <mtuc:HeaderedContentControl>
@@ -103,7 +137,7 @@
                         <mtuc:MarkdownTextBlock
                             Background="Transparent"
                             SchemeList="companyportal,randomscheme"
-                            Text="{x:Bind ConcreteDataContext.Dependencies, Mode=OneWay}"
+                            Text="{StaticResource Dependencies}"
                             UriPrefix="ms-appx://" />
                     </mtuc:HeaderedContentControl.Content>
                 </mtuc:HeaderedContentControl>
