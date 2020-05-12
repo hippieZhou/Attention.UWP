@@ -22,6 +22,7 @@ using Windows.ApplicationModel.Resources;
 using Windows.Globalization;
 using Windows.Storage;
 using Windows.UI;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
@@ -59,6 +60,9 @@ namespace Attention.App
                 EventAggregator.GetEvent<RaisedExceptionEvent>().Publish(e.Exception);
                 e.Handled = true;
             };
+
+            TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
         protected override async Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)

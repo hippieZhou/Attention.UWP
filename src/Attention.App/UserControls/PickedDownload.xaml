@@ -21,6 +21,7 @@
                 <ic:InvokeCommandAction Command="{x:Bind ConcreteDataContext.LoadCommand, Mode=OneWay}" />
             </ic:EventTriggerBehavior>
         </i:Interaction.Behaviors>
+
         <GridView
             Padding="8,0"
             animations:ReorderGridAnimation.Duration="600"
@@ -55,6 +56,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             IsActive="True"
-            Visibility="{x:Bind ConcreteDataContext.Entities.IsNotCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+            Visibility="{Binding Entities.IsNotCompleted, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>
 </UserControl>

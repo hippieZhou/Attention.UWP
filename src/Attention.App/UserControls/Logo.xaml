@@ -5,11 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Attention.App.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="24"
+    d:DesignWidth="24"
     mc:Ignorable="d">
 
     <Grid
-        Width="40"
-        Height="20"
+        Width="24"
+        Height="24"
         RenderTransformOrigin="0.5,0.5">
         <Image Source="ms-appx:///Assets/Images/Unsplash.png" />
     </Grid>

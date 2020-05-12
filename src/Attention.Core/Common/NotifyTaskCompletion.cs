@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 
 namespace Attention.Core.Common
 {
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/archive/msdn-magazine/2014/march/async-programming-patterns-for-asynchronous-mvvm-applications-data-binding
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
     public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
     {
         public NotifyTaskCompletion(Task<TResult> task)
