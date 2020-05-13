@@ -56,6 +56,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             IsActive="True"
-            Visibility="{Binding Entities.IsNotCompleted, Converter={StaticResource BoolToVisibilityConverter}}" />
+            Visibility="{x:Bind ConcreteDataContext.Entities.IsNotCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
     </Grid>
 </UserControl>
