@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System;
+using Attention.Core.Extensions;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Attention.App.ViewModels.UcViewModels
 {
@@ -36,8 +38,7 @@ namespace Attention.App.ViewModels.UcViewModels
                     _loadCommand = new DelegateCommand(async () =>
                    {
                        var list = await Task.Run(() => _dataService.GetDownloadItems(1, 100));
-                       Entities = new NotifyTaskCompletion<ObservableCollection<DownloadDto>>(
-                           Task.FromResult(new ObservableCollection<DownloadDto>(list)));
+                       Entities = new NotifyTaskCompletion<ObservableCollection<DownloadDto>>(Task.FromResult(list.ToObservableCollection()));
                    });
                 }
                 return _loadCommand;

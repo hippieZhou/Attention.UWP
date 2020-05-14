@@ -39,20 +39,14 @@ namespace Attention.Core.Services
         {
             ICollection<Brush> brushs = Brushs.ToList();
 
-            //var generator = new Faker<WallpaperDto>()
-            //    .RuleFor(i => i.Background, f => f.Random.CollectionItem(brushs))
-            //    .RuleFor(i => i.Thumbnail, f => f.Image.PlaceholderUrl(320, 240))
-            //    .RuleFor(i => i.ImageUri, f => f.Image.PicsumUrl())
-            //    .RuleFor(i => i.Author, f => f.Person.FullName)
-            //    .RuleFor(i => i.AuthorUri, f => f.Person.Avatar)
-            //    .RuleFor(i => i.AuthorAvatar, f => f.Person.Avatar);
-
             var generator = new Faker<WallpaperDto>()
               .RuleFor(i => i.Background, f => f.Random.CollectionItem(brushs))
+              .RuleFor(i => i.Location, f => f.Person.Address.State)
               .RuleFor(i => i.Thumbnail, f => f.Random.CollectionItem(_localImages))
-              .RuleFor(i => i.Title, f => f.Lorem.Slug())
-              .RuleFor(i => i.Description, f => f.Lorem.Text())
+              .RuleFor(i => i.Title, f => f.Lorem.Word())
+              .RuleFor(i => i.Description, f => string.Join(" ", f.Lorem.Words(20)))
               .RuleFor(i => i.ImageUri, f => f.Random.CollectionItem(_localImages))
+              .RuleFor(i => i.ImageDownloadUri, f => f.Random.CollectionItem(_localImages))
               .RuleFor(i => i.Author, f => f.Person.FullName)
               .RuleFor(i => i.AuthorUri, f => f.Person.Avatar)
               .RuleFor(i => i.AuthorAvatar, f => f.Person.Avatar);
@@ -69,7 +63,9 @@ namespace Attention.Core.Services
                 .RuleFor(i => i.Title, f => f.Lorem.Slug())
                 .RuleFor(i => i.Thumbnail, f => f.Random.CollectionItem(_localImages))
                 .RuleFor(i => i.CreatedAt, f => f.Date.Past());
+
             await Task.Delay(1000);
+
             return generator.GenerateForever().Skip(page * perPage).Take(perPage);
         }
     }

@@ -23,11 +23,11 @@ namespace Attention.App.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private AdaptiveGridView _adaptiveGV;
 
-        private IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> _wallpapers;
-        public IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> Wallpapers
+        private IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> _entities;
+        public IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto> Entities
         {
-            get { return _wallpapers; }
-            set { SetProperty(ref _wallpapers, value); }
+            get { return _entities; }
+            set { SetProperty(ref _entities, value); }
         }
 
         public HomePageViewModel(ILoggerFacade logger, IEventAggregator eventAggregator)
@@ -36,8 +36,15 @@ namespace Attention.App.ViewModels
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
 
-        private WallpaperCardViewModel _cardViewModel;
-        public WallpaperCardViewModel CardViewModel
+        private Visibility _notFound;
+        public Visibility NotFound
+        {
+            get { return _notFound; }
+            set { SetProperty(ref _notFound, value); }
+        }
+
+        private DetailCardViewModel _cardViewModel;
+        public DetailCardViewModel CardViewModel
         {
             get { return _cardViewModel; }
             set { SetProperty(ref _cardViewModel, value); }
@@ -61,7 +68,7 @@ namespace Attention.App.ViewModels
                             }
                         };
 
-                        CardViewModel = new WallpaperCardViewModel();
+                        CardViewModel = new DetailCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
                         {
                             _adaptiveGV.ScrollIntoView(args.Item1);
@@ -73,7 +80,7 @@ namespace Attention.App.ViewModels
                             await _adaptiveGV.TryStartConnectedAnimationAsync(args.Item2, args.Item1, "connectedElement");
                         };
 
-                        Wallpapers = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
+                        Entities = new IncrementalLoadingCollection<WallpaperItemSource, WallpaperDto>(10, () =>
                          {
                          }, () =>
                          {
@@ -82,6 +89,11 @@ namespace Attention.App.ViewModels
                              _logger.Log(ex.ToString(), Category.Exception, Priority.High);
                              _eventAggregator.GetEvent<NotificationEvent>().Publish("THERE HAVE SOMETHING WRONG");
                          });
+
+                        Entities.CollectionChanged += (sender, e) => 
+                        {
+                            NotFound = Entities?.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+                        };
                     });
                 }
                 return _loadCommand;
@@ -97,7 +109,7 @@ namespace Attention.App.ViewModels
                 {
                     _refreshCommand = new DelegateCommand(async () =>
                     {
-                        await Wallpapers.RefreshAsync();
+                        await Entities.RefreshAsync();
                     });
                 }
                 return _refreshCommand;

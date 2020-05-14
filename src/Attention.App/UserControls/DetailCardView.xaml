@@ -161,7 +161,7 @@
                     FontFamily="{StaticResource MontserratSemiBold}"
                     FontSize="18"
                     Opacity="0.8"
-                    Text="Created"
+                    Text="{x:Bind ConcreteDataContext.Entity.Location, Mode=OneWay}"
                     TextLineBounds="Tight" />
                 <Button
                     x:Name="PlanTripTop"

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Globalization;
 using Windows.Storage;
+using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 
 namespace Attention.App.Models
@@ -61,6 +62,18 @@ namespace Attention.App.Models
             }
         }
 
+        public bool IsLiveTitle
+        {
+            get { return ReadSettings(nameof(IsLiveTitle), false); }
+            set
+            {
+                SaveSettings(nameof(IsLiveTitle), value);
+                RaisePropertyChanged(nameof(IsLiveTitle));
+                EnableLiveTitle(IsLiveTitle);
+            }
+        }
+
+
         public ElementSoundPlayerState SoundPlayerState
         {
             get { return (ElementSoundPlayerState)ReadSettings(nameof(SoundPlayerState), (int)ElementSoundPlayerState.Off); }
@@ -89,6 +102,12 @@ namespace Attention.App.Models
                     Application.Current.Resources.MergedDictionaries.Remove(dic);
                 }
             }
+        }
+
+        public void EnableLiveTitle(bool isLiveTitle)
+        {
+            TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(isLiveTitle);
         }
 
         public void EnableSound(ElementSoundPlayerState soundPlayerState, bool withSpatial = false)

@@ -123,6 +123,7 @@
     <Compile Include="Bus\IMediatorHandler.cs" />
     <Compile Include="Bus\InMemoryBus.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\DownloadCommand.cs" />
     <Compile Include="Commands\UnsplashCommand.cs" />
     <Compile Include="Commands\PixabayCommand.cs" />
     <Compile Include="Common\NotifyTaskCompletion.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Entities\WallpaperEntity.cs" />
     <Compile Include="Extensions\BrushExtensions.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\TEnumExtension.cs" />
     <Compile Include="Framework\EnginContext.cs" />
     <Compile Include="Framework\IEngine.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DesignDataService.cs" />
     <Compile Include="Services\IDataService.cs" />
+    <Compile Include="Services\IDownloadService.cs" />
     <Compile Include="Uow\AsyncRepository.cs" />
     <Compile Include="Uow\IAsyncRepository.cs" />
     <EmbeddedResource Include="Properties\Attention.Core.rd.xml" />

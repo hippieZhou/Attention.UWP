@@ -42,6 +42,9 @@ namespace Attention.Core
             container.RegisterType<UnsplashCommand>();
             container.RegisterType<UnsplashCommandHandler>();
 
+            container.RegisterType<DownloadCommand>();
+            container.RegisterType<DownloadCommandHandler>();
+
             container.RegisterType<IMediatorHandler, InMemoryBus>();
 
             #endregion

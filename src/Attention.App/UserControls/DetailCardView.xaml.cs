@@ -92,17 +92,17 @@ namespace Attention.App.UserControls
             }
         }
 
-        public WallpaperCardViewModel ConcreteDataContext
+        public DetailCardViewModel ConcreteDataContext
         {
-            get { return (WallpaperCardViewModel)GetValue(ConcreteDataContextProperty); }
+            get { return (DetailCardViewModel)GetValue(ConcreteDataContextProperty); }
             set { SetValue(ConcreteDataContextProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ConcreteDataContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConcreteDataContextProperty =
-            DependencyProperty.Register("ConcreteDataContext", typeof(WallpaperCardViewModel), typeof(DetailCardView), new PropertyMetadata(null, (d, e) =>
+            DependencyProperty.Register("ConcreteDataContext", typeof(DetailCardViewModel), typeof(DetailCardView), new PropertyMetadata(null, (d, e) =>
              {
-                 if (d is DetailCardView handler && e.NewValue is WallpaperCardViewModel vm)
+                 if (d is DetailCardView handler && e.NewValue is DetailCardViewModel vm)
                  {
                      vm.Initialize(handler.HeroImage, handler.Header, handler.Pane2Panel);
                  }

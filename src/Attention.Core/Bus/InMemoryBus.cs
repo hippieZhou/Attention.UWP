@@ -34,7 +34,6 @@ namespace Attention.Core.Bus
             var handler = EnginContext.Current.Resolve(handlerType);
             var methodInfo = handler.GetType().GetMethod("Handle");
             var result = methodInfo?.Invoke(handler, new object[] { request, cancellationToken }) as Task<TRESPONSE>;
-            //await Task.Delay(1000);
             return await result;
         }
     }

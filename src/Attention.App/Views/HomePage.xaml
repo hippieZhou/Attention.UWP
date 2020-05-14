@@ -137,7 +137,7 @@
             ItemClickCommand="{x:Bind ConcreteDataContext.ItemClickCommand}"
             ItemHeight="260"
             ItemTemplate="{StaticResource WallpaperDataTemplate}"
-            ItemsSource="{x:Bind ConcreteDataContext.Wallpapers, Mode=OneWay}"
+            ItemsSource="{x:Bind ConcreteDataContext.Entities, Mode=OneWay}"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SelectionMode="None"
             ShowsScrollingPlaceholders="False">
@@ -156,13 +156,21 @@
                     Padding="0,12,0,32"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    Visibility="{x:Bind ConcreteDataContext.Entities.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <muxc:AnimatedVisualPlayer Width="240">
                         <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Animations/loading-animation.json" />
                     </muxc:AnimatedVisualPlayer>
                 </Grid>
             </mtuc:AdaptiveGridView.Footer>
         </mtuc:AdaptiveGridView>
+
+        <muxc:AnimatedVisualPlayer
+            Width="240"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="{x:Bind ConcreteDataContext.NotFound, Mode=OneWay}">
+            <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Animations/404-animation.json" />
+        </muxc:AnimatedVisualPlayer>
 
         <Button
             Width="40"
@@ -174,7 +182,7 @@
             Command="{x:Bind ConcreteDataContext.RefreshCommand, Mode=OneWay}"
             CornerRadius="20"
             Style="{StaticResource IconOnlyWithoutBackgroundButton}"
-            Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource ReversedBoolToVisibilityConverter}}">
+            Visibility="{x:Bind ConcreteDataContext.Entities.IsLoading, Mode=OneWay, Converter={StaticResource ReversedBoolToVisibilityConverter}}">
             <animations:Implicit.ShowAnimations>
                 <animations:TranslationAnimation
                     From="100, 0, 0"

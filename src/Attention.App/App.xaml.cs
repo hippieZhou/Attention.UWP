@@ -1,11 +1,13 @@
 ﻿using Attention.App.Events;
 using Attention.App.Extensions;
 using Attention.App.Models;
+using Attention.App.Services;
 using Attention.App.ViewModels.UcViewModels;
 using Attention.App.Views;
 using Attention.Core;
 using Attention.Core.Context;
 using Attention.Core.Framework;
+using Attention.Core.Services;
 using Microsoft.Practices.Unity;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Prism.Unity.Windows;
@@ -22,7 +24,6 @@ using Windows.ApplicationModel.Resources;
 using Windows.Globalization;
 using Windows.Storage;
 using Windows.UI;
-using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
@@ -60,9 +61,6 @@ namespace Attention.App
                 EventAggregator.GetEvent<RaisedExceptionEvent>().Publish(e.Exception);
                 e.Handled = true;
             };
-
-            TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
         }
 
         protected override async Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
@@ -110,6 +108,7 @@ namespace Attention.App
             };
 
             Settings.EnableCompact(Settings.IsCompact);
+            Settings.EnableLiveTitle(Settings.IsLiveTitle);
             Settings.EnableSound(Settings.SoundPlayerState);
             #endregion
 
@@ -129,6 +128,8 @@ namespace Attention.App
             Container.RegisterType<PickedPaneViewModel, PickedSearchViewModel>(nameof(PickedSearchViewModel));
             Container.RegisterType<PickedPaneViewModel, PickedDownloadViewModel>(nameof(PickedDownloadViewModel));
             Container.RegisterType<PickedPaneViewModel, PickedSettingsViewModel>(nameof(PickedSettingsViewModel));
+
+            Container.RegisterType<IDownloadService, DownloadService>();
 
             EnginContext.Initialize(new GeneralEngine(Container));
             return base.OnInitializeAsync(args);

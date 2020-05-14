@@ -1,15 +1,19 @@
 ﻿using Attention.App.Extensions;
-using Attention.App.Models;
+using Attention.Core.Bus;
+using Attention.Core.Commands;
 using Attention.Core.Dtos;
+using Attention.Core.Framework;
 using Prism.Commands;
 using System;
+using System.IO;
 using System.Windows.Input;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace Attention.App.ViewModels.UcViewModels
 {
-    public class WallpaperCardViewModel : UcBaseViewModel
+    public class DetailCardViewModel : UcBaseViewModel
     {
         private FrameworkElement _heroImage;
         private FrameworkElement _header;
@@ -56,14 +60,25 @@ namespace Attention.App.ViewModels.UcViewModels
             {
                 if (_downloadCommand == null)
                 {
-                    _downloadCommand = new DelegateCommand(() =>
+                    _downloadCommand = new DelegateCommand(async () =>
                     {
-
+                        StorageFolder folder = await App.Settings.GetSavedFolderAsync();
+                        var command = new DownloadCommand()
+                        {
+                            FolderName = folder.Path,
+                            FileName = Path.GetFileName(new Uri(Entity.ImageDownloadUri).AbsolutePath),
+                            DownloadUri = Entity.ImageDownloadUri,
+                        };
+                        var bus = EnginContext.Current.Resolve<IMediatorHandler>();
+                        if (bus == null)
+                        {
+                            throw new ArgumentNullException($"服务未找到：{typeof(IMediatorHandler)}");
+                        }
+                        var response = await bus.Send(command);
                     });
                 }
                 return _downloadCommand;
             }
-
         }
 
         private ICommand _browseCommand;
