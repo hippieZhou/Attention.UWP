@@ -70,7 +70,7 @@
                     Foreground="{ThemeResource ButtonForegroundPressed}"
                     Opacity="0"
                     RequestedTheme="Dark"
-                    Text="{x:Bind ImageAuthor}">
+                    Text="{x:Bind Author}">
                     <i:Interaction.Behaviors>
                         <behaviors:Fade
                             x:Name="UserUp"
@@ -158,7 +158,7 @@
                     VerticalAlignment="Bottom"
                     Visibility="{x:Bind ConcreteDataContext.Wallpapers.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <muxc:AnimatedVisualPlayer Width="240">
-                        <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Data/loading-animation.json" />
+                        <lottie:LottieVisualSource UriSource="ms-appx:///Assets/Animations/loading-animation.json" />
                     </muxc:AnimatedVisualPlayer>
                 </Grid>
             </mtuc:AdaptiveGridView.Footer>
@@ -203,7 +203,7 @@
             </Button.Content>
         </Button>
 
-        <uc:WallpaperCardView ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
+        <uc:DetailCardView ConcreteDataContext="{x:Bind ConcreteDataContext.CardViewModel, Mode=OneWay}" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">

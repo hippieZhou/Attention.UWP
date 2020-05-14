@@ -2,6 +2,7 @@
 using Attention.Core.Commands;
 using Attention.Core.Context;
 using Attention.Core.Mappings;
+using Attention.Core.Services;
 using Attention.Core.Uow;
 using AutoMapper;
 using Microsoft.Practices.Unity;
@@ -44,6 +45,8 @@ namespace Attention.Core
             container.RegisterType<IMediatorHandler, InMemoryBus>();
 
             #endregion
+
+            container.RegisterType<IDataService, DesignDataService>();
 
             return container;
         }

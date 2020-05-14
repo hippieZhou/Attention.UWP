@@ -28,30 +28,30 @@ namespace Attention.Core.Common
             catch
             {
             }
+
             var propertyChanged = PropertyChanged;
             if (propertyChanged == null)
                 return;
 
-            propertyChanged(this, new PropertyChangedEventArgs("Status"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsCompleted"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsNotCompleted"));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(Status)));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCompleted)));
+            propertyChanged(this, new PropertyChangedEventArgs(nameof(IsNotCompleted)));
 
             if (task.IsCanceled)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsCanceled"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsCanceled)));
             }
             else if (task.IsFaulted)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsFaulted"));
-                propertyChanged(this, new PropertyChangedEventArgs("Exception"));
-                propertyChanged(this,
-                  new PropertyChangedEventArgs("InnerException"));
-                propertyChanged(this, new PropertyChangedEventArgs("ErrorMessage"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsFaulted)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(Exception)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(InnerException)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(ErrorMessage)));
             }
             else
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsSuccessfullyCompleted"));
-                propertyChanged(this, new PropertyChangedEventArgs("Result"));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(IsSuccessfullyCompleted)));
+                propertyChanged(this, new PropertyChangedEventArgs(nameof(Result)));
             }
         }
 

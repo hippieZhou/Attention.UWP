@@ -4,11 +4,12 @@ using System;
 namespace Attention.App.ViewModels.UcViewModels
 {
 	[Flags]
-	public enum PaneTypes
+	public enum PaneTypes : byte
 	{
-		Search,
-		Download,
-		Settings
+		None = 1 << 0,
+		Search = 1 << 1,
+		Download = 1 << 2,
+		Settings = 1 << 3
 	}
 
     public abstract class PickedPaneViewModel: ViewModelBase

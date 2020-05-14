@@ -64,7 +64,7 @@ namespace Attention.App.ViewModels
                         CardViewModel = new WallpaperCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
                         {
-                            _adaptiveGV.ScrollIntoView(args.Item1, ScrollIntoViewAlignment.Default);
+                            _adaptiveGV.ScrollIntoView(args.Item1);
                             _adaptiveGV.UpdateLayout();
                             if (_adaptiveGV.ContainerFromItem(args.Item1) is GridViewItem container)
                             {

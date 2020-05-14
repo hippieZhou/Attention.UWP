@@ -1,11 +1,11 @@
 ﻿using Attention.Core.Dtos;
+using Attention.Core.Services;
 using AutoMapper;
 using PixabaySharp;
 using PixabaySharp.Enums;
 using PixabaySharp.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,11 +22,16 @@ namespace Attention.Core.Commands
     public class PixabayCommandHandler : ICommandHandler<PixabayCommand, Response<IEnumerable<WallpaperDto>>>
     {
         private readonly PixabaySharpClient _client;
+        private readonly IDataService _dataService;
         private readonly IMapper _mapper;
 
-        public PixabayCommandHandler(PixabaySharpClient client, IMapper mapper)
+        public PixabayCommandHandler(
+            PixabaySharpClient client,
+            IDataService dataService,
+            IMapper mapper)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
+            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -45,10 +50,7 @@ namespace Attention.Core.Commands
             //var imageResult = await _client.QueryImagesAsync(qb);
             //var result = _mapper.Map<IEnumerable<WallpaperDto>>(imageResult?.Images);
 
-            var result = (from p in WallpaperDto.FakeData
-                          select p).Skip(qb.Page.Value * qb.PerPage.Value).Take(qb.PerPage.Value);
-
-            await Task.Delay(1000);
+            var result = await _dataService.GetWallpaperItems(qb.Page.Value, qb.PerPage.Value);
 
             return Response<IEnumerable<WallpaperDto>>.Success(result);
         }

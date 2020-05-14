@@ -35,10 +35,10 @@
                 </Style>
             </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="dto:ExploreDto">
+                <DataTemplate x:DataType="dto:DownloadDto">
                     <Grid Background="{x:Bind Background}" CornerRadius="4">
                         <mtuc:ImageEx
-                            common:ImageLoader.Source="{Binding Thumbnail}"
+                            common:ImageLoader.Source="{x:Bind Thumbnail}"
                             CacheMode="BitmapCache"
                             IsCacheEnabled="True" />
                     </Grid>
