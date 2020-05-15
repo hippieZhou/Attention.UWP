@@ -125,7 +125,6 @@
     <Compile Include="Common\ImageLoader.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />
     <Compile Include="Common\DeviceFamilyTrigger.cs" />
-    <Compile Include="Converters\UriToBitmapConverter.cs" />
     <Compile Include="Events\NotificationEvent.cs" />
     <Compile Include="Events\RaisedExceptionEvent.cs" />
     <Compile Include="ExtendedSplashScreen.xaml.cs">
@@ -272,6 +271,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>6.0.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.0.0</Version>

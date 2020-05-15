@@ -38,12 +38,12 @@ namespace Attention.App.ViewModels.UcViewModels
                     _loadCommand = new DelegateCommand(async () =>
                    {
                        var list = await Task.Run(() => _dataService.GetDownloadItems(1, 100));
-                       Entities = new NotifyTaskCompletion<ObservableCollection<DownloadDto>>(Task.FromResult(list.ToObservableCollection()));
+                       var task = DispatcherHelper.ExecuteOnUIThreadAsync(() => list.ToObservableCollection());
+                       Entities = new NotifyTaskCompletion<ObservableCollection<DownloadDto>>(task);
                    });
                 }
                 return _loadCommand;
             }
         }
-
     }
 }
