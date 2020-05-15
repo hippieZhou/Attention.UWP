@@ -125,8 +125,6 @@
     <Compile Include="Common\ImageLoader.cs" />
     <Compile Include="Converters\ObjectEqualToCheckedConverter.cs" />
     <Compile Include="Common\DeviceFamilyTrigger.cs" />
-    <Compile Include="Events\NotificationEvent.cs" />
-    <Compile Include="Events\RaisedExceptionEvent.cs" />
     <Compile Include="ExtendedSplashScreen.xaml.cs">
       <DependentUpon>ExtendedSplashScreen.xaml</DependentUpon>
     </Compile>

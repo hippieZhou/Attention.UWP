@@ -1,11 +1,11 @@
-﻿using Attention.App.Events;
-using Attention.App.Extensions;
+﻿using Attention.App.Extensions;
 using Attention.App.Models;
 using Attention.App.Services;
 using Attention.App.ViewModels.UcViewModels;
 using Attention.App.Views;
 using Attention.Core;
 using Attention.Core.Context;
+using Attention.Core.Events;
 using Attention.Core.Framework;
 using Attention.Core.Services;
 using Microsoft.Practices.Unity;

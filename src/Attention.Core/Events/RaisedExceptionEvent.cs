@@ -1,7 +1,7 @@
 ﻿using Prism.Events;
 using System;
 
-namespace Attention.App.Events
+namespace Attention.Core.Events
 {
     public class RaisedExceptionEvent : PubSubEvent<Exception>
     {

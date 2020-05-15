@@ -137,6 +137,8 @@
     <Compile Include="Dtos\WallpaperDto.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Entities\WallpaperEntity.cs" />
+    <Compile Include="Events\NotificationEvent.cs" />
+    <Compile Include="Events\RaisedExceptionEvent.cs" />
     <Compile Include="Extensions\BrushExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\TEnumExtension.cs" />

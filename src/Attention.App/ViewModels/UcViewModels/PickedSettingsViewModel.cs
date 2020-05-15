@@ -1,4 +1,4 @@
-﻿using Attention.App.Events;
+﻿using Attention.Core.Events;
 using Microsoft.Toolkit.Extensions;
 using Prism.Commands;
 using Prism.Events;

@@ -1,6 +1,6 @@
 ﻿using Prism.Events;
 
-namespace Attention.App.Events
+namespace Attention.Core.Events
 {
     public class NotificationEvent : PubSubEvent<string>
     {

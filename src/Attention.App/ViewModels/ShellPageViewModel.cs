@@ -1,6 +1,6 @@
-﻿using Attention.App.Events;
-using Attention.App.Helpers;
+﻿using Attention.App.Helpers;
 using Attention.App.ViewModels.UcViewModels;
+using Attention.Core.Events;
 using Attention.Core.Framework;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -9,7 +9,6 @@ using Prism.Events;
 using Prism.Logging;
 using Prism.Windows.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Windows.UI.Xaml;

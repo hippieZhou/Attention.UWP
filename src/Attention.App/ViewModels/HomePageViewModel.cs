@@ -1,9 +1,8 @@
 ﻿using Attention.App.Businesss;
-using Attention.App.Events;
 using Attention.App.Extensions;
-using Attention.App.Models;
 using Attention.App.ViewModels.UcViewModels;
 using Attention.Core.Dtos;
+using Attention.Core.Events;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Prism.Commands;
