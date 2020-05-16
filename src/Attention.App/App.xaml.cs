@@ -8,6 +8,7 @@ using Attention.Core.Context;
 using Attention.Core.Events;
 using Attention.Core.Framework;
 using Attention.Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Practices.Unity;
 using Microsoft.Toolkit.Uwp.Helpers;
 using Prism.Unity.Windows;
@@ -18,6 +19,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -117,6 +119,11 @@ namespace Attention.App
 
         protected override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Package.Current.InstalledLocation.Path)
+                .AddJsonFile("appsettings.json", optional: false);
+            Container.RegisterInstance(typeof(IConfigurationRoot), builder.Build());
+
             Container.RegisterInstance(Logger);
             Container.RegisterInstance(NavigationService);
             Container.RegisterInstance(SessionStateService);

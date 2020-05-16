@@ -6,7 +6,8 @@ namespace Attention.Core.Framework
     {
         T Resolve<T>() where T : class;
         T Resolve<T>(string name) where T : class;
-        T Resolve<T>(Type type) where T : class;
         object Resolve(Type type);
+
+        T GetSection<T>(string key);
     }
 }
