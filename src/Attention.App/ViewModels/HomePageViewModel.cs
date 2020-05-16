@@ -70,7 +70,7 @@ namespace Attention.App.ViewModels
                         CardViewModel = new DetailCardViewModel();
                         CardViewModel.TryStartBackwardsAnimation += async (sender, args) =>
                         {
-                            _adaptiveGV.ScrollIntoView(args.Item1);
+                            _adaptiveGV.ScrollIntoView(args.Item1, ScrollIntoViewAlignment.Default);
                             _adaptiveGV.UpdateLayout();
                             if (_adaptiveGV.ContainerFromItem(args.Item1) is GridViewItem container)
                             {
@@ -124,14 +124,10 @@ namespace Attention.App.ViewModels
                 {
                     _itemClickCommand = new DelegateCommand<WallpaperDto>(entity =>
                     {
-                        if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
+                        if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container && container != null)
                         {
                             container.Opacity = 0.0d;
-                            var animation = container.CreateForwardAnimation(_adaptiveGV, entity, () =>
-                           {
-                               CardViewModel.AvatarVisibility = Visibility.Visible;
-                               CardViewModel.FooterVisibility = Visibility.Visible;
-                           });
+                            var animation = container.CreateForwardAnimation(_adaptiveGV, entity);
                             CardViewModel.TryStartForwardAnimation(entity, animation);
                         }
                     });

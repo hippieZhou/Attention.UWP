@@ -24,7 +24,7 @@ namespace Attention.App.UserControls
         {
             this.InitializeComponent();
             _compositor = Window.Current.Compositor;
-            _root = ElementCompositionPreview.GetElementVisual(Root);
+            _root = ElementCompositionPreview.GetElementVisual(OverlayPopup);
             Loaded += (s, e) =>
             {
                 _interactionSource = VisualInteractionSource.Create(_root);
@@ -45,12 +45,12 @@ namespace Attention.App.UserControls
             var tracker = InteractionTracker.Create(_compositor);
             tracker.InteractionSources.Add(_interactionSource);
 
-            UpdateTrackingZone(tracker, Root);
-            Root.SizeChanged += (sender, e) =>
+            UpdateTrackingZone(tracker, OverlayPopup);
+            OverlayPopup.SizeChanged += (sender, e) =>
             {
                 if (e.PreviousSize.Equals(e.NewSize)) return;
 
-                UpdateTrackingZone(tracker, Root);
+                UpdateTrackingZone(tracker, OverlayPopup);
             };
 
             var modifier = InteractionTrackerInertiaNaturalMotion.Create(_compositor);
@@ -83,7 +83,7 @@ namespace Attention.App.UserControls
             {
                 try
                 {
-                    _interactionSource.TryRedirectForManipulation(e.GetCurrentPoint(Root));
+                    _interactionSource.TryRedirectForManipulation(e.GetCurrentPoint(OverlayPopup));
                 }
                 catch (Exception)
                 {

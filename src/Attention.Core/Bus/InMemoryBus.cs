@@ -25,7 +25,7 @@ namespace Attention.Core.Bus
             _logger.Log(message, Category.Debug, Priority.None);
 
             var handlerName = $"{request.GetType().Name}Handler";
-            var handlerType = Assembly.GetExecutingAssembly().GetExportedTypes().FirstOrDefault(x => x.Name == handlerName);
+            var handlerType = Assembly.GetAssembly(request.GetType()).GetExportedTypes().FirstOrDefault(x => x.Name == handlerName);
             if (handlerType == null)
             {
                 throw new ArgumentNullException($"类型未找到 {handlerName}");

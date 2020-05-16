@@ -28,29 +28,11 @@ namespace Attention.App.ViewModels.UcViewModels
             set { SetProperty(ref _entity, value); }
         }
 
-        private Visibility _avatarVisibility = Visibility.Collapsed;
-        public Visibility AvatarVisibility
-        {
-            get { return _avatarVisibility; }
-            set { SetProperty(ref _avatarVisibility, value); }
-        }
-
-        private Visibility _footerVisibility = Visibility.Collapsed;
-        public Visibility FooterVisibility
-        {
-            get { return _footerVisibility; }
-            set { SetProperty(ref _footerVisibility, value); }
-        }
-
         public void Initialize(FrameworkElement heroImage, FrameworkElement header,FrameworkElement pane2Panel)
         {
             _heroImage = heroImage ?? throw new ArgumentNullException(nameof(heroImage));
             _header = header ?? throw new ArgumentNullException(nameof(header));
             _pane2Panel = pane2Panel ?? throw new ArgumentNullException(nameof(pane2Panel));
-
-            Visibility = Visibility.Collapsed;
-            AvatarVisibility = Visibility.Collapsed;
-            FooterVisibility = Visibility.Collapsed;
         }
 
         private ICommand _downloadCommand;
@@ -125,8 +107,6 @@ namespace Attention.App.ViewModels.UcViewModels
                         var animation = _heroImage.CreateBackwardsAnimation(() =>
                         {
                             Visibility = Visibility.Collapsed;
-                            AvatarVisibility = Visibility.Collapsed;
-                            FooterVisibility = Visibility.Collapsed;
                         });
                         TryStartBackwardsAnimation?.Invoke(this, (Entity, animation));
                     });
@@ -137,9 +117,9 @@ namespace Attention.App.ViewModels.UcViewModels
 
         public void TryStartForwardAnimation(WallpaperDto entity, ConnectedAnimation animation)
         {
+            animation.TryStart(_heroImage, new[] { _header, _pane2Panel });
             Entity = entity;
             Visibility = Visibility.Visible;
-            animation.TryStart(_heroImage, new[] { _header, _pane2Panel });
         }
     }
 }

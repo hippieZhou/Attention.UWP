@@ -13,7 +13,7 @@
     mc:Ignorable="d">
 
     <Grid
-        x:Name="Root"
+        x:Name="OverlayPopup"
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
         Visibility="{x:Bind ConcreteDataContext.Visibility, Mode=OneWay, FallbackValue=Collapsed}">
         <ScrollViewer x:Name="detailContent">
@@ -127,7 +127,6 @@
             </winui:TwoPaneView>
         </ScrollViewer>
 
-
         <Grid VerticalAlignment="Top">
             <Rectangle
                 Margin="0,0,0,40"
@@ -162,7 +161,18 @@
                     FontSize="18"
                     Opacity="0.8"
                     Text="{x:Bind ConcreteDataContext.Entity.Location, Mode=OneWay}"
-                    TextLineBounds="Tight" />
+                    TextLineBounds="Tight">
+                    <animations:Implicit.ShowAnimations>
+                        <animations:TranslationAnimation
+                            From="0, 80, 0"
+                            To="0"
+                            Duration="0:0:0.450" />
+                        <animations:OpacityAnimation
+                            From="0"
+                            To="1.0"
+                            Duration="0:0:0.450" />
+                    </animations:Implicit.ShowAnimations>
+                </TextBlock>
                 <Button
                     x:Name="PlanTripTop"
                     Grid.Column="2"

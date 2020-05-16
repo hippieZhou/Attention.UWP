@@ -53,11 +53,11 @@ namespace Attention.App.Extensions
 
             ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
             var connectedElement = container.ContentTemplateRoot as FrameworkElement;
-            ConnectedAnimation animation = root.PrepareConnectedAnimation("forwardAnimation", entity, connectedElement.Name);
-            animation.IsScaleAnimationEnabled = true;
-            animation.Configuration = new BasicConnectedAnimationConfiguration();
-            animation.Completed += (sender, e) => { onCompleted?.Invoke(); };
-            return animation;
+            ConnectedAnimation connectedAnimation = root.PrepareConnectedAnimation("forwardAnimation", entity, connectedElement.Name);
+            connectedAnimation.Configuration = new BasicConnectedAnimationConfiguration();
+            connectedAnimation.IsScaleAnimationEnabled = true;
+            connectedAnimation.Completed += (sender, e) => { onCompleted?.Invoke(); };
+            return connectedAnimation;
         }
 
         public static ConnectedAnimation CreateBackwardsAnimation(this UIElement destinationElement, Action onCompleted = null)
@@ -68,11 +68,11 @@ namespace Attention.App.Extensions
             }
 
             ConnectedAnimationService.GetForCurrentView().DefaultDuration = TimeSpan.FromSeconds(1.0);
-            ConnectedAnimation animation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationElement);
-            animation.Configuration = new DirectConnectedAnimationConfiguration();
-            animation.IsScaleAnimationEnabled = true;
-            animation.Completed += (sender, e) => { onCompleted?.Invoke(); };
-            return animation;
+            ConnectedAnimation connectedAnimation = ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", destinationElement);
+            connectedAnimation.Configuration = new DirectConnectedAnimationConfiguration();
+            connectedAnimation.IsScaleAnimationEnabled = true;
+            connectedAnimation.Completed += (sender, e) => { onCompleted?.Invoke(); };
+            return connectedAnimation;
         }
 
         public static void PlayScaleSpringAnimation(this UIElement element, bool back = false)
