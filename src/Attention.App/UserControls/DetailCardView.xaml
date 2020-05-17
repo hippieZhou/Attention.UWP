@@ -28,10 +28,14 @@
                     <Grid x:Name="Pane1Panel" Padding="64,0,64,40">
                         <Image
                             x:Name="HeroImage"
+                            x:FieldModifier="public"
                             PointerEntered="OnPointerPressed"
                             Source="{x:Bind ConcreteDataContext.Entity.ImageUri, Mode=OneWay, TargetNullValue=ms-appx:///Assets/bantersnaps-wPMvPMD9KBI-unsplash.jpg}"
                             Stretch="UniformToFill" />
-                        <Image x:Name="HeroImageMirror" Stretch="UniformToFill" />
+                        <Image
+                            x:Name="HeroImageMirror"
+                            x:FieldModifier="public"
+                            Stretch="UniformToFill" />
                         <Button
                             x:Name="Credit"
                             Width="48"
@@ -61,8 +65,23 @@
                     <StackPanel
                         x:Name="Pane2Panel"
                         Margin="103,24,103,40"
-                        animations:Implicit.Animations="{StaticResource ImplicitOffsetAnimation}"
                         Spacing="36">
+                        <animations:Implicit.ShowAnimations>
+                            <animations:TranslationAnimation
+                                From="0, 80, 0"
+                                To="0"
+                                Duration="0:0:1" />
+                            <animations:OpacityAnimation
+                                From="0"
+                                To="1.0"
+                                Duration="0:0:1" />
+                        </animations:Implicit.ShowAnimations>
+                        <animations:Implicit.HideAnimations>
+                            <animations:OpacityAnimation
+                                From="1.0"
+                                To="0"
+                                Duration="0:0:0.200" />
+                        </animations:Implicit.HideAnimations>
                         <TextBlock
                             FontFamily="{StaticResource MontserratSemiBold}"
                             Opacity="0.4"
@@ -93,6 +112,7 @@
                             Margin="0,0,0,80"
                             Background="#FFF8F8F8"
                             BorderBrush="#FF121111"
+                            Command="{x:Bind ConcreteDataContext.DownloadCommand, Mode=OneWay}"
                             Content="DOWNLOAD"
                             Foreground="#FF121111"
                             Tag="{StaticResource Style-Icon-PaperPlane}" />
@@ -135,6 +155,7 @@
             <Grid
                 x:Name="Header"
                 Margin="56,40"
+                x:FieldModifier="public"
                 ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -161,18 +182,7 @@
                     FontSize="18"
                     Opacity="0.8"
                     Text="{x:Bind ConcreteDataContext.Entity.Location, Mode=OneWay}"
-                    TextLineBounds="Tight">
-                    <animations:Implicit.ShowAnimations>
-                        <animations:TranslationAnimation
-                            From="0, 80, 0"
-                            To="0"
-                            Duration="0:0:0.450" />
-                        <animations:OpacityAnimation
-                            From="0"
-                            To="1.0"
-                            Duration="0:0:0.450" />
-                    </animations:Implicit.ShowAnimations>
-                </TextBlock>
+                    TextLineBounds="Tight" />
                 <Button
                     x:Name="PlanTripTop"
                     Grid.Column="2"

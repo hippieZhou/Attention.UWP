@@ -82,15 +82,27 @@
                             Style="{StaticResource Style-Icon-Search}" />
                     </Button>
                     <Button
+                        x:Name="downloadButton"
                         Width="52"
                         Height="52"
                         Command="{x:Bind ConcreteDataContext.PickPaneCommand, Mode=OneWay}"
                         CommandParameter="PickedDownloadViewModel"
                         Style="{StaticResource Style-Button-Icon-Circle}">
-                        <ContentControl
-                            Width="12"
-                            Foreground="#FF373238"
-                            Style="{StaticResource Style-Icon-Download}" />
+                        <Grid>
+                            <ContentControl
+                                Width="12"
+                                Foreground="#FF373238"
+                                Style="{StaticResource Style-Icon-Download}" />
+                            <Ellipse
+                                x:Name="downloadDot"
+                                Width="6"
+                                Height="6"
+                                Margin="0,-5,-5,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Fill="#FFD90404"
+                                Visibility="Collapsed" />
+                        </Grid>
                     </Button>
                     <Button
                         Width="52"

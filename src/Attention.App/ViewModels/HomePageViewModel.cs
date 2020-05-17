@@ -124,7 +124,7 @@ namespace Attention.App.ViewModels
                 {
                     _itemClickCommand = new DelegateCommand<WallpaperDto>(entity =>
                     {
-                        if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container && container != null)
+                        if (_adaptiveGV.ContainerFromItem(entity) is GridViewItem container)
                         {
                             container.Opacity = 0.0d;
                             var animation = container.CreateForwardAnimation(_adaptiveGV, entity);

@@ -1,5 +1,7 @@
 ﻿using Attention.App.ViewModels.UcViewModels;
+using Attention.App.Views;
 using Microsoft.Toolkit.Uwp.UI.Animations.Expressions;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using System;
 using System.Numerics;
 using Windows.Devices.Input;
@@ -104,7 +106,7 @@ namespace Attention.App.UserControls
              {
                  if (d is DetailCardView handler && e.NewValue is DetailCardViewModel vm)
                  {
-                     vm.Initialize(handler.HeroImage, handler.Header, handler.Pane2Panel);
+                     vm.Initialize(handler);
                  }
              }));
 

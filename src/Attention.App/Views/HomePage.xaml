@@ -33,7 +33,7 @@
             <Grid x:Name="connectedElement" Background="{x:Bind Background}">
                 <mtuc:ImageEx
                     x:Name="imageEx"
-                    common:ImageLoader.Source="{x:Bind Thumbnail, TargetNullValue=ms-appx:///Assets/StoreLogo.png}"
+                    common:ImageLoader.Source="{x:Bind ImageUri, TargetNullValue=ms-appx:///Assets/StoreLogo.png}"
                     CacheMode="BitmapCache"
                     IsCacheEnabled="True"
                     Stretch="UniformToFill" />
